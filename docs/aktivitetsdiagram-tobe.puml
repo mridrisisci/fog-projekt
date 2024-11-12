@@ -5,25 +5,33 @@
 start
 :Opret forespørgsmål;
 
-|Webshop - Fog|
-:Kunde modtager prisoverslag;
+|Webshop |
+:Sender prisoverslag og genererer stykliste;
+
+|Kunde|
 if (Pristilbud godkendes) then (Nej)
-  :Ingen stykliste;
+  :Ingen stykliste og app stopper;
   stop
 else (Ja)
-  :Stykliste modtages og materiale fragtes;
+  :Bekræftelse på bestilling;
 endif
 
 |Kunde|
 :Betal;
 
-|Sælger|
+|Webshop |
 :Sender stykliste til kunde;
+
+|Kunde|
+:Modtager stykliste + svg-tegning;
+
+|Webshop |
 :Sender plukliste til lager;
 :Sender materiale til kunde;
 
+
 |Kunde|
-:Modtag materiale;
+:Modtager materiale;
 
 stop
 @enduml
