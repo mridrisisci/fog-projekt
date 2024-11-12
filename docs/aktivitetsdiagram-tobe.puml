@@ -6,7 +6,7 @@ start
 :Opret forespørgsmål;
 
 |Webshop |
-:Sender prisoverslag og genererer stykliste;
+:Beregner pris og sender prisoverslag;
 
 |Kunde|
 if (Pristilbud godkendes) then (Nej)
@@ -20,7 +20,7 @@ endif
 :Betal;
 
 |Webshop |
-:Sender stykliste til kunde;
+:Genererer stykliste;
 
 |Kunde|
 :Modtager stykliste + svg-tegning;
