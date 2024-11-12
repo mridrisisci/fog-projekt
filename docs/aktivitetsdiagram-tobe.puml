@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+|Kunde|
+start
+:Opret forespørgsmål;
+
+|Webshop - Fog|
+:Kunde modtager prisoverslag;
+if (Pristilbud godkendes) then (Nej)
+  :Ingen stykliste;
+  stop
+else (Ja)
+  :Stykliste modtages og materiale fragtes;
+endif
+
+|Kunde|
+:Betal;
+
+|Sælger|
+:Sender stykliste til kunde;
+:Sender plukliste til lager;
+:Sender materiale til kunde;
+
+|Kunde|
+:Modtag materiale;
+
+stop
+@enduml

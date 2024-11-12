@@ -1,5 +1,14 @@
 @startuml
 'https://plantuml.com/object-diagram
 
+object Webshop
+object InventoryDepartment
+object Salesman
+object Customer
+object Mail
+
+Customer -> Webshop : Custom Carport Query
+Webshop ->  Mail : Info
+
 
 @enduml
