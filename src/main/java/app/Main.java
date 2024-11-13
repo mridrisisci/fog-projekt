@@ -12,7 +12,7 @@ public class Main
     private static final String USER = "postgres";
     private static final String PASSWORD = "postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
-    private static final String DB = "carport_db";
+    private static final String DB = "carport";
 
     private static final ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
@@ -25,10 +25,10 @@ public class Main
             config.staticFiles.add("/public");
             config.jetty.modifyServletContextHandler(handler ->  handler.setSessionHandler(SessionConfig.sessionConfig()));
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7071);
+        }).start(7072);
 
         // Routing
 
-        app.get("/", ctx -> ctx.render("//") );
+        app.get("/", ctx -> ctx.render("index.html") );
     }
 }

@@ -1,37 +1,27 @@
 @startuml
-'https://plantuml.com/activity-diagram-beta
 
 |Kunde|
 start
-:Opret forespørgsmål;
+:Opret forespørgsel;
 
-|Webshop |
-:Beregner pris og sender prisoverslag;
+|Webshop|
+:Forespørgsel oprettes;
+:Kundeinfo oprettes i db;
 
-|Kunde|
-if (Pristilbud godkendes) then (Nej)
-  :Ingen stykliste og app stopper;
+|Sælger|
+if (Pristilbud åbnes af sælger) then (afvist)
+  :Pris i tilbud ændres;
   stop
-else (Ja)
+else (Godkendes)
   :Bekræftelse på bestilling;
 endif
 
-|Kunde|
-:Betal;
+|Webshop|
 
-|Webshop |
-:Genererer stykliste;
+|Sælger|
 
-|Kunde|
-:Modtager stykliste + svg-tegning;
-
-|Webshop |
-:Sender plukliste til lager;
-:Sender materiale til kunde;
-
-
-|Kunde|
-:Modtager materiale;
+|Lager|
+:Lager sender faktura til kd;
 
 stop
 @enduml

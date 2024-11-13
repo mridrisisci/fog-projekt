@@ -1,0 +1,18 @@
+.btn-xl {
+    --bs-btn-padding-y: 1rem;
+    --bs-btn-padding-x: 2rem;
+    --bs-btn-font-size: 1.75rem;
+    --bs-btn-border-radius: var(--bs-border-radius-lg);
+}
+.header {
+    background: linear-gradient(#9013FE,#6A10F3);
+}
+
+.center-form form{
+    /* border: 1px solid green;*/
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+
+}
