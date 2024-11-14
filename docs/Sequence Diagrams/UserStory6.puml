@@ -3,32 +3,12 @@
 
 autonumber
 
-Sælger -> Webshop: Log ind
-Webshop -> Sælger: Bekræfter log ind
+Sælger -> Webshop: Indtaster carport specifikationer baseret på kundens forespørgsel
+Webshop -> Beregningssystem: Sender specifikationer for beregning
 
-Sælger -> Webshop: Vælg en kundes forespørgsel
+Beregningssystem -> Database: Henter lov- og kravdata
+Database -> Beregningssystem: Returnerer lov- og kravdata
 
-Webshop -> Database: Hent forespørgsel (carport detaljer, email, navn)
-Database -> Webshop: Returner forespørgsel
-Webshop -> Sælger: Vis forespørgsel (carport detaljer, navn og email)
-
-Sælger -> Webshop: Klikker på "Opret email"
-
-Webshop -> Sælger: Viser generet e-mail med kundens oplysninger og tilbud
-
-alt E-mail tilfredsstillende
-    Sælger -> Webshop: Trykker på "send"
-    Webshop -> Slutkunde: Sender e-mail til slutkunden med tilbud
-    Webshop -> Sælger: Bekræftelse på afsending af tilbud
-    Database -> Webshop: Bekræft på opdatering i status til "afsendt tilbud"
-    Webshop -> Sælger: Bekræftelse på opdatering i status til "afsendt tilbud"
-else E-mail er ikke tilfredsstillende
-    Sælger -> Webshop: Trykker på "tilbage"
-    Sælger -> Webshop: Redigerer forespørgselsens informationer
-    Webshop -> Sælger: Viser generet e-mail med kundens oplysninger og tilbud
-    Sælger -> Webshop: Trykker på "send"
-    Webshop -> Slutkunde: Sender e-mail til slutkunden med tilbud
-    Webshop -> Sælger: Bekræftelse på afsending af tilbud
-    Database -> Webshop: Bekræft på opdatering i status til "afsendt tilbud"
-    Webshop -> Sælger: Bekræftelse på opdatering i status til "afsendt tilbud"
+Beregningssystem -> Webshop: Returnerer kostpris, vejledende salgspris, dækningsgrad, stykliste og lov- og kravoverholdelse
+Webshop -> Sælger: Viser kostpris, vejledende salgspris, dækningsgrad, stykliste og lov- og kravoverholdelse
 @enduml
