@@ -1,6 +1,57 @@
 @startuml
-'https://plantuml.com/object-diagram
+Title Domænemodel - FOG Carport
 
+hide circle
+hide methods
 
+entity Kunde {
+    +navn
+    +kontaktinfo
+}
+
+entity Forespørgsel {
+    +id
+    +status
+    +dato
+}
+
+entity Sælger {
+    +navn
+    +sælgerID
+}
+
+entity Pristilbud {
+    +pris
+    +status
+}
+
+entity Betaling {
+    +beløb
+    +betalingsDato
+}
+
+entity Stykliste {
+    +items
+}
+
+entity Lager {
+    +lokation
+}
+
+entity Faktura {
+    +fakturaNummer
+    +beløb
+}
+
+Kunde "1" --> "1..*" Forespørgsel : "opretter"
+Forespørgsel "1" --> "1" Sælger : "sendes til"
+Sælger "1" --> "1" Pristilbud : "opretter og sender"
+Pristilbud "1" --> "1" Kunde : "sendes til"
+Kunde "1" --> "0..1" Betaling : "laver"
+Betaling "1" --> "1" Sælger : "modtages af"
+Sælger "1" --> "1" Stykliste : "sender til"
+Sælger "1" --> "1" Faktura : "laver"
+Stykliste "1" --> "1" Lager : "modtages af"
+Faktura "1" --> "1" Kunde : "sendes til"
 
 @enduml
