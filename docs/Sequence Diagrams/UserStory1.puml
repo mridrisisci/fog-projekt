@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Slutkunde -> Webshop: Vælg carports detaljer og indtast navn og email
+Slutkunde -> Webshop: Klik på "Anmod om tilbud"
+Webshop -> Database: Opret bruger (carport detaljer, email, navn)
+Database -> Webshop: Bekræft oprettelse af bruger
+Webshop -> Database: Opret forespørgsel (carport detaljer)
+Database -> Webshop: Bekræft oprettelse af forespørgsel
+Webshop -> Slutkunde: Bekræftelse på modtaget forespørgsel
+@enduml
