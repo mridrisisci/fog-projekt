@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+|Slutkunde|
+start
+|Webshop|
+:Vælg vare;
+:Find standard/custom|
+|Sælger|
+:Modtag formular;
+while (Tjek bestilling - giver det mening?)
+  |Sælger|
+  :Foreslå rettelser;
+  |Slutkunde|
+  :Godkend rettelser;
+endwhile (Ja)
+
+|Sælger|
+:Indtast data i system;
+|Beregningssystem A|
+:Generer tegning, stykliste;
+:Generer kostpris, salgspris;
+|Sælger|
+:Kontrollere tilbud;
+|Mailsystem|
+:Send tilbud til kunde;
+|Slutkunde|
+:Tilbud; <<task>>
+
+if (Accepter tilbud) then (nej)
+  stop
+else (ja)
+endif
+|Sælger|
+:Tilbud accepteret;
+|Beregningssystem B|
+:Generer stykliste og faktura;
+|Sælger|
+:Gennemse stykliste og ordrebekræftelse;
+|Mailsystem|
+:Send ordrebekræftelse til kunde;
+|Slutkunde|
+:Modtag ordrebekræftelse; <<task>>
+:Betal;
+|Beregningssystem B|
+:Registerer betaling;
+|Sælger|
+:Send stykliste;
+|Mailsystem|
+:Send stykliste til lager;
+|Lager|
+:Modtag plukliste; <<task>>
+|Slutkunde|
+:Modtag faktura/plukliste; <<task>>
+|Lager|
+:Levering af varer;
+stop
+
+
+@enduml
