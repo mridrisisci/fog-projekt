@@ -1,0 +1,32 @@
+@startuml
+|Slutkunde|
+start
+|Webshop|
+:Find vare\nStandard/Custom|
+
+|Webshop|
+
+|Sælger|
+
+while (Tjek bestilling)
+  :read data;
+endwhile
+
+:Forbered tilbud;
+:Send tilbud /SEND;
+
+|Slutkunde|
+:Confirmation of Purchase;
+
+|Webshop|
+:Order Confirmation;
+:Send Parts List;
+
+|Lager|
+:Receive Parts List;
+:Delivery;
+
+|Slutkunde|
+:Invoice with Parts List;
+stop
+@enduml
