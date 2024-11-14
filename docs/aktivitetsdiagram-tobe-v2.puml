@@ -4,29 +4,31 @@ start
 |Webshop|
 :Find vare\nStandard/Custom|
 
-|Webshop|
-
 |Sælger|
+repeat :Modtag formular;
+|Slutkunde|
+backward: Prøv igen;
+|Sælger|
+repeat while (tjek bestilling) is (forkert)
+-> korrekt;
 
-while (Tjek bestilling)
-  :read data;
-endwhile
-
-:Forbered tilbud;
-:Send tilbud /SEND;
+|Webshop|
+:Lav tilbud \n/SEND;
+|Slutkunde|
+:Mail m. tilbud; <<task>>
 
 |Slutkunde|
-:Confirmation of Purchase;
+:Bekræftelse af køb;
 
 |Webshop|
-:Order Confirmation;
-:Send Parts List;
+:Bekræftelse af order;
+:Send stykliste; <<task>>
 
 |Lager|
-:Receive Parts List;
-:Delivery;
+:Modtag stykliste;
+:Levering;
 
 |Slutkunde|
-:Invoice with Parts List;
+:Faktura med stykliste; <<task>>
 stop
 @enduml
