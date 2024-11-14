@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Kunde
+participant View as V
+participant "OrderController.payForOrder()" as C
+participant "OrderMapper.payForOrder()" as M
+participant DB
+
+Kunde -> V: Kunde har set sin ordre og vil betale
+activate V
+V -> C: ?
+activate C
+C -> C: Validering af betaling (godkendt?)
+C -> C: Validering af ordren (godkendt?)
+C -> M: C kaster payForOrder(customer, db, order) til mapperen
+activate M
+M -> DB: Opretter kundens ordre i db
+
+@enduml
