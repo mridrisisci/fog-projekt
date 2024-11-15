@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Slutkunde -> Mail: Klikker på "betalingslink"
+Mail -> Webshop: Åbner link til betalingssiden
+Slutkunde -> Webshop: Klik på "Betal her"
+Webshop -> Database: Registrer betaling for ordre
+Database -> Webshop: Bekræft betaling af ordre
+Webshop -> Slutkunde: Bekræftelse på modtaget betaling med faktura
+Webshop -> Lager: Sender besked om betaling på ordre, med stykliste + mål
+
+@enduml
+@enduml

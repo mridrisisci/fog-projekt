@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Administrator -> Intranet: Tilgår beregningssystemet
+Intranet -> Beregningssystem: Sender anmodning om at tilgå systemet
+Beregningssystem -> Administrator: Viser nuværende beregningssystem
+Administrator -> Beregningssystem: Tilføjer nye muligheder/sletter gamle
+Beregningssystem -> Database: Gemmer nye oplysninger
+Database -> Beregningssystem: Bekræfter at oplysningerne er gemt
+Beregningssystem -> Intranet: Bekræfter ændringer i systemet
+Intranet -> Administrator: Viser bekræftelsen på ændringerne
+
+@enduml

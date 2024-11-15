@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Sælger -> Webshop: Indtaster carport specifikationer baseret på kundens forespørgsel
+Webshop -> Beregningssystem: Sender specifikationer for beregning
+
+Beregningssystem -> Database: Henter lov- og kravdata
+Database -> Beregningssystem: Returnerer lov- og kravdata
+
+Beregningssystem -> Webshop: Returnerer kostpris, vejledende salgspris, dækningsgrad, stykliste og lov- og kravoverholdelse
+Webshop -> Sælger: Viser kostpris, vejledende salgspris, dækningsgrad, stykliste og lov- og kravoverholdelse
+@enduml
