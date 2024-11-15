@@ -11,12 +11,20 @@ participant DB
 
 Kunde -> V: Kunde har set sin ordre og vil betale
 activate V
-V -> C: ?
+V -> C: GET-request til /payfororderpage
 activate C
 C -> C: Validering af betaling (godkendt?)
 C -> C: Validering af ordren (godkendt?)
 C -> M: C kaster payForOrder(customer, db, order) til mapperen
 activate M
-M -> DB: Opretter kundens ordre i db
+M -> DB: eksekverer sql
+DB -> M: ?
+M -> C: succes / kaster exception
+deactivate M
+C -> C: Sætter ctx.msg  med succes/error msg
+C -> V: render /orderconfirmationpage
+deactivate C
+
+deactivate V
 
 @enduml
