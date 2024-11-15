@@ -1,17 +1,16 @@
 package app.exceptions;
 
+import java.sql.SQLException;
+
 public class DatabaseException extends Exception
 {
-    public DatabaseException(String userMessage)
+    public DatabaseException(String errorMessage)
     {
-        super(userMessage);
-        System.out.println("userMessage: " + userMessage);
+        super(errorMessage);
     }
 
-    public DatabaseException(String userMessage, String systemMessage)
+    public DatabaseException(String errorMessage, SQLException exception)
     {
-        super(userMessage);
-        System.out.println("userMessage: " + userMessage);
-        System.out.println("errorMessage: " + systemMessage);
+        super(errorMessage, exception);
     }
 }
