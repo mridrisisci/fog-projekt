@@ -2,106 +2,167 @@
 'https://plantuml.com/class-diagram
 
 
-class Main
-
-package utilities{
-class SendGrid
-class Calculator
+class Main {
 }
 
-package controllers{
-class OrderController{
-+ addRoutes()
-}
-class UserController{
-+ addRoutes()
-}
-}
-
-package entities{
-class User{
--Integer userID
--String role
--String username
--String password
--Integer telephone
--String address
-
-+ getUserID()
-+ getRole()
-+ getUsername()
-+ getPassword()
-+ getTelephone()
-+ getAddress()
-}
-class Order{
--Integer orderID
--String name
--String status
--TimeStamp orderPlaced
--TimeStamp orderPaid
--TimeStamp orderComplete
-}
-class OrderLine{
--Integer orderLineID
--Integer carportWidth
--Integer carportLength
--String roofType
--Integer roofInclination
--Integer shedWidth
--Integer shedLength
--BigDecimal price
--Integer Quantity
-}
-class Offer
-class Product{
--Integer productID
-}
-class ProductVariant{
--Integer productVariantID
+package utilities {
+    class SendGrid
+    {
+    - String salespersonEmail
+    - String customerEmail
+    - String adminEmail
+    - String subjectLine
+    - Offer offer
+    - String body
+    }
+    class Calculator
+    {
+    + void calcCarport()
+    + void calcPosts()
+    + void calcBeams()
+    + void calcRafters()
+    }
 }
 
-package carport{
-abstract class Shed
-abstract class Roof
-class Flat
-class Pitched
+package controllers {
+    class OrderController {
+    + addRoutes()
+    }
+
+    class UserController {
+    + addRoutes()
+    }
+    class ProductController {
+    + addRoutes()
+    }
 }
 
-package materialList{
+package entities {
+    class User{
+    -Integer userID
+    -String role
+    -String username
+    -String password
+    -Integer telephone
+    -String address
+
+    + getUserID()
+    + getRole()
+    + getUsername()
+    + getPassword()
+    + getTelephone()
+    + getAddress()
+    }
+
+    class Order {
+    -Integer orderID
+    -String name
+    -String status
+    -TimeStamp orderPlaced
+    -TimeStamp orderPaid
+    -TimeStamp orderComplete
+    }
+
+    class OrderLine {
+    -Integer orderLineID
+    -Integer carportWidth
+    -Integer carportLength
+    -String roofType
+    -Integer roofInclination
+    -Integer shedWidth
+    -Integer shedLength
+    -BigDecimal price
+    -Integer Quantity
+    }
+
+    class Offer
+    {
+    - int salesPrice
+    - User recipient
+    - User sender
+    - int tax
+    }
+
+    class Product {
+    -Integer productID
+    }
+
+    class ProductVariant {
+    -Integer productVariantID
+    }
+
+package carport {
+    abstract class Shed
+    {
+    }
+
+    abstract class Roof
+    {
+    }
+    class Flat
+    {
+    }
+    class Pitched
+    }
+
+package materialList {
 abstract class MaterialList
-class BillOfMaterials
+class BillOfMaterial
 class PickList
 class Invoice
 }
 }
 
-package exceptions{
-class DatabaseException
+package exceptions {
+    class DatabaseException
+    {
+    }
 }
 
-package persistence{
-class ConnectionPool{
-+ConnectionPool instance
-+HikariDataSource ds
-'Ved ikke om de skal være static eller ej^
-+getInstance()
-+getConnection()
-+close()
--createHikariConnectionPool
-}
-class OrderMapper
-class OrderLineMapper
-class UserMapper
+package persistence {
+    class ConnectionPool {
+    +ConnectionPool instance
+    +HikariDataSource ds
+    'Ved ikke om de skal være static eller ej^
+    +getInstance()
+    +getConnection()
+    +close()
+    -createHikariConnectionPool
+    }
+
+    class OrderMapper {
+    }
+
+    class ProductMapper {
+    }
+
+    class UserMapper {
+    }
 }
 
-package config{
-class ThymeLeafConfig{
+package config {
+class ThymeLeafConfig {
 + templateEngine()
 }
 }
 
-MaterialList <|-- BillOfMaterials
+Main -- OrderController
+Main -- ProductController
+Main -- UserController
+
+OrderController -- OrderMapper
+ProductController -- ProductMapper
+UserController -- UserMapper
+
+Order *-- OrderLine
+Order o-- User
+OrderLine *-- Product
+
+Product o-- ProductVariant
+
+SendGrid o-- Offer
+
+MaterialList <|-- BillOfMaterial
 MaterialList <|-- PickList
 MaterialList <|-- Invoice
 
