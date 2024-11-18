@@ -1,0 +1,111 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Main
+
+package utilities{
+class SendGrid
+class Calculator
+}
+
+package controllers{
+class OrderController{
++ addRoutes()
+}
+class UserController{
++ addRoutes()
+}
+}
+
+package entities{
+class User{
+-Integer userID
+-String role
+-String username
+-String password
+-Integer telephone
+-String address
+
++ getUserID()
++ getRole()
++ getUsername()
++ getPassword()
++ getTelephone()
++ getAddress()
+}
+class Order{
+-Integer orderID
+-String name
+-String status
+-TimeStamp orderPlaced
+-TimeStamp orderPaid
+-TimeStamp orderComplete
+}
+class OrderLine{
+-Integer orderLineID
+-Integer carportWidth
+-Integer carportLength
+-String roofType
+-Integer roofInclination
+-Integer shedWidth
+-Integer shedLength
+-BigDecimal price
+-Integer Quantity
+}
+class Offer
+class Product{
+-Integer productID
+}
+class ProductVariant{
+-Integer productVariantID
+}
+
+package carport{
+abstract class Shed
+abstract class Roof
+class Flat
+class Pitched
+}
+
+package materialList{
+abstract class MaterialList
+class BillOfMaterials
+class PickList
+class Invoice
+}
+}
+
+package exceptions{
+class DatabaseException
+}
+
+package persistence{
+class ConnectionPool{
++ConnectionPool instance
++HikariDataSource ds
+'Ved ikke om de skal være static eller ej^
++getInstance()
++getConnection()
++close()
+-createHikariConnectionPool
+}
+class OrderMapper
+class OrderLineMapper
+class UserMapper
+}
+
+package config{
+class ThymeLeafConfig{
++ templateEngine()
+}
+}
+
+MaterialList <|-- BillOfMaterials
+MaterialList <|-- PickList
+MaterialList <|-- Invoice
+
+Roof <|-- Flat
+Roof <|-- Pitched
+
+@enduml
