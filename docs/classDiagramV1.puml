@@ -27,13 +27,33 @@ package utilities {
 package controllers {
     class OrderController {
     + addRoutes()
+    - Order getOrder()
+    - Order getOrderByUserID()
+    - List<Order> getAllOrders()
+    - void deleteOrderByUserID()
+    - void updateOrderByID()
+    - void requestPaymentByID()
+    - void confirmPaymentByID()
+    - void addOrderByID()
     }
 
     class UserController {
     + addRoutes()
+    - User getUser()
+    - User getUserByID()
+    - List<User> getAllUsers()
+    - User login()
+
     }
     class ProductController {
     + addRoutes()
+    - Product getProduct()
+    - Product getProductByID()
+    - void updateProduct()
+    - void addProductTo()
+    - void deleteProduct()
+    - List<Product> getAllProducts()
+
     }
 }
 
@@ -131,12 +151,29 @@ package persistence {
     }
 
     class OrderMapper {
+    + Order getOrder()
+    + List<oOrder> getOrderByUserID()
+    + List<Order> getAllOrders()
+    + void deleteOrderByUserID()
+    + void updateOrderByUserID()
+    + void addOrderToDB()
     }
 
     class ProductMapper {
+    + product getProduct()
+    + product getProductByID()
+    + void updateProduct()
+    + void addProductTo()
+    + void deleteProduct()
+    + List<Product> getAllProducts()
     }
 
     class UserMapper {
+    + void addUser()
+    + void deleteUser()
+    + void updateUser()
+    + List<User> getAllUsers()
+    + void login()
     }
 }
 
