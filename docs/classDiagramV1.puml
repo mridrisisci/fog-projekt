@@ -3,6 +3,7 @@
 
 
 class Main {
++main(String[] args)
 }
 
 package utilities {
@@ -84,11 +85,10 @@ package entities {
     }
 
     class OrderLine {
-    -Integer orderLineID
-    -Integer carportWidth
-    -Integer carportLength
-    -String roofType
-    -Integer roofInclination
+    -int orderLineID
+    -int carportWidth
+    -int carportLength
+    - Roof roof
     -Shed shed
     -BigDecimal price
     -Integer Quantity
@@ -119,24 +119,55 @@ package carport {
 
     abstract class Roof
     {
+    -String roofType
     }
     class Flat
     {
+    - String roofType
+    + String getRoofType()
     }
-    class Pitched
+    class Pitched{
+    - int roofInclination
+    - String roofType
+    + int getroofInclination()
+    + String getRoofType()
+    }
     }
 
-package materialList {
-abstract class MaterialList
+package productList {
+abstract class ProductList
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
 class BillOfMaterial
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
 class PickList
+{
+- List<Product> productList
++ List<Product> getProductList()
++ void addToProductList()
++ void removeFromProductList()
+
+}
 class Invoice
+{
+- List<Product> productList
+- String message
++ List<Product> getProductList()
++ String generateInvoiceText(int userID, Order order, OrderLine orderLine)
+}
 }
 }
 
 package exceptions {
     class DatabaseException
     {
+    + DatabaseException(String userMessage)
+    + DatabaseException((String userMessage, String systemMessage)
     }
 }
 
@@ -200,9 +231,9 @@ Product o-- ProductVariant
 
 SendGrid o-- Offer
 
-MaterialList <|-- BillOfMaterial
-MaterialList <|-- PickList
-MaterialList <|-- Invoice
+ProductList <|-- BillOfMaterial
+ProductList <|-- PickList
+ProductList <|-- Invoice
 
 Roof <|-- Flat
 Roof <|-- Pitched
