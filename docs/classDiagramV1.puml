@@ -18,43 +18,36 @@ package utilities {
     }
     class Calculator
     {
-    + void calcCarport()
-    + void calcPosts()
-    + void calcBeams()
-    + void calcRafters()
+'    det her vil ikke virke, posts, beams og rafters skal ikke ligge her
+    - final int posts
+    - final int beams
+    - final int rafters
+'    metoderne calc skal bruges i constructoren
+    + int calcCarport()
+    + int calcPosts()
+    + int calcBeams()
+    + int calcRafters()
+    + List<Product> calculateProductList(int posts, int beams, int rafters)
     }
 }
 
 package controllers {
     class OrderController {
     + addRoutes()
-    - Order getOrder()
-    - Order getOrderByUserID()
-    - List<Order> getAllOrders()
-    - void deleteOrderByUserID()
-    - void updateOrderByID()
     - void requestPaymentByID()
     - void confirmPaymentByID()
-    - void addOrderByID()
     }
 
     class UserController {
     + addRoutes()
-    - User getUser()
-    - User getUserByID()
-    - List<User> getAllUsers()
     - User login()
+    - void logout()
 
     }
     class ProductController {
+    - Calculator calculator
     + addRoutes()
-    - Product getProduct()
-    - Product getProductByID()
-    - void updateProduct()
-    - void addProductTo()
-    - void deleteProduct()
-    - List<Product> getAllProducts()
-
+    - List<Product> getProductListByOrderLineID()
     }
 }
 
@@ -103,7 +96,13 @@ package entities {
     }
 
     class Product {
-    -Integer productID
+    - int productID
+    - String productName
+    - String description
+    - BigDecimal price
+    - String unit
+    - int quantity
+    - int length
     }
 
     class ProductVariant {
@@ -204,6 +203,7 @@ package persistence {
     + void addUser()
     + void deleteUser()
     + void updateUser()
+    + User getUserByID()
     + List<User> getAllUsers()
     + void login()
     }
