@@ -2,6 +2,15 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+DROP TABLE IF EXISTS public.addresses CASCADE;
+DROP TABLE IF EXISTS public.cities CASCADE;
+DROP TABLE IF EXISTS public.order_lines CASCADE;
+DROP TABLE IF EXISTS public.orders CASCADE;
+DROP TABLE IF EXISTS public.postal_code CASCADE;
+DROP TABLE IF EXISTS public.product CASCADE;
+DROP TABLE IF EXISTS public.product_variant CASCADE;
+
+
 
 CREATE TABLE IF NOT EXISTS public.addresses
 (
@@ -115,18 +124,16 @@ CREATE INDEX IF NOT EXISTS cities_pkey
 
 
 ALTER TABLE IF EXISTS public.order_lines
-    ADD CONSTRAINT fk FOREIGN KEY (order_line_id, order_id)
-        REFERENCES public.orders (order_id, order_id) MATCH SIMPLE
+    ADD CONSTRAINT fk2 FOREIGN KEY (product_id)
+        REFERENCES public.product (product_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
-CREATE INDEX IF NOT EXISTS order_lines_pkey
-    ON public.order_lines(order_line_id, order_id);
 
 
 ALTER TABLE IF EXISTS public.order_lines
-    ADD CONSTRAINT fk2 FOREIGN KEY (product_id)
-        REFERENCES public.product (product_id) MATCH SIMPLE
+    ADD CONSTRAINT fk FOREIGN KEY (order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
