@@ -66,12 +66,12 @@ package entities {
     -Integer telephone
     -String address
 
-    + getUserID()
-    + getRole()
-    + getUsername()
-    + getPassword()
-    + getTelephone()
-    + getAddress()
+    + int getUserID()
+    + String getRole()
+    + String getUsername()
+    + String getPassword()
+    + int getTelephoneNum()
+    + String getAddress()
     }
 
     class Order {
@@ -89,8 +89,7 @@ package entities {
     -Integer carportLength
     -String roofType
     -Integer roofInclination
-    -Integer shedWidth
-    -Integer shedLength
+    -Shed shed
     -BigDecimal price
     -Integer Quantity
     }
@@ -112,8 +111,10 @@ package entities {
     }
 
 package carport {
-    abstract class Shed
+    class Shed
     {
+    int width
+    int length
     }
 
     abstract class Roof
@@ -152,19 +153,19 @@ package persistence {
 
     class OrderMapper {
     + Order getOrder()
-    + List<oOrder> getOrderByUserID()
+    + List<Order> getOrderByUserID(int userID)
     + List<Order> getAllOrders()
-    + void deleteOrderByUserID()
-    + void updateOrderByUserID()
-    + void addOrderToDB()
+    + void deleteOrderByID(int userID, int orderID)
+    + void updateOrderByUserID(OrderLine orderLine)
+    + void addOrderToDB(Order order, OrderLine orderLine)
     }
 
     class ProductMapper {
     + product getProduct()
-    + product getProductByID()
-    + void updateProduct()
-    + void addProductTo()
-    + void deleteProduct()
+    + product getProductByID(int productID)
+    + void updateProduct(Product product)
+    + void addProductToDB(Product product)
+    + void deleteProductByID(int productID)
     + List<Product> getAllProducts()
     }
 
