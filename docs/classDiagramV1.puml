@@ -3,6 +3,7 @@
 
 
 class Main {
++main(String[] args)
 }
 
 package utilities {
@@ -17,23 +18,36 @@ package utilities {
     }
     class Calculator
     {
-    + void calcCarport()
-    + void calcPosts()
-    + void calcBeams()
-    + void calcRafters()
+'    det her vil ikke virke, posts, beams og rafters skal ikke ligge her
+    - final int posts
+    - final int beams
+    - final int rafters
+'    metoderne calc skal bruges i constructoren
+    + int calcCarport()
+    + int calcPosts()
+    + int calcBeams()
+    + int calcRafters()
+    + List<Product> calculateProductList(int posts, int beams, int rafters)
     }
 }
 
 package controllers {
     class OrderController {
     + addRoutes()
+    - void requestPaymentByID()
+    - void confirmPaymentByID()
     }
 
     class UserController {
     + addRoutes()
+    - User login()
+    - void logout()
+
     }
     class ProductController {
+    - Calculator calculator
     + addRoutes()
+    - List<Product> getProductListByOrderLineID()
     }
 }
 
@@ -46,12 +60,12 @@ package entities {
     -Integer telephone
     -String address
 
-    + getUserID()
-    + getRole()
-    + getUsername()
-    + getPassword()
-    + getTelephone()
-    + getAddress()
+    + int getUserID()
+    + String getRole()
+    + String getUsername()
+    + String getPassword()
+    + int getTelephoneNum()
+    + String getAddress()
     }
 
     class Order {
@@ -64,13 +78,11 @@ package entities {
     }
 
     class OrderLine {
-    -Integer orderLineID
-    -Integer carportWidth
-    -Integer carportLength
-    -String roofType
-    -Integer roofInclination
-    -Integer shedWidth
-    -Integer shedLength
+    -int orderLineID
+    -int carportWidth
+    -int carportLength
+    - Roof roof
+    -Shed shed
     -BigDecimal price
     -Integer Quantity
     }
@@ -84,7 +96,13 @@ package entities {
     }
 
     class Product {
-    -Integer productID
+    - int productID
+    - String productName
+    - String description
+    - BigDecimal price
+    - String unit
+    - int quantity
+    - int length
     }
 
     class ProductVariant {
@@ -92,30 +110,63 @@ package entities {
     }
 
 package carport {
-    abstract class Shed
+    class Shed
     {
+    int width
+    int length
     }
 
     abstract class Roof
     {
+    -String roofType
     }
     class Flat
     {
+    - String roofType
+    + String getRoofType()
     }
-    class Pitched
+    class Pitched{
+    - int roofInclination
+    - String roofType
+    + int getroofInclination()
+    + String getRoofType()
+    }
     }
 
-package materialList {
-abstract class MaterialList
+package productList {
+abstract class ProductList
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
 class BillOfMaterial
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
 class PickList
+{
+- List<Product> productList
++ List<Product> getProductList()
++ void addToProductList()
++ void removeFromProductList()
+
+}
 class Invoice
+{
+- List<Product> productList
+- String message
++ List<Product> getProductList()
++ String generateInvoiceText(int userID, Order order, OrderLine orderLine)
+}
 }
 }
 
 package exceptions {
     class DatabaseException
     {
+    + DatabaseException(String userMessage)
+    + DatabaseException((String userMessage, String systemMessage)
     }
 }
 
@@ -131,12 +182,30 @@ package persistence {
     }
 
     class OrderMapper {
+    + Order getOrder()
+    + List<Order> getOrderByUserID(int userID)
+    + List<Order> getAllOrders()
+    + void deleteOrderByID(int userID, int orderID)
+    + void updateOrderByUserID(OrderLine orderLine)
+    + void addOrderToDB(Order order, OrderLine orderLine)
     }
 
     class ProductMapper {
+    + product getProduct()
+    + product getProductByID(int productID)
+    + void updateProduct(Product product)
+    + void addProductToDB(Product product)
+    + void deleteProductByID(int productID)
+    + List<Product> getAllProducts()
     }
 
     class UserMapper {
+    + void addUser()
+    + void deleteUser()
+    + void updateUser()
+    + User getUserByID()
+    + List<User> getAllUsers()
+    + void login()
     }
 }
 
@@ -162,9 +231,9 @@ Product o-- ProductVariant
 
 SendGrid o-- Offer
 
-MaterialList <|-- BillOfMaterial
-MaterialList <|-- PickList
-MaterialList <|-- Invoice
+ProductList <|-- BillOfMaterial
+ProductList <|-- PickList
+ProductList <|-- Invoice
 
 Roof <|-- Flat
 Roof <|-- Pitched
