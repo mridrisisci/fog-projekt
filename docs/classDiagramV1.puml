@@ -224,9 +224,7 @@ class ThymeLeafConfig {
 }
 }
 
-Main -- OrderController
-Main -- ProductController
-Main -- UserController
+Main o-- controllers
 
 OrderController -- OrderMapper
 ProductController -- ProductMapper
@@ -248,5 +246,8 @@ ProductList <|-- Invoice
 
 Roof <|-- Flat
 Roof <|-- Pitched
+
+persistence o-- DatabaseException
+Main o-- config
 
 @enduml
