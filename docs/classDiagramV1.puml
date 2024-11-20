@@ -31,7 +31,7 @@ package utilities {
     + void sendBOM()
     + void sendPickList()
     + void sendInvoice()
-    + boolean sendOffer(String zip)
+    + boolean sendOffer(SVG svg, String zip)
     }
     class Calculator
     {
@@ -64,9 +64,6 @@ package controllers {
     - SVG svg
     + addRoutes()
     - boolean validateOrderIsPaid()
-    - void generateBOM()
-    - void generatePickList()
-    - void generateInvoice()
     - List<Product> getProductListByOrderLineID()
     }
 }
