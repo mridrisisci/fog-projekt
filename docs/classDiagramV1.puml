@@ -7,6 +7,17 @@ class Main {
 }
 
 package utilities {
+    class SVG {
+    - StringBuilder svg
+    + SVG(int x, int y, String viewBox, String width, String height)
+    + addRectangle(int x, int y, double height, double width, String style)
+    + addLine(int x1, int y1, int x2, int y2, String style)
+    + addArrow(int x1, int y1, inx x2, int y2, String style)
+    + addText(int x, int y, int rotation, String text)
+    + addSvg(Svg innerSvg)
+    'Override
+    + toString()
+    }
     class SendGrid
     {
     - String salespersonEmail
