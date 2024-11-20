@@ -23,10 +23,12 @@ package utilities {
     - final int beams
     - final int rafters
 '    metoderne calc skal bruges i constructoren
-    + int calcCarport()
-    + int calcPosts()
-    + int calcBeams()
-    + int calcRafters()
+    + Calculator(int length, int width)
+    + int calcCarport(OrderLine orderLine)
+    + Product calcPosts(OrderLine orderLine)
+    + Product calcBeams(OrderLine orderLine)
+    + Product calcRafters(OrderLine orderLine)
+    + List<Product> calcBOM(User user, OrderLine orderLine)
     + List<Product> calculateProductList(int posts, int beams, int rafters)
     }
 }
@@ -53,12 +55,12 @@ package controllers {
 
 package entities {
     class User{
-    -Integer userID
-    -String role
-    -String username
-    -String password
-    -Integer telephone
-    -String address
+    - int userID
+    - String role
+    - String username
+    - String password
+    - int telephone
+    - String address
 
     + int getUserID()
     + String getRole()
@@ -69,7 +71,7 @@ package entities {
     }
 
     class Order {
-    -Integer orderID
+    -int orderID
     -String name
     -String status
     -TimeStamp orderPlaced
@@ -78,13 +80,13 @@ package entities {
     }
 
     class OrderLine {
-    -int orderLineID
-    -int carportWidth
-    -int carportLength
+    - int orderLineID
+    - int carportWidth
+    - int carportLength
     - Roof roof
-    -Shed shed
-    -BigDecimal price
-    -Integer Quantity
+    - Shed shed
+    - BigDecimal price
+    - int Quantity
     }
 
     class Offer
@@ -185,6 +187,7 @@ package persistence {
     + Order getOrder()
     + List<Order> getOrderByUserID(int userID)
     + List<Order> getAllOrders()
+    + OrderLine getOrderLineByOrderID()
     + void deleteOrderByID(int userID, int orderID)
     + void updateOrderByUserID(OrderLine orderLine)
     + void addOrderToDB(Order order, OrderLine orderLine)
@@ -203,7 +206,7 @@ package persistence {
     + void addUser()
     + void deleteUser()
     + void updateUser()
-    + User getUserByID()
+    + User getUserByOrderID()
     + List<User> getAllUsers()
     + void login()
     }
