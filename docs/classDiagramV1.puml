@@ -228,7 +228,7 @@ OrderLine *-- Product
 Product o-- ProductVariant
 
 SendGrid o-- Offer
-Calculator o-- ProductMapper
+Calculator *-- ProductMapper
 
 
 ProductList <|-- BillOfMaterial
