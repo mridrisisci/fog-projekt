@@ -20,12 +20,18 @@ package utilities {
     }
     class SendGrid
     {
+    - String API_KEY
     - String salespersonEmail
     - String customerEmail
     - String adminEmail
     - String subjectLine
     - Offer offer
     - String body
+    + SendGrid(String to, String name, String from)
+    + void sendBOM()
+    + void sendPickList()
+    + void sendInvoice()
+    + boolean sendOffer(String zip)
     }
     class Calculator
     {
@@ -54,7 +60,13 @@ package controllers {
     }
     class ProductController {
     - Calculator calculator
+    - SendGrid email
+    - SVG svg
     + addRoutes()
+    - boolean validateOrderIsPaid()
+    - void generateBOM()
+    - void generatePickList()
+    - void generateInvoice()
     - List<Product> getProductListByOrderLineID()
     }
 }
@@ -98,8 +110,11 @@ package entities {
     class Offer
     {
     - int salesPrice
-    - User recipient
-    - User sender
+    'kostpris
+    - int priceOfCost
+    'dækningsgrad
+    'dækningsbidrag
+    'avance
     - int tax
     }
 
@@ -219,12 +234,14 @@ package persistence {
 }
 
 package config {
-class ThymeLeafConfig {
-+ templateEngine()
-}
+    class ThymeLeafConfig {
+    + templateEngine()
+    }
+    class Sessionconfig {
+    }
 }
 
-Main o-- controllers
+Main -- controllers
 
 OrderController -- OrderMapper
 ProductController -- ProductMapper
@@ -237,6 +254,7 @@ OrderLine *-- Product
 Product o-- ProductVariant
 
 SendGrid o-- Offer
+SendGrid o-- SVG
 Calculator *-- ProductMapper
 
 
@@ -248,6 +266,6 @@ Roof <|-- Flat
 Roof <|-- Pitched
 
 persistence o-- DatabaseException
-Main o-- config
+Main -- config
 
 @enduml
