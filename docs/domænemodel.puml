@@ -1,10 +1,11 @@
 @startuml
 Title Domænemodel - FOG Carport
-
+'TODO
 'husk carport
+'    - hvad hører der til en carport
 'husk pile, skal væk?
-'lige kigge på hvordan domæne model
-'skal se ud
+'lige kigge på hvordan domæne model skal se ud
+'skal være til kunden
 
 hide circle
 hide methods
