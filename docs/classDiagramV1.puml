@@ -25,56 +25,55 @@ package utilities {
     - String customerEmail
     - String adminEmail
     - String subjectLine
-    - Offer offer
     - String body
     + SendGrid(String to, String name, String from)
-    + void sendBOM()
-    + void sendPickList()
-    + void sendInvoice()
-    + boolean sendOffer(SVG svg, String zip)
-    }
-    class Calculator
-    {
-    + Calculator(int length, int width)
-    + int calcCarport(OrderLine orderLine)
-    + Product calcPosts(OrderLine orderLine)
-    + Product calcBeams(OrderLine orderLine)
-    + Product calcRafters(OrderLine orderLine)
-    + List<Product> calcBOM(User user, OrderLine orderLine)
-    + List<Product> calculateProductList(int posts, int beams, int rafters)
     }
 }
 
 package controllers {
     class OrderController {
     + addRoutes()
+    - boolean validateOrderIsPaid()
     - void requestPaymentByID()
     - void confirmPaymentByID()
     }
 
-    class UserController {
+    class AccountController {
     + addRoutes()
     - User login()
     - void logout()
 
     }
     class ProductController {
-    - Calculator calculator
+    - Carport carport
     - SendGrid email
     - SVG svg
     + addRoutes()
-    - boolean validateOrderIsPaid()
     - List<Product> getProductListByOrderLineID()
     }
 }
 
 package entities {
-    class User{
-    - int userID
+    class Carport
+    {
+    + Carport(int length, int width)
+    + int calcCarport(List<Product> products)
+    + Product calcPosts(List<Product> products)
+    + Product calcBeams(List<Product> products)
+    + Product calcRafters(List<Product> products)
+    + getRafters()
+    + getBeams()
+    + getPosts()
+    'List<Product> calcBOM(User user, List<Product> products)
+    'List<Product> calculateProductList(int posts, int beams, int rafters)
+    }
+    class Account{
+    - int accountId
     - String role
     - String username
     - String password
     - int telephone
+    - String email
     - String address
 
     + int getUserID()
@@ -86,107 +85,84 @@ package entities {
     }
 
     class Order {
-    -int orderID
-    -String name
-    -String status
-    -TimeStamp orderPlaced
-    -TimeStamp orderPaid
-    -TimeStamp orderComplete
-    }
-
-    class OrderLine {
-    - int orderLineID
-    - int carportWidth
-    - int carportLength
-    - Roof roof
-    - Shed shed
-    - BigDecimal price
-    - int Quantity
-    }
-
-    class Offer
-    {
-    - int salesPrice
-    'kostpris
-    - int priceOfCost
-    'dækningsgrad
-    'dækningsbidrag
-    'avance
-    - int tax
+    - int orderID
+    - int customerId
+    - carportId
+    - String name
+    'ordrestatus
+    - String status
+    - TimeStamp orderPlaced
+    - boolean orderPaid
+    - TimeStamp orderComplete
+    - Carport carport
+    + getters()
     }
 
     class Product {
     - int productID
     - String productName
     - String description
+    }
+
+    class ProductVariant {
+    -Integer productVariantID
     - BigDecimal price
     - String unit
     - int quantity
     - int length
     }
-
-    class ProductVariant {
-    -Integer productVariantID
-    }
-
-package carport {
     class Shed
-    {
-    int width
-    int length
-    }
+        {
+        int width
+        int length
+        }
 
-    abstract class Roof
-    {
-    -String roofType
-    }
-    class Flat
-    {
-    - String roofType
-    + String getRoofType()
-    }
-    class Pitched{
-    - int roofInclination
-    - String roofType
-    + int getroofInclination()
-    + String getRoofType()
-    }
-    }
+        enum RoofType {
+        FLAT,
+        PITCHED
+        }
 
-package productList {
-abstract class ProductList
-{
-- List<Product> productList
-+ List<Product> getProductList()
-}
-class BillOfMaterial
-{
-- List<Product> productList
-+ List<Product> getProductList()
-}
-class PickList
-{
-- List<Product> productList
-+ List<Product> getProductList()
-+ void addToProductList()
-+ void removeFromProductList()
+        class Roof
+        {
+        -String roofType
+        }
+        class ProductList
+        {
+        - List<Product> productList
+        + List<Product> getProductList()
+        }
+        class BillOfMaterials
+        {
+        - List<Product> productList
+        + List<Product> getProductList()
+        + void SendBOM()
+        }
+        class PickList
+        {
+        - List<Product> productList
+        + List<Product> getProductList()
+        + void addToProductList()
+        + void removeFromProductList()
+        + void SendPickList()
 
-}
-class Invoice
-{
-- List<Product> productList
-- String message
-+ List<Product> getProductList()
-+ String generateInvoiceText(OrderLine orderLine)
-}
-}
+        }
+        class Invoice
+        {
+        - List<Product> productList
+        - String message
+        + List<Product> getProductList()
+        + String generateInvoiceText(OrderLine orderLine)
+        + void SendInvoice()
+        }
+
+
 }
 
 package exceptions {
     class DatabaseException
     {
-    + DatabaseException(String userMessage)
-    + DatabaseException((String userMessage, String systemMessage)
+    + DatabaseException()
+    + DatabaseException()
     }
 }
 
@@ -220,12 +196,12 @@ package persistence {
     + List<Product> getAllProducts()
     }
 
-    class UserMapper {
-    + void addUser()
-    + void deleteUser()
-    + void updateUser()
-    + User getUserByOrderID()
-    + List<User> getAllUsers()
+    class AccountMapper {
+    + void addAccount()
+    + void deleteAccount()
+    + void updateAccounnt()
+    + User getAccountByOrderID()
+    + List<User> getAllAccounts()
     + void login()
     }
 }
@@ -238,31 +214,33 @@ package config {
     }
 }
 
+package Test {
+    class OrderMapperTest {
+    }
+    class ProductMapperTest {
+    }
+    class AccountMapperTest {
+    }
+}
+
 Main -- controllers
 
 OrderController -- OrderMapper
 ProductController -- ProductMapper
-UserController -- UserMapper
+AccountController -- AccountMapper
 
-Order *-- OrderLine
-Order o-- User
-OrderLine *-- Product
 
 Product o-- ProductVariant
 
-SendGrid o-- Offer
-SendGrid o-- SVG
-Calculator *-- ProductMapper
+Carport o-- Shed
+Carport *-- Roof
+Carport *-- Product
+Roof *-- RoofType
 
-
-ProductList <|-- BillOfMaterial
+ProductList <|-- BillOfMaterials
 ProductList <|-- PickList
 ProductList <|-- Invoice
 
-Roof <|-- Flat
-Roof <|-- Pitched
 
-persistence o-- DatabaseException
-Main -- config
 
 @enduml
