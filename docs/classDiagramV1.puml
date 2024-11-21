@@ -44,7 +44,7 @@ package controllers {
     - void logout()
 
     }
-    class ProductController {
+    class MaterialController {
     - Carport carport
     - SendGrid email
     - SVG svg
@@ -57,17 +57,18 @@ package entities {
     class Carport
     {
     + Carport(int length, int width)
-    + int calcCarport(List<Product> products)
-    + Product calcPosts(List<Product> products)
-    + Product calcBeams(List<Product> products)
-    + Product calcRafters(List<Product> products)
-    + getRafters()
-    + getBeams()
-    + getPosts()
+    + List<Material> materials
+    + int calcCarport(List<Material> materials)
+    + Material calcPosts(List<Material> materials)
+    + Product calcBeams(List<Material> materials)
+    + Product calcRafters(List<Material> materials)
+    + Material getRafters()
+    + Material getBeams()
+    + Material getPosts()
     'List<Product> calcBOM(User user, List<Product> products)
     'List<Product> calculateProductList(int posts, int beams, int rafters)
     }
-    class Account{
+    class Account {
     - int accountId
     - String role
     - String username
@@ -88,12 +89,12 @@ package entities {
     - int orderID
     - int customerId
     - carportId
-    - String name
+    '- String name
     'ordrestatus
-    - String status
+    '- String status
     - TimeStamp orderPlaced
     - boolean orderPaid
-    - TimeStamp orderComplete
+    '- TimeStamp orderComplete
     - Carport carport
     + getters()
     }
@@ -103,7 +104,6 @@ package entities {
     - String productName
     - String description
     }
-
     class ProductVariant {
     -Integer productVariantID
     - BigDecimal price
@@ -111,49 +111,24 @@ package entities {
     - int quantity
     - int length
     }
-    class Shed
-        {
-        int width
-        int length
-        }
-
-        enum RoofType {
-        FLAT,
-        PITCHED
-        }
-
-        class Roof
-        {
-        -String roofType
-        }
-        class ProductList
-        {
-        - List<Product> productList
-        + List<Product> getProductList()
-        }
-        class BillOfMaterials
-        {
-        - List<Product> productList
-        + List<Product> getProductList()
-        + void SendBOM()
-        }
-        class PickList
-        {
-        - List<Product> productList
-        + List<Product> getProductList()
-        + void addToProductList()
-        + void removeFromProductList()
-        + void SendPickList()
-
-        }
-        class Invoice
-        {
-        - List<Product> productList
-        - String message
-        + List<Product> getProductList()
-        + String generateInvoiceText(OrderLine orderLine)
-        + void SendInvoice()
-        }
+    class Shed {
+    - int width
+    - int length
+    }
+    enum RoofType {
+    FLAT,
+    PITCHED
+    }
+    class Roof
+    {
+    - int roofLengt
+    - int roofWidth
+    - final RoofType type
+    }
+    class MaterialController {
+    - List<Product> productList
+    + List<Product> getProductList()
+    }
 
 
 }
@@ -187,13 +162,13 @@ package persistence {
     + void addOrderToDB(Order order, OrderLine orderLine)
     }
 
-    class ProductMapper {
-    + product getProduct()
-    + product getProductByID(int productID)
-    + void updateProduct(Product product)
+    class MaterialMapper {
+    + product getMaterial()
+    + product getMaterialbyId(int materialId)
+    + void updateMaterial(Material material)
     + void addProductToDB(Product product)
-    + void deleteProductByID(int productID)
-    + List<Product> getAllProducts()
+    + void deleteMaterial(int productID)
+    + List<Material> getAllMaterials()
     }
 
     class AccountMapper {
@@ -217,7 +192,7 @@ package config {
 package Test {
     class OrderMapperTest {
     }
-    class ProductMapperTest {
+    class MaterialMapperTest {
     }
     class AccountMapperTest {
     }
@@ -226,7 +201,7 @@ package Test {
 Main -- controllers
 
 OrderController -- OrderMapper
-ProductController -- ProductMapper
+MaterialController -- MaterialMapper
 AccountController -- AccountMapper
 
 
@@ -237,9 +212,6 @@ Carport *-- Roof
 Carport *-- Product
 Roof *-- RoofType
 
-ProductList <|-- BillOfMaterials
-ProductList <|-- PickList
-ProductList <|-- Invoice
 
 
 
