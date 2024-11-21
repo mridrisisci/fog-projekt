@@ -54,11 +54,17 @@ package controllers {
 
 package entities {
     class Carport {
+    - final int height
+    - final int width
+    - final int length
+    - boolean hasShed
+    - boolean hasShedAddons
+    - RoofType roofType
     + Carport()
     + List<Material> materialsList
     'metoden skal eksekvere alle beregningerne heri
     'samlet
-    + int calcCarport()
+    + int calcCarportMaterial()
     'Pris som kunden skal betale
     + calcCarportPrice()
     + Material calcPosts(Material material)
