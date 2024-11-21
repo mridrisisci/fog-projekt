@@ -53,19 +53,20 @@ package controllers {
 }
 
 package entities {
-    class Carport
-    {
+    class Carport {
     + Carport()
-    + List<Material> materials
+    + List<Material> materialsList
+    'metoden skal eksekvere alle beregningerne heri
+    'samlet
     + int calcCarport()
-    + Material calcPosts()
-    + Product calcBeams()
-    + Product calcRafters()
-    + Material getRafters()
-    + Material getBeams()
-    + Material getPosts()
-    'List<Product> calcBOM(User user, List<Product> products)
-    'List<Product> calculateProductList(int posts, int beams, int rafters)
+    'Pris som kunden skal betale
+    + calcCarportPrice()
+    + Material calcPosts(Material material)
+    + Material calcBeams(Material material)
+    + Material calcRafters(Material material)
+    + int getRafters()
+    + int getBeams()
+    + int getPosts()
     }
     class Account {
     - int accountId
@@ -75,7 +76,6 @@ package entities {
     - int telephone
     - String email
     - String address
-
     + int getAccountID()
     + String getRole()
     + String getAccountName()
@@ -95,35 +95,33 @@ package entities {
     - final TimeStamp orderPlaced
     - boolean orderPaid
     - boolean isAssigned
-    + boolean getIsAssigned()
+    + boolean IsAssigned()
     + boolean getOrderPaid()
     + getters()
     }
 
     class Material {
     - int materialId
-    - String productName
+    - String materialName
     - String description
-    - BigDecimal price
+    'prisen for Fog at købe materialerne
+    - numeric purchasePrice
     - String unit
     - int quantity
     - int length
+    - int height
+    - int width
     - boolean hasShedAddons
     + int getNumberOfShedAddons()
     }
-    'Tagbeklædning
+    'Tagbeklædning dvs. tagmateriale-typen
     class RoofCladdings {
     }
     'skruer og beslag
     class ScrewBrackers {
     }
-    'tagpap (tagplader)
+    'tagplader / tagsten
     class RoofingTiles {
-    }
-
-    class Shed {
-    - int width
-    - int length
     }
     enum RoofType {
     FLAT,
@@ -131,7 +129,7 @@ package entities {
     }
     class Roof
     {
-    - int roofLengt
+    - int roofLength
     - int roofWidth
     - final RoofType type
     }
@@ -213,7 +211,6 @@ AccountController -- AccountMapper
 
 
 Carport *-- Material
-Carport o-- Shed
 Carport *-- Roof
 Roof *-- RoofType
 
