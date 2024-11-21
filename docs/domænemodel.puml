@@ -1,6 +1,9 @@
 @startuml
 Title Domænemodel - FOG Carport
 
+'husk carport
+'husk pile
+
 hide circle
 hide methods
 
@@ -13,6 +16,7 @@ entity Forespørgsel {
     +id
     +status
     +dato
+    +mål
 }
 
 entity Sælger {
@@ -23,6 +27,8 @@ entity Sælger {
 entity Pristilbud {
     +pris
     +status
+    +mål
+    +tegning
 }
 
 entity Betaling {
