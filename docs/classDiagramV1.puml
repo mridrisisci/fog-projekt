@@ -9,12 +9,12 @@ class Main {
 package utilities {
     class SVG {
     - StringBuilder svg
-    + SVG(int x, int y, String viewBox, String width, String height)
-    + addRectangle(int x, int y, double height, double width, String style)
-    + addLine(int x1, int y1, int x2, int y2, String style)
-    + addArrow(int x1, int y1, inx x2, int y2, String style)
-    + addText(int x, int y, int rotation, String text)
-    + addSvg(Svg innerSvg)
+    + SVG()
+    + addRectangle()
+    + addLine()
+    + addArrow()
+    + addText()
+    + addSvg()
     'Override
     + toString()
     }
@@ -36,6 +36,9 @@ package controllers {
     - boolean validateOrderIsPaid()
     - void requestPaymentByID()
     - void confirmPaymentByID()
+    - void sendBOM()
+    - void sendPickList()
+    - void sendInvoice()
     }
 
     class AccountController {
@@ -45,23 +48,19 @@ package controllers {
 
     }
     class MaterialController {
-    - Carport carport
-    - SendGrid email
-    - SVG svg
     + addRoutes()
-    - List<Product> getProductListByOrderLineID()
     }
 }
 
 package entities {
     class Carport
     {
-    + Carport(int length, int width)
+    + Carport()
     + List<Material> materials
-    + int calcCarport(List<Material> materials)
-    + Material calcPosts(List<Material> materials)
-    + Product calcBeams(List<Material> materials)
-    + Product calcRafters(List<Material> materials)
+    + int calcCarport()
+    + Material calcPosts()
+    + Product calcBeams()
+    + Product calcRafters()
     + Material getRafters()
     + Material getBeams()
     + Material getPosts()
@@ -77,40 +76,51 @@ package entities {
     - String email
     - String address
 
-    + int getUserID()
+    + int getAccountID()
     + String getRole()
-    + String getUsername()
+    + String getAccountName()
     + String getPassword()
-    + int getTelephoneNum()
+    + int getTelephone()
     + String getAddress()
     }
 
     class Order {
-    - int orderID
-    - int customerId
-    - carportId
-    '- String name
-    'ordrestatus
-    '- String status
-    - TimeStamp orderPlaced
+    - final int orderID
+    - final int customerId
+    - final int carportId
+    - int salesPersonId
+    'public enum orderStatus { PAID,NOT_PAID,ORDER_COMPLETED}
+    - enum status
+    - int price
+    - final TimeStamp orderPlaced
     - boolean orderPaid
-    '- TimeStamp orderComplete
-    - Carport carport
+    - boolean isAssigned
+    + boolean getIsAssigned()
+    + boolean getOrderPaid()
     + getters()
     }
 
-    class Product {
-    - int productID
+    class Material {
+    - int materialId
     - String productName
     - String description
-    }
-    class ProductVariant {
-    -Integer productVariantID
     - BigDecimal price
     - String unit
     - int quantity
     - int length
+    - boolean hasShedAddons
+    + int getNumberOfShedAddons()
     }
+    'Tagbeklædning
+    class RoofCladdings {
+    }
+    'skruer og beslag
+    class ScrewBrackers {
+    }
+    'tagpap (tagplader)
+    class RoofingTiles {
+    }
+
     class Shed {
     - int width
     - int length
@@ -125,11 +135,6 @@ package entities {
     - int roofWidth
     - final RoofType type
     }
-    class MaterialController {
-    - List<Product> productList
-    + List<Product> getProductList()
-    }
-
 
 }
 
@@ -154,29 +159,29 @@ package persistence {
 
     class OrderMapper {
     + Order getOrder()
-    + List<Order> getOrderByUserID(int userID)
-    + List<Order> getAllOrders()
-    + OrderLine getOrderLineByOrderID()
-    + void deleteOrderByID(int userID, int orderID)
-    + void updateOrderByUserID(OrderLine orderLine)
-    + void addOrderToDB(Order order, OrderLine orderLine)
+    'hent alle forespørgsler
+    + List<Order> getOrders()
+    + void deleteOrderByID()
+    + void updateOrderByUserID()
+    + void addOrderToDB()
     }
 
     class MaterialMapper {
-    + product getMaterial()
-    + product getMaterialbyId(int materialId)
-    + void updateMaterial(Material material)
-    + void addProductToDB(Product product)
-    + void deleteMaterial(int productID)
+    + Material getMaterial()
+    + Material getMaterialbyId()
+    + void updateMaterial()
+    + void updateMaterialPrice()
+    + void addProductToDB()
+    + void deleteMaterial()
     + List<Material> getAllMaterials()
     }
 
     class AccountMapper {
-    + void addAccount()
-    + void deleteAccount()
-    + void updateAccounnt()
-    + User getAccountByOrderID()
-    + List<User> getAllAccounts()
+    + void addAccount())
+    + void deleteAccount(Account account))
+    + void updateAccount(Account account)
+    + Account getAccountById(Account account)
+    + List<Account> getAllAccounts(Account accounnt)
     + void login()
     }
 }
@@ -201,18 +206,19 @@ package Test {
 Main -- controllers
 
 OrderController -- OrderMapper
+OrderController o-- SendGrid
+
 MaterialController -- MaterialMapper
 AccountController -- AccountMapper
 
 
-Product o-- ProductVariant
-
+Carport *-- Material
 Carport o-- Shed
 Carport *-- Roof
-Carport *-- Product
 Roof *-- RoofType
 
-
-
+Material <|-- RoofCladdings
+Material <|-- ScrewBrackers
+Material <|-- RoofingTiles
 
 @enduml
