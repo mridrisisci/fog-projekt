@@ -8,6 +8,7 @@ public class MaterialMapper
 {
     public Material getMaterial()
     {
+        return null;
     }
 
     public Material getMaterialByID()
@@ -32,5 +33,6 @@ public class MaterialMapper
 
     public List<Material> getAllMaterials()
     {
+        return null;
     }
 }
