@@ -1,4 +1,4 @@
-package app.Test;
+package app.test;
 
 public class MaterialMapperTest
 {
