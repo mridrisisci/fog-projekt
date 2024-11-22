@@ -15,137 +15,129 @@
     <header th:replace="~{fragments :: header}"></header>
 
     <!-- Form Bootstrap -->
-    <form method="post" action="/customcarportquery">
-        <div class="form-group">
-            <label for="carportBredde">Carport bredde</label>
-            <input type="text" class="form-control" id="carportBredde" aria-describedby="carport-bredde" placeholder="Vælg bredde for din carport">
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Bestil Quick-Byg tilbud - Carport med fladt tag</h2>
+            <p class="text-muted">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport indenfor vores standardprogram.</p>
+            <p class="text-muted">Udfyld formularen omhyggeligt og klik på "Bestil tilbud". Felter markeret med * SKAL udfyldes!</p>
         </div>
-        <div class="form-group">
-            <label for="carportHøjde">Carport højde</label>
-            <input type="text" class="form-control" id="carportHøjde" placeholder="Vælg højde for din carport">
-        </div>
-        <div class="form-group">
-            <label for="carportTrapeztag">Carport trapeztag</label>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="trapeztagDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Uden tagplader
-                </button>
-                <div class="dropdown-menu" aria-labelledby="trapeztagDropdown">
-                    <!--<a class="dropdown-item" href="#">Uden tagplader</a>  Redundant ??? -->
-                    <a class="dropdown-item" href="#">Plasttrapezplader</a>
+
+        <form method="post" action="/customcarportquery">
+            <!-- Carport bredde -->
+            <div class="row mb-3 align-items-center">
+                <label for="carportBredde" class="col-sm-3 col-form-label">Carport bredde</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="carportBredde" placeholder="Vælg bredde for din carport">
                 </div>
             </div>
-        </div>
-        <div class="form-group form-check">
-            <h4><b>Redskabsrum </b></h4>
-            <p> NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet*</p>
-        </div>
 
-        <div class="form-group">
-            <label for="redskabsrumBredde">Redskabsrum bredde</label>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Uden redskabsrum
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">210 cm</a>
-                    <a class="dropdown-item" href="#">24 0cm</a>
-                    <a class="dropdown-item" href="#">270 cm</a>
-                    <a class="dropdown-item" href="#">300 cm</a>
-                    <a class="dropdown-item" href="#">330 cm</a>
-                    <a class="dropdown-item" href="#">360 cm</a>
-                    <a class="dropdown-item" href="#">390 cm</a>
-                    <a class="dropdown-item" href="#">420 cm</a>
-                    <a class="dropdown-item" href="#">450 cm</a>
-                    <a class="dropdown-item" href="#">480 cm</a>
-                    <a class="dropdown-item" href="#">510 cm</a>
-                    <a class="dropdown-item" href="#">540 cm</a>
-                    <a class="dropdown-item" href="#">570 cm</a>
-                    <a class="dropdown-item" href="#">600 cm</a>
-                    <a class="dropdown-item" href="#">630 cm</a>
-                    <a class="dropdown-item" href="#">660 cm</a>
-                    <a class="dropdown-item" href="#">690 cm</a>
-                    <a class="dropdown-item" href="#">700 cm</a>
+            <!-- Carport højde -->
+            <div class="row mb-3 align-items-center">
+                <label for="carportHøjde" class="col-sm-3 col-form-label">Carport højde</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="carportHøjde" placeholder="Vælg højde for din carport">
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="redskabsrumHøjde">Redskabrum længde</label>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Uden redskabsrum
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">150 cm</a>
-                    <a class="dropdown-item" href="#">180 cm</a>
-                    <a class="dropdown-item" href="#">210 cm</a>
-                    <a class="dropdown-item" href="#">240 cm</a>
-                    <a class="dropdown-item" href="#">270 cm</a>
-                    <a class="dropdown-item" href="#">300 cm</a>
-                    <a class="dropdown-item" href="#">330 cm</a>
-                    <a class="dropdown-item" href="#">360 cm</a>
-                    <a class="dropdown-item" href="#">390 cm</a>
-                    <a class="dropdown-item" href="#">420 cm</a>
-                    <a class="dropdown-item" href="#">450 cm</a>
-                    <a class="dropdown-item" href="#">480 cm</a>
-                    <a class="dropdown-item" href="#">510 cm</a>
-                    <a class="dropdown-item" href="#">540 cm</a>
-                    <a class="dropdown-item" href="#">570 cm</a>
-                    <a class="dropdown-item" href="#">600 cm</a>
-                    <a class="dropdown-item" href="#">630 cm</a>
-                    <a class="dropdown-item" href="#">660 cm</a>
-                    <a class="dropdown-item" href="#">690 cm</a>
+
+            <!-- Dropdown for Trapeztag -->
+            <div class="row mb-3 align-items-center">
+                <label for="carportTrapeztag" class="col-sm-3 col-form-label">Carport trapeztag</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="trapeztagDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden tagplader
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Plasttrapezplader</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="form-group form-check">
-            <h4><b>Evt. bemærkning / særlige ønsker </b></h4>
-        </div>
-        <div class="form-group form-check">
-            <h4><b>Kontaktoplysninger </b></h4>
-            <div method="post" actioN="/">
-                <div class="form-group">
-                    <label for="carportBredde">Carport bredde</label>
-                    <input type="text" class="form-control" id="carportBredde" aria-describedby="carport-bredde" placeholder="Vælg bredde for din carport">
-                </div>
-                <div class="form-group">
-                    <label for="kundenavn">Navn</label>
-                    <input type="text" class="form-control" id="kundenavn" aria-describedby="kundenavn" placeholder="For-, og efternavn">
-                </div>
-                <div class="form-group">
-                    <label for="adresse">Carport bredde</label>
-                    <input type="text" class="form-control" id="adresse" aria-describedby="adresse" placeholder="Adresse (vej + nummer)">
-                </div>
-                <div class="form-group">
-                    <label for="postnummer">Postnummer</label>
-                    <input type="text" class="form-control" id="postnummer" aria-describedby="postnummer" placeholder="Postnummer">
-                </div>
-                <div class="form-group">
-                    <label for="by">By</label>
-                    <input type="text" class="form-control" id="by" aria-describedby="by" placeholder="By">
-                </div>
-                <div class="form-group">
-                    <label for="telefon">Telefon</label>
-                    <input type="text" class="form-control" id="telefon" aria-describedby="telefon" placeholder="Indtast dit telefonnummer">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Indtast din email">
+
+            <!-- Redskabsrum bredde -->
+            <div class="row mb-3 align-items-center">
+                <label for="redskabsrumBredde" class="col-sm-3 col-form-label">Redskabsrum bredde</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="dropdownMenuButtonBredde" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden redskabsrum
+                        </button>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">210 cm</a>
+                            <a class="dropdown-item" href="#">240 cm</a>
+                            <a class="dropdown-item" href="#">270 cm</a>
+                            <a class="dropdown-item" href="#">300 cm</a>
+                            <a class="dropdown-item" href="#">330 cm</a>
+                            <a class="dropdown-item" href="#">360 cm</a>
+                            <a class="dropdown-item" href="#">390 cm</a>
+                            <a class="dropdown-item" href="#">420 cm</a>
+                            <a class="dropdown-item" href="#">450 cm</a>
+                            <a class="dropdown-item" href="#">480 cm</a>
+                            <a class="dropdown-item" href="#">510 cm</a>
+                            <a class="dropdown-item" href="#">540 cm</a>
+                            <a class="dropdown-item" href="#">570 cm</a>
+                            <a class="dropdown-item" href="#">600 cm</a>
+                            <a class="dropdown-item" href="#">630 cm</a>
+                            <a class="dropdown-item" href="#">660 cm</a>
+                            <a class="dropdown-item" href="#">690 cm</a>
+                            <a class="dropdown-item" href="#">700 cm</a>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Redskabsrum længde -->
+            <div class="row mb-3 align-items-center">
+                <label for="redskabsrumLængde" class="col-sm-3 col-form-label">Redskabsrum længde</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="dropdownMenuButtonLængde" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden redskabsrum
+                        </button>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">180 cm</a>
+                            <a class="dropdown-item" href="#">210 cm</a>
+                            <a class="dropdown-item" href="#">240 cm</a>
+                            <a class="dropdown-item" href="#">270 cm</a>
+                            <a class="dropdown-item" href="#">300 cm</a>
+                            <a class="dropdown-item" href="#">330 cm</a>
+                            <a class="dropdown-item" href="#">360 cm</a>
+                            <a class="dropdown-item" href="#">390 cm</a>
+                            <a class="dropdown-item" href="#">420 cm</a>
+                            <a class="dropdown-item" href="#">450 cm</a>
+                            <a class="dropdown-item" href="#">480 cm</a>
+                            <a class="dropdown-item" href="#">510 cm</a>
+                            <a class="dropdown-item" href="#">540 cm</a>
+                            <a class="dropdown-item" href="#">570 cm</a>
+                            <a class="dropdown-item" href="#">600 cm</a>
+                            <a class="dropdown-item" href="#">630 cm</a>
+                            <a class="dropdown-item" href="#">660 cm</a>
+                            <a class="dropdown-item" href="#">690 cm</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Samtykke -->
+            <div class="form-check mb-4">
+                <input class="form-check-input bg-warning border-dark" type="checkbox" id="exampleCheck1">
+                <label class="form-check-label fw-bold" for="exampleCheck1">
+                    Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport
+                </label>
+            </div>
+
+            <!-- Submit knap -->
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-success w-50 p-3">Bestil tilbud</button>
+            </div>
+        </form>
+    </div>
 
 
-        <div class="form-group form-check">
-            <h5><b>Kontakt samtykke</b></h5>
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1"> Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport*</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Bestil tilbud</button>
-    </form>
 
 
-        <div class="content bg-light rounded-4 p-5">
+    <div class="content bg-light rounded-4 p-5">
             <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
                  role="alert">Fejlbeskeder vises her
             </div>
