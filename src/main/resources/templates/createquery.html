@@ -17,19 +17,131 @@
     <!-- Form Bootstrap -->
     <form method="post" action="/customcarportquery">
         <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <label for="carportBredde">Carport bredde</label>
+            <input type="text" class="form-control" id="carportBredde" aria-describedby="carport-bredde" placeholder="Vælg bredde for din carport">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <label for="carportHøjde">Carport højde</label>
+            <input type="text" class="form-control" id="carportHøjde" placeholder="Vælg højde for din carport">
+        </div>
+        <div class="form-group">
+            <label for="carportTrapeztag">Carport trapeztag</label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="trapeztagDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Uden tagplader
+                </button>
+                <div class="dropdown-menu" aria-labelledby="trapeztagDropdown">
+                    <!--<a class="dropdown-item" href="#">Uden tagplader</a>  Redundant ??? -->
+                    <a class="dropdown-item" href="#">Plasttrapezplader</a>
+                </div>
+            </div>
         </div>
         <div class="form-group form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            <h4><b>Redskabsrum </b></h4>
+            <p> NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet*</p>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div class="form-group">
+            <label for="redskabsrumBredde">Redskabsrum bredde</label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Uden redskabsrum
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">210 cm</a>
+                    <a class="dropdown-item" href="#">24 0cm</a>
+                    <a class="dropdown-item" href="#">270 cm</a>
+                    <a class="dropdown-item" href="#">300 cm</a>
+                    <a class="dropdown-item" href="#">330 cm</a>
+                    <a class="dropdown-item" href="#">360 cm</a>
+                    <a class="dropdown-item" href="#">390 cm</a>
+                    <a class="dropdown-item" href="#">420 cm</a>
+                    <a class="dropdown-item" href="#">450 cm</a>
+                    <a class="dropdown-item" href="#">480 cm</a>
+                    <a class="dropdown-item" href="#">510 cm</a>
+                    <a class="dropdown-item" href="#">540 cm</a>
+                    <a class="dropdown-item" href="#">570 cm</a>
+                    <a class="dropdown-item" href="#">600 cm</a>
+                    <a class="dropdown-item" href="#">630 cm</a>
+                    <a class="dropdown-item" href="#">660 cm</a>
+                    <a class="dropdown-item" href="#">690 cm</a>
+                    <a class="dropdown-item" href="#">700 cm</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="redskabsrumHøjde">Redskabrum længde</label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Uden redskabsrum
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">150 cm</a>
+                    <a class="dropdown-item" href="#">180 cm</a>
+                    <a class="dropdown-item" href="#">210 cm</a>
+                    <a class="dropdown-item" href="#">240 cm</a>
+                    <a class="dropdown-item" href="#">270 cm</a>
+                    <a class="dropdown-item" href="#">300 cm</a>
+                    <a class="dropdown-item" href="#">330 cm</a>
+                    <a class="dropdown-item" href="#">360 cm</a>
+                    <a class="dropdown-item" href="#">390 cm</a>
+                    <a class="dropdown-item" href="#">420 cm</a>
+                    <a class="dropdown-item" href="#">450 cm</a>
+                    <a class="dropdown-item" href="#">480 cm</a>
+                    <a class="dropdown-item" href="#">510 cm</a>
+                    <a class="dropdown-item" href="#">540 cm</a>
+                    <a class="dropdown-item" href="#">570 cm</a>
+                    <a class="dropdown-item" href="#">600 cm</a>
+                    <a class="dropdown-item" href="#">630 cm</a>
+                    <a class="dropdown-item" href="#">660 cm</a>
+                    <a class="dropdown-item" href="#">690 cm</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group form-check">
+            <h4><b>Evt. bemærkning / særlige ønsker </b></h4>
+        </div>
+        <div class="form-group form-check">
+            <h4><b>Kontaktoplysninger </b></h4>
+            <div method="post" actioN="/">
+                <div class="form-group">
+                    <label for="carportBredde">Carport bredde</label>
+                    <input type="text" class="form-control" id="carportBredde" aria-describedby="carport-bredde" placeholder="Vælg bredde for din carport">
+                </div>
+                <div class="form-group">
+                    <label for="kundenavn">Navn</label>
+                    <input type="text" class="form-control" id="kundenavn" aria-describedby="kundenavn" placeholder="For-, og efternavn">
+                </div>
+                <div class="form-group">
+                    <label for="adresse">Carport bredde</label>
+                    <input type="text" class="form-control" id="adresse" aria-describedby="adresse" placeholder="Adresse (vej + nummer)">
+                </div>
+                <div class="form-group">
+                    <label for="postnummer">Postnummer</label>
+                    <input type="text" class="form-control" id="postnummer" aria-describedby="postnummer" placeholder="Postnummer">
+                </div>
+                <div class="form-group">
+                    <label for="by">By</label>
+                    <input type="text" class="form-control" id="by" aria-describedby="by" placeholder="By">
+                </div>
+                <div class="form-group">
+                    <label for="telefon">Telefon</label>
+                    <input type="text" class="form-control" id="telefon" aria-describedby="telefon" placeholder="Indtast dit telefonnummer">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="email" placeholder="Indtast din email">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group form-check">
+            <h5><b>Kontakt samtykke</b></h5>
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1"> Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport*</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Bestil tilbud</button>
     </form>
 
 

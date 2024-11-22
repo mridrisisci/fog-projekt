@@ -9,6 +9,7 @@ public class OrderController
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
+        app.get("/", ctx -> ctx.render("index.html") );
         app.get("/createquery", ctx -> ctx.render("createquery.html") );
         app.post("/customcarportquery", ctx -> createQuery(ctx, dBConnection) );
     }
