@@ -1,27 +1,34 @@
 package app.persistence;
+import app.entities.Carport;
 import app.entities.Order;
 
 import java.util.List;
 
 public class OrderMapper
 {
-    public Order getOrder()
-    {
-        return null;
-    }
-    public List<Order> getOrders()
-    {
-        return null;
-    }
-    public void deleteOrderByID()
+
+    public static void createQueryInOrders(List<Carport> carport)
     {
 
     }
-    public void updateOrderByUserID()
+
+    public static Order getOrder()
+    {
+        return null;
+    }
+    public static List<Order> getOrders()
+    {
+        return null;
+    }
+    public static void deleteOrderByID()
     {
 
     }
-    public void addOrderToDB()
+    public static void updateOrderByUserID()
+    {
+
+    }
+    public static void addOrderToDB()
     {
 
     }
