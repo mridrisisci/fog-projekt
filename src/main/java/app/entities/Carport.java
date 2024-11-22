@@ -8,12 +8,16 @@ public class Carport
     private final int WIDTH;
     private final int LENGTH;
     private boolean hasShed;
-    private RoofType roofType;
-    public List<Material> materialsList;
+    private RoofType Rooftype;
+    public List<Material>materialList;
 
-    public Carport()
-    {
-
+    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT) {
+        this.materialList = materialList;
+        Rooftype = rooftype;
+        this.hasShed = hasShed;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
     }
 
     public int calcCarportMaterial()
@@ -25,35 +29,48 @@ public class Carport
     {
 
     }
-
     public Material calcPosts(Material material)
     {
-        return null;
-    }
+        return material;
 
+    }
     public Material calcBeams(Material material)
     {
-        return null;
-    }
+        return material;
 
+    }
     public Material calcRafters(Material material)
     {
-        return null;
+        return material;
     }
 
-    public int getRafters()
+    public int getHEIGHT()
     {
-        return 0;
+        return HEIGHT;
     }
 
-    public int getBeams()
+    public int getWIDTH()
     {
-        return 0;
+        return WIDTH;
     }
 
-    public int getPosts()
+    public int getLENGTH()
     {
-        return 0;
+        return LENGTH;
     }
 
+    public boolean isHasShed()
+    {
+        return hasShed;
+    }
+
+    public RoofType getRooftype()
+    {
+        return Rooftype;
+    }
+
+    public List<Material> getMaterialList()
+    {
+        return materialList;
+    }
 }
