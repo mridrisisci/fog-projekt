@@ -188,12 +188,11 @@ package Test {
 Main -- controllers
 
 OrderController -- OrderMapper
-OrderController o-- SendGrid
 
 MaterialController -- MaterialMapper
 AccountController -- AccountMapper
 
-
+Order o-- Carport
 Carport *-- Material
 Carport *-- Roof
 Roof *-- RoofType

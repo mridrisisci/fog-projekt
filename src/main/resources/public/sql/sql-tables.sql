@@ -2,14 +2,13 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.cities CASCADE;
-DROP TABLE IF EXISTS public.order_lines CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.postal_code CASCADE;
-DROP TABLE IF EXISTS public.product CASCADE;
-DROP TABLE IF EXISTS public.product_variant CASCADE;
+DROP TABLE IF EXISTS public.materials CASCADE;
+DROP TABLE IF EXISTS public.material_variants CASCADE;
+
 
 CREATE TABLE IF NOT EXISTS public.addresses
 (
@@ -27,34 +26,22 @@ CREATE TABLE IF NOT EXISTS public.cities
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.order_lines
-(
-    order_line_id serial NOT NULL,
-    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    carport_width integer NOT NULL,
-    carport_length integer NOT NULL,
-    roof_type character varying(64) COLLATE pg_catalog."default" NOT NULL,
-    roof_inclination integer,
-    shed_length integer,
-    shed_width integer,
-    price integer NOT NULL,
-    quantity integer NOT NULL,
-    order_id integer NOT NULL,
-    svg text COLLATE pg_catalog."default" NOT NULL,
-    description character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    address_id integer NOT NULL,
-    user_id integer NOT NULL,
-    CONSTRAINT order_lines_pkey PRIMARY KEY (order_line_id)
-);
-
 CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
-    name character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    customer_id integer NOT NULL,
+    carport_id integer NOT NULL,
+    salesperson_id integer NOT NULL,
     status character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    price integer,
     order_placed timestamp with time zone,
-    order_paid timestamp with time zone,
-    order_complete timestamp with time zone,
+    order_paid boolean NOT NULL,
+    height integer NOT NULL,
+    width integer NOT NULL,
+    "hasShed" boolean,
+    roof_type character varying(6) NOT NULL,
+    account_id integer NOT NULL,
+    m_id integer NOT NULL,
     CONSTRAINT orders_pkey PRIMARY KEY (order_id)
 );
 
@@ -62,43 +49,47 @@ CREATE TABLE IF NOT EXISTS public.postal_code
 (
     postal_code_id serial NOT NULL,
     postal_code integer NOT NULL,
-    PRIMARY KEY (postal_code_id)
+    CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.product
+CREATE TABLE IF NOT EXISTS public.materials
 (
-    product_id serial NOT NULL,
+    material_id serial NOT NULL,
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     unit character varying(10) COLLATE pg_catalog."default" NOT NULL,
-    order_line_id integer NOT NULL,
-    CONSTRAINT product_pkey PRIMARY KEY (product_id)
+    price integer NOT NULL,
+    order_id integer NOT NULL,
+    quantity integer NOT NULL,
+    description character varying(100) NOT NULL,
+    CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.product_variant
+CREATE TABLE IF NOT EXISTS public.material_variants
 (
-    product_variant_id serial NOT NULL,
-    length integer NOT NULL,
-    product_id integer NOT NULL,
-    CONSTRAINT product_variant_pkey PRIMARY KEY (product_variant_id)
+    material_variant_id serial NOT NULL,
+    length integer,
+    height integer,
+    width integer,
+    material_id integer NOT NULL,
+    CONSTRAINT material_variant_pk PRIMARY KEY (material_variant_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.users
+CREATE TABLE IF NOT EXISTS public.accounts
 (
-    user_id serial NOT NULL,
+    account_id serial NOT NULL,
     role character varying(11) COLLATE pg_catalog."default" NOT NULL,
     username character varying(64) COLLATE pg_catalog."default" NOT NULL,
     password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
-    CONSTRAINT users_pkey PRIMARY KEY (user_id)
+    addresses_id integer NOT NULL,
+    CONSTRAINT account_pk PRIMARY KEY (account_id)
 );
 
-ALTER TABLE IF EXISTS public.addresses
-    ADD CONSTRAINT postal_code_fk FOREIGN KEY (postal_code_id)
-        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
+CREATE TABLE IF NOT EXISTS public.orders_material_variants
+(
+    orders_order_id serial NOT NULL,
+    material_variants_material_variant_id serial NOT NULL
+);
 
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT city_fk FOREIGN KEY (city_id)
@@ -108,41 +99,41 @@ ALTER TABLE IF EXISTS public.addresses
         NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.order_lines
-    ADD CONSTRAINT order_id_fk FOREIGN KEY (order_id)
+ALTER TABLE IF EXISTS public.addresses
+    ADD CONSTRAINT postal_code_fk FOREIGN KEY (postal_code_id)
+        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.orders
+    ADD CONSTRAINT account_id_fk FOREIGN KEY (account_id)
+        REFERENCES public.accounts (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.material_variants
+    ADD CONSTRAINT fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.orders_material_variants
+    ADD FOREIGN KEY (orders_order_id)
         REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
 
 
-ALTER TABLE IF EXISTS public.order_lines
-    ADD CONSTRAINT address_id_fk FOREIGN KEY (address_id)
-        REFERENCES public.addresses (addresses_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.order_lines
-    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id)
-        REFERENCES public.users (user_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.product
-    ADD FOREIGN KEY (order_line_id)
-        REFERENCES public.order_lines (order_line_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.product_variant
-    ADD CONSTRAINT fk FOREIGN KEY (product_id)
-        REFERENCES public.product (product_id) MATCH SIMPLE
+ALTER TABLE IF EXISTS public.orders_material_variants
+    ADD FOREIGN KEY (material_variants_material_variant_id)
+        REFERENCES public.material_variants (material_variant_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
