@@ -6,32 +6,33 @@ import java.util.List;
 
 public class MaterialMapper
 {
-    public Material getMaterial()
+    public static Material getMaterial()
     {
         return null;
     }
 
-    public Material getMaterialByID()
+    public static Material getMaterialByID()
+    {
+        return null;
+    }
+
+    public static void updateMaterial()
     {
     }
 
-    public void updateMaterial()
+    public static void updateMaterialByPrice()
     {
     }
 
-    public void updateMaterialByPrice()
+    public static void addMaterialToDB()
     {
     }
 
-    public void addMaterialToDB()
+    public static void deleteMaterial()
     {
     }
 
-    public void deleteMaterial()
-    {
-    }
-
-    public List<Material> getAllMaterials()
+    public static List<Material> getAllMaterials()
     {
         return null;
     }
