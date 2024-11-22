@@ -9,9 +9,10 @@ public class Carport
     private final int LENGTH;
     private boolean hasShed;
     private RoofType Rooftype;
-    public List<Material>materialList;
+    public List<Material> materialList;
 
-    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT) {
+    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT)
+    {
         this.materialList = materialList;
         Rooftype = rooftype;
         this.hasShed = hasShed;
@@ -29,16 +30,31 @@ public class Carport
     {
 
     }
+
+    /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
+     * så skal der være en metode der beregner salgspris
+     * en der beregner dækningspris*/
+
     public Material calcPosts(Material material)
     {
+        if (WIDTH <= 300 && LENGTH <= 300)
+        {
+            int posts = 3;
+        } else if (WIDTH <= 300 && LENGTH > 300)
+        {
+         int posts = 5;
+        }
+
         return material;
 
     }
+
     public Material calcBeams(Material material)
     {
         return material;
 
     }
+
     public Material calcRafters(Material material)
     {
         return material;
