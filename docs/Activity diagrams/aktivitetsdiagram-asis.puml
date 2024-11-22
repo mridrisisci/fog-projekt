@@ -31,6 +31,9 @@ if (Accepter tilbud) then (nej)
   stop
 else (ja)
 endif
+:Betal;
+|Beregningssystem B|
+:Registerer betaling;
 |Sælger|
 :Tilbud accepteret;
 |Beregningssystem B|
@@ -41,15 +44,14 @@ endif
 :Send ordrebekræftelse til kunde;
 |Slutkunde|
 :Modtag ordrebekræftelse; <<task>>
-:Betal;
-|Beregningssystem B|
-:Registerer betaling;
 |Sælger|
 :Send stykliste;
 |Mailsystem|
 :Send stykliste til lager;
 |Lager|
 :Modtag plukliste; <<task>>
+|Sælger|
+:Send faktura/plukliste;
 |Slutkunde|
 :Modtag faktura/plukliste; <<task>>
 |Lager|
