@@ -14,42 +14,23 @@
 <div class="container">
     <header th:replace="~{fragments :: header}"></header>
 
-    <div class="content bg-light rounded-4 p-5">
-        <h2 class="display-1">Custom Carport - Fog</h2>
-        <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
-             role="alert">Fejlbeskeder vises her
+    <!-- Form Bootstrap -->
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
-        <p class="h2 mb-5">Byens sejeste carports. Få din egen custom carport her:</p>
-        <form action="/" method="GET">
-            <div class="container my-5">
-                <div class="row g-4">
-                    <!-- Første boks -->
-                    <div class="col-md-6">
-                        <a href="/side1" th:href="@{/}" class="text-decoration-none">
-                            <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                                <img src="../public/images/tag-med-rejsning.jpg"
-                                     th:src="@{/images/tag-med-rejsning.jpg}" alt="carport med rejsning"
-                                     class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                                <h2 class="h4 text-dark">Carport med høj rejsning</h2>
-                                <p class="text-muted">Her er lidt beskrivelse for den første boks.</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <!-- Anden boks -->
-                    <div class="col-md-6">
-                        <a href="/side2" class="text-decoration-none"></a>
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/fladt-tag.jpg" th:src="@{/images/fladt-tag.jpg}" alt="fladt-tag"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med flat tag</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den anden boks.</p>
-
-
-                        </div>
-                    </div>
-        </form>
-    </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
 
         <div class="content bg-light rounded-4 p-5">

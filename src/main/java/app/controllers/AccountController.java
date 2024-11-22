@@ -1,17 +1,20 @@
 package app.controllers;
+
 import app.entities.Account;
+import app.persistence.ConnectionPool;
+import io.javalin.Javalin;
 
 public class AccountController
 {
-    public void addRoutes()
+    public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
     }
 
-    private Account login(){
+    private static Account login(){
         return null;
     }
 
-    private void logout()
+    private static void logout()
     {
 
     }
