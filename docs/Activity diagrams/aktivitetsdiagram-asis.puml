@@ -50,6 +50,8 @@ endif
 :Send stykliste til lager;
 |Lager|
 :Modtag plukliste; <<task>>
+|Sælger|
+:Send faktura/plukliste;
 |Slutkunde|
 :Modtag faktura/plukliste; <<task>>
 |Lager|
