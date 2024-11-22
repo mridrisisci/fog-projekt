@@ -53,6 +53,15 @@
                     </div>
                 </div>
             </div>
+            <!-- Redskabsrum forbehold -->
+            <div class="row mb-3 align-items-center">
+                <label for="redskabsrumforbehold" class="col-sm-3 col-form-label">Redskabsrum</label>
+                <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet*</p>
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+
 
             <!-- Redskabsrum bredde -->
             <div class="row mb-3 align-items-center">
@@ -119,11 +128,67 @@
                 </div>
             </div>
 
+            <!-- Evt. bemærkninger -->
+            <div class="row mb-3 align-items-center">
+                <label for="eventuelt" class="col-sm-3 col-form-label">Evt. bemærkning / særlige ønsker</label>
+                <div class="col-sm-9">
+                    <textarea class="form-check-input" id="eventuel" name="eventuel" type="text" placeholder="Indtast din besked"></textarea>
+                </div>
+            </div>
+
+            <!-- Navn -->
+            <div class="row mb-3 align-items-center">
+                <label for="kundenavn" class="col-sm-3 col-form-label">Navn</label>
+                <input class="form-control" id="kundenavn" name="kundenavn" type="text" placeholder="For-, og efternavn">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Adresse -->
+            <div class="row mb-3 align-items-center">
+                <label for="adresse" class="col-sm-3 col-form-label">Adresse</label>
+                <input class="form-control" id="adresse" name="adresse" type="text" placeholder="Adresse">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Postnummer -->
+            <div class="row mb-3 align-items-center">
+                <label for="postnummer" class="col-sm-3 col-form-label">Postnummer</label>
+                <input class="form-control" id="postnummer" name="postnummer" type="text" placeholder="For-, og efternavn">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- By -->
+            <div class="row mb-3 align-items-center">
+                <label for="by" class="col-sm-3 col-form-label">By</label>
+                <input class="form-control" id="by" name="by" type="text" placeholder="by">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Telefon -->
+            <div class="row mb-3 align-items-center">
+                <label for="telefon" class="col-sm-3 col-form-label">Telefonnummer</label>
+                <input class="form-control" id="telefon" name="telefon" type="text" placeholder="Telefonnummer">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="row mb-3 align-items-center">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <input class="form-control" id="email" name="email" type="email" placeholder="Email">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
             <!-- Samtykke -->
             <div class="form-check mb-4">
-                <input class="form-check-input bg-warning border-dark" type="checkbox" id="exampleCheck1">
-                <label class="form-check-label fw-bold" for="exampleCheck1">
-                    Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport
+                <input class="form-check-input bg-warning border-dark" type="checkbox" id="samtykke">
+                <label class="form-check-label fw-bold" for="samtykke">
+                    <p>Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport</p>
                 </label>
             </div>
 
