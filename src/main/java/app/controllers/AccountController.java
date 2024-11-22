@@ -1,4 +1,4 @@
-package app.persistence;
+package app.controllers;
 
 public class AccountController
 {
