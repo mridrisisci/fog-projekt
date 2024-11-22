@@ -5,7 +5,6 @@ public class OrderController
 
     public void addRoutes()
     {
-
     }
 
     private boolean validateOrderIsPaid()
@@ -13,5 +12,24 @@ public class OrderController
         return false;
     }
 
+    private void requestPaymentByID()
+    {
+    }
+
+    private void confirmPaymentByID()
+    {
+    }
+
+    private void sendBOM()
+    {
+    }
+
+    private void sendPickList()
+    {
+    }
+
+    private void sendInvoice()
+    {
+    }
 
 }
