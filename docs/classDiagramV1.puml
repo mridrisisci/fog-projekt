@@ -58,7 +58,7 @@ package entities {
     - final int width
     - final int length
     - boolean hasShed
-    - boolean hasShedAddons
+    '- boolean hasShedAddons
     - RoofType roofType
     + Carport()
     + List<Material> materialsList
@@ -75,7 +75,7 @@ package entities {
     + int getPosts()
     }
     class Account {
-    - int accountId
+    - int accountID
     - String role
     - String username
     - String password
@@ -92,9 +92,9 @@ package entities {
 
     class Order {
     - final int orderID
-    - final int customerId
-    - final int carportId
-    - int salesPersonId
+    - final int customerID
+    - final int carportID
+    - int salesPersonID
     'public enum orderStatus { PAID,NOT_PAID,ORDER_COMPLETED}
     - enum status
     - int price
@@ -107,7 +107,7 @@ package entities {
     }
 
     class Material {
-    - int materialId
+    - int materialID
     - String materialName
     - String description
     'prisen for Fog at købe materialerne
@@ -143,24 +143,10 @@ package entities {
 }
 
 package exceptions {
-    class DatabaseException
-    {
-    + DatabaseException()
-    + DatabaseException()
-    }
+
 }
 
 package persistence {
-    class ConnectionPool {
-    +ConnectionPool instance
-    +HikariDataSource ds
-    'Ved ikke om de skal være static eller ej^
-    +getInstance()
-    +getConnection()
-    +close()
-    -createHikariConnectionPool
-    }
-
     class OrderMapper {
     + Order getOrder()
     'hent alle forespørgsler
@@ -172,7 +158,7 @@ package persistence {
 
     class MaterialMapper {
     + Material getMaterial()
-    + Material getMaterialbyId()
+    + Material getMaterialbyID()
     + void updateMaterial()
     + void updateMaterialPrice()
     + void addProductToDB()
@@ -184,17 +170,9 @@ package persistence {
     + void addAccount())
     + void deleteAccount(Account account))
     + void updateAccount(Account account)
-    + Account getAccountById(Account account)
-    + List<Account> getAllAccounts(Account accounnt)
+    + Account getAccountByID(Account account)
+    + List<Account> getAllAccounts(Account account)
     + void login()
-    }
-}
-
-package config {
-    class ThymeLeafConfig {
-    + templateEngine()
-    }
-    class Sessionconfig {
     }
 }
 
