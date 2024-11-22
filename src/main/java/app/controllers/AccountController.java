@@ -1,4 +1,5 @@
 package app.controllers;
+import app.entities.Account;
 
 public class AccountController
 {
@@ -6,7 +7,7 @@ public class AccountController
     {
     }
 
-    private User login(){
+    private Account login(){
         return null;
     }
 
