@@ -1,0 +1,77 @@
+@startuml
+Title Domænemodel - FOG Carport
+
+hide circle
+hide methods
+
+entity Kunde {
+    +navn
+    +kontaktinfo
+}
+
+entity Ordre {
+    +id
+    +status
+    +dato
+    +mål
+    +pris
+}
+
+entity Sælger {
+    +navn
+    +sælgerID
+}
+
+entity Pristilbud {
+    +pris
+    +status
+    +mål
+}
+
+entity Betaling {
+    +beløb
+    +betalingsDato
+}
+
+entity Stykliste {
+    +items
+}
+
+entity Lager {
+    +lokation
+}
+
+entity Faktura {
+    +fakturaNummer
+    +beløb
+}
+
+entity Carport {
+    +længde
+    +bredde
+    +højde
+    +tegning
+}
+
+entity Skur {
+    +længde
+    +bredde
+    +tegning
+}
+
+Kunde "1" --> "1" Ordre : "opretter"
+Carport "1" --> "0..1" Skur : > har
+Ordre "1" --> "1..*" Sælger : "sendes til"
+Ordre "1" --> "1" Sælger : "opretter pris"
+'Pristilbud "1" --> "1" Kunde : "sendes til"
+Kunde "1" --> "0..1" Betaling : "laver"
+Betaling "1" --> "1" Sælger : "modtages af"
+Sælger "1" --> "1" Stykliste : "laver"
+Sælger "1" --> "1" Faktura : "laver"
+Stykliste "1" --> "1" Lager : "modtages af"
+'Stykliste "1" --> "1" Faktura
+'Stykliste "1" --> "1" Ordre
+Faktura "1" --> "1" Kunde : "sendes til"
+Stykliste "1" --> "1" Carport
+
+@enduml
