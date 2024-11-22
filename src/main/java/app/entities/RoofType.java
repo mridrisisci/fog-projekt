@@ -2,6 +2,6 @@ package app.entities;
 
 public enum RoofType
 {
-    FLAT;
+    FLAT,
     PITCHED;
 }
