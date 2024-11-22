@@ -2,13 +2,32 @@ package app.utilities;
 
 public class SVG
 {
-    private StringBuilder svg;
-    public SVG(){}
-    public addRectangle(){}
-    public addLine(){}
-    public addArrow(){}
-    public addText(){}
-    public addSvg(){}
+    private static StringBuilder svg;
+
+    public static void addRectangle()
+    {
+
+    }
+    public static void addLine()
+    {
+
+    }
+    public static void addArrow()
+    {
+
+    }
+    public static void addText()
+    {
+
+    }
+    public static void addSvg()
+    {
+
+    }
+
     @Override
-    public toString(){}
+    public String toString()
+    {
+        return "";
+    }
 }
