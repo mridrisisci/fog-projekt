@@ -3,6 +3,7 @@ package app.controllers;
 import app.entities.Account;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
+import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
@@ -25,6 +26,8 @@ public class OrderController
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/customcarportquery", ctx -> createQuery(ctx, dBConnection));
     }
+
+
 
     private static void createQuery(Context ctx, ConnectionPool dbConnection)
     {
@@ -50,37 +53,38 @@ public class OrderController
         String role = "customer";
 
         // TODO: check at form-parameetrene ikke er null
-        List<String> params = new ArrayList<>(Arrays.asList(
-            carportWidth, carportHeight, roofType, shedWidth, shedLength, specialWishes,
-            name, address, postalCode, city, telephone, email, consent);
+
 
         validatePhoneNumber(ctx, "choosePhoneNumber");
         validateEmail(ctx, "chooseEmail");
         validatePostalCode(ctx, "choosePostalCode");
 
         // TODO: Oprette kundens ordre i 'orders'tabellen
-
         int customerId = 0;
         int carportId = 0;
         int salesPersonId = 0;
 
-        boolean hasShed = false;
         // TODO: check at kunden har valgt mål til redskabsrummet
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-
-        Account account = ctx.sessionAttribute("currentAccount");
-        int accountID = AccountController.createAccount(role, telephone, account);
-
-        OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status, orderPlaced,
-                                      carportHeight, carportWidth ,hasShed, roofType, accountID);
-
-        ));
+        boolean hasShed = false;
 
 
 
 
+        try
+        {
+            Account account = ctx.sessionAttribute("currentAccount");
+            int accountID = AccountMapper.createAccount(role, telephone, account, dbConnection);
+
+
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
+
+            OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status, orderPlaced,
+                carportHeight, carportWidth ,hasShed, roofType, accountID);
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+        }
     }
 
     private static boolean validatePostalCode(Context ctx, String postalCode)
@@ -110,10 +114,6 @@ public class OrderController
 
     }
 
-    private static void validatePostalCode()
-    {
-
-    }
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {

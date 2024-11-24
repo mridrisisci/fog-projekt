@@ -2,6 +2,7 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.accounts CASCADE;
 DROP TABLE IF EXISTS public.cities CASCADE;
@@ -11,6 +12,8 @@ DROP TABLE IF EXISTS public.materials CASCADE;
 DROP TABLE IF EXISTS public.material_variants CASCADE;
 DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
+
+
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
@@ -18,7 +21,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
     username character varying(64) COLLATE pg_catalog."default" NOT NULL,
     password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
-    addresses_id integer NOT NULL,
+    email character(50)[] NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
 );
 
@@ -28,6 +31,7 @@ CREATE TABLE IF NOT EXISTS public.addresses
     address character varying(64) COLLATE pg_catalog."default" NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
+    account_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
 );
 
@@ -75,7 +79,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     "hasShed" boolean,
     roof_type character varying(6) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
-    m_id integer NOT NULL,
+    description character varying(100) NOT NULL,
     CONSTRAINT orders_pkey PRIMARY KEY (order_id)
 );
 
@@ -92,14 +96,6 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
-ALTER TABLE IF EXISTS public.accounts
-    ADD CONSTRAINT addresses_fk FOREIGN KEY (addresses_id)
-        REFERENCES public.addresses (addresses_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT city_fk FOREIGN KEY (city_id)
         REFERENCES public.cities (city_id) MATCH SIMPLE
@@ -111,6 +107,14 @@ ALTER TABLE IF EXISTS public.addresses
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT postal_code_fk FOREIGN KEY (postal_code_id)
         REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.addresses
+    ADD CONSTRAINT account_fk FOREIGN KEY (account_id)
+        REFERENCES public.accounts (account_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
