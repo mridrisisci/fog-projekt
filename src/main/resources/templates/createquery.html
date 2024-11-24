@@ -22,7 +22,8 @@
         <p class="h5 text-center mb-4">Byens bedste carports. Bestil din nedenfor.</p>
 
         <!-- Fejlbeskeder -->
-        <div th:if="${#ctx.message != null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient" role="alert">
+        <div th:if="${#ctx.message != null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
+             role="alert">
             Fejlbeskeder vises her
         </div>
 
@@ -61,111 +62,125 @@
                         <label for="chooseRoof">Vælg tagtype</label>
                     </div>
                 </div>
-            </div>
 
-            <!-- Redskabsrum -->
-            <div class="mt-4">
-                <p><b>Redskabsrum</b></p>
-                <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet.</p>
-            </div>
-
-            <!-- Redskabsrum bredde -->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <select class="form-select" name="chooseShedWidth" id="chooseShedWidth" required>
-                        <option selected>Uden redskabsrum</option>
-                        <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
-                    </select>
-                    <label for="chooseShedWidth">Vælg ...</label>
+                <!-- Redskabsrum -->
+                <div class="mt-4">
+                    <p><b>Redskabsrum</b></p>
+                    <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet.</p>
                 </div>
-            </div>
 
-            <!-- Redskabsrum længde -->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <select class="form-select" name="chooseShedLength" id="chooseShedLength" required>
-                        <option selected>Uden redskabsrum</option>
-                        <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
-                    </select>
-                    <label for="chooseShedLength">Vælg ....</label>
+                <!-- Redskabsrum bredde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseShedWidth" id="chooseShedWidth" required>
+                            <option selected>Uden redskabsrum</option>
+                            <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
+                        </select>
+                        <label for="chooseShedWidth">Vælg bredde</label>
+                    </div>
                 </div>
-            </div>
-            <!-- Særlige ønsker -->
-            <div class="col-md-4">
-                <div class="form-floating">
+
+
+                <!-- Redskabsrum længde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseShedLength" id="chooseShedLength" required>
+                            <option selected>Uden redskabsrum</option>
+                            <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
+                        </select>
+                        <label for="chooseShedLength">Vælg længde</label>
+                    </div>
+                </div>
+
+                <!-- Særlige ønsker -->
+                <div class="col-md-4">
+                    <div class="form-floating">
                         <p><b>Særlige ønsker</b></p>
                         <textarea></textarea>
+                    </div>
                 </div>
-            </div>
-            <!-- KUNDEINFO-->
+                <!-- KUNDEINFO-->
 
 
-            <!-- Navn-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>Navn</b></p>
-                    <label for="kundenavn">Navn</label>
-                    <input type="text" placeholder="For-, og efternavn" id="kundenavn" name="kundenavn" class="form-control" required>
+                <!-- Navn-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Navn</b></p>
+                        <label for="kundenavn">Navn</label>
+                        <input type="text" placeholder="For-, og efternavn" id="kundenavn" name="kundenavn"
+                               class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <!-- adresse-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>Adresse</b></p>
-                    <label for="chooseAdress">Adresse</label>
-                    <input type="text" placeholder="Indtast adresse" id="chooseAdress" name="chooseAdress" class="form-control" required>
+                <!-- adresse-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Adresse</b></p>
+                        <label for="chooseAdress">Adresse</label>
+                        <input type="text" placeholder="Indtast adresse" id="chooseAdress" name="chooseAdress"
+                               class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Postnummer-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>Postnummer</b></p>
-                    <label for="choosePostalCode">Postnummer</label>
-                    <input type="text" placeholder="Indtast postnummer" id="choosePostalCode" name="choosePostalCode" class="form-control" required>
+                <!-- Postnummer-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Postnummer</b></p>
+                        <label for="choosePostalCode">Postnummer</label>
+                        <input type="text" placeholder="Indtast postnummer" id="choosePostalCode"
+                               name="choosePostalCode" class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <!-- By-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>By</b></p>
-                    <label for="chooseCity">By</label>
-                    <input type="text" placeholder="Indtast din by" id="chooseCity" name="chooseCity" class="form-control" required>
+                <!-- By-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>By</b></p>
+                        <label for="chooseCity">By</label>
+                        <input type="text" placeholder="Indtast din by" id="chooseCity" name="chooseCity"
+                               class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Telefon-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>Telefonnummer</b></p>
-                    <label for="chooseAdress">Telefonnummer</label>
-                    <input type="text" placeholder="Indtast telefonnummer" id="ChoosePhoneNumber" name="ChoosePhoneNumber" class="form-control" required>
+                <!-- Telefon-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Telefonnummer</b></p>
+                        <label for="chooseAdress">Telefonnummer</label>
+                        <input type="text" placeholder="Indtast telefonnummer" id="ChoosePhoneNumber"
+                               name="ChoosePhoneNumber" class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Email-->
-            <div class="col-md-4">
-                <div class="form-floating">
-                    <p><b>Email</b></p>
-                    <label for="chooseEmail">Emailo</label>
-                    <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail" class="form-control" required>
+                <!-- Email-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Email</b></p>
+                        <label for="chooseEmail">Email</label>
+                        <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail"
+                               class="form-control" required>
+                    </div>
                 </div>
-            </div>
 
+                <!-- Samtykke-->
+                <div class="col-12 d-flex align-items-center mt-3">
+                    <input class="form-check-input me-2" type="checkbox" id="samtykke" name="samtykke">
+                    <label class="form-check-label" for="samtykke">
+                        Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg
+                        carport.
+                    </label>
+                </div>
 
-
-
-
-
-            <!-- Knap -->
-            <div class="text-end mt-4">
-                <button class="btn btn-primary btn-lg" type="submit">Bestil pristilbud</button>
+                <!-- Knap -->
+                <div class="text-end mt-4">
+                    <button class="btn btn-primary btn-lg" type="submit">Bestil pristilbud</button>
+                </div>
             </div>
         </form>
     </div>
 </div>
+</div>
+
 
 <!-- Slut -->
 </body>
