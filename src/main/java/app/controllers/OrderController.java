@@ -31,7 +31,7 @@ public class OrderController
         String carportWidth = ctx.formParam("chooseWidth");
         String carportHeight = ctx.formParam("chooseHeight");
         String roofType = ctx.formParam("chooseRoof");
-        String specialRequests = ctx.formParam("specialWishes");
+        String specialWishes = ctx.formParam("specialWishes");
 
         String shedWidthString = ctx.formParam("chooseShedWidth");
         Integer shedWidth = Integer.parseInt(shedWidthString);
@@ -43,12 +43,16 @@ public class OrderController
         String address = ctx.formParam("chooseAddress");
         String postalCode = ctx.formParam("choosePostalCode");
         String city = ctx.formParam("chooseCity");
-        String phone = ctx.formParam("choosePhoneNumber");
+        String telephoneString = ctx.formParam("choosePhoneNumber");
+        int telephone = Integer.parseInt(telephoneString);
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
-
+        String role = "customer";
 
         // TODO: check at form-parameetrene ikke er null
+        List<String> params = new ArrayList<>(Arrays.asList(
+            carportWidth, carportHeight, roofType, shedWidth, shedLength, specialWishes,
+            name, address, postalCode, city, telephone, email, consent);
 
         validatePhoneNumber(ctx, "choosePhoneNumber");
         validateEmail(ctx, "chooseEmail");
@@ -67,18 +71,11 @@ public class OrderController
         Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
         Account account = ctx.sessionAttribute("currentAccount");
-        AccountController.createAccount(1);
+        int accountID = AccountController.createAccount(role, telephone, account);
 
         OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status, orderPlaced,
-                                      carportHeight, carportWidth ,hasShed, roofType, accountId);
+                                      carportHeight, carportWidth ,hasShed, roofType, accountID);
 
-
-
-        List<Order> carportOrder = new ArrayList<>();
-
-        List<String> params = new ArrayList<>(Arrays.asList(
-            carportWidth, carportHeight, roofType, shedWidth, shedLength, specialRequests,
-            name, address, postalCode, city, phone, email, consent
         ));
 
 
