@@ -32,7 +32,9 @@
 <div class="container my-5">
     <div class="content bg-light rounded-4 p-5 shadow">
         <h1 class="display-4 text-center">Fog Carport</h1>
-        <p class="h5 text-center mb-4">Byens bedste carports. Bestil din nedenfor.</p>
+        <p class="h5 text-center mb-4">Byens bedste carports. Bestil din nedenfor.
+            Udfyld nedenstående omhyggeligt og tryk "Bestil tilbud".
+            Så vender vi hurtigst muligt tilbage med et tilbud til dig.</p>
 
         <!-- Fejlbeskeder -->
         <div th:if="${#ctx.message != null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
@@ -185,8 +187,8 @@
                 <!-- Navn-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <label for="kundenavn">Navn</label>
-                        <input type="text" placeholder="For-, og efternavn" id="kundenavn" name="kundenavn"
+                        <label for="customerName">Navn</label>
+                        <input type="text" placeholder="For-, og efternavn" id="customerName" name="customerName"
                                class="form-control" required>
                     </div>
                 </div>
@@ -238,8 +240,8 @@
 
                 <!-- Samtykke-->
                 <div class="col-12 d-flex align-items-center mt-3">
-                    <input class="form-check-input me-2" type="checkbox" id="samtykke" name="samtykke">
-                    <label class="form-check-label" for="samtykke">
+                    <input class="form-check-input me-2" type="checkbox" id="chooseConsent" name="chooseConsent">
+                    <label class="form-check-label" for="chooseConsent">
                         Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg
                         carport.
                     </label>
