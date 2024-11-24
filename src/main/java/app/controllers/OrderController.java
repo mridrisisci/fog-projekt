@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.entities.Account;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
@@ -9,6 +10,8 @@ import io.javalin.http.Context;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +30,15 @@ public class OrderController
     {
         String carportWidth = ctx.formParam("chooseWidth");
         String carportHeight = ctx.formParam("chooseHeight");
-        String trapeztag = ctx.formParam("chooseRoof");
-        String shedWidth = ctx.formParam("chooseShedWidth");
-        String shedLength = ctx.formParam("chooseShedLength");
+        String roofType = ctx.formParam("chooseRoof");
         String specialRequests = ctx.formParam("specialWishes");
 
+        String shedWidthString = ctx.formParam("chooseShedWidth");
+        Integer shedWidth = Integer.parseInt(shedWidthString);
+        String shedLengthString = ctx.formParam("chooseShedLength");
+        Integer shedLength = Integer.parseInt(shedLengthString);
+
+        // customer info
         String name = ctx.formParam("customername");
         String address = ctx.formParam("chooseAddress");
         String postalCode = ctx.formParam("choosePostalCode");
@@ -42,19 +49,35 @@ public class OrderController
 
 
         // TODO: check at form-parameetrene ikke er null
-        // TODO: validere kundens telefon nummer
+
         validatePhoneNumber(ctx, "choosePhoneNumber");
-        // TODO: validere kundens email
         validateEmail(ctx, "chooseEmail");
-        // TODO: validere kundens postnummer
         validatePostalCode(ctx, "choosePostalCode");
+
         // TODO: Oprette kundens ordre i 'orders'tabellen
+
+        int customerId = 0;
+        int carportId = 0;
+        int salesPersonId = 0;
+
+        boolean hasShed = false;
+        // TODO: check at kunden har valgt mål til redskabsrummet
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
+
+        Account account = ctx.sessionAttribute("currentAccount");
+        AccountController.createAccount(1);
+
+        OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status, orderPlaced,
+                                      carportHeight, carportWidth ,hasShed, roofType, accountId);
+
 
 
         List<Order> carportOrder = new ArrayList<>();
 
         List<String> params = new ArrayList<>(Arrays.asList(
-            carportWidth, carportHeight, trapeztag, shedWidth, shedLength, specialRequests,
+            carportWidth, carportHeight, roofType, shedWidth, shedLength, specialRequests,
             name, address, postalCode, city, phone, email, consent
         ));
 
