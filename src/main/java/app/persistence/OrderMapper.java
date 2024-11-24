@@ -1,14 +1,43 @@
 package app.persistence;
 import app.entities.Carport;
 import app.entities.Order;
+import app.exceptions.DatabaseException;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class OrderMapper
 {
 
-    public static void createQueryInOrders(List<Carport> carport)
+    public static void createQueryInOrders(int customerID, int carportID, int salesPersonID, String status, Timestamp timeStamp,
+                                           int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "INSERT INTO orders (customer_id, carport_id, salesperson_id, status, " +
+            "order_placed, height, width, hasShed, roof_type, account_id) " +
+            "VALUES (?,?,?,?,?,?,?,?,?,?);";
+
+
+        try (Connection connection = pool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, customerID);
+            ps.setInt(2, carportID);
+            ps.setInt(3, salesPersonID);
+            ps.setString(4, status);
+            ps.setTimestamp(5, timeStamp);
+            ps.setInt(6, height);
+            ps.setInt(7, width);
+            ps.setBoolean(8, hasShed);
+            ps.setString(9, roofType);
+            ps.setInt(10, accountID);
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
 
     }
 

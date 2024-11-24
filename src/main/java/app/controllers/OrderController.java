@@ -1,6 +1,6 @@
 package app.controllers;
 
-import app.entities.Carport;
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
@@ -8,6 +8,9 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class OrderController
@@ -15,9 +18,9 @@ public class OrderController
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/", ctx -> ctx.render("index.html") );
-        app.get("/createquery", ctx -> ctx.render("createquery.html") );
-        app.post("/customcarportquery", ctx -> createQuery(ctx, dBConnection) );
+        app.get("/", ctx -> ctx.render("index.html"));
+        app.get("/createquery", ctx -> ctx.render("createquery.html"));
+        app.post("/customcarportquery", ctx -> createQuery(ctx, dBConnection));
     }
 
     private static void createQuery(Context ctx, ConnectionPool dbConnection)
@@ -36,33 +39,44 @@ public class OrderController
         String phone = ctx.formParam("phone");
         String email = ctx.formParam("email");
         String consent = ctx.formParam("consent");
-        List<Carport> carport = new Carport();
+        List<Order> carportOrder = new ArrayList<>();
+        List<String> params = new ArrayList<>(Arrays.asList(
+            carportWidth, carportHeight, trapeztag, shedWidth, shedLength, specialRequests,
+            name, address, postalCode, city, phone, email, consent
+        ));
 
+/*
         try
         {
 
 
-
-            if (carportWidth.isEmpty())
+            if (params.size() == 12)
             {
-                OrderMapper.createQueryInOrders(carport);
+
+                OrderMapper.createQueryInOrders(int customerID, int carportID, int salesPersonID, String status, Timestamp timeStamp,
+                                                int carportHeight, int carportWidth, boolean hasShed, String roofType, int accountID, ConnectionPool pool);
             }
 
-        } catch (SQLException)
+        } catch (SQLException e)
         {
-            ctx.attribute();
-        }
-
-
-
+            ctx.attribute("message", e.getMessage());
+        }*/
 
 
     }
 
-    private static boolean validataParams(String params)
+    private static boolean validateParams(String... params)
     {
-        return !params.isEmpty();
+        for (String p : params)
+        {
+            if (p.isEmpty())
+            {
+                return false;
+            }
+        }
+        return true;
     }
+
 
     private static boolean validateOrderIsPaid()
     {
