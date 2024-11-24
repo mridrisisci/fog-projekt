@@ -71,6 +71,8 @@ public class OrderController
         {
             Account account = ctx.sessionAttribute("currentAccount");
             int accountID = AccountMapper.createAccount(role, telephone, email, dbConnection);
+            ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
+            System.out.println("konto oprettet.");
 
 
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -78,9 +80,13 @@ public class OrderController
 
             OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
                 carportHeight, carportWidth, hasShed, roofType, accountID, dbConnection);
+            System.out.println("ordre oprettet.");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
+        } catch (NumberFormatException e)
+        {
+            throw new IllegalArgumentException(e);
         }
     }
 

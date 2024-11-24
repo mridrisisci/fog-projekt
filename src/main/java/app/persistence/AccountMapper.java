@@ -24,13 +24,16 @@ public class AccountMapper
             {
                 throw new DatabaseException("Fejl ved oprettelse af ny konto...");
             }
+            System.out.println("db opdateret");
+
+            connection.commit();
 
             // retrieves PK fra DB
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next())
             {
                 // returns generated account_id
-                return rs.getInt(0);
+                return rs.getInt(1);
             } else
             {
                 throw new DatabaseException("Kunne ikke hente autogenereret account_id...");

@@ -33,10 +33,18 @@ public class OrderMapper
             ps.setBoolean(8, hasShed);
             ps.setString(9, roofType);
             ps.setInt(10, accountID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("fejl");
+            }
+            connection.commit();
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
+
 
 
     }
