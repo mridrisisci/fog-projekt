@@ -9,7 +9,7 @@ import java.util.List;
 public class AccountMapper
 {
 
-    public static int createAccount(String role, int telephone, String email, Account account, ConnectionPool pool) throws DatabaseException
+    public static int createAccount(String role, int telephone, String email, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO accounts (role, telephone, email) VALUES (?,?,?)";
         try (Connection connection = pool.getConnection();
@@ -30,7 +30,7 @@ public class AccountMapper
             if (rs.next())
             {
                 // returns generated account_id
-                return rs.getInt(1);
+                return rs.getInt(0);
             } else
             {
                 throw new DatabaseException("Kunne ikke hente autogenereret account_id...");

@@ -20,7 +20,7 @@ public class OrderController
     {
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
-        app.post("/customcarportquery", ctx -> createQuery(ctx, dBConnection));
+        app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
     }
 
 
@@ -41,11 +41,11 @@ public class OrderController
         Integer shedLength = Integer.parseInt(shedLengthString);
 
         // customer info
-        String name = ctx.formParam("customername");
-        String address = ctx.formParam("chooseAddress");
+        String name = ctx.formParam("customerName");
+        String address = ctx.formParam("chooseAdress");
         String postalCode = ctx.formParam("choosePostalCode");
         String city = ctx.formParam("chooseCity");
-        String telephoneString = ctx.formParam("choosePhoneNumber");
+        String telephoneString = ctx.formParam("choosePhoneNumber"); //
         int telephone = Integer.parseInt(telephoneString);
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
@@ -56,7 +56,7 @@ public class OrderController
 
         validatePhoneNumber(ctx, "choosePhoneNumber");
         validateEmail(ctx, "chooseEmail");
-        validatePostalCode(ctx, "choosePostalCode");
+        //validatePostalCode(ctx, "choosePostalCode");
 
         // TODO: Oprette kundens ordre i 'orders'tabellen
         int customerId = 0;
@@ -70,7 +70,7 @@ public class OrderController
         try
         {
             Account account = ctx.sessionAttribute("currentAccount");
-            int accountID = AccountMapper.createAccount(role, telephone, email, account, dbConnection);
+            int accountID = AccountMapper.createAccount(role, telephone, email, dbConnection);
 
 
             LocalDateTime localDateTime = LocalDateTime.now();
