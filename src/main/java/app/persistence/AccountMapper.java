@@ -9,14 +9,15 @@ import java.util.List;
 public class AccountMapper
 {
 
-    public static int createAccount(String role, int telephone, Account account, ConnectionPool pool) throws DatabaseException
+    public static int createAccount(String role, int telephone, String email, Account account, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "INSERT INTO accounts (role, telephone) VALUES (?,?)";
+        String sql = "INSERT INTO accounts (role, telephone, email) VALUES (?,?,?)";
         try (Connection connection = pool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
         {
             ps.setString(1, role);
             ps.setInt(2, telephone);
+            ps.setString(3, email);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)

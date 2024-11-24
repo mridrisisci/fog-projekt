@@ -1,6 +1,6 @@
 package app.persistence;
-import app.entities.Carport;
 import app.entities.Order;
+import app.entities.OrderStatus;
 import app.exceptions.DatabaseException;
 
 import java.sql.Connection;
@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static void createQueryInOrders(int customerID, int carportID, int salesPersonID, String status, Timestamp timeStamp,
+    public static void createQueryInOrders(int customerID, int carportID, int salesPersonID, String status, Timestamp orderPlaced,
                                            int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (customer_id, carport_id, salesperson_id, status, " +
@@ -27,7 +27,7 @@ public class OrderMapper
             ps.setInt(2, carportID);
             ps.setInt(3, salesPersonID);
             ps.setString(4, status);
-            ps.setTimestamp(5, timeStamp);
+            ps.setTimestamp(5, orderPlaced);
             ps.setInt(6, height);
             ps.setInt(7, width);
             ps.setBoolean(8, hasShed);
