@@ -34,8 +34,20 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" name="chooseHeight" id="chooseHeight" required>
-                            <option selected>Vælg højde</option>
-                            <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
+                            <option selected >Vælg højde</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <optiom value="600">600 cm</optiom>
                         </select>
                         <label for="chooseHeight">Vælg højde</label>
                     </div>
@@ -45,8 +57,26 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" name="chooseWidth" id="chooseWidth" required>
-                            <option selected>Vælg bredde</option>
-                            <option th:each="width : ${widths}" th:value="${width}" th:text="${width}"></option>
+                            <option selected >Vælg bredde</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
+                            <option value="720">720 cm</option>
+                            <option value="750">750 cm</option>
+                            <option value="780">780 cm</option>
                         </select>
                         <label for="chooseWidth">Vælg bredde</label>
                     </div>
@@ -57,7 +87,7 @@
                     <div class="form-floating">
                         <select class="form-select" name="chooseRoof" id="chooseRoof" required>
                             <option selected>Uden tagplader</option>
-                            <option th:each="roof : ${roofs}" th:value="${roof}" th:text="${roof}"></option>
+                            <option value="plasttrapezplader">plasttrapezplader</option>
                         </select>
                         <label for="chooseRoof">Vælg tagtype</label>
                     </div>
@@ -74,7 +104,25 @@
                     <div class="form-floating">
                         <select class="form-select" name="chooseShedWidth" id="chooseShedWidth" required>
                             <option selected>Uden redskabsrum</option>
-                            <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
+                            <option selected >Vælg bredde</option>
+                            <option value="210">210 cm</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
+                            <option value="720">720 cm</option>
                         </select>
                         <label for="chooseShedWidth">Vælg bredde</label>
                     </div>
@@ -86,7 +134,26 @@
                     <div class="form-floating">
                         <select class="form-select" name="chooseShedLength" id="chooseShedLength" required>
                             <option selected>Uden redskabsrum</option>
-                            <option th:each="height : ${heights}" th:value="${height}" th:text="${height}"></option>
+                            <option selected >Vælg længde</option>
+                            <option value="150">150 cm</option>
+                            <option value="180">180 cm</option>
+                            <option value="210">210 cm</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
                         </select>
                         <label for="chooseShedLength">Vælg længde</label>
                     </div>
@@ -105,7 +172,6 @@
                 <!-- Navn-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Navn</b></p>
                         <label for="kundenavn">Navn</label>
                         <input type="text" placeholder="For-, og efternavn" id="kundenavn" name="kundenavn"
                                class="form-control" required>
@@ -115,7 +181,6 @@
                 <!-- adresse-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Adresse</b></p>
                         <label for="chooseAdress">Adresse</label>
                         <input type="text" placeholder="Indtast adresse" id="chooseAdress" name="chooseAdress"
                                class="form-control" required>
@@ -125,7 +190,6 @@
                 <!-- Postnummer-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Postnummer</b></p>
                         <label for="choosePostalCode">Postnummer</label>
                         <input type="text" placeholder="Indtast postnummer" id="choosePostalCode"
                                name="choosePostalCode" class="form-control" required>
@@ -135,7 +199,6 @@
                 <!-- By-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>By</b></p>
                         <label for="chooseCity">By</label>
                         <input type="text" placeholder="Indtast din by" id="chooseCity" name="chooseCity"
                                class="form-control" required>
@@ -145,7 +208,6 @@
                 <!-- Telefon-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Telefonnummer</b></p>
                         <label for="chooseAdress">Telefonnummer</label>
                         <input type="text" placeholder="Indtast telefonnummer" id="ChoosePhoneNumber"
                                name="ChoosePhoneNumber" class="form-control" required>
@@ -155,7 +217,6 @@
                 <!-- Email-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Email</b></p>
                         <label for="chooseEmail">Email</label>
                         <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail"
                                class="form-control" required>
