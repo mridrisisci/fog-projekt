@@ -14,45 +14,195 @@
 <div class="container">
     <header th:replace="~{fragments :: header}"></header>
 
-    <div class="content bg-light rounded-4 p-5">
-        <h2 class="display-1">Custom Carport - Fog</h2>
-        <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
-             role="alert">Fejlbeskeder vises her
+    <!-- Form Bootstrap -->
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Bestil Quick-Byg tilbud - Carport med fladt tag</h2>
+            <p class="text-muted">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport indenfor vores standardprogram.</p>
+            <p class="text-muted">Udfyld formularen omhyggeligt og klik på "Bestil tilbud". Felter markeret med * SKAL udfyldes!</p>
         </div>
-        <p class="h2 mb-5">Byens sejeste carports. Få din egen custom carport her:</p>
-        <form action="/" method="GET">
-            <div class="container my-5">
-                <div class="row g-4">
-                    <!-- Første boks -->
-                    <div class="col-md-6">
-                        <a href="/side1" th:href="@{/}" class="text-decoration-none">
-                            <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                                <img src="../public/images/tag-med-rejsning.jpg"
-                                     th:src="@{/images/tag-med-rejsning.jpg}" alt="carport med rejsning"
-                                     class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                                <h2 class="h4 text-dark">Carport med høj rejsning</h2>
-                                <p class="text-muted">Her er lidt beskrivelse for den første boks.</p>
-                            </div>
-                        </a>
+
+        <form method="post" action="/customcarportquery">
+            <!-- Carport bredde -->
+            <div class="row mb-3 align-items-center">
+                <label for="carportBredde" class="col-sm-3 col-form-label">Carport bredde</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="carportBredde" placeholder="Vælg bredde for din carport">
+                </div>
+            </div>
+
+            <!-- Carport højde -->
+            <div class="row mb-3 align-items-center">
+                <label for="carportHøjde" class="col-sm-3 col-form-label">Carport højde</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="carportHøjde" placeholder="Vælg højde for din carport">
+                </div>
+            </div>
+
+            <!-- Dropdown for Trapeztag -->
+            <div class="row mb-3 align-items-center">
+                <label for="trapeztagDropdown" class="col-sm-3 col-form-label">Carport trapeztag</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="trapeztagDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden tagplader
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Plasttrapezplader</a></li>
+                        </ul>
                     </div>
+                </div>
+            </div>
+            <!-- Redskabsrum forbehold -->
+            <div class="row mb-3 align-items-center">
+                <label class="col-sm-3 col-form-label">Redskabsrum</label>
+                <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet*</p>
+                <div class="col-sm-9">
+                </div>
+            </div>
 
-                    <!-- Anden boks -->
-                    <div class="col-md-6">
-                        <a href="/side2" class="text-decoration-none"></a>
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/fladt-tag.jpg" th:src="@{/images/fladt-tag.jpg}" alt="fladt-tag"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med flat tag</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den anden boks.</p>
 
 
-                        </div>
+            <!-- Redskabsrum bredde -->
+            <div class="row mb-3 align-items-center">
+                <label for="redskabsrumBredde" class="col-sm-3 col-form-label">Redskabsrum bredde</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="redskabsrumBredde" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden redskabsrum
+                        </button>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">210 cm</a>
+                            <a class="dropdown-item" href="#">240 cm</a>
+                            <a class="dropdown-item" href="#">270 cm</a>
+                            <a class="dropdown-item" href="#">300 cm</a>
+                            <a class="dropdown-item" href="#">330 cm</a>
+                            <a class="dropdown-item" href="#">360 cm</a>
+                            <a class="dropdown-item" href="#">390 cm</a>
+                            <a class="dropdown-item" href="#">420 cm</a>
+                            <a class="dropdown-item" href="#">450 cm</a>
+                            <a class="dropdown-item" href="#">480 cm</a>
+                            <a class="dropdown-item" href="#">510 cm</a>
+                            <a class="dropdown-item" href="#">540 cm</a>
+                            <a class="dropdown-item" href="#">570 cm</a>
+                            <a class="dropdown-item" href="#">600 cm</a>
+                            <a class="dropdown-item" href="#">630 cm</a>
+                            <a class="dropdown-item" href="#">660 cm</a>
+                            <a class="dropdown-item" href="#">690 cm</a>
+                            <a class="dropdown-item" href="#">700 cm</a>
+
+                        </ul>
                     </div>
+                </div>
+            </div>
+
+            <!-- Redskabsrum længde -->
+            <div class="row mb-3 align-items-center">
+                <label for="redskabsrumLængde" class="col-sm-3 col-form-label">Redskabsrum længde</label>
+                <div class="col-sm-9">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-75" type="button" id="redskabsrumLængde" data-bs-toggle="dropdown" aria-expanded="false">
+                            Uden redskabsrum
+                        </button>
+                        <ul class="dropdown-menu">
+                            <a class="dropdown-item" href="#">180 cm</a>
+                            <a class="dropdown-item" href="#">210 cm</a>
+                            <a class="dropdown-item" href="#">240 cm</a>
+                            <a class="dropdown-item" href="#">270 cm</a>
+                            <a class="dropdown-item" href="#">300 cm</a>
+                            <a class="dropdown-item" href="#">330 cm</a>
+                            <a class="dropdown-item" href="#">360 cm</a>
+                            <a class="dropdown-item" href="#">390 cm</a>
+                            <a class="dropdown-item" href="#">420 cm</a>
+                            <a class="dropdown-item" href="#">450 cm</a>
+                            <a class="dropdown-item" href="#">480 cm</a>
+                            <a class="dropdown-item" href="#">510 cm</a>
+                            <a class="dropdown-item" href="#">540 cm</a>
+                            <a class="dropdown-item" href="#">570 cm</a>
+                            <a class="dropdown-item" href="#">600 cm</a>
+                            <a class="dropdown-item" href="#">630 cm</a>
+                            <a class="dropdown-item" href="#">660 cm</a>
+                            <a class="dropdown-item" href="#">690 cm</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Evt. bemærkninger -->
+            <div class="row mb-3 align-items-center">
+                <label for="eventuelt" class="col-sm-3 col-form-label">Evt. bemærkning / særlige ønsker</label>
+                <div class="col-sm-9">
+                    <textarea class="form-check-input" id="eventuelt" name="eventuelt" type="text" placeholder="Indtast din besked"></textarea>
+                </div>
+            </div>
+
+            <!-- Navn -->
+            <div class="row mb-3 align-items-center">
+                <label for="kundenavn" class="col-sm-3 col-form-label">Navn</label>
+                <input class="form-control" id="kundenavn" name="kundenavn" type="text" placeholder="For-, og efternavn">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Adresse -->
+            <div class="row mb-3 align-items-center">
+                <label for="adresse" class="col-sm-3 col-form-label">Adresse</label>
+                <input class="form-control" id="adresse" name="adresse" type="text" placeholder="Adresse">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Postnummer -->
+            <div class="row mb-3 align-items-center">
+                <label for="postnummer" class="col-sm-3 col-form-label">Postnummer</label>
+                <input class="form-control" id="postnummer" name="postnummer" type="text" placeholder="For-, og efternavn">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- By -->
+            <div class="row mb-3 align-items-center">
+                <label for="by" class="col-sm-3 col-form-label">By</label>
+                <input class="form-control" id="by" name="by" type="text" placeholder="by">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Telefon -->
+            <div class="row mb-3 align-items-center">
+                <label for="telefon" class="col-sm-3 col-form-label">Telefonnummer</label>
+                <input class="form-control" id="telefon" name="telefon" type="text" placeholder="Telefonnummer">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="row mb-3 align-items-center">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <input class="form-control" id="email" name="email" type="email" placeholder="Email">
+                <div class="col-sm-9">
+                </div>
+            </div>
+
+            <!-- Samtykke -->
+            <div class="form-check mb-4">
+                <input class="form-check-input bg-warning border-dark" type="checkbox" id="samtykke">
+                <label class="form-check-label fw-bold" for="samtykke">
+                    <p>Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg carport</p>
+                </label>
+            </div>
+
+            <!-- Submit knap -->
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-success w-50 p-3">Bestil tilbud</button>
+            </div>
         </form>
     </div>
 
 
-        <div class="content bg-light rounded-4 p-5">
+
+
+    <div class="content bg-light rounded-4 p-5">
             <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
                  role="alert">Fejlbeskeder vises her
             </div>
