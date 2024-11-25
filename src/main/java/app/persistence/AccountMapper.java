@@ -41,7 +41,6 @@ public class AccountMapper
 
         } catch (SQLException e)
         {
-            throw new DatabaseException(e.getMessage());
             String msg = "Der er sket en fejl, prøv igen"; // notifies of errors in pgadmin
             throw new DatabaseException(msg, e.getMessage());
         }

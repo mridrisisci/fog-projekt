@@ -82,7 +82,7 @@ public class OrderController
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
             OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, description, dbConnection);
+                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
