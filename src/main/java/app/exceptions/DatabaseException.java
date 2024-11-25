@@ -9,6 +9,13 @@ public class DatabaseException extends Exception
         super(errorMessage);
     }
 
+    public DatabaseException(String userMessage, String systemMessage)
+    {
+        super(userMessage);
+        System.out.println("userMessage: " + userMessage);
+        System.out.println("errorMessage: " + systemMessage);
+    }
+
     public DatabaseException(String errorMessage, SQLException exception)
     {
         super(errorMessage, exception);
