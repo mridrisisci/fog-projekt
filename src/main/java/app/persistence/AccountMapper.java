@@ -13,8 +13,9 @@ public class AccountMapper
     {
         String sql = "INSERT INTO accounts (role, telephone, email) VALUES (?,?,?)";
         try (Connection connection = pool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
+             PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
         {
+
             ps.setString(1, role);
             ps.setInt(2, telephone);
             ps.setString(3, email);
@@ -25,8 +26,6 @@ public class AccountMapper
                 throw new DatabaseException("Fejl ved oprettelse af ny konto...");
             }
             System.out.println("db opdateret");
-
-            connection.commit();
 
             // retrieves PK fra DB
             ResultSet rs = ps.getGeneratedKeys();

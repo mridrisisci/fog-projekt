@@ -23,6 +23,11 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
     }
 
+    private static int createAccount(Context ctx, ConnectionPool dBConnection)
+    {
+        return 0;
+    }
+
 
 
     private static void createQuery(Context ctx, ConnectionPool dbConnection)
@@ -54,8 +59,8 @@ public class OrderController
         // TODO: check at form-parameetrene ikke er null
 
 
-        validatePhoneNumber(ctx, "choosePhoneNumber");
-        validateEmail(ctx, "chooseEmail");
+        //validatePhoneNumber(ctx, "choosePhoneNumber");
+        //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
         // TODO: Oprette kundens ordre i 'orders'tabellen
@@ -74,13 +79,13 @@ public class OrderController
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
             System.out.println("konto oprettet.");
 
-
+/*
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
             OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
                 carportHeight, carportWidth, hasShed, roofType, accountID, dbConnection);
-            System.out.println("ordre oprettet.");
+            System.out.println("ordre oprettet.");*/
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
