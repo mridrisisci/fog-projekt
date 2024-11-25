@@ -44,16 +44,17 @@ public class Carport
         //Antal stolper
         int quantity;
         //150 er en buffer fra starten og slutningen af remmen - 9,7 er bredden på stolpen, og til at starte med har man minimum to stolper per længde
-        if (getLENGTH()-150-9.7-9.7 <= 480)
+        if (getLENGTH() - 150 - 9.7 - 9.7 <= 480)
         {
             quantity = 4;
-        } else {
+        } else
+        {
             quantity = 6;
         }
 
         //Længde på stolperne - sikre vi får fat i den korrekte variant
         List<Material> materialList1 = (List<Material>) MaterialMapper.getMaterialByID();
-            //Linjen er castet
+        //Linjen er castet
         Material material1 = materialList1.get(0);
 
         return quantity;
@@ -63,44 +64,48 @@ public class Carport
     //Remme
     public Material calcBeams(Material material)
     {
-    //Der skal være minimum 2 af alt, da der på hver side af carporten er en rem.
-        //Mangler at kalde materiale der skal bruges
+        //Der skal være minimum 2 af alt, da der på hver side af carporten er en rem.
+        //Mangler at kalde materiale der skal bruges'
+        //Længderne skal også ændres så det ikke hardcodes men hentes fra køberens valgmuligheder
         int quantity = 2;
-        if(getLENGTH() <= 270){
-            material = material.getMaterialID();
-            //Woodmaterial length = 300
-            quantity = 2;
-        } else if (getLENGTH() <= 330)
+        if (getLENGTH() <= 270)
         {
-            material.getLength();
+            material = material.getMaterialID();
+            //Woodmaterial length = 600
+            quantity = 1;
+        } else if (270 < getLENGTH() || getLENGTH() <= 330)
+        {
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
             quantity = 2;
-        } else if (getLENGTH() <= 390)
+        } else if (330 < getLENGTH() || getLENGTH() <= 390)
         {
-            material.getLength();
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 420
             quantity = 2;
-        } else if (getLENGTH() <= 450)
+        } else if (390 < getLENGTH() || getLENGTH() <= 450)
         {
-            material.getLength();
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 480
             quantity = 2;
-        } else if (getLENGTH() <= 510)
+        } else if (450 < getLENGTH() || getLENGTH() <= 510)
         {
-            material.getLength();
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
             quantity = 2;
-        } else if (getLENGTH() <= 600)
+        } else if (510 < getLENGTH() || getLENGTH() <= 600)
         {
-            material.getLength();
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 600
             quantity = 2;
-        } else if (getLENGTH() <= 690) {
-            material.getLength();
+        } else if (600 < getLENGTH() || getLENGTH() <= 690)
+        {
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
             quantity = 4;
-        } else if (getLENGTH() <= 780){
-            material.getLength();
+        } else if (690 < getLENGTH() || getLENGTH() <= 780)
+        {
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 420
             quantity = 4;
 
@@ -113,7 +118,13 @@ public class Carport
     //Understern
     public Material calcBottomFasciaBoard(Material material)
     {
-        if (getWIDTH() < 300)
+        int quantity = 2;
+        if (getLENGTH() <= 270)
+        {
+            //Mangler metode/noget der kalder på specifikke MaterialVariant
+            //Woodmaterial length = 540
+            //Quantity er stadig 2
+        } else if (270 < getLENGTH() || getLENGTH() <= 330)
         {
 
         }
