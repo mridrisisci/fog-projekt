@@ -156,7 +156,19 @@ VALUES
     ('Plastmo Ecolite blåtonet', 'Stk', 0, 600, NULL, NULL, 'tagplader monteres på spær'),
     ('Plastmo Ecolite blåtonet', 'Stk', 0, 360, NULL, NULL, 'tagplader monteres på spær'),
     ('plastmo bundskruer', 'Pakke', 0, NULL, NULL, NULL, 'skruer til tagplader'),
-    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, 1, 20, 'vindkryds på spær');
+    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, 1, 20, 'vindkryds på spær'),
+    ('universal 190 mm højre', 'Stk', 15, NULL, NULL, NULL, 'Til montering af spær på rem'),
+    ('universal 190 mm venstre', 'Stk', 15, NULL, NULL, NULL, 'Til montering af spær på rem'),
+    ('4,5 x 60 mm. skruer', 'Pakke', 200, NULL, NULL, NULL, 'Til montering af stern&vandbrædt'),
+    ('4,0 x 50 mm. beslagskruer', 'Pakke', 250, NULL, NULL, NULL, 'Til montering af universalbeslag + hulbånd'),
+    ('bræddebolt 10 x 120 mm.', 'Stk', 18, NULL, NULL, NULL, 'Til montering af rem på stolper'),
+    ('firkantskiver 40x40x11mm', 'Stk', 12, NULL, NULL, NULL, 'Til montering af rem på stolper'),
+    ('4,5 x 70 mm. Skruer', 'Pakke', 400, NULL, NULL, NULL, 'Til montering af yderste beklædning'),
+    ('4,5 x 50 mm. Skruer', 'Pakke', 300, NULL, NULL, NULL, 'Til montering af inderste beklædning'),
+    ('stalddørsgreb 50x75', 'Sæt', 1, NULL, NULL, NULL, 'Til lås på dør i skur'),
+    ('t hængsel 390 mm', 'Stk', 2, NULL, NULL, NULL, 'Til skurdør'),
+    ('vinkelbeslag 35', 'Stk', 32, NULL, NULL, NULL, 'Til montering af løsholter i skur');
+
 
 -- End transaction
 END;
