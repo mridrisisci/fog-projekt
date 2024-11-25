@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS public.materials
 CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
-    customer_id integer NOT NULL,
     carport_id character varying(8) NOT NULL,
     salesperson_id integer NOT NULL,
     status character varying(10) NOT NULL,
