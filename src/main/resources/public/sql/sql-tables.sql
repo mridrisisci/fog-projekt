@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS public.material_variants
     length integer,
     height integer,
     width integer,
+    description character varying(100),
     material_id integer NOT NULL,
     CONSTRAINT material_variant_pk PRIMARY KEY (material_variant_id)
 );
@@ -54,7 +55,6 @@ CREATE TABLE IF NOT EXISTS public.materials
     name character varying(100) NOT NULL,
     unit character varying(10) NOT NULL,
     price integer NOT NULL,
-    order_id integer NOT NULL,
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
@@ -81,8 +81,7 @@ CREATE TABLE IF NOT EXISTS public.orders_material_variants
 (
     orders_order_id serial NOT NULL,
     material_variants_material_variant_id serial NOT NULL,
-    quantity int,
-    description character varying(100)
+    quantity int
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -147,93 +146,59 @@ ALTER TABLE IF EXISTS public.orders_material_variants
         ON DELETE NO ACTION
         NOT VALID;
 
--- Insert materials into `materials`
-INSERT INTO public.materials (name, unit, price, order_id)
+INSERT INTO public.materials (name, unit, price)
 VALUES
-    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 1),
-    ('25x125mm. trykimp. Brædt', 'Stk', 0, 1),
-    ('38x73 mm. Lægte ubh.', 'Stk', 0, 1),
-    ('45x95 mm. Reglar ub.', 'Stk', 0, 1),
-    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 1),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 1),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 1),
-    ('Plastmo Ecolite blåtonet', 'Stk', 0, 1),
-    ('plastmo bundskruer', 'Pakke', 0, 1),
-    ('hulbånd 1x20 mm.', 'Rulle', 0, 1),
-    ('universal 190 mm højre', 'Stk', 0, 1),
-    ('universal 190 mm venstre', 'Stk', 0, 1),
-    ('4,5 x 60 mm. skruer', 'Pakke', 0, 1),
-    ('4,0 x 50 mm. beslagskruer', 'Pakke', 0, 1),
-    ('bræddebolt 10 x 120 mm.', 'Stk', 0, 1),
-    ('firkantskiver 40x40x11mm', 'Stk', 0, 1),
-    ('4,5 x 70 mm. Skruer', 'Pakke', 0, 1),
-    ('4,5 x 50 mm. Skruer', 'Pakke', 0, 1),
-    ('stalddørsgreb 50x75', 'Sæt', 0, 1),
-    ('t hængsel 390 mm', 'Stk', 0, 1),
-    ('vinkelbeslag 35', 'Stk', 0, 1);
+    ('25x200 mm. trykimp. Brædt', 'Stk', 0),
+    ('25x125mm. trykimp. Brædt', 'Stk', 0),
+    ('38x73 mm. Lægte ubh.', 'Stk', 0),
+    ('45x95 mm. Reglar ub.', 'Stk', 0),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 0),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0),
+    ('Plastmo Ecolite blåtonet', 'Stk', 0),
+    ('plastmo bundskruer', 'Pakke', 0),
+    ('hulbånd 1x20 mm.', 'Rulle', 0),
+    ('universal 190 mm højre', 'Stk', 0),
+    ('universal 190 mm venstre', 'Stk', 0),
+    ('4,5 x 60 mm. skruer', 'Pakke', 0),
+    ('4,0 x 50 mm. beslagskruer', 'Pakke', 0),
+    ('bræddebolt 10 x 120 mm.', 'Stk', 0),
+    ('firkantskiver 40x40x11mm', 'Stk', 0),
+    ('4,5 x 70 mm. Skruer', 'Pakke', 0),
+    ('4,5 x 50 mm. Skruer', 'Pakke', 0),
+    ('stalddørsgreb 50x75', 'Sæt', 0),
+    ('t hængsel 390 mm', 'Stk', 0),
+    ('vinkelbeslag 35', 'Stk', 0);
 
--- Insert material variants into `material_variants`
-INSERT INTO public.material_variants (length, height, width, material_id)
+INSERT INTO public.material_variants (length, height, width, material_id, description)
 VALUES
-    (360, NULL, NULL, 1),
-    (540, NULL, NULL, 1),
-    (360, NULL, NULL, 2),
-    (540, NULL, NULL, 2),
-    (420, NULL, NULL, 3),
-    (270, NULL, NULL, 4),
-    (240, NULL, NULL, 4),
-    (600, NULL, NULL, 5),
-    (480, NULL, NULL, 5),
-    (300, NULL, NULL, 6),
-    (210, NULL, NULL, 7),
-    (540, NULL, NULL, 7),
-    (360, NULL, NULL, 7),
-    (600, NULL, NULL, 8),
-    (360, NULL, NULL, 8),
-    (NULL, NULL, NULL, 9),
-    (NULL, NULL, NULL, 10),
-    (NULL, NULL, NULL, 11),
-    (NULL, NULL, NULL, 12),
-    (NULL, NULL, NULL, 13),
-    (NULL, NULL, NULL, 14),
-    (NULL, NULL, NULL, 15),
-    (NULL, NULL, NULL, 16),
-    (NULL, NULL, NULL, 17),
-    (NULL, NULL, NULL, 18),
-    (NULL, NULL, NULL, 19),
-    (NULL, NULL, NULL, 20),
-    (NULL, NULL, NULL, 21);
-
--- Insert into `orders_material_variants`
-INSERT INTO public.orders_material_variants (orders_order_id, material_variants_material_variant_id, quantity, description)
-VALUES
-    (1, 1, 4, 'understernbrædder til for & bag ende'),
-    (1, 2, 4, 'understernbrædder til siderne'),
-    (1, 3, 2, 'oversternbrædder til forenden'),
-    (1, 4, 4, 'oversternbrædder til siderne'),
-    (1, 5, 1, 'z på bagside af dør'),
-    (1, 6, 12, 'løsholter til skur gavle'),
-    (1, 7, 4, 'løsholter til skur sider'),
-    (1, 8, 15, 'spær, monteres på rem'),
-    (1, 9, 2, 'remme i sider'),
-    (1, 10, 11, 'stolper nedgraves 90 cm i jord'),
-    (1, 11, 200, 'beklædning af skur 1 på 2'),
-    (1, 12, 4, 'vandbrædt på stern i sider'),
-    (1, 13, 2, 'vandbrædt på stern i forende'),
-    (1, 14, 6, 'tagplader monteres på spær'),
-    (1, 15, 6, 'tagplader monteres på spær'),
-    (1, 16, 3, 'skruer til tagplader'),
-    (1, 17, 2, 'vindkryds på spær'),
-    (1, 18, 15, 'montering af spær på rem'),
-    (1, 19, 15, 'montering af spær på rem'),
-    (1, 20, 1, 'montering af stern og vandbrædt'),
-    (1, 21, 3, 'montering af universalbeslag'),
-    (1, 22, 18, 'montering af rem på stolper'),
-    (1, 23, 12, 'montering af rem på stolper'),
-    (1, 24, 2, 'yderste beklædning'),
-    (1, 25, 2, 'inderste beklædning'),
-    (1, 26, 1, 'lås på dør i skur'),
-    (1, 27, 2, 'skurdør'),
-    (1, 28, 32, 'montering af løsholter i skur');
+    (360, NULL, NULL, 1, 'understernbrædder til for & bag ende'),
+    (540, NULL, NULL, 1, 'understernbrædder til siderne'),
+    (360, NULL, NULL, 2, 'oversternbrædder til forenden'),
+    (540, NULL, NULL, 2, 'oversternbrædder til siderne'),
+    (420, NULL, NULL, 3, 'z på bagside af dør'),
+    (270, NULL, NULL, 4, 'løsholter til skur gavle'),
+    (240, NULL, NULL, 4, 'løsholter til skur sider'),
+    (600, NULL, NULL, 5, 'spær, monteres på rem'),
+    (480, NULL, NULL, 5, 'remme i sider'),
+    (300, NULL, NULL, 6, 'stolper nedgraves 90 cm i jord'),
+    (210, NULL, NULL, 7, 'beklædning af skur 1 på 2'),
+    (540, NULL, NULL, 7, 'vandbrædt på stern i sider'),
+    (360, NULL, NULL, 7, 'vandbrædt på stern i forende'),
+    (600, NULL, NULL, 8, 'tagplader monteres på spær'),
+    (360, NULL, NULL, 8, 'tagplader monteres på spær'),
+    (NULL, NULL, NULL, 9, 'skruer til tagplader'),
+    (NULL, NULL, NULL, 10, 'vindkryds på spær'),
+    (NULL, NULL, NULL, 11, 'montering af spær på rem'),
+    (NULL, NULL, NULL, 12, 'montering af spær på rem'),
+    (NULL, NULL, NULL, 13, 'montering af stern og vandbrædt'),
+    (NULL, NULL, NULL, 14, 'montering af universalbeslag'),
+    (NULL, NULL, NULL, 15, 'montering af rem på stolper'),
+    (NULL, NULL, NULL, 16, 'montering af rem på stolper'),
+    (NULL, NULL, NULL, 17, 'yderste beklædning'),
+    (NULL, NULL, NULL, 18, 'inderste beklædning'),
+    (NULL, NULL, NULL, 19, 'lås på dør i skur'),
+    (NULL, NULL, NULL, 20, 'skurdør'),
+    (NULL, NULL, NULL, 21, 'montering af løsholter i skur');
 
 END;
