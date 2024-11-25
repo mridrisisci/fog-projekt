@@ -6,10 +6,12 @@ import com.sendgrid.Response;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
+import io.javalin.http.Context;
 
 import java.io.IOException;
 
-public class SendGrid {
+public class SendGrid
+{
 
     private static String API_KEY = System.getenv("SENDGRID_API_KEY");
     private static String salespersonEmail = "salesperson@example.com";
@@ -19,31 +21,38 @@ public class SendGrid {
     private static String body;
 
     // Getters for attributes
-    public String getAPI_KEY() {
+    public String getAPI_KEY()
+    {
         return API_KEY;
     }
 
-    public String getSalespersonEmail() {
+    public String getSalespersonEmail()
+    {
         return salespersonEmail;
     }
 
-    public String getCustomerEmail() {
+    public String getCustomerEmail()
+    {
         return customerEmail;
     }
 
-    public String getAdminEmail() {
+    public String getAdminEmail()
+    {
         return adminEmail;
     }
 
-    public String getSubjectLine() {
+    public String getSubjectLine()
+    {
         return subjectLine;
     }
 
-    public String getBody() {
+    public String getBody()
+    {
         return body;
     }
 
-    public static void sendEmail(String to, String name, String email, String zip, String body) throws IOException {
+    public static void sendEmail(String to, String name, String email, String zip, String body) throws IOException
+    {
         Email from = new Email("christofferleisted@gmail.com");
         from.setName("Johannes Fog Byggemarked");
 
@@ -65,7 +74,8 @@ public class SendGrid {
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
-        try {
+        try
+        {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
@@ -75,9 +85,29 @@ public class SendGrid {
             System.out.println("Status Code: " + response.getStatusCode());
             System.out.println("Response Body: " + response.getBody());
             System.out.println("Response Headers: " + response.getHeaders());
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             System.out.println("Error sending mail");
             throw ex;
+        }
+    }
+
+    public static boolean sendMailFromMain(Context ctx)
+    {
+        String to = ctx.formParam("to");
+        String name = ctx.formParam("name");
+        String email = ctx.formParam("email");
+        String zip = ctx.formParam("zip");
+        String body = ctx.formParam("body");
+
+        try
+        {
+            sendEmail(to, name, email, zip, body);
+            return true; // Email sent successfully
+        } catch (IOException ex)
+        {
+            System.err.println("Failed to send email: " + ex.getMessage());
+            return false; // Email did not send successfully
         }
     }
 }
