@@ -70,7 +70,7 @@ public class Carport
         int quantity = 2;
         if (getLENGTH() <= 300)
         {
-            material = material.getMaterialID();
+            //material = material.getMaterialID();
             //Woodmaterial length = 600
             quantity = 1;
         } else if (330 < getLENGTH() || getLENGTH() <= 480)
