@@ -30,7 +30,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main mainApp = new Main();
 
         // Initialize Javalin and configure the web server
         Javalin app = Javalin.create(config -> {
@@ -44,14 +43,9 @@ public class Main {
 
         app.get("/send-email", ctx -> ctx.render("send_email.html"));
 
-        app.post("/send-email", ctx -> {
-            String to = ctx.formParam("to");
-            String name = ctx.formParam("name");
-            String email = ctx.formParam("email");
-            String zip = ctx.formParam("zip");
-            String body = ctx.formParam("body");
-
-            boolean result = mainApp.sendGrid(to, name, email, zip, body);
+        app.post("/send-email", ctx ->
+        {
+            boolean result = SendGrid.sendMailFromMain(ctx);
             if (result) {
                 ctx.result("Email sent successfully!");
             } else {
