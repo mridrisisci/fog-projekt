@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skinparam backgroundColor #FEFEFE
+skinparam handwritten true
+
+actor Kunde
+participant View as V
+participant "UserController.createCustomQuery()" as C
+participant "UserMapper.createCustomQuery()" as M
+participant DB
+
+
+Kunde -> V: Opret ny forespørgsel på custom carport
+activate V
+
+V -> C: Post request til /createcustomcarport
+activate C
+C -> C: validering af input/data
+C -> M: createCustomQuery(customer)
+activate M
+M --> DB: execute sql
+DB --> M: generated carportId
+M -> C: success/Exception
+deactivate M
+C -> C : sæt message attributten til\n success-message eller error-message
+C -> V: render /confirmcustomquery  eller /createcustomquery
+deactivate C
+
+
+
+deactivate V
+
+@enduml

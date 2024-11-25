@@ -1,0 +1,34 @@
+@startuml
+|Slutkunde|
+start
+|Webshop|
+:Find vare og vælg : Custom carport|
+
+|Sælger|
+repeat :Modtag formular;
+|Slutkunde|
+backward: Prøv igen;
+|Sælger|
+repeat while (tjek bestilling) is (forkert)
+-> korrekt;
+
+|Webshop|
+:Lav tilbud \n/SEND;
+|Slutkunde|
+:Mail m. tilbud; <<task>>
+
+|Slutkunde|
+:Bekræftelse af køb;
+
+|Webshop|
+:Bekræftelse af order;
+:Send stykliste; <<task>>
+
+|Lager|
+:Modtag stykliste;
+:Levering;
+
+|Slutkunde|
+:Faktura med stykliste; <<task>>
+stop
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:Salesperson: As Seller
+
+(Afvis forespørgsel) as (Afvis)
+(Anmod om betaling) as (AnmodBetaling)
+(Se ny forespørgsel) as (NyForespørgsel)
+(Send stykliste) as (SendStykliste)
+(Fjern ordre fra DB) as (FjernOrdre)
+
+Seller --> (NyForespørgsel)
+(NyForespørgsel) --> (Opdater ordre)
+(NyForespørgsel) --> (Afvis)
+(NyForespørgsel) --> (Godkend)
+
+(Godkend) --> (AnmodBetaling)
+(Afvis) --> (FjernOrdre)
+(Opdater ordre) --> (Opdater detalje i DB)
+
+(AnmodBetaling) --> (SendStykliste)
+
+
+
+note "only if payment in full" as P1
+(SendStykliste) .. P1
+
+@enduml

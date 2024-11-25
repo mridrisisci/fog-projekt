@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="container">
+    <header th:replace="~{fragments :: header}"></header>
+</div>
+
+<div class="container my-5">
+    <div class="content bg-light-subtle rounded-5 p-3 shadow">
+        <h2 class="display-4 text-center">Bestil Quick-Byg tilbud - carport med fladt tag</h2>
+        <p class="text-center mb-4">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport indenfor vores standardprogram.
+            Tilbud og skitsetegning fremsendes med post hurtigst muligt.
+            Ved bestilling medfølger standardbyggevejledning.
+
+            Udfyld formularen omhyggeligt og klik på "Bestil tilbud".
+            Felter markeret med * SKAL udfyldes!</p>
+
+    </div>
+
+</div>
+<!-- Start -->
+<div class="container my-5">
+    <div class="content bg-light rounded-4 p-5 shadow">
+        <h1 class="display-4 text-center">Fog Carport</h1>
+        <p class="h5 text-center mb-4">Byens bedste carports. Bestil din nedenfor.
+            Udfyld nedenstående omhyggeligt og tryk "Bestil tilbud".
+            Så vender vi hurtigst muligt tilbage med et tilbud til dig.</p>
+
+        <!-- Fejlbeskeder -->
+        <div th:if="${#ctx.message != null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
+             role="alert">
+            Fejlbeskeder vises her
+        </div>
+
+        <!-- Formular -->
+        <form action="/createquery" method="post">
+            <div class="row g-4">
+                <!-- Højde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseHeight" id="chooseHeight" required>
+                            <option selected >Vælg højde</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <optiom value="600">600 cm</optiom>
+                        </select>
+                        <label for="chooseHeight">Vælg højde</label>
+                    </div>
+                </div>
+
+                <!-- Bredde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseWidth" id="chooseWidth" required>
+                            <option selected >Vælg bredde</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
+                            <option value="720">720 cm</option>
+                            <option value="750">750 cm</option>
+                            <option value="780">780 cm</option>
+                        </select>
+                        <label for="chooseWidth">Vælg bredde</label>
+                    </div>
+                </div>
+
+                <!-- Tag -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseRoof" id="chooseRoof" required>
+                            <option selected>Uden tagplader</option>
+                            <option value="plasttrapezplader">plasttrapezplader</option>
+                        </select>
+                        <label for="chooseRoof">Vælg tagtype</label>
+                    </div>
+                </div>
+
+                <!-- Redskabsrum -->
+                <div class="mt-4">
+                    <p><b>Redskabsrum</b></p>
+                    <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet.</p>
+                </div>
+
+                <!-- Redskabsrum bredde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseShedWidth" id="chooseShedWidth" required>
+                            <option selected>Uden redskabsrum</option>
+                            <option selected >Vælg bredde</option>
+                            <option value="210">210 cm</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
+                            <option value="720">720 cm</option>
+                        </select>
+                        <label for="chooseShedWidth">Vælg bredde</label>
+                    </div>
+                </div>
+
+
+                <!-- Redskabsrum længde -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <select class="form-select" name="chooseShedLength" id="chooseShedLength" required>
+                            <option selected>Uden redskabsrum</option>
+                            <option selected >Vælg længde</option>
+                            <option value="150">150 cm</option>
+                            <option value="180">180 cm</option>
+                            <option value="210">210 cm</option>
+                            <option value="240">240 cm</option>
+                            <option value="270">270 cm</option>
+                            <option value="300">300 cm</option>
+                            <option value="330">330 cm</option>
+                            <option value="360">360 cm</option>
+                            <option value="390">390 cm</option>
+                            <option value="420">420 cm</option>
+                            <option value="450">450 cm</option>
+                            <option value="480">480 cm</option>
+                            <option value="510">510 cm</option>
+                            <option value="540">540 cm</option>
+                            <option value="570">570 cm</option>
+                            <option value="600">600 cm</option>
+                            <option value="630">630 cm</option>
+                            <option value="660">660 cm</option>
+                            <option value="690">690 cm</option>
+                        </select>
+                        <label for="chooseShedLength">Vælg længde</label>
+                    </div>
+                </div>
+
+                <!-- Særlige ønsker -->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <p><b>Særlige ønsker</b></p>
+                        <textarea></textarea>
+                    </div>
+                </div>
+                <!-- KUNDEINFO-->
+
+
+                <!-- Navn-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="customerName">Navn</label>
+                        <input type="text" placeholder="For-, og efternavn" id="customerName" name="customerName"
+                               class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- adresse-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="chooseAdress">Adresse</label>
+                        <input type="text" placeholder="Indtast adresse" id="chooseAdress" name="chooseAdress"
+                               class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- Postnummer-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="choosePostalCode">Postnummer</label>
+                        <input type="text" placeholder="Indtast postnummer" id="choosePostalCode"
+                               name="choosePostalCode" class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- By-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="chooseCity">By</label>
+                        <input type="text" placeholder="Indtast din by" id="chooseCity" name="chooseCity"
+                               class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- Telefon-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="choosePhoneNumber">Indtast telefonnnummer</label>
+                        <input type="text" id="choosePhoneNumber" name="choosePhoneNumber" class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- Email-->
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        <label for="chooseEmail">Email</label>
+                        <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail" class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <!-- Samtykke-->
+                <div class="col-12 d-flex align-items-center mt-3">
+                    <input class="form-check-input me-2" type="checkbox" id="chooseConsent" name="chooseConsent">
+                    <label class="form-check-label" for="chooseConsent">
+                        Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg
+                        carport.
+                    </label>
+                </div>
+
+                <!-- Knap -->
+                <div class="text-end mt-4">
+                    <button class="btn btn-primary btn-lg" type="submit">Bestil pristilbud</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+
+<!-- Slut -->
+</body>
+
+
+<div class="content bg-light rounded-4 p-5">
+    <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
+         role="alert">Fejlbeskeder vises her
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
