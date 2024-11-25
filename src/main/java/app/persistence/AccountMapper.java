@@ -26,7 +26,6 @@ public class AccountMapper
             {
                 throw new DatabaseException("Fejl ved oprettelse af ny konto...");
             }
-            System.out.println("db opdateret");
 
             // retrieves PK fra DB
             ResultSet rs = ps.getGeneratedKeys();
@@ -39,9 +38,12 @@ public class AccountMapper
                 throw new DatabaseException("Kunne ikke hente autogenereret account_id...");
             }
 
+
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
+            String msg = "Der er sket en fejl, prøv igen"; // notifies of errors in pgadmin
+            throw new DatabaseException(msg, e.getMessage());
         }
     }
 

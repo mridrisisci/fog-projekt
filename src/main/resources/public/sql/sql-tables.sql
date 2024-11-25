@@ -2,7 +2,6 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
-
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.accounts CASCADE;
 DROP TABLE IF EXISTS public.cities CASCADE;
@@ -18,10 +17,10 @@ CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
     role character varying(11) COLLATE pg_catalog."default" NOT NULL,
-    username character varying(64) COLLATE pg_catalog."default",
+    username character varying(64) COLLATE pg_catalog."default" NOT NULL,
     password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
-    email character varying(50) NOT NULL,
+    email character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
 );
 
@@ -58,8 +57,6 @@ CREATE TABLE IF NOT EXISTS public.materials
     name character varying(100) COLLATE pg_catalog."default" NOT NULL,
     unit character varying(10) COLLATE pg_catalog."default" NOT NULL,
     price integer NOT NULL,
-    order_id integer NOT NULL,
-    quantity integer NOT NULL,
     description character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
@@ -72,14 +69,13 @@ CREATE TABLE IF NOT EXISTS public.orders
     salesperson_id integer NOT NULL,
     status character varying(10) COLLATE pg_catalog."default" NOT NULL,
     price integer,
-    order_placed timestamp with time zone,
-    order_paid boolean NOT NULL,
+    order_placed timestamp with time zone NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
-    "hasShed" boolean,
-    roof_type character varying(6) COLLATE pg_catalog."default" NOT NULL,
+    has_shed boolean NOT NULL DEFAULT false,
+    roof_type character varying(7) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
-    description character varying(100) NOT NULL,
+    description character varying(100) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT orders_pkey PRIMARY KEY (order_id)
 );
 
@@ -97,6 +93,14 @@ CREATE TABLE IF NOT EXISTS public.postal_code
 );
 
 ALTER TABLE IF EXISTS public.addresses
+    ADD CONSTRAINT account_fk FOREIGN KEY (account_id)
+        REFERENCES public.accounts (account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID;
+
+
+ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT city_fk FOREIGN KEY (city_id)
         REFERENCES public.cities (city_id) MATCH SIMPLE
         ON UPDATE NO ACTION
@@ -107,14 +111,6 @@ ALTER TABLE IF EXISTS public.addresses
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT postal_code_fk FOREIGN KEY (postal_code_id)
         REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.addresses
-    ADD CONSTRAINT account_fk FOREIGN KEY (account_id)
-        REFERENCES public.accounts (account_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
