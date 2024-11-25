@@ -14,9 +14,9 @@ DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
-    role character varying(11) COLLATE NOT NULL,
-    username character varying(64) COLLATE NOT NULL,
-    password character varying(100) COLLATE pg_catalog."default",
+    role character varying(11) NOT NULL,
+    username character varying(64) NOT NULL,
+    password character varying(100),
     telephone integer,
     addresses_id integer NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
 CREATE TABLE IF NOT EXISTS public.addresses
 (
     addresses_id serial NOT NULL,
-    address character varying(64) COLLATE NOT NULL,
+    address character varying(64) NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS public.addresses
 CREATE TABLE IF NOT EXISTS public.cities
 (
     city_id serial NOT NULL,
-    city character varying(50) COLLATE NOT NULL,
+    city character varying(50) NOT NULL,
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
 );
 
@@ -51,11 +51,11 @@ CREATE TABLE IF NOT EXISTS public.material_variants
 CREATE TABLE IF NOT EXISTS public.materials
 (
     material_id serial NOT NULL,
-    name character varying(100) COLLATE NOT NULL,
-    unit character varying(10) COLLATE NOT NULL,
+    name character varying(100) NOT NULL,
+    unit character varying(10) NOT NULL,
     price integer NOT NULL,
     order_id integer NOT NULL,
-    description character varying(100) COLLATE NOT NULL,
+    description character varying(100) NOT NULL,
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
@@ -65,14 +65,14 @@ CREATE TABLE IF NOT EXISTS public.orders
     customer_id integer NOT NULL,
     carport_id integer NOT NULL,
     salesperson_id integer NOT NULL,
-    status character varying(10) COLLATE NOT NULL,
+    status character varying(10) NOT NULL,
     price integer,
     order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
     "hasShed" boolean,
-    roof_type character varying(6) COLLATE NOT NULL,
+    roof_type character varying(6) NOT NULL,
     account_id integer NOT NULL,
     m_id integer NOT NULL,
     CONSTRAINT orders_pkey PRIMARY KEY (order_id)
