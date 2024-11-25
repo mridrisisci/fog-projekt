@@ -147,4 +147,68 @@ ALTER TABLE IF EXISTS public.orders_material_variants
         ON DELETE NO ACTION
         NOT VALID;
 
+INSERT INTO public.materials (name, unit, price, order_id, quantity, description)
+VALUES
+    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 1, 4, 'understernbrædder til for & bag ende'),
+    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 1, 4, 'understernbrædder til siderne'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 0, 1, 2, 'oversternbrædder til forenden'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 0, 1, 4, 'oversternbrædder til siderne'),
+    ('38x73 mm. Lægte ubh.', 'stk', 0, 1, 1, 'til z på bagside af dør'),
+    ('45x95 mm. Reglar ub.', 'stk', 0, 1, 12, 'løsholter til skur gavle'),
+    ('45x95 mm. Reglar ub.', 'stk', 0, 1, 4, 'løsholter til skur sider'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 1, 2, 'Remme i sider, sadles ned i stolper'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 1, 1, 'Remme i sider, sadles ned i stolper (skur del, deles)'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 1, 15, 'Spær, monteres på rem'),
+    ('97x97 mm. trykimp. Stolpe', 'stk', 0, 1, 11, 'Stolper nedgraves 90 cm. i jord'),
+    ('19x100 mm. trykimp. Brædt', 'stk', 0, 1, 200, 'til beklædning af skur 1 på 2'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 1, 4, 'vandbrædt på stern i sider'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 1, 2, 'vandbrædt på stern i forende'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 0, 1, 6, 'tagplader monteres på spær'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 0, 1, 6, 'tagplader monteres på spær'),
+    ('plastmo bundskruer', 'pakke', 0, 1, 3, 'Skruer til tagplader'),
+    ('hulbånd 1x20 mm.', 'Rulle', 0, 1, 2, 'Til vindkryds på spær'),
+    ('universal 190 mm højre', 'Stk', 0, 1, 15, 'Til montering af spær på rem'),
+    ('universal 190 mm venstre', 'Stk', 0, 1, 15, 'Til montering af spær på rem'),
+    ('4,5 x 60 mm. skruer', 'Pakke', 0, 1, 1, 'Til montering af stern & vandbrædt'),
+    ('4,0 x 50 mm. beslagskruer', 'pakke', 0, 1, 3, 'Til montering af universalbeslag + hulbånd'),
+    ('bræddebolt 10 x 120 mm.', 'Stk', 0, 1, 18, 'Til montering af rem på stolper'),
+    ('firkantskiver 40x40x11mm', 'Stk', 0, 1, 12, 'Til montering af rem på stolper'),
+    ('4,5 x 70 mm. Skruer', 'pk.', 0, 1, 2, 'til montering af yderste beklædning'),
+    ('4,5 x 50 mm. Skruer', 'pk.', 0, 1, 2, 'til montering af inderste beklædning'),
+    ('stalddørsgreb 50x75', 'Sæt', 0, 1, 1, 'Til lås på dør i skur'),
+    ('t hængsel 390 mm', 'Stk', 0, 1, 2, 'Til skurdør'),
+    ('vinkelbeslag 35', 'Stk', 0, 1, 32, 'Til montering af løsholter i skur');
+
+INSERT INTO public.material_variants (length, height, width, material_id)
+VALUES
+    (360, NULL, 25, 1), -- understernbrædder til for & bag ende
+    (540, NULL, 25, 2), -- understernbrædder til siderne
+    (360, NULL, 25, 3), -- oversternbrædder til forenden
+    (540, NULL, 25, 4), -- oversternbrædder til siderne
+    (420, NULL, 38, 5), -- til z på bagside af dør
+    (270, NULL, 45, 6), -- løsholter til skur gavle
+    (240, NULL, 45, 7), -- løsholter til skur sider
+    (600, NULL, 45, 8), -- remme i sider, sadles ned i stolper
+    (480, NULL, 45, 9), -- remme i sider (skur del, deles)
+    (600, NULL, 45, 10), -- spær, monteres på rem
+    (300, NULL, 97, 11), -- stolper nedgraves i jord
+    (210, NULL, 19, 12), -- til beklædning af skur 1 på 2
+    (540, NULL, 19, 13), -- vandbrædt på stern i sider
+    (360, NULL, 19, 14), -- vandbrædt på stern i forende
+    (600, NULL, NULL, 15), -- tagplader monteres på spær
+    (360, NULL, NULL, 16), -- tagplader monteres på spær
+    (NULL, NULL, NULL, 17), -- plastmo bundskruer (no dimensions available)
+    (10000, NULL, 20, 18), -- hulbånd (length in mm)
+    (NULL, NULL, 190, 19), -- universal højre
+    (NULL, NULL, 190, 20), -- universal venstre
+    (NULL, NULL, NULL, 21), -- screws (no dimensions)
+    (NULL, NULL, NULL, 22), -- beslagskruer (no dimensions)
+    (120, NULL, 10, 23), -- bræddebolt
+    (40, NULL, 40, 24), -- firkantskiver
+    (NULL, NULL, NULL, 25), -- screws (no dimensions)
+    (NULL, NULL, NULL, 26), -- screws (no dimensions)
+    (NULL, 50, 75, 27), -- stalddørsgreb
+    (NULL, NULL, 390, 28), -- t hængsel
+    (NULL, NULL, 35, 29); -- vinkelbeslag
+
 END;
