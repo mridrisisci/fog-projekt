@@ -9,16 +9,17 @@ import java.util.List;
 public class AccountMapper
 {
 
-    public static int createAccount(String role, int telephone, String email, ConnectionPool pool) throws DatabaseException
+    public static int createAccount(String role, String username, int telephone, String email, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "INSERT INTO accounts (role, telephone, email) VALUES (?,?,?)";
+        String sql = "INSERT INTO accounts (role, username, telephone, email) VALUES (?,?,?,?)";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
         {
 
             ps.setString(1, role);
-            ps.setInt(2, telephone);
-            ps.setString(3, email);
+            ps.setString(2, username);
+            ps.setInt(3, telephone);
+            ps.setString(4, email);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
@@ -37,7 +38,6 @@ public class AccountMapper
             {
                 throw new DatabaseException("Kunne ikke hente autogenereret account_id...");
             }
-
 
         } catch (SQLException e)
         {

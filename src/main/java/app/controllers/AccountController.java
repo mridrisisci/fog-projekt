@@ -13,27 +13,5 @@ public class AccountController
     {
     }
 
-    public static int createAccount(Context ctx, String role, int telephone, String email , ConnectionPool pool)
-    {
-        int accountID = 0;
 
-        try
-        {
-            AccountMapper.createAccount(role, telephone, email, pool);
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", "fejl ved oprettelse af konto");
-        }
-        return accountID;
-
-    }
-
-    private static Account login(){
-        return null;
-    }
-
-    private static void logout()
-    {
-
-    }
 }

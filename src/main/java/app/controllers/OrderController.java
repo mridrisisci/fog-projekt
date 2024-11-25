@@ -46,7 +46,7 @@ public class OrderController
         Integer shedLength = Integer.parseInt(shedLengthString);
 
         // customer info
-        String name = ctx.formParam("customerName");
+        String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
         String postalCode = ctx.formParam("choosePostalCode");
         String city = ctx.formParam("chooseCity");
@@ -75,7 +75,8 @@ public class OrderController
         try
         {
             Account account = ctx.sessionAttribute("currentAccount");
-            int accountID = AccountMapper.createAccount(role, telephone, email, dbConnection);
+            int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
+            AccountMapper.createAccount(role, username, telephone, email, dbConnection);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
             System.out.println("konto oprettet.");
 
