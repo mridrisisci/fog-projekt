@@ -2,15 +2,19 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+-- Drop tables if they exist
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.accounts CASCADE;
 DROP TABLE IF EXISTS public.cities CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
-DROP TABLE IF EXISTS public.material_variants CASCADE;
 DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
+-- Old table no longer used
+DROP TABLE IF EXISTS public.material_variants CASCADE;
+
+-- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
@@ -28,6 +32,7 @@ CREATE TABLE IF NOT EXISTS public.addresses
     address character varying(64) NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
+    account_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
 );
 
@@ -38,23 +43,16 @@ CREATE TABLE IF NOT EXISTS public.cities
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.material_variants
-(
-    material_variant_id serial NOT NULL,
-    length integer,
-    height integer,
-    width integer,
-    description character varying(100),
-    material_id integer NOT NULL,
-    CONSTRAINT material_variant_pk PRIMARY KEY (material_variant_id)
-);
-
 CREATE TABLE IF NOT EXISTS public.materials
 (
     material_id serial NOT NULL,
     name character varying(100) NOT NULL,
     unit character varying(10) NOT NULL,
     price integer NOT NULL,
+    length integer,
+    height integer,
+    width integer,
+    description character varying(100),
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
@@ -62,7 +60,7 @@ CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
     customer_id integer NOT NULL,
-    carport_id integer NOT NULL,
+    carport_id character varying(8) NOT NULL,
     salesperson_id integer NOT NULL,
     status character varying(10) NOT NULL,
     price integer,
@@ -73,15 +71,23 @@ CREATE TABLE IF NOT EXISTS public.orders
     "hasShed" boolean,
     roof_type character varying(6) NOT NULL,
     account_id integer NOT NULL,
-    m_id integer NOT NULL,
-    CONSTRAINT orders_pkey PRIMARY KEY (order_id)
+    CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.orders_material_variants
+CREATE TABLE IF NOT EXISTS public.orders_materials
 (
     orders_order_id serial NOT NULL,
-    material_variants_material_variant_id serial NOT NULL,
-    quantity int
+    material_id integer NOT NULL,
+    quantity integer NOT NULL,
+    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_order_id, material_id),
+    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT orders_materials_order_fk FOREIGN KEY (orders_order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -91,114 +97,65 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
-ALTER TABLE IF EXISTS public.accounts
-    ADD CONSTRAINT addresses_fk FOREIGN KEY (addresses_id)
+-- Add foreign key constraints
+ALTER TABLE public.accounts
+    ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)
         REFERENCES public.addresses (addresses_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
-
-ALTER TABLE IF EXISTS public.addresses
-    ADD CONSTRAINT city_fk FOREIGN KEY (city_id)
+ALTER TABLE public.addresses
+    ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
         REFERENCES public.cities (city_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.addresses
-    ADD CONSTRAINT postal_code_fk FOREIGN KEY (postal_code_id)
-        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.material_variants
-    ADD CONSTRAINT fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
-
-ALTER TABLE IF EXISTS public.orders
-    ADD CONSTRAINT account_id_fk FOREIGN KEY (account_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+ADD CONSTRAINT addresses_account_fk FOREIGN KEY (account_id)
         REFERENCES public.accounts (account_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
+ALTER TABLE public.addresses
+    ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)
+        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
-ALTER TABLE IF EXISTS public.orders_material_variants
-    ADD CONSTRAINT orders_material_variants_material_variants_material_varian_fkey FOREIGN KEY (material_variants_material_variant_id)
-        REFERENCES public.material_variants (material_variant_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+ALTER TABLE public.orders
+    ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)
+        REFERENCES public.accounts (account_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
-
-ALTER TABLE IF EXISTS public.orders_material_variants
-    ADD CONSTRAINT orders_material_variants_orders_order_id_fkey FOREIGN KEY (orders_order_id)
+ALTER TABLE public.orders_materials
+    ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (orders_order_id)
         REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
 
-INSERT INTO public.materials (name, unit, price)
+-- Insert data into materials (consolidated with material_variants)
+INSERT INTO public.materials (name, unit, price, length, height, width, description)
 VALUES
-    ('25x200 mm. trykimp. Brædt', 'Stk', 0),
-    ('25x125mm. trykimp. Brædt', 'Stk', 0),
-    ('38x73 mm. Lægte ubh.', 'Stk', 0),
-    ('45x95 mm. Reglar ub.', 'Stk', 0),
-    ('45x195 mm. spærtræ ubh.', 'Stk', 0),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0),
-    ('Plastmo Ecolite blåtonet', 'Stk', 0),
-    ('plastmo bundskruer', 'Pakke', 0),
-    ('hulbånd 1x20 mm.', 'Rulle', 0),
-    ('universal 190 mm højre', 'Stk', 0),
-    ('universal 190 mm venstre', 'Stk', 0),
-    ('4,5 x 60 mm. skruer', 'Pakke', 0),
-    ('4,0 x 50 mm. beslagskruer', 'Pakke', 0),
-    ('bræddebolt 10 x 120 mm.', 'Stk', 0),
-    ('firkantskiver 40x40x11mm', 'Stk', 0),
-    ('4,5 x 70 mm. Skruer', 'Pakke', 0),
-    ('4,5 x 50 mm. Skruer', 'Pakke', 0),
-    ('stalddørsgreb 50x75', 'Sæt', 0),
-    ('t hængsel 390 mm', 'Stk', 0),
-    ('vinkelbeslag 35', 'Stk', 0);
+    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 360, 25, 200, 'understernbrædder til for & bag ende'),
+    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 540, 25, 200, 'understernbrædder til siderne'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 0, 360, 25, 125, 'oversternbrædder til forenden'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 0, 540, 25, 125, 'oversternbrædder til siderne'),
+    ('38x73 mm. Lægte ubh.', 'Stk', 0, 420, 38, 73, 'z på bagside af dør'),
+    ('45x95 mm. Reglar ub.', 'Stk', 0, 270, NULL, NULL, 'løsholter til skur gavle'),
+    ('45x95 mm. Reglar ub.', 'Stk', 0, 240, NULL, NULL, 'løsholter til skur sider'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 600, NULL, NULL, 'spær, monteres på rem'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 480, NULL, NULL, 'remme i sider'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 300, NULL, NULL, 'stolper nedgraves 90 cm i jord'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 210, NULL, NULL, 'beklædning af skur 1 på 2'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 540, NULL, NULL, 'vandbrædt på stern i sider'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 360, NULL, NULL, 'vandbrædt på stern i forende'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 0, 600, NULL, NULL, 'tagplader monteres på spær'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 0, 360, NULL, NULL, 'tagplader monteres på spær'),
+    ('plastmo bundskruer', 'Pakke', 0, NULL, NULL, NULL, 'skruer til tagplader'),
+    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, NULL, NULL, 'vindkryds på spær');
 
-INSERT INTO public.material_variants (length, height, width, material_id, description)
-VALUES
-    (360, NULL, NULL, 1, 'understernbrædder til for & bag ende'),
-    (540, NULL, NULL, 1, 'understernbrædder til siderne'),
-    (360, NULL, NULL, 2, 'oversternbrædder til forenden'),
-    (540, NULL, NULL, 2, 'oversternbrædder til siderne'),
-    (420, NULL, NULL, 3, 'z på bagside af dør'),
-    (270, NULL, NULL, 4, 'løsholter til skur gavle'),
-    (240, NULL, NULL, 4, 'løsholter til skur sider'),
-    (600, NULL, NULL, 5, 'spær, monteres på rem'),
-    (480, NULL, NULL, 5, 'remme i sider'),
-    (300, NULL, NULL, 6, 'stolper nedgraves 90 cm i jord'),
-    (210, NULL, NULL, 7, 'beklædning af skur 1 på 2'),
-    (540, NULL, NULL, 7, 'vandbrædt på stern i sider'),
-    (360, NULL, NULL, 7, 'vandbrædt på stern i forende'),
-    (600, NULL, NULL, 8, 'tagplader monteres på spær'),
-    (360, NULL, NULL, 8, 'tagplader monteres på spær'),
-    (NULL, NULL, NULL, 9, 'skruer til tagplader'),
-    (NULL, NULL, NULL, 10, 'vindkryds på spær'),
-    (NULL, NULL, NULL, 11, 'montering af spær på rem'),
-    (NULL, NULL, NULL, 12, 'montering af spær på rem'),
-    (NULL, NULL, NULL, 13, 'montering af stern og vandbrædt'),
-    (NULL, NULL, NULL, 14, 'montering af universalbeslag'),
-    (NULL, NULL, NULL, 15, 'montering af rem på stolper'),
-    (NULL, NULL, NULL, 16, 'montering af rem på stolper'),
-    (NULL, NULL, NULL, 17, 'yderste beklædning'),
-    (NULL, NULL, NULL, 18, 'inderste beklædning'),
-    (NULL, NULL, NULL, 19, 'lås på dør i skur'),
-    (NULL, NULL, NULL, 20, 'skurdør'),
-    (NULL, NULL, NULL, 21, 'montering af løsholter i skur');
-
+-- End transaction
 END;
