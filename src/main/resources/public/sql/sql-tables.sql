@@ -145,18 +145,18 @@ VALUES
     ('25x125mm. trykimp. Brædt', 'Stk', 0, 360, 25, 125, 'oversternbrædder til forenden'),
     ('25x125mm. trykimp. Brædt', 'Stk', 0, 540, 25, 125, 'oversternbrædder til siderne'),
     ('38x73 mm. Lægte ubh.', 'Stk', 0, 420, 38, 73, 'z på bagside af dør'),
-    ('45x95 mm. Reglar ub.', 'Stk', 0, 270, NULL, NULL, 'løsholter til skur gavle'),
-    ('45x95 mm. Reglar ub.', 'Stk', 0, 240, NULL, NULL, 'løsholter til skur sider'),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 600, NULL, NULL, 'spær, monteres på rem'),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 480, NULL, NULL, 'remme i sider'),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 300, NULL, NULL, 'stolper nedgraves 90 cm i jord'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 210, NULL, NULL, 'beklædning af skur 1 på 2'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 540, NULL, NULL, 'vandbrædt på stern i sider'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 360, NULL, NULL, 'vandbrædt på stern i forende'),
+    ('45x95 mm. Reglar ub.', 'Stk', 0, 270, 45, 95, 'løsholter til skur gavle'),
+    ('45x95 mm. Reglar ub.', 'Stk', 0, 240, 45, 95, 'løsholter til skur sider'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 480, 45, 195, 'Remme i sider, sadles ned i stolper (skur del, deles)'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 600, 45, 195, 'Spær, monteres på rem'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 300, 97, 97, 'stolper nedgraves 90 cm i jord'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 210, 19, 100, 'beklædning af skur 1 på 2'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 540, 19, 100, 'vandbrædt på stern i sider'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 360, 19, 100, 'vandbrædt på stern i forende'),
     ('Plastmo Ecolite blåtonet', 'Stk', 0, 600, NULL, NULL, 'tagplader monteres på spær'),
     ('Plastmo Ecolite blåtonet', 'Stk', 0, 360, NULL, NULL, 'tagplader monteres på spær'),
     ('plastmo bundskruer', 'Pakke', 0, NULL, NULL, NULL, 'skruer til tagplader'),
-    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, NULL, NULL, 'vindkryds på spær');
+    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, 1, 20, 'vindkryds på spær');
 
 -- End transaction
 END;
