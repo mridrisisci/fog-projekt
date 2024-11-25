@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS public.materials
     unit character varying(10) NOT NULL,
     price integer NOT NULL,
     order_id integer NOT NULL,
-    description character varying(100) NOT NULL,
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
@@ -147,6 +146,5 @@ ALTER TABLE IF EXISTS public.orders_material_variants
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
-
 
 END;
