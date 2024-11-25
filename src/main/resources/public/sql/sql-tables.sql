@@ -18,10 +18,10 @@ CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
     role character varying(11) COLLATE pg_catalog."default" NOT NULL,
-    username character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(64) COLLATE pg_catalog."default",
     password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
-    email character(50)[] NOT NULL,
+    email character varying(50) NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
 );
 

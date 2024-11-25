@@ -12,10 +12,11 @@ public class AccountMapper
     public static int createAccount(String role, int telephone, String email, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO accounts (role, telephone, email) VALUES (?,?,?)";
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
+        try (
+                Connection connection = pool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        )
         {
-
             ps.setString(1, role);
             ps.setInt(2, telephone);
             ps.setString(3, email);
@@ -25,23 +26,14 @@ public class AccountMapper
             {
                 throw new DatabaseException("Fejl ved oprettelse af ny konto...");
             }
-            System.out.println("db opdateret");
-
-            // retrieves PK fra DB
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next())
-            {
-                // returns generated account_id
-                return rs.getInt(1);
-            } else
             {
                 throw new DatabaseException("Kunne ikke hente autogenereret account_id...");
             }
 
-
         } catch (SQLException e)
         {
-            throw new DatabaseException(e.getMessage());
+            String msg = "Der er sket en fejl, prøv igen";
+            throw new DatabaseException(msg, e.getMessage());
         }
     }
 
@@ -49,22 +41,27 @@ public class AccountMapper
     {
 
     }
+
     public static void deleteAccount(Account account)
     {
 
     }
+
     public static void updateAccount(Account account)
     {
 
     }
+
     public static Account getAccountByID(Account account)
     {
         return null;
     }
+
     public static List<Account> getAllAccounts(Account account)
     {
         return null;
     }
+
     public static void login()
     {
 
