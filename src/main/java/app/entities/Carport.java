@@ -46,14 +46,14 @@ public class Carport
         int quantity;
         //Længder er omregnet til mm i stedet for cm, ved at gange med 100
         // 9,7 cm er bredden på stolpen, og til at starte med har man minimum to stolper per længde
-        int overhangDefault = 1500; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        int overhangDefault = 1000; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
         int widthOfPost = 97; //widthOfPost skal modregnes i hvor langt der er mellem eventuelt er stolper
         int maxSpan = 3100; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
-        int totalWidthWithinMaxSpan = overhangDefault+(2*widthOfPost)+maxSpan;
+        int totalWidthWithinMaxSpan = 2*overhangDefault + 2*widthOfPost + maxSpan;
 
 
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
-        if ((getLENGTH()*100) - overhangDefault - (2*widthOfPost) <= totalWidthWithinMaxSpan)
+        if ((getLENGTH()*100) - (2*overhangDefault) - (2*widthOfPost) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
