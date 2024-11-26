@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor Kunde
+participant View as V
+participant Controller as C
+participant Mapper as M
+participant DB
+
+
+Kunde -> V: Kd har udfyldt formularen og oprettet en forespørgsel
+Kunde -> V: /createquery ruten tager imod height/width
+V -> V: Input valideres
+activate V
+V -> C: POST request til /createquery
+activate C
+C -> C: Kalder calcPosts()
+C -> C: Kalder calcBeams() osv..
+M -> DB: height/width oprettes i 'orders'
+activate M
+M -> M: createMaterialList() henter materialer fra db
+M -> M: createMaterialList returnerer en materialeliste
+
+
+
+V -> C:
+@enduml
