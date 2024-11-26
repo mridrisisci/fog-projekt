@@ -39,12 +39,11 @@ public class MaterialMapper
                 unit = rs.getString("unit");
                 description = rs.getString("description");
                 String materialType = rs.getString("type");
-                int quantity = materialQuantity;
-                if (materialType == type)
+                if (materialType.equals(type))
                 {
-                    while (quantity != materialQuantity)
+                    for (int i = 0; i <= materialQuantity; i++)
                     {
-                        materialList.add(new Material(name, unit, type, description, quantity));
+                        materialList.add(new Material(name, unit, type, description, materialQuantity));
                     }
 
                 }

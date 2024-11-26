@@ -83,7 +83,7 @@ public class OrderController
 
             OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
                 carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
-            ctx.render("createquery.html");
+            ctx.render("index.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
