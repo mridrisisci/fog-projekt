@@ -9,10 +9,11 @@ DROP TABLE IF EXISTS public.cities CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
-DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
+DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
--- Old table no longer used
+-- Old tables no longer used
 DROP TABLE IF EXISTS public.material_variants CASCADE;
+DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
     account_id serial NOT NULL,
     role character varying(11) NOT NULL,
     username character varying(64) NOT NULL,
+    email character varying(100),
     password character varying(100),
     telephone integer,
     addresses_id integer NOT NULL,
@@ -77,6 +79,7 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
 (
     orders_order_id serial NOT NULL,
     material_id integer NOT NULL,
+    type character varying(50),
     quantity integer NOT NULL,
     CONSTRAINT orders_materials_pk PRIMARY KEY (orders_order_id, material_id),
     CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
@@ -125,48 +128,38 @@ ALTER TABLE public.orders
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.orders_materials
-    ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (orders_order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
 
 -- Insert data into materials
--- TODO fill out, price, length, height, width
 INSERT INTO public.materials (name, unit, price, length, height, width, description)
 VALUES
-    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 360, 25, 200, 'understernbrædder til for & bag ende'),
-    ('25x200 mm. trykimp. Brædt', 'Stk', 0, 540, 25, 200, 'understernbrædder til siderne'),
-    ('25x125mm. trykimp. Brædt', 'Stk', 0, 360, 25, 125, 'oversternbrædder til forenden'),
-    ('25x125mm. trykimp. Brædt', 'Stk', 0, 540, 25, 125, 'oversternbrædder til siderne'),
-    ('38x73 mm. Lægte ubh.', 'Stk', 0, 420, 38, 73, 'z på bagside af dør'),
-    ('45x95 mm. Reglar ub.', 'Stk', 0, 270, 45, 95, 'løsholter til skur gavle'),
-    ('45x95 mm. Reglar ub.', 'Stk', 0, 240, 45, 95, 'løsholter til skur sider'),
-    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 480, 45, 195, 'Remme i sider, sadles ned i stolper (skur del, deles)'),
-    ('45x195 mm. spærtræ ubh.', 'Stk', 0, 600, 45, 195, 'Spær, monteres på rem'),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 0, 300, 97, 97, 'stolper nedgraves 90 cm i jord'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 210, 19, 100, 'beklædning af skur 1 på 2'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 540, 19, 100, 'vandbrædt på stern i sider'),
-    ('19x100 mm. trykimp. Brædt', 'Stk', 0, 360, 19, 100, 'vandbrædt på stern i forende'),
-    ('Plastmo Ecolite blåtonet', 'Stk', 0, 600, NULL, NULL, 'tagplader monteres på spær'),
-    ('Plastmo Ecolite blåtonet', 'Stk', 0, 360, NULL, NULL, 'tagplader monteres på spær'),
-    ('plastmo bundskruer', 'Pakke', 0, NULL, NULL, NULL, 'skruer til tagplader'),
-    ('hulbånd 1x20 mm.', 'Rulle', 0, NULL, 1, 20, 'vindkryds på spær'),
-    ('universal 190 mm højre', 'Stk', 15, NULL, NULL, NULL, 'Til montering af spær på rem'),
-    ('universal 190 mm venstre', 'Stk', 15, NULL, NULL, NULL, 'Til montering af spær på rem'),
-    ('4,5 x 60 mm. skruer', 'Pakke', 200, NULL, NULL, NULL, 'Til montering af stern&vandbrædt'),
-    ('4,0 x 50 mm. beslagskruer', 'Pakke', 250, NULL, NULL, NULL, 'Til montering af universalbeslag + hulbånd'),
-    ('bræddebolt 10 x 120 mm.', 'Stk', 18, NULL, NULL, NULL, 'Til montering af rem på stolper'),
-    ('firkantskiver 40x40x11mm', 'Stk', 12, NULL, NULL, NULL, 'Til montering af rem på stolper'),
-    ('4,5 x 70 mm. Skruer', 'Pakke', 400, NULL, NULL, NULL, 'Til montering af yderste beklædning'),
-    ('4,5 x 50 mm. Skruer', 'Pakke', 300, NULL, NULL, NULL, 'Til montering af inderste beklædning'),
-    ('stalddørsgreb 50x75', 'Sæt', 1, NULL, NULL, NULL, 'Til lås på dør i skur'),
-    ('t hængsel 390 mm', 'Stk', 2, NULL, NULL, NULL, 'Til skurdør'),
-    ('vinkelbeslag 35', 'Stk', 32, NULL, NULL, NULL, 'Til montering af løsholter i skur');
+    ('25x200 mm. trykimp. Brædt', 'Stk', 177, 360, 25, 200, 'understernbrædder til for & bag ende'),
+    ('25x200 mm. trykimp. Brædt', 'Stk', 265, 540, 25, 200, 'understernbrædder til siderne'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 119, 360, 25, 125, 'oversternbrædder til forenden'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 178, 540, 25, 125, 'oversternbrædder til siderne'),
+    ('38x73 mm. Lægte ubh.', 'Stk', 63, 420, 38, 73, 'z på bagside af dør'),
+    ('45x95 mm. Reglar ub.', 'Stk', 35, 270, 45, 95, 'løsholter til skur gavle'),
+    ('45x95 mm. Reglar ub.', 'Stk', 30, 240, 45, 95, 'løsholter til skur sider'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 274, 480, 45, 195, 'Remme i sider, sadles ned i stolper (skur del, deles)'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 342, 600, 45, 195, 'Spær, monteres på rem'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 266, 300, 97, 97, 'stolper nedgraves 90 cm i jord'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 19, 210, 19, 100, 'beklædning af skur 1 på 2'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 48, 540, 19, 100, 'vandbrædt på stern i sider'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 32, 360, 19, 100, 'vandbrædt på stern i forende'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 339, 600, 2, 109, 'tagplader monteres på spær'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 199, 360, 2, 109, 'tagplader monteres på spær'),
+    ('plastmo bundskruer 200 stk', 'Pakke', 429, 2, 1, 1, 'skruer til tagplader'),
+    ('hulbånd 1x20 mm. 10 mtr.', 'Rulle', 349, 10000, 1, 20, 'vindkryds på spær'),
+    ('universal 190 mm højre', 'Stk', 50, 5, 150, 5, 'Til montering af spær på rem'),
+    ('universal 190 mm venstre', 'Stk', 50, 5, 150, 5, 'Til montering af spær på rem'),
+    ('4,5 x 60 mm. skruer 200 stk.', 'Pakke', 169, 6, 1, 1, 'Til montering af stern & vandbrædt'),
+    ('4,0 x 50 mm. beslagskruer', 'Pakke', 139, 5, 1, 1, 'Til montering af universalbeslag + hulbånd'),
+    ('bræddebolt 10 x 120 mm.', 'Stk', 409, 1, 1, 1, 'Til montering af rem på stolper'),
+    ('firkantskiver 40x40x11mm', 'Stk', 9, 1, 1, 1, 'Til montering af rem på stolper'),
+    ('4,5 x 70 mm. Skruer 400 stk.', 'Pakke', 165, 7, 1, 1, 'Til montering af yderste beklædning'),
+    ('4,5 x 50 mm. Skruer 300 stk.', 'Pakke', 90, 5, 1, 1, 'Til montering af inderste beklædning'),
+    ('stalddørsgreb 50x75', 'Sæt', 269, 3, 1, 1, 'Til lås på dør i skur'),
+    ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Til skurdør'),
+    ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Til montering af løsholter i skur');
 
 
 -- End transaction
