@@ -29,6 +29,14 @@ public class Material
         this.getNumbersOfShedAddons = getNumbersOfShedAddons;
     }
 
+    public Material(String name, String unit, String description)
+    {
+        this.materialName = name;
+        this.unit = unit;
+        this.description = description;
+    }
+
+
     public int getMaterialID()
     {
         return materialID;

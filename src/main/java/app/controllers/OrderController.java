@@ -7,6 +7,7 @@ import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -25,7 +26,7 @@ public class OrderController
     }
 
 
-    private static void createQuery(Context ctx, ConnectionPool dbConnection)
+    private static void createQuery(Context ctx, ConnectionPool pool)
     {
         String carportWidthString = ctx.formParam("chooseWidth");
         String carportHeightString = ctx.formParam("chooseHeight");
@@ -65,24 +66,29 @@ public class OrderController
         int salesPersonId = 0;
         OrderStatus status = OrderStatus.NOT_PAID;
         RoofType roofType = RoofType.FLAT;
-        String description = "";
+
+
 
         // TODO: check at kunden har valgt mål til redskabsrummet
         boolean hasShed = true;
 
         try
         {
+            // populates accounts
             Account account = ctx.sessionAttribute("currentAccount");
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
+            int accountID = AccountMapper.createAccount(role, username, telephone, email, pool);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
+
+            int[] quantity = MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
+            MaterialMapper.createMaterialList(quantity, pool);
 
 
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-
+            // populates orders
             OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
+                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
