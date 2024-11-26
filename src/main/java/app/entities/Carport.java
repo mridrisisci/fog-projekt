@@ -29,7 +29,9 @@ public class Carport
 
     public void calcCarportPrice()
     {
+        //postsPrice = materialMapper.getType("stolpe").getPrice() * calcPosts[].get(0);
 
+        //beamPrice = materialMapper.getLength(calcBeams[].get(1).getPrice() * calcBeams[].get(0);
     }
 
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
@@ -42,8 +44,13 @@ public class Carport
     {
         //Antal stolper
         int quantity;
-        //150 er en buffer fra starten og slutningen af remmen - 9,7 er bredden på stolpen, og til at starte med har man minimum to stolper per længde
-        if (getLENGTH() - 150 - 9.7 - 9.7 <= 480)
+        // 9,7 er bredden på stolpen, og til at starte med har man minimum to stolper per længde
+        int overhangDefault = 150; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        double widthOfPost = 9.7; //widthOfPost skal modregnes i hvor langt der er mellem eventuelt er stolper
+        int maxSpan = 310; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
+        int totalWidthWithinMaxSpan = (int) (overhangDefault+(2*widthOfPost)+maxSpan);
+
+        if (getLENGTH() - overhangDefault - (2*widthOfPost) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
