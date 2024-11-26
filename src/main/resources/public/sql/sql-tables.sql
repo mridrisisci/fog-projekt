@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
 (
     orders_order_id serial NOT NULL,
     material_id integer NOT NULL,
+    type character varying(50),
     quantity integer NOT NULL,
     CONSTRAINT orders_materials_pk PRIMARY KEY (orders_order_id, material_id),
     CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
@@ -136,7 +137,6 @@ ALTER TABLE public.orders_materials
         ON DELETE CASCADE;
 
 -- Insert data into materials
--- TODO fill out, price, length, height, width
 INSERT INTO public.materials (name, unit, price, length, height, width, description)
 VALUES
     ('25x200 mm. trykimp. Brædt', 'Stk', 0, 360, 25, 200, 'understernbrædder til for & bag ende'),
