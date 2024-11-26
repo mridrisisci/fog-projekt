@@ -1,7 +1,5 @@
 package app.entities;
 
-import app.persistence.MaterialMapper;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +36,9 @@ public class Carport
      * så skal der være en metode der beregner salgspris
      * en der beregner dækningspris*/
 
+    //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stolpe
-    public int calcPosts(Order order)
+    public int calcPosts()
     {
         //Antal stolper
         int quantity;
@@ -51,131 +50,149 @@ public class Carport
         {
             quantity = 6;
         }
-
-        //Længde på stolperne - sikre vi får fat i den korrekte variant
-        List<Material> materialList1 = (List<Material>) MaterialMapper.getMaterialByID();
-        //Linjen er castet
-        Material material1 = materialList1.get(0);
-
         return quantity;
-
     }
 
+    //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Remme
-    public int calcBeams(Material material)
+    public int[] calcBeams()
     {
-        //Der skal være minimum 2 af alt, da der på hver side af carporten er en rem.
-        //Mangler at kalde materiale der skal bruges'
-        //Længderne skal også ændres så det ikke hardcodes men hentes fra køberens valgmuligheder
-        int quantity = 2;
+        int[] beams = new int[2];
+        int quantity = 0;
+        int length = 0;
+
+        //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (getLENGTH() <= 300)
         {
-            //material = material.getMaterialID();
             //Woodmaterial length = 600
+            length = 600;
             quantity = 1;
-        } else if (330 < getLENGTH() || getLENGTH() <= 480)
+
+        } else if (300 < getLENGTH() || getLENGTH() <= 480)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 480
+            length = 480;
             quantity = 2;
         } else if (480 < getLENGTH() || getLENGTH() <= 600)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 600
+            length = 600;
             quantity = 2;
         } else if (600 < getLENGTH() || getLENGTH() <= 780)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 480
+            length = 480;
             quantity = 4;
         }
 
-        return quantity;
+        beams[0] = quantity;
+        beams[1] = length;
 
+        return beams;
     }
 
+    //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern på remme
-    public int calcLengthFasciaBoard(Material material)
+    public int[] calcLengthFasciaBoard()
     {
-        int quantity = 2;
+
+        int[] fascia = new int[2];
+        int quantity = 0;
+        int length = 0;
+
+        //Antallet af brædder og hvilke bræddelængder der skal bruges, er afhængigt af carportens længde
+        //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (getLENGTH() <= 270)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
+            length = 540;
             quantity = 1;
         } else if (270 < getLENGTH() || getLENGTH() <= 360)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
+            length = 360;
             quantity = 2;
         } else if (360 < getLENGTH() || getLENGTH() <= 540)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
+            length = 540;
             quantity = 2;
         } else if (540 < getLENGTH() || getLENGTH() <= 690)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
+            length = 360;
             quantity = 4;
         } else if (690 < getLENGTH() || getLENGTH() <= 780)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
+            length = 540;
             quantity = 4;
         }
 
-        return quantity;
+        fascia[0] = quantity;
+        fascia[1] = length;
+
+        return fascia;
     }
 
-
+    //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern til for- og bagside
-    public int calcWidthFasciaBoard(Material material)
+    public int[] calcWidthFasciaBoard()
     {
-        int quantity = 2;
+        int[] fascia = new int[2];
+        int quantity = 0;
+        int length = 0;
+
+        //Antallet af brædder og hvilke bræddelængder der skal bruges, er afhængigt af carportens bredde
+        //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (getWIDTH() <= 270)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
+            length = 540;
             quantity = 1;
         } else if (270 < getWIDTH() || getWIDTH() <= 360)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
+            length = 360;
             quantity = 2;
         } else if (360 < getWIDTH() || getWIDTH() <= 540)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 540
+            length = 540;
             quantity = 2;
         } else if (540 < getWIDTH() || getWIDTH() <= 600)
         {
-            //Mangler metode/noget der kalder på specifikke MaterialVariant
             //Woodmaterial length = 360
+            length = 360;
             quantity = 4;
         }
 
-        return quantity;
+        fascia[0] = quantity;
+        fascia[1] = length;
+
+        return fascia;
     }
 
-
-    //Lægter - Er ikke med i materialelisten udover til z-et på døren
-    /*public Material calcBattern(Material material)
-    {
-        return material;
-    }*/
-
     //Spær
-    public Material calcRafters(Material material)
+    public int calcRafters()
     {
-        Material newMaterial = material;
-        for (int i = 0; i < materialList.size(); i++)
-        {
-            //Tilføj et spær til StykListen
-        }
-        //den går igennem restSpær gennem, hvis der er 55, sæt et spær og minus 45
+        int lengthMM = getLENGTH();
+        //Der er 60 cm mellem hvert spær, og ca. 55 cm fra inderside til inderside af spærene
+        int distanceBetweenRafters = 60;
 
-        return newMaterial;
+        List<Integer> rafters = new ArrayList<>();
+
+        int totalLength = 0;
+
+        // Brug for-each-løkke til at tilføje spær og beregne længde der er tilbage
+        for (int i = 0; totalLength < lengthMM; i++) {
+            rafters.add(i);
+            totalLength += distanceBetweenRafters;
+        }
+
+        // Antallet af spær er størrelsen af listen
+        return rafters.size();
+
     }
 
     public int getHEIGHT()
