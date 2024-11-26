@@ -7,6 +7,7 @@ import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -25,7 +26,7 @@ public class OrderController
     }
 
 
-    private static void createQuery(Context ctx, ConnectionPool dbConnection)
+    private static void createQuery(Context ctx, ConnectionPool pool)
     {
         String carportWidthString = ctx.formParam("chooseWidth");
         String carportHeightString = ctx.formParam("chooseHeight");
@@ -60,29 +61,36 @@ public class OrderController
         //validatePostalCode(ctx, "choosePostalCode");
 
         // TODO: Oprette kundens ordre i 'orders'tabellen
-        int customerId = 0;
-        int carportId = 0;
+        String carportId = "";
         int salesPersonId = 0;
         OrderStatus status = OrderStatus.NOT_PAID;
         RoofType roofType = RoofType.FLAT;
-        String description = "";
+
+
 
         // TODO: check at kunden har valgt mål til redskabsrummet
         boolean hasShed = true;
 
         try
         {
+            // populates accounts
             Account account = ctx.sessionAttribute("currentAccount");
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
+            int accountID = AccountMapper.createAccount(role, username, telephone, email, pool);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
 
+            // populate addresses
+
+            // calculates posts
+            //MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
+            // resten af styklisten her
 
 
+
+            // populates orders
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-
-            OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
+            OrderMapper.createQueryInOrders(carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
+                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
