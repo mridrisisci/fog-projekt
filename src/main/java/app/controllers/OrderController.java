@@ -44,7 +44,8 @@ public class OrderController
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
-        String postalCode = ctx.formParam("choosePostalCode");
+        String postalCodeString = ctx.formParam("choosePostalCode");
+        int postalCode = Integer.parseInt(postalCodeString);
         String city = ctx.formParam("chooseCity");
         String telephoneString = ctx.formParam("choosePhoneNumber"); //
         int telephone = Integer.parseInt(telephoneString);
@@ -74,22 +75,20 @@ public class OrderController
         try
         {
             // populates accounts
-            Account account = ctx.sessionAttribute("currentAccount");
             int accountID = AccountMapper.createAccount(role, username, telephone, email, pool);
-            ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
-
             // populate addresses
-
+            int cityID = AccountMapper.createRecordInCities(city, pool);
+            int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
+            AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, accountID, pool);
+            ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
             // calculates posts
             //MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
             // resten af styklisten her
 
-
-
             // populates orders
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            OrderMapper.createQueryInOrders(carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
+            OrderMapper.createQueryInOrders(carportId, salesPersonId, status.toString(), orderPlaced,
                 carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
             ctx.render("createquery.html");
         } catch (DatabaseException e)

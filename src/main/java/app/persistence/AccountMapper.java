@@ -10,15 +10,19 @@ import java.util.List;
 public class AccountMapper
 {
 
-    public static int createRecordInAddresses(String address, ConnectionPool pool) throws DatabaseException
+    public static int createRecordInAddresses(int cityID, int postalCodeID, String address, int accountID, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "INSERT INTO addresses (address) VALUES (?)";
+        String sql = "INSERT INTO addresses (city_id, postal_code_id, address, account_id) VALUES (?,?,?,?)";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
-            ps.setString(1, address);
+            ps.setInt(1, cityID);
+            ps.setInt(2, postalCodeID);
+            ps.setString(3, address);
+            ps.setInt(4, accountID);
+
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
