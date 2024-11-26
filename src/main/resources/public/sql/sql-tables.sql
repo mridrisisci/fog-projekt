@@ -9,10 +9,11 @@ DROP TABLE IF EXISTS public.cities CASCADE;
 DROP TABLE IF EXISTS public.orders CASCADE;
 DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
-DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
+DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
--- Old table no longer used
+-- Old tables no longer used
 DROP TABLE IF EXISTS public.material_variants CASCADE;
+DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
@@ -20,6 +21,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
     account_id serial NOT NULL,
     role character varying(11) NOT NULL,
     username character varying(64) NOT NULL,
+    email character varying(100),
     password character varying(100),
     telephone integer,
     addresses_id integer NOT NULL,
@@ -126,15 +128,6 @@ ALTER TABLE public.orders
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.orders_materials
-    ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (orders_order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
 
 -- Insert data into materials
 INSERT INTO public.materials (name, unit, price, length, height, width, description)
