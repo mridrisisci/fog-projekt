@@ -53,15 +53,15 @@ public class OrderController
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
 
-
-        // TODO: check at form-parameetrene ikke er null
-
-
+        // TODO: Færdiggør valideringsmetoderne
         //validatePhoneNumber(ctx, "choosePhoneNumber");
         //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: Oprette kundens ordre i 'orders'tabellen
+        // TODO: Opret noget modularitet (opdel metoden lidt?)
+        // TODO: Fiks fejl i DB mht. en constraint i addresses. (så de 3 tabeller kan fyldes ud)
+        // TODO: tag stilling til validateParams()
+
         String carportId = "";
         int salesPersonId = 0;
         OrderStatus status = OrderStatus.NOT_PAID;
@@ -69,7 +69,6 @@ public class OrderController
 
 
 
-        // TODO: check at kunden har valgt mål til redskabsrummet
         boolean hasShed = true;
 
         try
