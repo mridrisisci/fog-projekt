@@ -79,8 +79,9 @@ public class OrderController
             int accountID = AccountMapper.createAccount(role, username, telephone, email, pool);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
 
-            int[] quantity = MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
-            MaterialMapper.createMaterialList(quantity, pool);
+            //TODO: Laver fejl hvis underlinjen ikke er udkommenteret
+            //int[] quantity = MaterialMapper.getPosts(Carport carport, pool);
+            MaterialMapper.createPickList(pool);
 
 
 
