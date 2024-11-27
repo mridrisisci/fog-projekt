@@ -6,6 +6,7 @@ autonumber
 Actor Kunde
 participant View as V
 participant "OrderController.createQuery()" as C
+participant "OrderController.createPickList()" as C2
 participant "OrderMapper.getPickList()" as M
 participant DB
 participant Calculator
@@ -16,18 +17,19 @@ V -> V: Input valideres i formen
 activate V
 V -> C: POST request til /createquery
 activate C
-C -> Calculator: Beregner materialer (kaster height + width)
-activate Calculator
-Calculator -> C: Returnerer X-quanttity af X-materiale
+C -> C2: kaster height + width
+activate C2
+C2 -> Calculator: kaster height + width
+Calculator -> C2: Returnerer X-quanttity af X-materiale
 deactivate Calculator
-C -> M: Kaster (type + quantity) til mapperen
+C2 -> M: Kaster (type + quantity) til mapperen
 activate M
 M -> DB: eksekverer SQL (Mapper et Material-objekt)
 DB -> M: returnerer materiale
-M -> C: returnerer material styklisten
-M -> C: kaster db-exception
+M -> C2: returnerer material styklisten
+M -> C2: kaster db-exception
 deactivate M
-C -> C: griber sql-exception
+C2 -> C2: griber sql-exception
 
 deactivate V
 @enduml

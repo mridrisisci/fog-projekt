@@ -16,14 +16,14 @@ V -> C: knappen sender en POST request til /calcBOM
 activate C
 C -> Calculator: kaster (height + width)
 activate Calculator
-Calculator -> C: Returnerer x-Quantity af alt materiale
+Calculator -> C: Returnerer x-Quantity + length af alt materiale
 deactivate Calculator
 C -> M: kaster orderId videre til mapperen
 activate M
 C -> M: Kaster (quantity + type)
 M -> DB: eksekverer SQL
 activate DB
-DB -> M: Reeturnerer material
+DB -> M: Reeturnerer data om materiale
 deactivate DB
 M -> C: Mapper et material-objekt
 M -> C: Returnerer en materialeliste

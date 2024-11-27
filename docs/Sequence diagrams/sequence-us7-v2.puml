@@ -1,0 +1,21 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skinparam backgroundColor #FEFEFE
+
+actor Kunde
+actor Sælger
+participant View as V
+participant "OrderController.payForOrder()" as C
+participant "OrderController.payForOrder()" as C2
+participant DB
+
+
+Kunde -> V: Kunde har accepteret sit pristilbud
+V -> C: GET request til payfororder.html
+activate V
+C -> C2:
+activate C
+deactivate V
+
+@enduml
