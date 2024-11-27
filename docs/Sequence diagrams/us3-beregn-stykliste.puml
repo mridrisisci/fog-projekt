@@ -21,7 +21,7 @@ C -> M: Kaster (length + quantity) til mapperen
 activate M
 M -> DB: eksekverer SQL
 DB -> M: returnerer materiale
-M -> C: returnerer carport-objekt / mapper styklisten
+M -> C: returnerer material styklisten
 M -> C: kaster db-exception
 deactivate M
 C -> C: griber sql-exception
