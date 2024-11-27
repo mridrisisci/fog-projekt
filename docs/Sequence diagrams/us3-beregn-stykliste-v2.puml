@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor Sælger
+participant View as V
+participant Controller as C
+participant Mapper as M
+participant DB
+participant Calculator
+
+Sælger -> V: S har kigget på en forespørgsel og trykker "beregn stykliste"
+activate V
+V -> C: knappen sender en POST request til /calcBOM
+activate C
+C -> Calculator: kaster (height + width)
+activate Calculator
+Calculator -> C: Returnerer x-Quantity af alt materiale
+deactivate Calculator
+C -> M: kaster orderId videre til mapperen
+activate M
+C -> M: Kaster (quantity + type)
+M -> DB: eksekverer SQL
+activate DB
+DB -> M: Reeturnerer material
+deactivate DB
+M -> C: Mapper et material-objekt
+M -> C: Returnerer en materialeliste
+M -> C : kaster sql-exceptions
+deactivate M
+C -> C: Grib sql-exceptionss
+C -> V: renderer en bekræftelsesbesked "tilbud er sendt"
+deactivate C
+
+
+deactivate V
+@enduml
