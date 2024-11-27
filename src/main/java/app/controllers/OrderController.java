@@ -1,9 +1,6 @@
 package app.controllers;
 
-import app.entities.Account;
-import app.entities.Order;
-import app.entities.OrderStatus;
-import app.entities.RoofType;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
@@ -77,12 +74,11 @@ public class OrderController
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
 
 
-
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
-            OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
+            OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
+                    carportHeight, carportWidth, hasShed, roofType.toString(), dbConnection);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
@@ -91,6 +87,22 @@ public class OrderController
         {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
+    // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
+    // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+    private static void createCarportPrice(ConnectionPool connectionPool)
+    {
+        //TODO: skal have fat i et orderID fra frontend, muligvis som et thymeleaf sessionattribute?
+        int orderID = 0;
+
+        //TODO: kald OrderMapper metode der giver data til et carport objekt
+
+        //instantiere carport objekt med data fra formular
+        Carport carport = OrderMapper.getCarportByOrderID(orderID, connectionPool);
+
     }
 
     private static boolean validatePostalCode(Context ctx, String postalCode)
@@ -136,6 +148,7 @@ public class OrderController
         }
         return false;
     }
+
     private static boolean validateParams(String... params)
     {
         for (String p : params)
