@@ -93,7 +93,7 @@ public class OrderController
     // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
     // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-    private static void createCarportPrice(ConnectionPool connectionPool)
+    private static void createCarportPrice(Context ctx, ConnectionPool connectionPool)
     {
         //TODO: skal have fat i et orderID fra frontend, muligvis som et thymeleaf sessionattribute?
         int orderID = 0;
@@ -101,7 +101,12 @@ public class OrderController
         //TODO: kald OrderMapper metode der giver data til et carport objekt
 
         //instantiere carport objekt med data fra formular
-        Carport carport = OrderMapper.getCarportByOrderID(orderID, connectionPool);
+        try{
+            Carport carport = OrderMapper.getCarportByOrderID(orderID, connectionPool);
+
+        } catch (DatabaseException e){
+            ctx.attribute("message", e.getMessage());
+        }
 
     }
 
