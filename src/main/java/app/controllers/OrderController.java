@@ -55,9 +55,9 @@ public class OrderController
         // TODO: check at form-parameetrene ikke er null
 
 
-        //validatePhoneNumber(ctx, "choosePhoneNumber");
-        //validateEmail(ctx, "chooseEmail");
-        //validatePostalCode(ctx, "choosePostalCode");
+        validatePhoneNumber(ctx, "choosePhoneNumber");
+        validateEmail(ctx, "chooseEmail");
+        validatePostalCode(ctx, "choosePostalCode");
 
         // TODO: Oprette kundens ordre i 'orders'tabellen
         int customerId = 0;

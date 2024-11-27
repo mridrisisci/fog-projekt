@@ -8,7 +8,7 @@ participant View as V
 participant Controller as C
 participant Mapper as M
 participant DB
-
+participant Calculator
 
 Kunde -> V: Kd har udfyldt formularen og oprettet en forespørgsel
 Kunde -> V: /createquery ruten tager imod height/width
@@ -16,16 +16,18 @@ V -> V: Input valideres i formen
 activate V
 V -> C: POST request til /createquery
 activate C
-C -> C: Beregner materialer (length + quantity)
-C -> M: Kaster (length + quantity) til mapperen
+C -> Calculator: Beregner materialer (kaster height + width)
+activate Calculator
+Calculator -> C: Returnerer X-quanttity af X-materiale
+deactivate Calculator
+C -> M: Kaster (type + quantity) til mapperen
 activate M
-M -> DB: eksekverer SQL
+M -> DB: eksekverer SQL (Mapper et Material-objekt)
 DB -> M: returnerer materiale
 M -> C: returnerer material styklisten
 M -> C: kaster db-exception
 deactivate M
 C -> C: griber sql-exception
-C -> V: Renderer "materialelist.html"
 
 deactivate V
 @enduml
