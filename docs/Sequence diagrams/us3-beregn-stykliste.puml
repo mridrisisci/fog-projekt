@@ -12,18 +12,18 @@ participant DB
 
 Kunde -> V: Kd har udfyldt formularen og oprettet en forespørgsel
 Kunde -> V: /createquery ruten tager imod height/width
-V -> V: Input valideres
+V -> V: Input valideres i formen
 activate V
 V -> C: POST request til /createquery
 activate C
-C -> C: Kalder calcPosts()
-C -> C: Kalder calcBeams() osv..
-M -> DB: height/width oprettes i 'orders'
+C -> C: Beregner materialer (length + quantity)
+C -> M: Kaster (length + quantity) til mapperen
 activate M
-M -> M: createMaterialList() henter materialer fra db
-M -> M: createMaterialList returnerer en materialeliste
+M -> DB: eksekverer SQL
+DB -> M: returnerer materiale
+M -> C: kaster db-exception
+C -> C: griber sql-exception
+C -> V: Renderer "materialelist.html"
 
-
-
-V -> C:
+deactivate V
 @enduml
