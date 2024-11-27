@@ -18,7 +18,7 @@ public class OrderMapper
 
         //TODO: fix hasShed
         String sql = "INSERT INTO orders (account_id, carport_id, salesperson_id, status, " +
-                "order_placed, height, width, hasShed, roof_type, account_id) " +
+                "order_placed, height, width, hasShed, roof_type) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
@@ -92,10 +92,11 @@ public class OrderMapper
             {
                 int width = rs.getInt("width");
                 int length = rs.getInt("length");
+                //TODO: ResultSet kan ikke aflæse booleans fra databasen?
                 boolean hasShed = rs.getBoolean("hasShed");
                 //TODO: lav String om til RoofType objekt
 //                RoofType roofType = rs.getString("roof_type");
-                carport = new Carport(roofType, hasShed, length, width);
+                carport = new Carport(hasShed, length, width);
             }
 
             int rowsAffected = ps.executeUpdate();
