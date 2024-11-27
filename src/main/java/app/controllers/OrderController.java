@@ -70,7 +70,7 @@ public class OrderController
 
 
         boolean hasShed = true;
-
+        // TODO: Lav carport-objekt efter ordren er oprettet
         try
         {
             // populates accounts
