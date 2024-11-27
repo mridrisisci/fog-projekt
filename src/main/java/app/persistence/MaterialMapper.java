@@ -54,8 +54,85 @@ public class MaterialMapper
         return pickList;
     }
 
+
     //TODO: MANGLER TEST!
-    public static Material calcSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id = 10;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = carport.calcPosts();
+        int materialID;
+        int length;
+        Material posts = null;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                length = rs.getInt("length");
+                posts = new Material(materialID, name, description, unit, quantity, length);
+            }
+            return posts;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    //TODO: MANGLER TEST!
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getBeams(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (8,9) AND length = ?;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = carport.calcBeams()[0];
+        int length = carport.calcBeams()[1];
+        int materialID;
+        Material beams = null;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, length);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                length = rs.getInt("length");
+                materialID = rs.getInt("material_id");
+                beams = new Material(materialID, name, description, unit, quantity, length);
+            }
+            return beams;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    //TODO: MANGLER TEST!
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
 
@@ -75,7 +152,6 @@ public class MaterialMapper
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                // hvordan checker vi typen af et materiale?
                 name = rs.getString("name");
                 unit = rs.getString("unit");
                 description = rs.getString("description");
@@ -93,7 +169,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material calcSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
 
@@ -113,7 +190,6 @@ public class MaterialMapper
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                // hvordan checker vi typen af et materiale?
                 name = rs.getString("name");
                 unit = rs.getString("unit");
                 description = rs.getString("description");
@@ -131,7 +207,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material calcFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
 
@@ -151,7 +228,6 @@ public class MaterialMapper
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                // hvordan checker vi typen af et materiale?
                 name = rs.getString("name");
                 unit = rs.getString("unit");
                 description = rs.getString("description");
@@ -169,7 +245,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material calcFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
 
@@ -189,7 +266,6 @@ public class MaterialMapper
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                // hvordan checker vi typen af et materiale?
                 name = rs.getString("name");
                 unit = rs.getString("unit");
                 description = rs.getString("description");
@@ -198,6 +274,43 @@ public class MaterialMapper
                 underFasciaBoard = new Material(materialID, name, description, unit, quantity, length);
             }
             return underFasciaBoard;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    //TODO: MANGLER TEST!
+    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
+    public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id = 9;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = carport.calcRafters();
+        int length;
+        int materialID;
+        Material rafters = null;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                length = rs.getInt("length");
+                materialID = rs.getInt("material_id");
+                rafters = new Material(materialID, name, description, unit, quantity, length);
+            }
+            return rafters;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
