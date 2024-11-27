@@ -19,6 +19,8 @@ public class MaterialController
 
 
     // Eks. på CalcPosts()
+    //TODO:Metoden er udkommenteret da den fejler - skal fikses
+    /*
     public static int calcPosts(Carport carport, Context ctx, ConnectionPool pool)
     {
 
@@ -39,7 +41,7 @@ public class MaterialController
 
 
         //return POSTS; // antal posts, der skal hentes vha. mapperen
-    }
+    }*/
 
 
 }
