@@ -5,8 +5,8 @@ autonumber
 
 Actor Kunde
 participant View as V
-participant Controller as C
-participant Mapper as M
+participant "OrderController.createQuery()" as C
+participant "OrderMapper.getPickList()" as M
 participant DB
 participant Calculator
 

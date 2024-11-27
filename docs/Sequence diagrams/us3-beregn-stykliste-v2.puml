@@ -5,8 +5,8 @@ autonumber
 
 Actor Sælger
 participant View as V
-participant Controller as C
-participant Mapper as M
+participant "OrderController.calcBOM()" as C
+participant "OrderMapper.getBOM()" as M
 participant DB
 participant Calculator
 
