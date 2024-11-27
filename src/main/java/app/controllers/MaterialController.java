@@ -4,6 +4,8 @@ import app.entities.Carport;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
+import app.persistence.OrderMapper;
+import app.utilities.Calculator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -18,15 +20,25 @@ public class MaterialController
     }
 
 
+    public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
+        OrderMapper orderMapper = new OrderMapper();
+        int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(order_ID, pool);
+        // kaste højde + bredde videre til calculator
+        // Calculator.calcBeams(intx, inty)
+        int quantity;
+        int length;
+
+        return lengthAndWidth;
+    }
+
     // Eks. på CalcPosts()
     //TODO:Metoden er udkommenteret da den fejler - skal fikses
-    /*
-    public static int calcPosts(Carport carport, Context ctx, ConnectionPool pool)
-    {
 
+    public static int getNumberOfPosts(Carport carport, Context ctx, ConnectionPool pool)
+    {
         // TODO: Der skal nok testes lidt på tallene så vi sørger for mindst mulig spild af materiale
         // TODO: Evt. laves en unit test her lidt ala. det Andrës gruppe lavede i går ( calcOptimalWood() )
-        final int POSTS = carport.calcPosts(); //Skal hentes fra Carport calcPosts
+        final int POSTS = Calculator.calcPosts(carport);
 
         try
         {
@@ -41,7 +53,7 @@ public class MaterialController
 
 
         //return POSTS; // antal posts, der skal hentes vha. mapperen
-    }*/
+    }
 
 
 }
