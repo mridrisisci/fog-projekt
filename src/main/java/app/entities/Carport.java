@@ -103,7 +103,7 @@ public class Carport
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern på remme
-    public int[] calcLengthFasciaBoard()
+    public int[] calcSidesFasciaBoard(int matID)
     {
 
         int[] fascia = new int[2];
@@ -147,7 +147,7 @@ public class Carport
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern til for- og bagside
-    public int[] calcWidthFasciaBoard()
+    public int[] calcFrontAndBackFasciaBoard()
     {
         int[] fascia = new int[2];
         int quantity = 0;
