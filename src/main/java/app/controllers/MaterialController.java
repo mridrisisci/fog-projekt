@@ -22,7 +22,9 @@ public class MaterialController
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
         OrderMapper orderMapper = new OrderMapper();
-        int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(order_ID, pool);
+        //"new int[2]" er bare lavet så lenghtAndWidth = OrderMapper.getLength... ikke er færdig
+        int[] lengthAndWidth = new int[2];
+        // int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(order_ID, pool);
         // kaste højde + bredde videre til calculator
         // Calculator.calcBeams(intx, inty)
         int quantity;
