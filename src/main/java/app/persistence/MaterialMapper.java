@@ -3,6 +3,7 @@ package app.persistence;
 import app.entities.Carport;
 import app.entities.Material;
 import app.exceptions.DatabaseException;
+import app.utilities.Calculator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcPosts();
+        int quantity = Calculator.calcPosts(carport);
         int materialID;
         int length;
         Material posts = null;
@@ -101,8 +102,8 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcBeams()[0];
-        int length = carport.calcBeams()[1];
+        int quantity = Calculator.calcBeams(carport)[0];
+        int length = Calculator.calcBeams(carport)[1];
         int materialID;
         Material beams = null;
 
@@ -130,6 +131,7 @@ public class MaterialMapper
 
     }
 
+    //TODO: LAVE CARPORT OBJEKT når der er ny ordre
     //TODO: MANGLER TEST!
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
@@ -139,8 +141,8 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcSidesFasciaBoard()[0];
-        int length = carport.calcSidesFasciaBoard()[1];
+        int quantity = Calculator.calcSidesFasciaBoard(carport)[0];
+        int length = Calculator.calcSidesFasciaBoard(carport)[1];
         int materialID;
         Material underFasciaBoard = null;
 
@@ -177,8 +179,8 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcSidesFasciaBoard()[0];
-        int length = carport.calcSidesFasciaBoard()[1];
+        int quantity = Calculator.calcSidesFasciaBoard(carport)[0];
+        int length = Calculator.calcSidesFasciaBoard(carport)[1];
         int materialID;
         Material underFasciaBoard = null;
 
@@ -215,8 +217,8 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcFrontAndBackFasciaBoard()[0];
-        int length = carport.calcFrontAndBackFasciaBoard()[1];
+        int quantity = Calculator.calcFrontAndBackFasciaBoard(carport)[0];
+        int length = Calculator.calcFrontAndBackFasciaBoard(carport)[1];
         int materialID;
         Material underFasciaBoard = null;
 
@@ -253,8 +255,8 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcFrontAndBackFasciaBoard()[0];
-        int length = carport.calcFrontAndBackFasciaBoard()[1];
+        int quantity = Calculator.calcFrontAndBackFasciaBoard(carport)[0];
+        int length = Calculator.calcFrontAndBackFasciaBoard(carport)[1];
         int materialID;
         Material underFasciaBoard = null;
 
@@ -291,7 +293,7 @@ public class MaterialMapper
         String name;
         String unit;
         String description;
-        int quantity = carport.calcRafters();
+        int quantity = Calculator.calcRafters(carport);
         int length;
         int materialID;
         Material rafters = null;
