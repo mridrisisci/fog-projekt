@@ -7,30 +7,34 @@ import java.util.List;
 
 public class Carport
 {
-    private final int HEIGHT;
+    // skal nok først bruges til 3D
+//    private final int HEIGHT;
     private final int WIDTH;
     private final int LENGTH;
     private boolean hasShed;
     private RoofType Rooftype;
     private List<Material> materialList = new ArrayList<>();
 
-    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT)
+    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
         this.materialList = materialList;
         Rooftype = rooftype;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
     }
-    public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT)
+    public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
-        this.materialList = materialList;
         Rooftype = rooftype;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
+    }
+    public Carport(boolean hasShed, int LENGTH, int WIDTH)
+    {
+        this.hasShed = hasShed;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
     }
 
     public int calcCarportMaterial()
