@@ -4,18 +4,22 @@
 skinparam backgroundColor #FEFEFE
 
 actor Kunde
-actor Sælger
 participant View as V
 participant "OrderController.payForOrder()" as C
+participant SendGrid as SG
 participant "OrderController.payForOrder()" as C2
-participant DB
 
 
-Kunde -> V: Kunde har accepteret sit pristilbud
-V -> C: GET request til payfororder.html
+Kunde -> V: Kunde trykker på link i mailen
+Kunde -> V: Kunde accepterer sit pristilbud
 activate V
-C -> C2:
+V -> C: GET request til payfororder.html
 activate C
+C -> SG: Send email med stykliste
+activate SG
+SG -> C: Sender styklisten
+C -> V: renderer styklisten på html'en
+C -> V: success besked på html'en
 deactivate V
 
 @enduml
