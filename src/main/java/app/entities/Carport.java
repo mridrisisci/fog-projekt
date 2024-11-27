@@ -23,6 +23,15 @@ public class Carport
         this.WIDTH = WIDTH;
         this.HEIGHT = HEIGHT;
     }
+    public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT)
+    {
+        this.materialList = materialList;
+        Rooftype = rooftype;
+        this.hasShed = hasShed;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
+    }
 
     public int calcCarportMaterial()
     {
