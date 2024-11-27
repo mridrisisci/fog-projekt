@@ -7,6 +7,21 @@ import java.util.List;
 
 public class Calculator
 {
+    public int calcCarportMaterial()
+    {
+        return 0;
+    }
+
+    public void calcCarportPrice()
+    {
+        //postsPrice = materialMapper.getType("stolpe").getPrice() * calcPosts[].get(0);
+
+        //beamPrice = materialMapper.getLength(calcBeams[].get(1).getPrice() * calcBeams[].get(0);
+    }
+
+    /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
+     * så skal der være en metode der beregner salgspris
+     * en der beregner dækningspris*/
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stolpe
