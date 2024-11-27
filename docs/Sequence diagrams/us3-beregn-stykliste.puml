@@ -18,18 +18,22 @@ activate V
 V -> C: POST request til /createquery
 activate C
 C -> C2: kaster height + width
+deactivate C
 activate C2
 C2 -> Calculator: kaster height + width
 Calculator -> C2: Returnerer X-quanttity af X-materiale
 deactivate Calculator
 C2 -> M: Kaster (type + quantity) til mapperen
 activate M
-M -> DB: eksekverer SQL (Mapper et Material-objekt)
-DB -> M: returnerer materiale
+M -> DB: eksekverer SQL
+DB -> M: returnerer materialedata
+M -> C2: (Mapper et Material-objekt)
 M -> C2: returnerer material styklisten
 M -> C2: kaster db-exception
 deactivate M
 C2 -> C2: griber sql-exception
+
+deactivate C2
 
 deactivate V
 @enduml
