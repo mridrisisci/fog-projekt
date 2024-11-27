@@ -25,7 +25,7 @@ public class Calculator
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stolpe
-    public int calcPosts(Carport carport)
+    public static int calcPosts(Carport carport)
     {
         //Antal stolper
         int quantity;
@@ -50,7 +50,7 @@ public class Calculator
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Remme
-    public int[] calcBeams(Carport carport)
+    public static int[] calcBeams(Carport carport)
     {
         int[] beams = new int[2];
         int quantity = 0;
@@ -88,7 +88,7 @@ public class Calculator
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern på remme
-    public int[] calcSidesFasciaBoard(Carport carport)
+    public static int[] calcSidesFasciaBoard(Carport carport)
     {
 
         int[] fascia = new int[2];
@@ -132,7 +132,7 @@ public class Calculator
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern til for- og bagside
-    public int[] calcFrontAndBackFasciaBoard(Carport carport)
+    public static int[] calcFrontAndBackFasciaBoard(Carport carport)
     {
         int[] fascia = new int[2];
         int quantity = 0;
@@ -169,7 +169,7 @@ public class Calculator
     }
 
     //Spær
-    public int calcRafters(Carport carport)
+    public static int calcRafters(Carport carport)
     {
         int lengthMM = carport.getLENGTH();
         //Der er 60 cm mellem hvert spær, og ca. 55 cm fra inderside til inderside af spærene
