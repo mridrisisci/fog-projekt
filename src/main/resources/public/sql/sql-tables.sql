@@ -80,16 +80,17 @@ CREATE TABLE IF NOT EXISTS public.orders
 
 CREATE TABLE IF NOT EXISTS public.orders_materials
 (
-    orders_order_id serial NOT NULL,
+    orders_materials_id serial NOT NULL,
+    order_id integer NOT NULL,
     material_id integer NOT NULL,
     type character varying(50),
     quantity integer NOT NULL,
-    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_order_id, material_id),
+    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
     CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
         REFERENCES public.materials (material_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE,
-    CONSTRAINT orders_materials_order_fk FOREIGN KEY (orders_order_id)
+    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
         REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
