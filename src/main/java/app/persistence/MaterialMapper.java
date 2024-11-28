@@ -339,7 +339,7 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id = 9;";
+        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 9;";
 
         String name;
         String unit;
@@ -347,6 +347,7 @@ public class MaterialMapper
         int quantity = Calculator.calcRafters(carport);
         int length;
         int materialID;
+        int price;
         Material rafters = null;
 
 
@@ -361,7 +362,8 @@ public class MaterialMapper
                 description = rs.getString("description");
                 length = rs.getInt("length");
                 materialID = rs.getInt("material_id");
-                rafters = new Material(materialID, name, description, unit, quantity, length);
+                price = rs.getInt("price");
+                rafters = new Material(materialID, name, description, price, unit, quantity, length);
             }
             return rafters;
         } catch (SQLException e)
