@@ -62,6 +62,7 @@ public class MaterialMapper
         pickList.add(getSideOverfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
+        pickList.add(getRafters(carport, pool));
 
         for (Material material : pickList)
         {
@@ -405,6 +406,8 @@ public class MaterialMapper
         }
 
     }
+
+
 
 
     public static Material getMaterial()
