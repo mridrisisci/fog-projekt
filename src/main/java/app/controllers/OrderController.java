@@ -20,6 +20,7 @@ public class OrderController
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
+        app.post("/getorder", ctx -> getOrderByID(ctx, dBConnection));
     }
 
 
@@ -86,6 +87,7 @@ public class OrderController
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
@@ -102,13 +104,16 @@ public class OrderController
         try
         {
             String orderID = ctx.formParam("orderID");
+            if (orderID == null || orderID.isEmpty()) {
+                throw new IllegalArgumentException("Order ID mangler.");
+            }
             order = OrderMapper.getOrderByID(Integer.parseInt(orderID), pool);
             ctx.attribute("getorder", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            // rener en html her?
+            ctx.render("kvittering.html");
         }
 
     }
