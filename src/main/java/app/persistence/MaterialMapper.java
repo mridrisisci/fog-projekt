@@ -51,10 +51,10 @@ public class MaterialMapper
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
     public static List<Material> createPickList(ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM public.orders_materials WHERE order_Id= ?;";
-
+        //String sql = "SELECT * FROM public.orders_materials WHERE order_Id= ?;";
 
         List<Material> pickList = new ArrayList<>();
+        //
         Carport carport = null;
         pickList.add(getPosts(carport, pool));
         pickList.add(getBeams(carport, pool));
@@ -62,6 +62,34 @@ public class MaterialMapper
         pickList.add(getSideOverfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
+
+        for (Material material : pickList) {
+            String sql = "INSERT INTO public.orders_materials WHERE order_Id= ?;";
+            int materialID = material.getMaterialID();
+            //TODO: orderID bliver ikke hentet nogle steder fra
+            int orderID = 10;
+            int quantity = material.getQuantity();
+            //TODO: Mangler at få fikset type
+            int type;
+
+            try (Connection connection = pool.getConnection();
+                 PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ps.setInt(1, orderID);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+
+                }
+            } catch (SQLException e)
+            {
+                System.out.println(e.getMessage());
+                throw new DatabaseException(e.getMessage());
+            }
+
+            System.out.println(material);
+        }
+
 
         return pickList;
     }
