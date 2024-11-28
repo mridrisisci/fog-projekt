@@ -1,13 +1,9 @@
 package app.controllers;
 
-import app.entities.Account;
-import app.entities.Order;
-import app.entities.OrderStatus;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
-import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -64,7 +60,7 @@ public class OrderController
 
         String carportId = "";
         int salesPersonId = 0;
-        OrderStatus status = OrderStatus.NOT_PAID;
+        String status = "NOT_PAID";
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
 
@@ -87,7 +83,7 @@ public class OrderController
             // populates orders
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            OrderMapper.createQueryInOrders(carportId, salesPersonId, status.toString(), orderPlaced,
+            OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)

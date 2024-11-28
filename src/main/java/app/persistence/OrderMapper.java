@@ -1,9 +1,7 @@
 package app.persistence;
 import app.entities.Order;
-import app.entities.OrderStatus;
 import app.exceptions.DatabaseException;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +46,9 @@ public class OrderMapper
 
     }
 
-    public static List<Order> getOrderByID(Timestamp timeStamp, OrderStatus status, ConnectionPool pool) throws DatabaseException
+    public static List<Order> getOrderByID(int orderID, Timestamp timeStamp, String status, String carportID, int price, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT (order_placed, status)";
+        String sql = "SELECT (order_placed, status) FROM orders";
 
         try (Connection connection = pool.getConnection();
         PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
@@ -61,8 +59,10 @@ public class OrderMapper
             {
                 timeStamp = rs.getTimestamp("order_placed");
                 status = rs.getString("status");
-                orders.add(new Order(timeStamp, status.toString()) );
+                price = rs.getInt("price");
+                orders.add(new Order(orderID, timeStamp, status, carportID, price) );
             }
+            return orders;
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
