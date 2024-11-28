@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     status character varying(10) NOT NULL,
     price integer,
     sales_price integer,
+    coverage_ratio_percentage integer,
     order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
     height integer NOT NULL,
