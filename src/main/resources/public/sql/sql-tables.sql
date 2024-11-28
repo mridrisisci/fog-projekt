@@ -83,9 +83,13 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
     orders_materials_id serial NOT NULL,
     order_id integer NOT NULL,
     material_id integer NOT NULL,
+    -- TODO tilføj NOT NULL til type, når vi har lavet logic for det
     type character varying(50),
     quantity integer NOT NULL,
     CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
+    --TODO tilføj denne CONSTRAIN når type logic er lavet.
+    -- Ideen er at et order_id, material_id og type forekommer unikt i tabellen
+    -- CONSTRAINT orders_materials_unique UNIQUE (order_id, material_id, type),
     CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
         REFERENCES public.materials (material_id) MATCH SIMPLE
         ON UPDATE CASCADE
