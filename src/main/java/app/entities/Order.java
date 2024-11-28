@@ -26,6 +26,12 @@ public class Order
         this.status = status;
     }
 
+    public Order(Timestamp orderPlaced, OrderStatus status)
+    {
+        TIME_PLACED = orderPlaced;
+        this.status = status;
+    }
+
 
 
     public boolean isIS_ASSIGNED()

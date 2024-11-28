@@ -80,7 +80,6 @@ public class OrderController
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
             int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
             int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
-            ctx.attribute("message", "Dit pristilbud er sendt.");
             // calculates posts
             //MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
             // resten af styklisten her
@@ -90,7 +89,7 @@ public class OrderController
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             OrderMapper.createQueryInOrders(carportId, salesPersonId, status.toString(), orderPlaced,
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
-            ctx.render("createquery.html");
+            ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
