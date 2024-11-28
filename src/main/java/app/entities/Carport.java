@@ -13,6 +13,8 @@ public class Carport
     private final int LENGTH;
     private boolean hasShed;
     private RoofType Rooftype;
+    private int price;
+    private int salesPrice;
     private List<Material> materialList = new ArrayList<>();
 
     public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
@@ -23,6 +25,7 @@ public class Carport
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
     }
+
     public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
         Rooftype = rooftype;
@@ -30,21 +33,12 @@ public class Carport
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
     }
+
     public Carport(boolean hasShed, int LENGTH, int WIDTH)
     {
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
-    }
-
-    public int calcCarportMaterial()
-    {
-        return 0;
-    }
-
-    public void calcCarportPrice()
-    {
-
     }
 
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
@@ -206,6 +200,34 @@ public class Carport
         return LENGTH;
     }
 
+    public int getSalesPrice()
+    {
+        return salesPrice;
+    }
+
+    public int getPrice()
+    {
+        return price;
+    }
+    public void setPrice(int price)
+    {
+        this.price = price;
+    }
+
+    public void setSalesPrice(int salesPrice)
+    {
+        this.salesPrice = salesPrice;
+    }
+
+    public int calcCarportMaterial()
+    {
+        return 0;
+    }
+
+    public void calcCarportPrice()
+    {
+
+    }
     public boolean isHasShed()
     {
         return hasShed;
