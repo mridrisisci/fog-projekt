@@ -29,6 +29,12 @@ public class Calculator
         return totalPrice;
     }
 
+    public static int calcSalesPrice(int pickListPrice, double coverageRatio)
+    {
+        double salesPrice = (1+coverageRatio)*pickListPrice;
+        return (int) salesPrice;
+    }
+
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stolpe
     public static int calcPosts(Carport carport)
