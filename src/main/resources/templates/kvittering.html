@@ -26,8 +26,13 @@
                     <div class="col-md-6">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${order.ORDER_ID}"> Ordrenummer: </h5>
+                            <p class="card-text"> Navn: <span th:text="${order.PRICE}"> Pris: </span>  </p>
                             <p class="card-text"> Navn: <span th:text="${order.TIME_PLACED}"> Bestilling gennemført: </span>  </p>
-                            <p class="card-text"> Navn: <span th:text="${order.status}"> Status på din ordre: :</span>  </p>
+                            <p class="card-text"> Navn: <span th:text="${order.status}"> Status på din ordre: </span>  </p>
+                            <form method="post" action="/getorder">
+                                <input type="hidden" name="orderID" th:value="${order.ORDER_ID}">  <!-- Sends order id to controller-->
+                            </form>
+
                         </div>
                     </div>
     </div>

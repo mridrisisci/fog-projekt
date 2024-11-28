@@ -46,23 +46,30 @@ public class OrderMapper
 
     }
 
-    public static List<Order> getOrderByID(int orderID, Timestamp timeStamp, String status, String carportID, int price, ConnectionPool pool) throws DatabaseException
+    public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT (order_placed, status) FROM orders";
+        String sql = "SELECT order_placed, status, price, carport_id FROM orders WHERE order_id = ?";
 
+        Timestamp orderPlaced;
+        String status;
+        String carportID;
+        int price;
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+        PreparedStatement ps = connection.prepareStatement(sql))
         {
+            ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
-            List<Order> orders = new ArrayList<>();
-            while (rs.next())
+            if (rs.next())
             {
-                timeStamp = rs.getTimestamp("order_placed");
+                orderPlaced = rs.getTimestamp("order_placed");
                 status = rs.getString("status");
+                carportID = rs.getString("carport_id");
                 price = rs.getInt("price");
-                orders.add(new Order(orderID, timeStamp, status, carportID, price) );
+                return new Order(orderID, orderPlaced, status, carportID, price);
+            } else
+            {
+                throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
             }
-            return orders;
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());

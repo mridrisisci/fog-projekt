@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.entities.Order;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
@@ -60,7 +61,7 @@ public class OrderController
 
         String carportId = "";
         int salesPersonId = 0;
-        String status = "NOT_PAID";
+        String status = "Under behandling";
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
 
@@ -93,6 +94,23 @@ public class OrderController
         {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private static void getOrderByID(Context ctx, ConnectionPool pool)
+    {
+        Order order;
+        try
+        {
+            String orderID = ctx.formParam("orderID");
+            order = OrderMapper.getOrderByID(Integer.parseInt(orderID), pool);
+            ctx.attribute("getorder", order);
+            ctx.render("/kvittering.html");
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            // rener en html her?
+        }
+
     }
 
     private static boolean validatePostalCode(Context ctx, String postalCode)
