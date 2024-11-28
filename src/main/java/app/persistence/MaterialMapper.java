@@ -90,10 +90,10 @@ public class MaterialMapper
         return pickList;
     }
 
-    public static int insertPickListPrice(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int updatePickListPrice(int orderID, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "INSERT INTO public.orders(price) WHERE order_id = ? VALUES(?);";
+        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
 
         List<Material> pickList = createPickList(orderID, pool);
         int pickListPrice = Calculator.calcPickListPrice(pickList);
@@ -101,8 +101,8 @@ public class MaterialMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderID);
-            ps.setInt(2, pickListPrice);
+            ps.setInt(1, pickListPrice);
+            ps.setInt(2, orderID);
 
         } catch (SQLException e)
         {
