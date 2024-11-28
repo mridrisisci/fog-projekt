@@ -12,19 +12,17 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static void createQueryInOrders(int accountID, int carportID, int salesPersonID, String status, Timestamp orderPlaced,
-                                           int height, int width, boolean hasShed, String roofType, ConnectionPool pool) throws DatabaseException
-    {
+    public static int createQueryInOrders(int accountID, int carportID, int salesPersonID, String status, Timestamp orderPlaced,
+                                          int height, int width, boolean hasShed, String roofType, ConnectionPool pool) throws DatabaseException {
 
-        //TODO: fix hasShed
+        // Updated SQL to use RETURNING to fetch the generated order_id
         String sql = "INSERT INTO orders (account_id, carport_id, salesperson_id, status, " +
                 "order_placed, height, width, hasShed, roof_type) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?);";
-
+                "VALUES (?,?,?,?,?,?,?,?,?) RETURNING order_id;";
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
             ps.setInt(1, accountID);
             ps.setInt(2, carportID);
             ps.setInt(3, salesPersonID);
@@ -35,19 +33,21 @@ public class OrderMapper
             ps.setBoolean(8, hasShed);
             ps.setString(9, roofType);
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("fejl");
+            // Execute the query and retrieve the generated key
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Return the generated order_id
+                } else {
+                    throw new DatabaseException("Failed to retrieve order ID.");
+                }
             }
-        } catch (SQLException e)
-        {
+
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
-
-
     }
+
 
     public static Order getOrder()
     {
