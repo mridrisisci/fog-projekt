@@ -191,10 +191,10 @@ public class Carport
         return newMaterial;
     }
 
-    public int getHEIGHT()
-    {
-        return HEIGHT;
-    }
+//    public int getHEIGHT()
+//    {
+//        return HEIGHT;
+//    }
 
     public int getWIDTH()
     {
