@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
+    length integer NOT NULL,
     "hasShed" boolean,
     roof_type character varying(6) NOT NULL,
     account_id integer NOT NULL,
