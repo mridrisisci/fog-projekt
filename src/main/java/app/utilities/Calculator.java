@@ -228,6 +228,7 @@ public class Calculator
         int boardBolt; //Bræddebolt
         int squareWasher; //Firkantskive
 
+        //TODO: Gør så det ikke er hardcoded
         //Udregning af beslagskruer - vi har valgt at give en ekstra pakke med
         if (calcHardwareScrews(carport) <= 249)
         {
