@@ -51,10 +51,9 @@ public class MaterialMapper
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
     public static List<Material> createPickList(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        //String sql = "SELECT * FROM public.orders_materials WHERE order_Id= ?;";
-
         List<Material> pickList = new ArrayList<>();
-        //
+
+        //TODO: sørg for carport ikke er null
         Carport carport = null;
         pickList.add(getPosts(carport, pool));
         pickList.add(getBeams(carport, pool));
