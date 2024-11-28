@@ -29,12 +29,13 @@ public class Material
         this.getNumbersOfShedAddons = getNumbersOfShedAddons;
     }
 
-    public Material(int materialID, String materialName, String description, String unit, int quantity, int length)
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
+        this.purchasePrice = purchasePrice;
         this.length = length;
     }
 
