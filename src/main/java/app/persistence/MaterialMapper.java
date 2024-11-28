@@ -49,7 +49,7 @@ public class MaterialMapper
     }
 
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
-    public static List<Material> createPickList(ConnectionPool pool) throws DatabaseException
+    public static List<Material> createPickList(int orderID, ConnectionPool pool) throws DatabaseException
     {
         //String sql = "SELECT * FROM public.orders_materials WHERE order_Id= ?;";
 
@@ -63,31 +63,28 @@ public class MaterialMapper
         pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
 
-        for (Material material : pickList) {
-            String sql = "INSERT INTO public.orders_materials WHERE order_Id= ?;";
+        for (Material material : pickList)
+        {
+            String sql = "INSERT INTO public.orders_materials(material_id,quantity) WHERE order_id = ? VALUES(?,?);";
+
             int materialID = material.getMaterialID();
-            //TODO: orderID bliver ikke hentet nogle steder fra
-            int orderID = 10;
+            //TODO: orderID bliver ikke hentet nogle steder fra - endnu
             int quantity = material.getQuantity();
-            //TODO: Mangler at få fikset type
+            //TODO: Mangler at få fikset type i get-metoderne og denne metode
             int type;
 
             try (Connection connection = pool.getConnection();
                  PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ps.setInt(1, orderID);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next())
-                {
+                ps.setInt(2, materialID);
+                ps.setInt(3, quantity);
 
-                }
             } catch (SQLException e)
             {
                 System.out.println(e.getMessage());
                 throw new DatabaseException(e.getMessage());
             }
-
-            System.out.println(material);
         }
 
 
