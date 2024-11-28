@@ -21,7 +21,6 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
     }
 
-
     private static void createQuery(Context ctx, ConnectionPool dbConnection)
     {
         String carportWidthString = ctx.formParam("chooseWidth");
@@ -73,12 +72,12 @@ public class OrderController
             int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
 
-
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
-            OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
+            int orderID = OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
                     carportHeight, carportWidth, hasShed, roofType.toString(), dbConnection);
+            createCarport(orderID, ctx, dbConnection);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
@@ -93,20 +92,18 @@ public class OrderController
     // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
     // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-    private static void createCarportPrice(Context ctx, ConnectionPool connectionPool)
+    private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
     {
-        //TODO: skal have fat i et orderID fra frontend, muligvis som et thymeleaf sessionattribute?
-        int orderID = 0;
-
         //TODO: kald OrderMapper metode der giver data til et carport objekt
 
         //instantiere carport objekt med data fra formular
         try{
-            Carport carport = OrderMapper.getCarportByOrderID(orderID, connectionPool);
+            Carport carport = OrderMapper.getCarportByOrderID(orderID, dbConnection);
 
         } catch (DatabaseException e){
             ctx.attribute("message", e.getMessage());
         }
+
 
     }
 
