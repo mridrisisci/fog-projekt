@@ -179,7 +179,7 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
 
         String name;
         String unit;
@@ -187,6 +187,7 @@ public class MaterialMapper
         int quantity = Calculator.calcSidesFasciaBoard(carport)[0];
         int length = Calculator.calcSidesFasciaBoard(carport)[1];
         int materialID;
+        int price;
         Material underFasciaBoard = null;
 
 
@@ -202,7 +203,8 @@ public class MaterialMapper
                 description = rs.getString("description");
                 length = rs.getInt("length");
                 materialID = rs.getInt("material_id");
-                underFasciaBoard = new Material(materialID, name, description, unit, quantity, length);
+                price = rs.getInt("price");
+                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length);
             }
             return underFasciaBoard;
         } catch (SQLException e)
