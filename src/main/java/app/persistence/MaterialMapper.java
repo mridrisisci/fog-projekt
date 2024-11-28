@@ -87,8 +87,30 @@ public class MaterialMapper
             }
         }
 
-
         return pickList;
+    }
+
+    public static int insertPickListPrice(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "INSERT INTO public.orders(price) WHERE order_id = ? VALUES(?);";
+
+        List<Material> pickList = createPickList(orderID, pool);
+        int pickListPrice = Calculator.calcPickListPrice(pickList);
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ps.setInt(2, pickListPrice);
+
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return pickListPrice;
     }
 
 
