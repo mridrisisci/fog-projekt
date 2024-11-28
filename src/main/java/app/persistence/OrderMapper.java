@@ -4,6 +4,7 @@ import app.entities.Material;
 import app.entities.Order;
 import app.entities.OrderStatus;
 import app.exceptions.DatabaseException;
+import app.utilities.Calculator;
 
 import java.sql.*;
 import java.util.List;
@@ -79,6 +80,50 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static int getPickListPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int pickListPrice = 0;
+
+        String sql = "SELECT price FROM public.orders WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                pickListPrice = rs.getInt("price");
+            }
+            return pickListPrice;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static int insertSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int pickListPrice = getPickListPriceByOrderID(orderID, pool);
+        int salesPrice = pickListPrice
+
+        String sql = "INSERT INTO public.orders(sales_price) WHERE order_id = ? VALUES(?);";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ps.setInt(2, salesPrice);
+            return salesPrice;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
 
     public static Order getOrder()
     {
