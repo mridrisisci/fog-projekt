@@ -10,10 +10,10 @@ import java.util.List;
 public class AccountMapper
 {
 
-    public static int createRecordInAddresses(int cityID, int postalCodeID, String address, int accountID, ConnectionPool pool) throws DatabaseException
+    public static int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "INSERT INTO addresses (city_id, postal_code_id, address, account_id) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO addresses (city_id, postal_code_id, address) VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
@@ -21,7 +21,6 @@ public class AccountMapper
             ps.setInt(1, cityID);
             ps.setInt(2, postalCodeID);
             ps.setString(3, address);
-            ps.setInt(4, accountID);
 
 
             int rowsAffected = ps.executeUpdate();
@@ -59,7 +58,7 @@ public class AccountMapper
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
-                throw new DatabaseException("Fejl ved oprettele af record i City");
+                throw new DatabaseException("Fejl ved oprettelse af record i City");
             }
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -90,7 +89,7 @@ public class AccountMapper
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
-                throw new DatabaseException("Fejl ved oprettele af record i City");
+                throw new DatabaseException("Fejl ved oprettelse af record i City");
             }
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -108,17 +107,18 @@ public class AccountMapper
 
     }
 
-    public static int createAccount(String role, String username, int telephone, String email, ConnectionPool pool) throws DatabaseException
+    public static int createAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "INSERT INTO accounts (role, username, telephone, email) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO accounts (role, username, telephone, email, addresses_id) VALUES (?,?,?,?,?)";
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
 
             ps.setString(1, role);
             ps.setString(2, username);
             ps.setInt(3, telephone);
             ps.setString(4, email);
+            ps.setInt(5, addressID);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
@@ -126,22 +126,19 @@ public class AccountMapper
                 throw new DatabaseException("Fejl ved oprettelse af ny konto...");
             }
 
-            // retrieves PK fra DB
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next())
             {
-                // returns generated account_id
                 return rs.getInt(1);
             } else
             {
-                throw new DatabaseException("Kunne ikke hente autogenereret account_id...");
+                throw new DatabaseException("kunne ikke hente autogenereret ID");
             }
 
 
         } catch (SQLException e)
         {
-            String msg = "Der er sket en fejl, prøv igen"; // notifies of errors in pgadmin
-            throw new DatabaseException(msg, e.getMessage());
+            throw new DatabaseException(e.getMessage());
         }
     }
 

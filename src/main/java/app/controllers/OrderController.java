@@ -66,6 +66,7 @@ public class OrderController
         int salesPersonId = 0;
         OrderStatus status = OrderStatus.NOT_PAID;
         RoofType roofType = RoofType.FLAT;
+        boolean orderPaid = false;
 
 
 
@@ -74,12 +75,12 @@ public class OrderController
         try
         {
             // populates accounts
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, pool);
             // populate addresses
             int cityID = AccountMapper.createRecordInCities(city, pool);
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
-            AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, accountID, pool);
-            ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
+            int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
+            int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
+            ctx.attribute("message", "Dit pristilbud er sendt.");
             // calculates posts
             //MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
             // resten af styklisten her
@@ -88,7 +89,7 @@ public class OrderController
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             OrderMapper.createQueryInOrders(carportId, salesPersonId, status.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
             ctx.render("createquery.html");
         } catch (DatabaseException e)
         {
