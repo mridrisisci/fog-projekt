@@ -127,22 +127,19 @@ public class OrderMapper
         }
     }
 
-
-
-    //TODO: gør coverageRatio dynamisk - lige nu er den hardcoded
-    public static int insertSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int updateSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
         double coverageRatio = getCoverageRatioByOrderID(orderID,pool)/100;
         int salesPrice = Calculator.calcSalesPrice(pickListPrice,coverageRatio);
 
-        String sql = "INSERT INTO public.orders(sales_price) WHERE order_id = ? VALUES(?);";
+        String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderID);
-            ps.setInt(2, salesPrice);
+            ps.setInt(1, salesPrice);
+            ps.setInt(2, orderID);
             return salesPrice;
         } catch (SQLException e)
         {
@@ -150,6 +147,7 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
 
 
 
