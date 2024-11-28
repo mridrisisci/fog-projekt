@@ -31,7 +31,7 @@ public class Calculator
 
     public static int calcSalesPrice(int pickListPrice, double coverageRatio)
     {
-        double salesPrice = (1+coverageRatio)*pickListPrice;
+        double salesPrice = (1 + coverageRatio) * pickListPrice;
         return (int) salesPrice;
     }
 
@@ -201,6 +201,24 @@ public class Calculator
         // Antallet af spær er størrelsen af listen
         return rafters.size();
 
+    }
+
+    public static int[] calcRoofPlates(Carport carport)
+    {
+        int[] roofPlates = new int[2];
+        int numberOf360plates = 0;
+        int numberOf600plates = 0;
+        //Todo: Mangler calculations til denne del
+        roofPlates[0] = numberOf360plates;
+        roofPlates[1] = numberOf600plates;
+
+        return roofPlates;
+    }
+
+    public static int[] calcScrewsAndHardware(Carport carport)
+    {
+        if (carport.getWIDTH() * carport.getLENGTH() <= 1800)
+            return
     }
 
 }
