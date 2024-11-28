@@ -408,6 +408,46 @@ public class MaterialMapper
     }
 
 
+    //TODO: NOT DONE
+    public static Material getScrewsAndHardware(Carport carport, ConnectionPool pool)
+    {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: ÆNDRE MATERIAL_ID - Not done
+        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = ;";
+
+        String name;
+        String unit;
+        String description;
+        int[] screwsAndHardware = Calculator.calcScrewsAndHardware(carport);
+        int quantity = Calculator.calcRafters(carport);
+        int materialID;
+        int price;
+        Material other = null;
+
+        //TODO: Skal lige fikses
+        for (Material material = screwsAndHardware)
+        {
+            try (Connection connection = pool.getConnection();
+                 PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    name = rs.getString("name");
+                    unit = rs.getString("unit");
+                    description = rs.getString("description");
+                    materialID = rs.getInt("material_id");
+                    price = rs.getInt("price");
+                    other = new Material(materialID, name, description, price, unit, quantity, length);
+                }
+                return other;
+            } catch (SQLException e)
+            {
+                System.out.println(e.getMessage());
+                throw new DatabaseException(e.getMessage());
+            }
+        }
+    }
 
 
     public static Material getMaterial()
