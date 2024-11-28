@@ -2,19 +2,24 @@
 'https://plantuml.com/sequence-diagram
 
 skinparam backgroundColor #FEFEFE
+autonumber
 
 actor Kunde
 participant View as V
 participant "OrderController.payForOrder()" as C
 participant SendGrid as SG
 participant "OrderController.payForOrder()" as C2
+participant "OrderMapper.getPickList()" as M
+participant "MaterialController.createPickList()"
+participant "orders_materials" as DB
 
 
 Kunde -> V: Kunde trykker på link i mailen
-Kunde -> V: Kunde accepterer sit pristilbud
 activate V
 V -> C: GET request til payfororder.html
+Kunde -> C: Kunde accepterer sit pristilbud i html'en
 activate C
+C -> M:
 C -> SG: Send email med stykliste
 activate SG
 SG -> C: Sender styklisten
