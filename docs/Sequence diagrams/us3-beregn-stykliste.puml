@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor Kunde
+participant View as V
+participant "OrderController.createQuery()" as C
+participant "MaterialController.createPickList()" as C2
+participant "MaterialMapper.createPickList()" as M
+participant DB
+participant Calculator
+
+Kunde -> V: Kd har udfyldt formularen og oprettet en forespørgsel
+Kunde -> V: /createquery ruten tager imod height/width
+V -> V: Input valideres i formen
+activate V
+V -> C: POST request til /createquery
+activate C
+C -> C2: kaster height + width
+deactivate C
+activate C2
+C2 -> Calculator: kaster height + width
+Calculator -> C2: Returnerer X-quanttity af X-materiale
+deactivate Calculator
+C2 -> M: Kaster (type + quantity) til mapperen
+activate M
+M -> DB: eksekverer SQL
+M -> C2: kaster db-exception
+deactivate M
+C2 -> C2: griber sql-exception
+
+deactivate C2
+
+deactivate V
+@enduml
