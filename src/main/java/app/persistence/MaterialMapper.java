@@ -51,7 +51,18 @@ public class MaterialMapper
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
     public static List<Material> createPickList(ConnectionPool pool) throws DatabaseException
     {
+        String sql = "SELECT * FROM public.orders_materials WHERE order_Id= ?;";
+
+
         List<Material> pickList = new ArrayList<>();
+        Carport carport = null;
+        pickList.add(getPosts(carport, pool));
+        pickList.add(getBeams(carport, pool));
+        pickList.add(getSideUnderfasciaBoard(carport, pool));
+        pickList.add(getSideOverfasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
+
         return pickList;
     }
 
@@ -131,7 +142,7 @@ public class MaterialMapper
 
     }
 
-    //TODO: LAVE CARPORT OBJEKT når der er ny ordre
+    //TODO: LAVE CARPORT OBJEKT når der er ny ordre, som bruges i parametrene
     //TODO: MANGLER TEST!
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
