@@ -1,6 +1,9 @@
 package app.utilities;
 
 import app.entities.Carport;
+import app.entities.Material;
+import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +15,35 @@ public class Calculator
         return 0;
     }
 
-    public void calcCarportPrice()
+    //Udregner kostpris
+    public int calcPickListPrice(List<Material> pickList)
     {
-        //postsPrice = materialMapper.getType("stolpe").getPrice() * calcPosts[].get(0);
+        int totalPrice = 0;
+        for (Material material : pickList)
+        {
+            int materialQuantity = material.getQuantity();
+            int materialPrice = material.getPurchasePrice();
+            totalPrice += materialPrice * materialQuantity;
+        }
 
-        //beamPrice = materialMapper.getLength(calcBeams[].get(1).getPrice() * calcBeams[].get(0);
+        return totalPrice;
     }
+
+    //Udregner salgsprisen
+    public int calcSalesPrice(int pickListPrice)
+    {
+        int salesPrice = 0;
+        ConnectionPool pool = null;
+        pickListPrice = calcPickListPrice(MaterialMapper.createPickList(10, ConnectionPool pool));
+        int coverageRatio = 30%;
+
+
+        salesPrice = pickListPrice * coverageRatio;
+        return salesPrice;
+    }
+
+    //Udregner dækningsgraden
+
 
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
      * så skal der være en metode der beregner salgspris
@@ -34,11 +60,11 @@ public class Calculator
         int overhangDefault = 1000; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
         int widthOfPost = 97; //widthOfPost skal modregnes i hvor langt der er mellem eventuelt er stolper
         int maxSpan = 3100; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
-        int totalWidthWithinMaxSpan = 2*overhangDefault + 2*widthOfPost + maxSpan;
+        int totalWidthWithinMaxSpan = 2 * overhangDefault + 2 * widthOfPost + maxSpan;
 
 
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
-        if ((carport.getLENGTH()*100) - (2*overhangDefault) - (2*widthOfPost) <= totalWidthWithinMaxSpan)
+        if ((carport.getLENGTH() * 100) - (2 * overhangDefault) - (2 * widthOfPost) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
@@ -180,7 +206,8 @@ public class Calculator
         int totalLength = 0;
 
         // Brug for-each-løkke til at tilføje spær og beregne længde der er tilbage
-        for (int i = 0; totalLength < lengthMM; i++) {
+        for (int i = 0; totalLength < lengthMM; i++)
+        {
             rafters.add(i);
             totalLength += distanceBetweenRafters;
         }
