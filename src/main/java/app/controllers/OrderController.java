@@ -77,8 +77,12 @@ public class OrderController
 
             int orderID = OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
                     carportHeight, carportWidth, hasShed, roofType.toString(), dbConnection);
+
+            // laver et carport objekt
             createCarport(orderID, ctx, dbConnection);
+
             ctx.render("createquery.html");
+
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -94,8 +98,6 @@ public class OrderController
 
     private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
     {
-        //TODO: kald OrderMapper metode der giver data til et carport objekt
-
         //instantiere carport objekt med data fra formular
         try{
             Carport carport = OrderMapper.getCarportByOrderID(orderID, dbConnection);
