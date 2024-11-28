@@ -99,7 +99,7 @@ public class MaterialMapper
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "SELECT material_id, name, unit, description, length FROM public.materials WHERE material_id = 10;";
+        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 10;";
 
         String name;
         String unit;
@@ -107,6 +107,7 @@ public class MaterialMapper
         int quantity = Calculator.calcPosts(carport);
         int materialID;
         int length;
+        int price;
         Material posts = null;
 
 
@@ -121,7 +122,8 @@ public class MaterialMapper
                 description = rs.getString("description");
                 materialID = rs.getInt("material_id");
                 length = rs.getInt("length");
-                posts = new Material(materialID, name, description, unit, quantity, length);
+                price = rs.getInt("price");
+                posts = new Material(materialID, name, description, price, unit, quantity, length);
             }
             return posts;
         } catch (SQLException e)
