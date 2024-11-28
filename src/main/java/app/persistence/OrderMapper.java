@@ -107,7 +107,7 @@ public class OrderMapper
     public static int insertSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
-        int salesPrice = pickListPrice
+        int salesPrice = pickListPrice;
 
         String sql = "INSERT INTO public.orders(sales_price) WHERE order_id = ? VALUES(?);";
 
