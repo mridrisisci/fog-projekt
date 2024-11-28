@@ -104,7 +104,7 @@ public class OrderController
             String orderID = ctx.formParam("orderID");
             order = OrderMapper.getOrderByID(Integer.parseInt(orderID), pool);
             ctx.attribute("getorder", order);
-            ctx.render("/kvittering.html");
+            ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());

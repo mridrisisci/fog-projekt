@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_id serial NOT NULL,
     carport_id character varying(8) COLLATE pg_catalog."default" NOT NULL,
     salesperson_id integer NOT NULL,
-    status character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
     order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
