@@ -16,7 +16,7 @@ public class Calculator
     }
 
     //Udregner kostpris
-    public int calcPickListPrice(List<Material> pickList)
+    public static int calcPickListPrice(List<Material> pickList)
     {
         int totalPrice = 0;
         for (Material material : pickList)
@@ -28,26 +28,6 @@ public class Calculator
 
         return totalPrice;
     }
-
-    //Udregner salgsprisen
-    public int calcSalesPrice(int pickListPrice)
-    {
-        int salesPrice = 0;
-        ConnectionPool pool = null;
-        pickListPrice = calcPickListPrice(MaterialMapper.createPickList(10, ConnectionPool pool));
-        int coverageRatio = 30%;
-
-
-        salesPrice = pickListPrice * coverageRatio;
-        return salesPrice;
-    }
-
-    //Udregner dækningsgraden
-
-
-    /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
-     * så skal der være en metode der beregner salgspris
-     * en der beregner dækningspris*/
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stolpe
