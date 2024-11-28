@@ -117,7 +117,8 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 10;";
 
         String name;
@@ -157,6 +158,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getBeams(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (8,9) AND length = ?;";
 
         String name;
@@ -198,6 +201,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
 
         String name;
@@ -238,6 +243,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
 
         String name;
@@ -278,6 +285,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
 
         String name;
@@ -318,6 +327,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
 
         String name;
@@ -358,6 +369,8 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
     {
+        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
+        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 9;";
 
         String name;
