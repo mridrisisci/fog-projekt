@@ -104,10 +104,37 @@ public class OrderMapper
         }
     }
 
+    public static int getCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int coverageRatio = 0;
+
+        String sql = "SELECT coverage_ratio_percentage FROM public.orders WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                coverageRatio = rs.getInt("coverage_ratio_percentage");
+            }
+            return coverageRatio;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+
+
+    //TODO: gør coverageRatio dynamisk - lige nu er den hardcoded
     public static int insertSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
-        int salesPrice = pickListPrice;
+        double coverageRatio = getCoverageRatioByOrderID(orderID,pool)/100;
+        int salesPrice = Calculator.calcSalesPrice(pickListPrice,coverageRatio);
 
         String sql = "INSERT INTO public.orders(sales_price) WHERE order_id = ? VALUES(?);";
 
@@ -123,6 +150,7 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
 
 
     public static Order getOrder()
