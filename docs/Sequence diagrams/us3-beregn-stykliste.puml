@@ -7,7 +7,7 @@ Actor Kunde
 participant View as V
 participant "OrderController.createQuery()" as C
 participant "MaterialController.createPickList()" as C2
-participant "MaterialMapper.getPickList()" as M
+participant "MaterialMapper.createPickList()" as M
 participant DB
 participant Calculator
 
@@ -26,9 +26,6 @@ deactivate Calculator
 C2 -> M: Kaster (type + quantity) til mapperen
 activate M
 M -> DB: eksekverer SQL
-DB -> M: returnerer materialedata
-M -> C2: (Mapper et Material-objekt)
-M -> C2: returnerer material styklisten
 M -> C2: kaster db-exception
 deactivate M
 C2 -> C2: griber sql-exception
