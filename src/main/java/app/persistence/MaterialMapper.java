@@ -62,6 +62,24 @@ public class MaterialMapper
         pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
         pickList.add(getRafters(carport, pool));
+        pickList.add(getBoardBolt(carport, pool);
+        pickList.add(getHardwareForRaftersLeft(carport, pool));
+        pickList.add(getHardwareForRaftersRight(carport, pool));
+        pickList.add(getHardwareScrews(carport, pool));
+        pickList.add(getStandardScrews(carport, pool));
+        pickList.add(getRollForWindCross(carport, pool));
+        pickList.add(getScrewsForRoofing(carport, pool));
+        pickList.add(getSquareWasher(carport, pool));
+
+
+        //TODO: tjek om materialer faktisk fjernes
+        for (Material material : pickList)
+        {
+            if (material.getQuantity() == 0)
+            {
+                pickList.remove(material);
+            }
+        }
 
         for (Material material : pickList)
         {
@@ -705,6 +723,46 @@ public class MaterialMapper
 
     }
 
+
+    public static Material getRoofing(Carport carport, ConnectionPool pool)
+    {
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+
+        String name;
+        String unit;
+        String description;
+        int price;
+        int quantity = Calculator.calcRoofPlates(carport)[0];
+        int length = Calculator.calcRoofPlates(carport)[1];
+        String type = "Tagplade";
+        int materialID;
+        Material underFasciaBoard = null;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ps.setInt(2, length);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                length = rs.getInt("length");
+                type = rs.getString("type");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length, type);
+            }
+            return underFasciaBoard;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
     public static Material getMaterial()
     {
