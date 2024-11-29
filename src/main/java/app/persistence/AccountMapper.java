@@ -45,6 +45,29 @@ public class AccountMapper
 
     }
 
+    public static void createSalesAccount(String email, String password, ConnectionPool pool) throws DatabaseException
+    { // TODO: Mangler at blive opdateret, så den kan eksekveres fra Controlleren.
+        String sql = "insert into users (email, password, role) VALUES (?,?,?);";
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, hashedPassword);
+            ps.setString(3, "customer");
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved oprettelse af konto");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+
+
+
     public static Account login(String username, String password, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM users WHERE username=?";
@@ -144,7 +167,7 @@ public class AccountMapper
 
     }
 
-    public static int createAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
+    public static int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO accounts (role, username, telephone, email, addresses_id) VALUES (?,?,?,?,?)";
         try (Connection connection = pool.getConnection();
@@ -195,7 +218,7 @@ public class AccountMapper
     {
         return null;
     }
-    public static List<Account> getAllCustomers(ConnectionPool pool) throws DatabaseException
+    public static List<Account> getAllCustomerQueries(ConnectionPool pool) throws DatabaseException
     {
 
         String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";

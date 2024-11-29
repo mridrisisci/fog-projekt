@@ -78,7 +78,7 @@ public class OrderController
             int cityID = AccountMapper.createRecordInCities(city, pool);
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
             int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
+            int accountID = AccountMapper.createCustomerAccount(role, username, telephone, email, addressID, pool);
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
