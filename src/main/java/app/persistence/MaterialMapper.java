@@ -408,7 +408,7 @@ public class MaterialMapper
 
 
     //TODO: NOT DONE
-    public static Material getScrewsAndHardware(Carport carport, ConnectionPool pool)
+    /*public static Material getScrewsAndHardware(Carport carport, ConnectionPool pool)
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: ÆNDRE MATERIAL_ID - Not done
@@ -446,7 +446,7 @@ public class MaterialMapper
                 throw new DatabaseException(e.getMessage());
             }
         }
-    }
+    }*/
 
 
 
