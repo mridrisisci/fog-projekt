@@ -380,7 +380,7 @@ public class MaterialMapper
         int length;
         int materialID;
         int price;
-        Material rafters = null;
+        Material material = null;
 
 
         try (Connection connection = pool.getConnection();
@@ -395,9 +395,9 @@ public class MaterialMapper
                 length = rs.getInt("length");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                rafters = new Material(materialID, name, description, price, unit, quantity, length);
+                material = new Material(materialID, name, description, price, unit, quantity, length);
             }
-            return rafters;
+            return material;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -406,9 +406,7 @@ public class MaterialMapper
 
     }
 
-
-    //TODO: NOT DONE
-    public static Material getScrews(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getStandardScrews(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ?;";
 
@@ -419,7 +417,7 @@ public class MaterialMapper
         int materialID;
         int price;
         String type = "Skruer";
-        Material standardScrews = null;
+        Material material = null;
 
         //TODO: Skal lige fikses
             try (Connection connection = pool.getConnection();
@@ -434,9 +432,9 @@ public class MaterialMapper
                     description = rs.getString("description");
                     materialID = rs.getInt("material_id");
                     price = rs.getInt("price");
-                    standardScrews = new Material(materialID, name, description, price, unit, quantity, type);
+                    material = new Material(materialID, name, description, price, unit, quantity, type);
                 }
-                return standardScrews;
+                return material;
             } catch (SQLException e)
             {
                 System.out.println(e.getMessage());
@@ -456,7 +454,7 @@ public class MaterialMapper
         int materialID;
         int price;
         String type = "Tagskruer";
-        Material screwsForRoofing = null;
+        Material material = null;
 
         //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
@@ -471,9 +469,9 @@ public class MaterialMapper
                 description = rs.getString("description");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                screwsForRoofing = new Material(materialID, name, description, price, unit, quantity, type);
+                material = new Material(materialID, name, description, price, unit, quantity, type);
             }
-            return screwsForRoofing;
+            return material;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -493,7 +491,7 @@ public class MaterialMapper
         int materialID;
         int price;
         String type = "Hulbånd";
-        Material rollForWindCross = null;
+        Material material = null;
 
         //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
@@ -508,9 +506,9 @@ public class MaterialMapper
                 description = rs.getString("description");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                rollForWindCross = new Material(materialID, name, description, price, unit, quantity, type);
+                material = new Material(materialID, name, description, price, unit, quantity, type);
             }
-            return rollForWindCross;
+            return material;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -518,6 +516,193 @@ public class MaterialMapper
         }
 
     }
+
+    public static Material getSquareWasher(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcSquareWasher(carport);
+        int materialID;
+        int price;
+        String type = "Firkantskiver";
+        Material material = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    public static Material getHardwareForRaftersLeft(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcHardwareForRaftersLeft(carport);
+        int materialID;
+        int price;
+        String type = "Beslag - Venstre";
+        Material material = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    public static Material getHardwareForRaftersRight(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcHardwareForRaftersRight(carport);
+        int materialID;
+        int price;
+        String type = "Beslag - Højre";
+        Material material = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    public static Material getHardwareScrews(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcHardwareScrews(carport);
+        int materialID;
+        int price;
+        String type = "Beslagskruer";
+        Material material = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+
+    public static Material getBoardBolt(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcBoardBolt(carport);
+        int materialID;
+        int price;
+        String type = "Bræddebolt";
+        Material material = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
 
 
 
