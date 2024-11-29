@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -41,23 +42,22 @@ public class IntegrationTest
     //TODO add tables back in when you run the tests
     private void clearDatabase() throws SQLException
     {
-        try (Connection conn = connectionPoolTest.getConnection(); Statement stmt = conn.createStatement())
+        String sql = "DROP SCHEMA IF EXISTS test_schema CASCADE; " +
+                "CREATE SCHEMA test_schema;";
+
+        try (Connection connection = connectionPoolTest.getConnection(); PreparedStatement ps = connection.prepareStatement(sql))
         {
-            stmt.execute("DROP SCHEMA IF EXISTS test_schema CASCADE;");
-            stmt.execute("CREATE SCHEMA test_schema;");
+            ps.executeQuery();
         }
     }
 
     private void initializeTestData() throws SQLException {
-        try (Connection conn = connectionPoolTest.getConnection(); Statement stmt = conn.createStatement()) {
 
-            // Drop the schema if it exists
-            stmt.execute("DROP SCHEMA IF EXISTS test_schema CASCADE;");
+        String sql = "";
 
-            // Create the test_schema
-            stmt.execute("CREATE SCHEMA IF NOT EXISTS test_schema;");
+        try (Connection connection = connectionPoolTest.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            // Create
+            
         }
     }
 
