@@ -12,7 +12,7 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static void createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
+    public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
                                            boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
@@ -47,10 +47,9 @@ public class OrderMapper
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
-
-
-
     }
+
+
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {

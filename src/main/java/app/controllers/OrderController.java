@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.entities.Carport;
 import app.entities.Order;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
@@ -88,8 +89,8 @@ public class OrderController
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
 
-            int orderID = OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                    carportHeight, carportWidth, hasShed, roofType.toString(), dbConnection);
+            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
+                    orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             // laver et carport objekt
             //createCarport(orderID, ctx, pool);
@@ -108,8 +109,8 @@ public class OrderController
     //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
     // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
     // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
-
-    private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
+/*
+        private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
     {
         //instantiere carport objekt med data fra formular
         try{
@@ -120,7 +121,7 @@ public class OrderController
         }
 
 
-    }
+    }*/
 
     private static void getOrderByID(Context ctx, ConnectionPool pool)
     {
