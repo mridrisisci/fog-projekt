@@ -288,7 +288,7 @@ public class Calculator
         return numberOfBoardBolts;
     }
 
-    /**
+    /*
      * Calculates the number of long and short roof plates needed for a carport.
      *
      * @param carportLength The length of the carport in cm.
