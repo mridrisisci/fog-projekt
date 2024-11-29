@@ -48,7 +48,7 @@ public class IntegrationTest
     private void initializeTestData() throws SQLException
     {
 
-        
+
         String sqlAccounts = "INSERT INTO test_schema.accounts (role, username, email, password, telephone) VALUES(?,?,?,?,?)";
 
         String sqlOrders = "INSERT INTO test_schema.orders (carport_id, salesperson_id, status, price, sales_price, coverage_ratio_percentage, order_placed, order_paid, height, width, length, hasShed, roof_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
