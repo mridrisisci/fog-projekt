@@ -20,7 +20,7 @@ public class OrderController
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
-        app.get("/getorder", ctx -> getOrderByID(ctx, dBConnection));
+        app.get("/getorder/{id}", ctx -> getOrderByID(ctx, dBConnection));
     }
 
 
@@ -120,7 +120,8 @@ public class OrderController
         Order order;
         try
         {
-            //String orderIDString = ctx.formParam("orderID");
+            String orderIDString = ctx.formParam("orderID");
+            order = OrderMapper.getOrderByID(Integer.parseInt(orderIDString));
             //orderID = Integer.parseInt(orderIDString);
             if (orderID == 0) {
                 throw new IllegalArgumentException("Order ID mangler.");
