@@ -48,6 +48,35 @@ public class MaterialMapper
 
     }
 
+    //TODO: Test
+    public static void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "INSERT INTO public.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql) )
+        {
+            int rowsAffected = ps.executeUpdate();
+            ps.setInt(1, name);
+            ps.setInt(2, unit);
+            ps.setInt(3, price);
+            ps.setInt(4, length);
+            ps.setInt(5, height);
+            ps.setInt(6, width);
+            ps.setString(7, type);
+            ps.setString(8, description);
+
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke oprette materialet");
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
 
     //TODO: TEST
     public static void updateMaterialPriceByMaterialID(int newMaterialPrice, int materialID, ConnectionPool pool) throws DatabaseException
