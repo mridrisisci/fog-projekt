@@ -181,91 +181,132 @@ public class Calculator
     }
 
     //Spær
-    public static int calcRafters(Carport carport)
+    public static int[] calcRafters(Carport carport)
     {
+        int[] rafters = new int[2];
+        int quantity = 0;
+        int length = 0;
+
+
+        //Beregning af mængde af spær
         int lengthMM = carport.getLENGTH();
         //Der er 60 cm mellem hvert spær, og ca. 55 cm fra inderside til inderside af spærene
         int distanceBetweenRafters = 60;
 
-        List<Integer> rafters = new ArrayList<>();
+        List<Integer> raftersQuantity = new ArrayList<>();
 
         int totalLength = 0;
 
         // Brug for-each-løkke til at tilføje spær og beregne længde der er tilbage
         for (int i = 0; totalLength < lengthMM; i++)
         {
-            rafters.add(i);
+            raftersQuantity.add(i);
             totalLength += distanceBetweenRafters;
         }
-
         // Antallet af spær er størrelsen af listen
-        return rafters.size();
+        quantity = raftersQuantity.size();
+        rafters[0] = quantity;
+
+        //Beregning af længden på spær
+
+        //Længden på det "korte bredt" er hardcoded ind
+        if (carport.getWIDTH()<=480){
+            length = 480;
+        } else {
+            length = 600;
+        }
+
+        rafters[1] = length;
+
+        return rafters;
 
     }
 
-    public static int[] calcScrewsAndHardware(Carport carport)
+    public static int calcScrewsForRoofing(Carport carport)
     {
-        int[] screwsAndHardware = new int[8];
-        //Todo: Fiks så skruer og hulbånd ikke er hardcoded
-        int screws = 1; //Hardcoded til to, så man altid har to bånd af 10 meter.
-        int rollForWindCross = 2; //Hardcoded til to, så man altid har to bånd af 10 meter.
         int screwsForRoofing;
-        int hardwareForRaftersLeft = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwarescrews; //Beslagskruer til montering af universalbeslag+hulbånd
-        int boardBolt; //Bræddebolt
-        int squareWasher; //Firkantskive
-
-        //TODO: Gør så det ikke er hardcoded
-        //Udregning af beslagskruer - vi har valgt at give en ekstra pakke med
-        if (calcHardwareScrews(carport) <= 249)
-        {
-            hardwarescrews = 2;
-        } else
-        {
-            hardwarescrews = 3;
-        }
 
         //Udregning for skruer til taget
         //Man skal bruge ca. 12 skruer per kvadratmeter tagplade, der er skruer til 16,6 m^2 i en pakke. Vi runder ned til 16 m^2
         int squareCentimeterPerPackageOfScrews = 1600;
-        if ((carport.getWIDTH() * carport.getLENGTH())/squareCentimeterPerPackageOfScrews < 2)
+        if ((carport.getWIDTH() * carport.getLENGTH()) / squareCentimeterPerPackageOfScrews < 2)
         {
             screwsForRoofing = 2;
-        } else {
+        } else
+        {
             screwsForRoofing = 3;
         }
 
-        //Udregning for bræddebolt
-        boardBolt = calcBoardBolt(carport);
-
-        //Udregning for firkantskive - De får antallet af stolper plus 2
-        squareWasher = calcPosts(carport) + 2;
-
-        screwsAndHardware[0] = screws;
-        screwsAndHardware[1] = rollForWindCross;
-        screwsAndHardware[2] = screwsForRoofing;
-        screwsAndHardware[3] = hardwareForRaftersLeft;
-        screwsAndHardware[4] = hardwareForRaftersRight;
-        screwsAndHardware[5] = hardwarescrews;
-        screwsAndHardware[6] = boardBolt;
-        screwsAndHardware[7] = squareWasher;
-
-        return screwsAndHardware;
+        return screwsForRoofing;
     }
+
+    public static int calcStandardScrews()
+    {
+        int packagesOfScrews = 1; //Hardcoded as the biggest carport FOG offers uses one package
+        return packagesOfScrews;
+    }
+
+    public static int calcRollForWindCross()
+    {
+        int numberOfRollsForWindCross = 2;
+        //Hardcoded til to, så man altid har to bånd af 10 meter.
+        return numberOfRollsForWindCross;
+    }
+
+    public static int calcSquareWasher(Carport carport)
+    {
+        int numberOfSquareWasher = calcPosts(carport) + 2;
+        //Udregning for firkantskive - De får antallet af stolper plus 2
+        return numberOfSquareWasher;
+    }
+
+    public static int calcHardwareForRaftersLeft(Carport carport)
+    {
+        int hardwareForRaftersLeft = calcRafters(carport)[0]; //Der skal bruges et beslag per spær
+        return hardwareForRaftersLeft;
+    }
+
+
+    public static int calcHardwareForRaftersRight(Carport carport)
+    {
+        int hardwareForRaftersRight = calcRafters(carport)[0]; //Der skal bruges et beslag per spær
+
+        return hardwareForRaftersRight;
+    }
+
 
     public static int calcHardwareScrews(Carport carport)
     {
+
         int numberOfHardwarescrews;
-        int hardwareForRafters = calcRafters(carport) * 2; //Et højre- og et venstrebeslag per spær
+
+        int packagesOfHardwarescrews; //Der er 250 skruer i en pakke
+
+        int hardwareForRafters = calcHardwareForRaftersLeft(carport)+calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
+
         int sidesOnHardwareForRafters = 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
+
         int screwsForRaftersHardware = (hardwareForRafters * sidesOnHardwareForRafters) * 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
+
         int screwsOnIntersection = 2; //Der skal skrues 1-2 skruer i ved hulbåndskrydsning
+
         int screwsOnPunchedTape = 4 * 4; //Skruer til fastgørelse af hulbånd, der bliver sat 4 skruer af til hvert hjørne
 
+        //Udregning af hvor mange beslagsskruer der skal bruges
         numberOfHardwarescrews = hardwareForRafters + screwsForRaftersHardware + screwsOnIntersection + screwsOnPunchedTape;
 
-        return numberOfHardwarescrews;
+
+        //TODO: Gør så det ikke er hardcoded
+        //Udregning af pakker af beslagskruer - vi har valgt at give en ekstra pakke med
+        if (numberOfHardwarescrews <= 249)
+        {
+            packagesOfHardwarescrews = 2;
+        } else
+        {
+            packagesOfHardwarescrews = 3;
+        }
+
+        return packagesOfHardwarescrews;
     }
 
     public static int calcBoardBolt(Carport carport)
@@ -276,14 +317,84 @@ public class Calculator
         int extraBoltsPerAssembly = 2;
         int postsWithAssemblyPoint = 2;
 
-        if(calcPosts(carport) == 4)
+        if (calcPosts(carport) == 4)
         {
-            numberOfBoardBolts = calcPosts(carport)*2;
+            numberOfBoardBolts = calcPosts(carport) * 2;
 
-        } else {
-            numberOfBoardBolts = calcPosts(carport)*boltsPerPost+(postsWithAssemblyPoint*extraBoltsPerAssembly);
+        } else
+        {
+            numberOfBoardBolts = calcPosts(carport) * boltsPerPost + (postsWithAssemblyPoint * extraBoltsPerAssembly);
         }
         return numberOfBoardBolts;
+    }
+
+    /*
+     * Calculates the number of long and short roof plates needed for a carport.
+     *
+     * @param carportLength The length of the carport in cm.
+     * @param carportWidth  The width of the carport in cm.
+     * @return An array where index 0 is the number of long plates, and index 1 is the number of short plates.
+     */
+    public static int[] calcRoofPlates(Carport carport)
+    {
+        int carportLength = carport.getLENGTH();
+        int carportWidth = carport.getWIDTH();
+        // Plate dimensions in cm
+        final int LONG_PLATE_LENGTH = 600;
+        final int SHORT_PLATE_LENGTH = 360;
+        final int PLATE_WIDTH = 109;
+        final int OVERLAP = 20;
+
+        // Calculate plates needed along the width (no overlap in width)
+        int platesAlongWidth = (int) Math.ceil((double) carportWidth / PLATE_WIDTH);
+
+        // If length is less than or equal to a single plate, no overlap needed
+        if (carportLength <= SHORT_PLATE_LENGTH)
+        {
+            return new int[]{0, platesAlongWidth};
+        } else if (carportLength <= LONG_PLATE_LENGTH)
+        {
+            return new int[]{platesAlongWidth, 0};
+        }
+
+        // Calculate the number of long plates needed without considering excess
+        int longPlatesUsed = 1 + (int) Math.floor((double) (carportLength - LONG_PLATE_LENGTH) / (LONG_PLATE_LENGTH - OVERLAP));
+
+        // Calculate the excess length if we only used long plates
+        int excessWithLongPlates = (longPlatesUsed * LONG_PLATE_LENGTH - (longPlatesUsed - 1) * OVERLAP) - carportLength;
+
+        // Find the best combination by testing different numbers of long and short plates
+        int minWaste = Integer.MAX_VALUE;
+        int bestLongPlates = 0;
+        int bestShortPlates = 0;
+
+        // Loop to find the optimal combination of long and short plates
+        for (int longCount = 0; longCount <= longPlatesUsed; longCount++)
+        {
+            int lengthCoveredByLongPlates = longCount * LONG_PLATE_LENGTH - (longCount - 1) * OVERLAP;
+            int remainingLength = carportLength - lengthCoveredByLongPlates;
+
+            // Calculate how many short plates are needed to cover the remaining length
+            int shortPlatesUsed = (remainingLength > 0) ?
+                    (int) Math.ceil((double) remainingLength / SHORT_PLATE_LENGTH) : 0;
+
+            // Calculate the total waste for this combination
+            int totalWaste = Math.abs((longCount * LONG_PLATE_LENGTH - (longCount - 1) * OVERLAP) + (shortPlatesUsed * SHORT_PLATE_LENGTH) - carportLength);
+
+            // Check if this combination has less waste than the current minimum
+            if (totalWaste < minWaste)
+            {
+                minWaste = totalWaste;
+                bestLongPlates = longCount;
+                bestShortPlates = shortPlatesUsed;
+            }
+        }
+
+        // Calculate the total number of plates needed, factoring in the width
+        int totalLongPlates = bestLongPlates * platesAlongWidth;
+        int totalShortPlates = bestShortPlates * platesAlongWidth;
+
+        return new int[]{totalLongPlates, totalShortPlates};
     }
 
 }
