@@ -20,7 +20,7 @@ public class OrderController
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
-        app.post("/getorder", ctx -> getOrderByID(ctx, dBConnection));
+        app.get("/getorder", ctx -> getOrderByID(ctx, dBConnection));
     }
 
 
