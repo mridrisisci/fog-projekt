@@ -453,7 +453,7 @@ public class MaterialMapper
         int quantity = Calculator.calcScrewsForRoofing(carport);
         int materialID;
         int price;
-        String type = "Tagskruer";
+        String type = "Bundskruer";
         Material material = null;
 
         //TODO: Skal lige fikses
