@@ -11,15 +11,15 @@ public class OrderMapper
 {
 
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
-                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
+                                          boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-            "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
-            "VALUES (?,?,?,?,?,?,?,?,?,?);";
+                "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
         try (Connection connection = pool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setString(1, carportID);
             ps.setInt(2, salesPersonID);
@@ -33,15 +33,19 @@ public class OrderMapper
             ps.setInt(10, accountID);
 
             // Execute the query and retrieve the generated key
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+            try (ResultSet rs = ps.executeQuery())
+            {
+                if (rs.next())
+                {
                     return rs.getInt(1); // Return the generated order_id
-                } else {
+                } else
+                {
                     throw new DatabaseException("Failed to retrieve order ID.");
                 }
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
@@ -71,7 +75,6 @@ public class OrderMapper
     }
 
 
-
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, price, carport_id FROM orders WHERE order_id = ?";
@@ -81,7 +84,7 @@ public class OrderMapper
         String carportID;
         int price;
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
@@ -180,11 +183,13 @@ public class OrderMapper
         }
     }
 
-    public static int updateSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
-        double coverageRatio = getCoverageRatioByOrderID(orderID,pool)/100;
-        int salesPrice = Calculator.calcSalesPrice(pickListPrice,coverageRatio);
+        double coverageRatio = getCoverageRatioByOrderID(orderID, pool) / 100;
+        int salesPrice = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
+
+        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
         String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
 
@@ -192,7 +197,7 @@ public class OrderMapper
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, salesPrice);
-            ps.setInt(2, orderID);
+            ps.setInt(3, orderID);
             return salesPrice;
         } catch (SQLException e)
         {
@@ -201,7 +206,60 @@ public class OrderMapper
         }
     }
 
+    //TODO: TEST om dækningsgraden også bliver ændret
+    public static void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int newCoverageRatio = ((newSalesPrice / (getPickListPriceByOrderID(orderID, pool))) - 1) * 100;
+        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
+        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newSalesPrice);
+            ps.setInt(2, newCoverageRatio);
+            ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update salesprice for order with ID: " + orderID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
+
+
+    //TODO: TEST om salgsprisen også bliver ændret
+    public static void updateCoverageRatioPercentageByOrderID(int newCoverageRatio, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID,pool)) + getPickListPriceByOrderID(orderID,pool);
+        //Salgspris = ((dækningsgrad/100) * kostpris) + kostpris
+
+        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newSalesPrice);
+            ps.setInt(2, newCoverageRatio);
+            ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update coverage ratio for order with ID: " + orderID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
 
 
     public static Order getOrder()
@@ -223,6 +281,7 @@ public class OrderMapper
     {
 
     }
+
     public static void addOrderToDB()
     {
 
