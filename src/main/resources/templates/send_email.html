@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Send Email</title>
+</head>
+<body>
+<h1>Send an Email</h1>
+<form action="/send-email" method="post">
+  <label for="to">Sender Email:</label>
+  <input type="email" id="to" name="to" required><br><br>
+
+  <label for="name">Recipient Name:</label>
+  <input type="text" id="name" name="name" required><br><br>
+
+  <label for="email">Recipient Email:</label>
+  <input type="email" id="email" name="email" required><br><br>
+
+  <label for="zip">ZIP Code:</label>
+  <input type="text" id="zip" name="zip" required><br><br>
+
+  <label for="body">text to customer:</label>
+  <input type="text" id="body" name="body" required><br><br>
+
+  <button type="submit">Send Email</button>
+</form>
+</body>
+</html>
