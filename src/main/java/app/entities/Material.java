@@ -30,6 +30,17 @@ public class Material
         this.getNumbersOfShedAddons = getNumbersOfShedAddons;
     }
 
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, String type)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.length = length;
+        this.type = type;
+    }
+
     public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length)
     {
         this.materialID = materialID;
@@ -50,8 +61,6 @@ public class Material
         this.quantity = quantity;
         this.type = type;
     }
-
-
 
     public Material(String materialName, String unit, String description)
     {
