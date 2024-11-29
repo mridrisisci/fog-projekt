@@ -119,7 +119,7 @@ public class MaterialMapper
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 10;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ?;";
 
         String name;
         String unit;
@@ -128,12 +128,14 @@ public class MaterialMapper
         int materialID;
         int length;
         int price;
+        String type = "Stolpe";
         Material posts = null;
 
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
+            ps.setString(1, type);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -142,8 +144,9 @@ public class MaterialMapper
                 description = rs.getString("description");
                 materialID = rs.getInt("material_id");
                 length = rs.getInt("length");
+                type = rs.getString("type");
                 price = rs.getInt("price");
-                posts = new Material(materialID, name, description, price, unit, quantity, length);
+                posts = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
             return posts;
         } catch (SQLException e)
@@ -160,7 +163,7 @@ public class MaterialMapper
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (8,9) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -169,13 +172,15 @@ public class MaterialMapper
         int length = Calculator.calcBeams(carport)[1];
         int materialID;
         int price;
+        String type = "Rem";
         Material beams = null;
 
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, length);
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -183,9 +188,10 @@ public class MaterialMapper
                 unit = rs.getString("unit");
                 description = rs.getString("description");
                 length = rs.getInt("length");
+                type = rs.getString("type");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                beams = new Material(materialID, name, description, price, unit, quantity, length);
+                beams = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
             return beams;
         } catch (SQLException e)
@@ -203,7 +209,7 @@ public class MaterialMapper
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -211,6 +217,7 @@ public class MaterialMapper
         int quantity = Calculator.calcSidesFasciaBoard(carport)[0];
         int length = Calculator.calcSidesFasciaBoard(carport)[1];
         int materialID;
+        String type = "Understernbrædt";
         int price;
         Material underFasciaBoard = null;
 
@@ -218,7 +225,8 @@ public class MaterialMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, length);
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -226,9 +234,10 @@ public class MaterialMapper
                 unit = rs.getString("unit");
                 description = rs.getString("description");
                 length = rs.getInt("length");
+                type = rs.getString("type");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length);
+                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
             return underFasciaBoard;
         } catch (SQLException e)
@@ -245,7 +254,7 @@ public class MaterialMapper
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -254,13 +263,15 @@ public class MaterialMapper
         int length = Calculator.calcSidesFasciaBoard(carport)[1];
         int materialID;
         int price;
-        Material underFasciaBoard = null;
+        String type = "Oversternbrædt";
+        Material overFasciaBoard = null;
 
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, length);
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -268,11 +279,12 @@ public class MaterialMapper
                 unit = rs.getString("unit");
                 description = rs.getString("description");
                 length = rs.getInt("length");
+                type = rs.getString("type");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length);
+                overFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
-            return underFasciaBoard;
+            return overFasciaBoard;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -287,7 +299,7 @@ public class MaterialMapper
     {
         //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
         //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (1,2) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -295,6 +307,7 @@ public class MaterialMapper
         int quantity = Calculator.calcFrontAndBackFasciaBoard(carport)[0];
         int length = Calculator.calcFrontAndBackFasciaBoard(carport)[1];
         int materialID;
+        String type = "Understernbrædt";
         int price;
         Material underFasciaBoard = null;
 
@@ -302,7 +315,8 @@ public class MaterialMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, length);
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -310,9 +324,10 @@ public class MaterialMapper
                 unit = rs.getString("unit");
                 description = rs.getString("description");
                 length = rs.getInt("length");
+                type = rs.getString("type");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length);
+                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
             return underFasciaBoard;
         } catch (SQLException e)
@@ -327,9 +342,7 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id IN (3,4) AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -338,13 +351,15 @@ public class MaterialMapper
         int length = Calculator.calcFrontAndBackFasciaBoard(carport)[1];
         int materialID;
         int price;
-        Material underFasciaBoard = null;
+        String type = "Oversternbrædt";
+        Material material = null;
 
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, length);
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -353,10 +368,11 @@ public class MaterialMapper
                 description = rs.getString("description");
                 length = rs.getInt("length");
                 materialID = rs.getInt("material_id");
+                type = rs.getString("type");
                 price = rs.getInt("price");
-                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length);
+                material = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
-            return underFasciaBoard;
+            return material;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -369,23 +385,24 @@ public class MaterialMapper
     //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = 9;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?";
 
         String name;
         String unit;
         String description;
-        int quantity = Calculator.calcRafters(carport);
-        int length;
+        int quantity = Calculator.calcRafters(carport)[0];
+        int length = Calculator.calcRafters(carport)[1];
         int materialID;
         int price;
+        String type = "Spær";
         Material material = null;
 
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
+            ps.setString(1, type);
+            ps.setInt(2, length);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
@@ -394,8 +411,9 @@ public class MaterialMapper
                 description = rs.getString("description");
                 length = rs.getInt("length");
                 materialID = rs.getInt("material_id");
+                type = rs.getString("type");
                 price = rs.getInt("price");
-                material = new Material(materialID, name, description, price, unit, quantity, length);
+                material = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
             return material;
         } catch (SQLException e)
