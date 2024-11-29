@@ -181,25 +181,44 @@ public class Calculator
     }
 
     //Spær
-    public static int calcRafters(Carport carport)
+    public static int[] calcRafters(Carport carport)
     {
+        int[] rafters = new int[2];
+        int quantity = 0;
+        int length = 0;
+
+
+        //Beregning af mængde af spær
         int lengthMM = carport.getLENGTH();
         //Der er 60 cm mellem hvert spær, og ca. 55 cm fra inderside til inderside af spærene
         int distanceBetweenRafters = 60;
 
-        List<Integer> rafters = new ArrayList<>();
+        List<Integer> raftersQuantity = new ArrayList<>();
 
         int totalLength = 0;
 
         // Brug for-each-løkke til at tilføje spær og beregne længde der er tilbage
         for (int i = 0; totalLength < lengthMM; i++)
         {
-            rafters.add(i);
+            raftersQuantity.add(i);
             totalLength += distanceBetweenRafters;
         }
-
         // Antallet af spær er størrelsen af listen
-        return rafters.size();
+        quantity = raftersQuantity.size();
+        rafters[0] = quantity;
+
+        //Beregning af længden på spær
+
+        //Længden på det "korte bredt" er hardcoded ind
+        if (carport.getWIDTH()<=480){
+            length = 480;
+        } else {
+            length = 600;
+        }
+
+        rafters[1] = length;
+
+        return rafters;
 
     }
 
