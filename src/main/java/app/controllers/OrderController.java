@@ -4,6 +4,7 @@ import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -71,6 +72,8 @@ public class OrderController
             Account account = ctx.sessionAttribute("currentAccount");
             int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
             ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
+
+
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);

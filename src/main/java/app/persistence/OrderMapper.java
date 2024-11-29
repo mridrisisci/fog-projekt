@@ -32,6 +32,7 @@ public class OrderMapper
             ps.setInt(7, width);
             ps.setBoolean(8, hasShed);
             ps.setString(9, roofType);
+            ps.setInt(10, accountID);
 
             // Execute the query and retrieve the generated key
             try (ResultSet rs = ps.executeQuery()) {
@@ -46,8 +47,8 @@ public class OrderMapper
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
-    }
 
+    }
 
     public static Order getOrder()
     {
