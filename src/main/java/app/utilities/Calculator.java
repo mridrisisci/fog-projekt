@@ -262,14 +262,14 @@ public class Calculator
 
     public static int calcHardwareForRaftersLeft(Carport carport)
     {
-        int hardwareForRaftersLeft = calcRafters(carport); //Der skal bruges et beslag per spær
+        int hardwareForRaftersLeft = calcRafters(carport)[0]; //Der skal bruges et beslag per spær
         return hardwareForRaftersLeft;
     }
 
 
     public static int calcHardwareForRaftersRight(Carport carport)
     {
-        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
+        int hardwareForRaftersRight = calcRafters(carport)[0]; //Der skal bruges et beslag per spær
 
         return hardwareForRaftersRight;
     }
