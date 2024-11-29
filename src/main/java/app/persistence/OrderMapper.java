@@ -106,6 +106,62 @@ public class OrderMapper
         return orders;
     }
 
+    //TODO: tilføj hasShed på denne
+    public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM public.orders WHERE salesperson_id = null;";
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int orderID = rs.getInt("order_id");
+                String carportID = rs.getString("carport_id");
+                String status = rs.getString("status");
+                int price = rs.getInt("price");
+                int salesPrice = rs.getInt("sales_price");
+                int coverageRatioPercentage = rs.getInt("coverage_ratio_percentage");
+                Timestamp orderPlaced = rs.getTimestamp("order_placed");
+                String roofType = rs.getString("roof_type");
+                int accountID = rs.getInt("account_id");
+
+                Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
+        }
+        return orders;
+    }
+
+
+    //TODO: Test om den virker når salesperson står både som ? og null
+    public static void updateSalespersonAssignedByOrderID(int salespersonID, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE public.orders SET salesperson_id = ? WHERE salesperson_id = null AND order_id = ?;";
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            ps.setInt(1, salespersonID);
+            ps.setInt(2, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update salesperson ID for the order with ID: " + orderID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating salesperson data", e.getMessage());
+        }
+    }
+
+
     public static List<Order> getAllPaidOrders(ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM public.orders WHERE status = 'Betalt';";
