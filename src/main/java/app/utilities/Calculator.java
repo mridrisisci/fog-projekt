@@ -253,14 +253,20 @@ public class Calculator
         return numberOfSquareWasher;
     }
 
-    public static int calcHardwareForRaftersLeftAndRight(Carport carport)
+    public static int calcHardwareForRaftersLeft(Carport carport)
     {
         int hardwareForRaftersLeft = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwareForRafters = hardwareForRaftersLeft + hardwareForRaftersRight;
-
-        return hardwareForRafters;
+        return hardwareForRaftersLeft;
     }
+
+
+    public static int calcHardwareForRaftersRight(Carport carport)
+    {
+        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
+
+        return hardwareForRaftersRight;
+    }
+
 
     public static int calcHardwareScrews(Carport carport)
     {
@@ -269,7 +275,7 @@ public class Calculator
 
         int packagesOfHardwarescrews; //Der er 250 skruer i en pakke
 
-        int hardwareForRafters = calcHardwareForRaftersLeftAndRight(carport); //Et højre- og et venstrebeslag per spær
+        int hardwareForRafters = calcHardwareForRaftersLeft(carport)+calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
 
         int sidesOnHardwareForRafters = 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
 
