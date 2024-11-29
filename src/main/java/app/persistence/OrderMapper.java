@@ -1,12 +1,10 @@
 package app.persistence;
 
-import app.entities.Carport;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper
@@ -159,11 +157,13 @@ public class OrderMapper
         }
     }
 
-    public static int updateSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
         double coverageRatio = getCoverageRatioByOrderID(orderID,pool)/100;
         int salesPrice = Calculator.calcSalesPrice(pickListPrice,coverageRatio);
+
+        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
         String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
 
@@ -171,7 +171,7 @@ public class OrderMapper
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, salesPrice);
-            ps.setInt(2, orderID);
+            ps.setInt(3, orderID);
             return salesPrice;
         } catch (SQLException e)
         {
@@ -180,7 +180,28 @@ public class OrderMapper
         }
     }
 
+    //TODO: TEST om dækningsgraden også bliver ændret
+    public static void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int newCoverageRatio = ((newSalesPrice/(getPickListPriceByOrderID(orderID, pool))) - 1 ) * 100;
+        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
+        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newSalesPrice);
+            ps.setInt(2, newCoverageRatio);
+            ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Failed to update salesprice for order with ID: " + orderID);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
 
 
     public static Order getOrder()
