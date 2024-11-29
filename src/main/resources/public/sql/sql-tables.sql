@@ -10,6 +10,9 @@ DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
 DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
+-- Old tables no longer used
+DROP TABLE IF EXISTS public.material_variants CASCADE;
+DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.accounts
 (
@@ -59,24 +62,40 @@ CREATE TABLE IF NOT EXISTS public.orders
     salesperson_id integer NOT NULL,
     status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
+    sales_price integer,
+    coverage_ratio_percentage integer,
     order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
     has_shed boolean,
-    roof_type character varying(6) COLLATE pg_catalog."default" NOT NULL,
+    length integer NOT NULL,
+    "hasShed" boolean,
+    roof_type character varying(6) NOT NULL,
     account_id integer NOT NULL,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.order_line
 (
-    order_line serial NOT NULL,
+    orders_materials_id serial NOT NULL,
     order_id integer NOT NULL,
     material_id integer NOT NULL,
-    type character varying(50) COLLATE pg_catalog."default",
+    -- TODO tilføj NOT NULL til type, når vi har lavet logic for det
+    type character varying(50),
     quantity integer NOT NULL,
-    CONSTRAINT orders_materials_pk PRIMARY KEY (order_line)
+    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
+    --TODO tilføj denne CONSTRAIN når type logic er lavet.
+    -- Ideen er at et order_id, material_id og type forekommer unikt i tabellen
+    -- CONSTRAINT orders_materials_unique UNIQUE (order_id, material_id, type),
+    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -106,7 +125,6 @@ ALTER TABLE IF EXISTS public.addresses
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-
 ALTER TABLE IF EXISTS public.orders
     ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)
         REFERENCES public.accounts (account_id) MATCH SIMPLE
@@ -114,19 +132,38 @@ ALTER TABLE IF EXISTS public.orders
         ON DELETE CASCADE;
 
 
-ALTER TABLE IF EXISTS public.order_line
-    ADD CONSTRAINT fk_orders FOREIGN KEY (order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
+-- Insert data into materials
+INSERT INTO public.materials (name, unit, price, length, height, width, description)
+VALUES
+    ('25x200 mm. trykimp. Brædt', 'Stk', 177, 360, 25, 200, 'understernbrædder til for & bag ende'),
+    ('25x200 mm. trykimp. Brædt', 'Stk', 265, 540, 25, 200, 'understernbrædder til siderne'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 119, 360, 25, 125, 'oversternbrædder til forenden'),
+    ('25x125mm. trykimp. Brædt', 'Stk', 178, 540, 25, 125, 'oversternbrædder til siderne'),
+    ('38x73 mm. Lægte ubh.', 'Stk', 63, 420, 38, 73, 'z på bagside af dør'),
+    ('45x95 mm. Reglar ub.', 'Stk', 35, 270, 45, 95, 'løsholter til skur gavle'),
+    ('45x95 mm. Reglar ub.', 'Stk', 30, 240, 45, 95, 'løsholter til skur sider'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 274, 480, 45, 195, 'Remme i sider, sadles ned i stolper (skur del, deles)'),
+    ('45x195 mm. spærtræ ubh.', 'Stk', 342, 600, 45, 195, 'Spær, monteres på rem'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 266, 300, 97, 97, 'stolper nedgraves 90 cm i jord'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 19, 210, 19, 100, 'beklædning af skur 1 på 2'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 48, 540, 19, 100, 'vandbrædt på stern i sider'),
+    ('19x100 mm. trykimp. Brædt', 'Stk', 32, 360, 19, 100, 'vandbrædt på stern i forende'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 339, 600, 2, 109, 'tagplader monteres på spær'),
+    ('Plastmo Ecolite blåtonet', 'Stk', 199, 360, 2, 109, 'tagplader monteres på spær'),
+    ('plastmo bundskruer 200 stk', 'Pakke', 429, 2, 1, 1, 'skruer til tagplader'),
+    ('hulbånd 1x20 mm. 10 mtr.', 'Rulle', 349, 1000, 1, 20, 'vindkryds på spær'),
+    ('universal 190 mm højre', 'Stk', 50, 5, 150, 5, 'Til montering af spær på rem'),
+    ('universal 190 mm venstre', 'Stk', 50, 5, 150, 5, 'Til montering af spær på rem'),
+    ('4,5 x 60 mm. skruer 200 stk.', 'Pakke', 169, 6, 1, 1, 'Til montering af stern & vandbrædt'),
+    ('4,0 x 50 mm. beslagskruer', 'Pakke', 139, 5, 1, 1, 'Til montering af universalbeslag + hulbånd'),
+    ('bræddebolt 10 x 120 mm.', 'Stk', 409, 1, 1, 1, 'Til montering af rem på stolper'),
+    ('firkantskiver 40x40x11mm', 'Stk', 9, 1, 1, 1, 'Til montering af rem på stolper'),
+    ('4,5 x 70 mm. Skruer 400 stk.', 'Pakke', 165, 7, 1, 1, 'Til montering af yderste beklædning'),
+    ('4,5 x 50 mm. Skruer 300 stk.', 'Pakke', 90, 5, 1, 1, 'Til montering af inderste beklædning'),
+    ('stalddørsgreb 50x75', 'Sæt', 269, 3, 1, 1, 'Til lås på dør i skur'),
+    ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Til skurdør'),
+    ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Til montering af løsholter i skur');
 
 
-ALTER TABLE IF EXISTS public.order_line
-    ADD CONSTRAINT fk_materials FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID;
-
+-- End transaction
 END;
