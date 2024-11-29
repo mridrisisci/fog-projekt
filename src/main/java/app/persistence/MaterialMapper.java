@@ -58,8 +58,8 @@ public class MaterialMapper
              PreparedStatement ps = connection.prepareStatement(sql) )
         {
             int rowsAffected = ps.executeUpdate();
-            ps.setInt(1, name);
-            ps.setInt(2, unit);
+            ps.setString(1, name);
+            ps.setString(2, unit);
             ps.setInt(3, price);
             ps.setInt(4, length);
             ps.setInt(5, height);
