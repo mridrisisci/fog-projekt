@@ -54,7 +54,7 @@ public class OrderMapper
     public static void createCarportInOrdersMaterials(int orderID, int materialID, int quantity, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "INSERT INTO (orders_materials) VALUES (?,?,?)";
+        String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
         PreparedStatement ps = connection.prepareStatement(sql) )
