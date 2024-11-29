@@ -25,10 +25,10 @@ public class OrderController
 
     private static void createQuery(Context ctx, ConnectionPool pool)
     {
+        String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        String carportHeightString = ctx.formParam("chooseHeight");
-        int carportWidth = Integer.parseInt(carportWidthString);
-        int carportHeight = Integer.parseInt(carportHeightString);
+        int carportWidth = Integer.parseInt(carportLengthString);
+        int carportHeight = Integer.parseInt(carportWidthString);
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -55,8 +55,6 @@ public class OrderController
         //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: Opret noget modularitet (opdel metoden lidt?)
-        // TODO: Fiks fejl i DB mht. en constraint i addresses. (så de 3 tabeller kan fyldes ud)
         // TODO: tag stilling til validateParams()
 
         String carportId = "";
@@ -85,7 +83,6 @@ public class OrderController
             createCarport(orderID, ctx, pool);
             order = getOrderByID(orderID, ctx, pool);
             ctx.attribute("order", order);
-
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
