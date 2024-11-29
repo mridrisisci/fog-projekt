@@ -135,13 +135,26 @@ public class IntegrationTest
                 "        ON DELETE CASCADE;" +
                 "INSERT INTO test_schema.orders (carport_id, salesperson_id, status, price, sales_price, coverage_ratio_percentage, order_placed, order_paid, height, width, length, hasShed, roof_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        String sqlOrdersMaterials = "";
+        String sqlOrdersMaterials = "CREATE TABLE IF NOT EXISTS public.orders_materials\n" +
+                "(\n" +
+                "    orders_materials_id serial NOT NULL,\n" +
+                "    order_id integer NOT NULL,\n" +
+                "    material_id integer NOT NULL,\n" +
+                "    quantity integer NOT NULL,\n" +
+                "    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),\n" +
+                "    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)\n" +
+                "        REFERENCES public.materials (material_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE,\n" +
+                "    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)\n" +
+                "        REFERENCES public.orders (order_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE\n" +
+                ");";
 
         String sqlPostalCode = "INSERT INTO test_schema (postal_code) VALUES (?)";
 
-
-
-        String sql = "" + sqlPostalCode + sqlCities + sqlAddresses + sqlAccounts + sqlOrders + sqlMaterials;
+        String sql = sqlAccounts + sqlAddresses + sqlCities + sqlMaterials + sqlOrders + sqlOrdersMaterials + sqlPostalCode;
 
         try (Connection connection = connectionPoolTest.getConnection(); PreparedStatement ps = connection.prepareStatement(sql))
         {
