@@ -63,24 +63,15 @@ CREATE TABLE IF NOT EXISTS public.orders
     price integer,
     sales_price integer,
     coverage_ratio_percentage integer,
-    order_placed timestamp with time zone NOT NULL,
+    order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
     length integer NOT NULL,
-    has_shed boolean NOT NULL,
-    roof_type character varying(8) COLLATE pg_catalog."default" NOT NULL,
+    "hasShed" boolean,
+    roof_type character varying(6) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
-);
-
-CREATE TABLE IF NOT EXISTS public.orders_materials
-(
-    orders_materials_id serial NOT NULL,
-    order_id integer NOT NULL,
-    material_id integer NOT NULL,
-    type character varying(50) COLLATE pg_catalog."default",
-    quantity integer NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -88,6 +79,16 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     postal_code_id serial NOT NULL,
     postal_code integer NOT NULL,
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.orders_materials
+(
+    orders_materials_id serial NOT NULL,
+    order_id integer NOT NULL,
+    material_id integer NOT NULL,
+    type character varying(50) NOT NULL,
+    quantity integer NOT NULL,
+    PRIMARY KEY (orders_materials_id)
 );
 
 ALTER TABLE IF EXISTS public.accounts
@@ -134,7 +135,7 @@ ALTER TABLE IF EXISTS public.orders_materials
 
 
 ALTER TABLE IF EXISTS public.orders_materials
-    ADD CONSTRAINT materials_fk FOREIGN KEY (material_id)
+    ADD CONSTRAINT material_id_fk FOREIGN KEY (material_id)
         REFERENCES public.materials (material_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
