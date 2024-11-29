@@ -203,18 +203,6 @@ public class Calculator
 
     }
 
-    public static int[] calcRoofPlates(Carport carport)
-    {
-        int[] roofPlates = new int[2];
-        int numberOf360plates = 0;
-        int numberOf600plates = 0;
-        //Todo: Mangler calculations til denne del
-        roofPlates[0] = numberOf360plates;
-        roofPlates[1] = numberOf600plates;
-
-        return roofPlates;
-    }
-
     public static int[] calcScrewsAndHardware(Carport carport)
     {
         int[] screwsAndHardware = new int[8];
@@ -307,8 +295,10 @@ public class Calculator
      * @param carportWidth  The width of the carport in cm.
      * @return An array where index 0 is the number of long plates, and index 1 is the number of short plates.
      */
-    public static int[] calcRoofPlates(int carportLength, int carportWidth)
+    public static int[] calcRoofPlates(Carport carport)
     {
+        int carportLength = carport.getLENGTH();
+        int carportWidth = carport.getWIDTH();
         // Plate dimensions in cm
         final int LONG_PLATE_LENGTH = 600;
         final int SHORT_PLATE_LENGTH = 360;
