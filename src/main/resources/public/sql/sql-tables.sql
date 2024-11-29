@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS public.addresses
     address character varying(64) NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
-    account_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
 );
 
@@ -84,12 +83,8 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
     orders_materials_id serial NOT NULL,
     order_id integer NOT NULL,
     material_id integer NOT NULL,
-    -- TODO tilføj NOT NULL til type, når vi har lavet logic for det
     quantity integer NOT NULL,
     CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
-    --TODO tilføj denne CONSTRAIN når type logic er lavet.
-    -- Ideen er at et order_id, material_id og type forekommer unikt i tabellen
-    -- CONSTRAINT orders_materials_unique UNIQUE (order_id, material_id, type),
     CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
         REFERENCES public.materials (material_id) MATCH SIMPLE
         ON UPDATE CASCADE
@@ -117,10 +112,6 @@ ALTER TABLE public.accounts
 ALTER TABLE public.addresses
     ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
         REFERENCES public.cities (city_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    ADD CONSTRAINT addresses_account_fk FOREIGN KEY (account_id)
-        REFERENCES public.accounts (account_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
