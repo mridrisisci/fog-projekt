@@ -21,7 +21,7 @@ public class OrderMapper
 
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
             ps.setString(1, carportID);
             ps.setInt(2, salesPersonID);
@@ -35,16 +35,19 @@ public class OrderMapper
             ps.setInt(10, accountID);
 
             // Execute the query and retrieve the generated key
-            try (ResultSet rs = ps.executeQuery())
-            {
-                if (rs.next())
-                {
-                    return rs.getInt(1); // Return the generated order_id
-                } else
-                {
-                    throw new DatabaseException("Failed to retrieve order ID.");
-                }
-            }
+           int rowsAffected = ps.executeUpdate();
+           if(rowsAffected != 1)
+           {
+               throw new DatabaseException("kunne ikke oprette ...");
+           }
+           ResultSet rs = ps.getGeneratedKeys();
+           if (rs.next())
+           {
+               return rs.getInt(1);
+           } else
+           {
+               throw new DatabaseException("kunne ikke hente autogenereret ID");
+           }
 
         } catch (SQLException e)
         {
@@ -194,12 +197,11 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_placed, status, price, carport_id FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
         String carportID;
-        int price;
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -210,8 +212,7 @@ public class OrderMapper
                 orderPlaced = rs.getTimestamp("order_placed");
                 status = rs.getString("status");
                 carportID = rs.getString("carport_id");
-                price = rs.getInt("price");
-                return new Order(orderID, orderPlaced, status, carportID, price);
+                return new Order(orderID, orderPlaced, status, carportID);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);

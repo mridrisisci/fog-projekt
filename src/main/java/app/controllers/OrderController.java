@@ -20,16 +20,15 @@ public class OrderController
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
-        app.post("/getorder", ctx -> getOrderByID(ctx, dBConnection));
     }
 
 
     private static void createQuery(Context ctx, ConnectionPool pool)
     {
+        String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        String carportHeightString = ctx.formParam("chooseHeight");
-        int carportWidth = Integer.parseInt(carportWidthString);
-        int carportHeight = Integer.parseInt(carportHeightString);
+        int carportWidth = Integer.parseInt(carportLengthString);
+        int carportHeight = Integer.parseInt(carportWidthString);
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -56,8 +55,6 @@ public class OrderController
         //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: Opret noget modularitet (opdel metoden lidt?)
-        // TODO: Fiks fejl i DB mht. en constraint i addresses. (så de 3 tabeller kan fyldes ud)
         // TODO: tag stilling til validateParams()
 
         String carportId = "";
@@ -65,7 +62,7 @@ public class OrderController
         String status = "Under behandling";
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
-
+        Order order;
 
 
         boolean hasShed = true;
@@ -84,7 +81,8 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-
+            order = getOrderByID(orderID, ctx, pool);
+            ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
@@ -114,24 +112,21 @@ public class OrderController
         }
     }
 
-    private static void getOrderByID(Context ctx, ConnectionPool pool)
+    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            String orderID = ctx.formParam("orderID");
-            if (orderID == null || orderID.isEmpty()) {
-                throw new IllegalArgumentException("Order ID mangler.");
-            }
-            order = OrderMapper.getOrderByID(Integer.parseInt(orderID), pool);
-            ctx.attribute("getorder", order);
-            ctx.render("kvittering.html");
+            //String orderIDString = ctx.formParam("orderID");
+            order = OrderMapper.getOrderByID(orderID, pool);
+            return order;
+            //ctx.attribute("order", order);
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
             ctx.render("kvittering.html");
+            return null;
         }
-
     }
 
     private static boolean validatePostalCode(Context ctx, String postalCode)

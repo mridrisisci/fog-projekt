@@ -9,8 +9,8 @@ public class Order
     private final String CARPORT_ID;
     private int SALESPERSON_ID;
     private final int PRICE;
-    private final Timestamp TIME_PLACED;
-    private boolean IS_ASSIGNED;
+    private final Timestamp ORDER_PLACED;
+    private  boolean IS_ASSIGNED;
     private String status;
     private int salesPrice;
     private String roofType;
@@ -25,7 +25,7 @@ public class Order
         PRICE = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
@@ -38,7 +38,7 @@ public class Order
         PRICE = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
@@ -51,20 +51,20 @@ public class Order
         CARPORT_ID = carportId;
         SALESPERSON_ID = salespersonId;
         PRICE = price;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         IS_ASSIGNED = isAssigned;
         this.status = status;
     }
 
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int price)
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
         this.CARPORT_ID = carportID;
-        this.PRICE = price;
 
     }
+
 
 
     public boolean isIS_ASSIGNED()
@@ -82,8 +82,14 @@ public class Order
         return status;
     }
 
+    public Timestamp getORDER_PLACED()
+    {
+        return ORDER_PLACED;
+    }
+
 
     //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
+
 
     public String getCARPORT_ID()
     {
@@ -124,14 +130,14 @@ public class Order
     public String toString()
     {
         return "Order {" +
-                "orderId=" + ORDER_ID +
-                ", carportId=" + CARPORT_ID +
-                ", salespersonId=" + SALESPERSON_ID +
-                ", price=" + PRICE +
-                ", timePlaced=" + TIME_PLACED +
-                ", status=" + status +
-                ", isAssigned=" + IS_ASSIGNED +
-                "}";
+            "orderId=" + ORDER_ID +
+            ", carportId=" + CARPORT_ID +
+            ", salespersonId=" + SALESPERSON_ID +
+            ", price=" + PRICE +
+            ", timePlaced=" + ORDER_PLACED +
+            ", status=" + status +
+            ", isAssigned=" + IS_ASSIGNED +
+            "}";
     }
 
 
