@@ -16,6 +16,7 @@ public class Carport
     private int price;
     private int salesPrice;
     private List<Material> materialList = new ArrayList<>();
+    private  int orderID;
 
     public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
@@ -34,8 +35,9 @@ public class Carport
         this.WIDTH = WIDTH;
     }
 
-    public Carport(boolean hasShed, int LENGTH, int WIDTH)
+    public Carport(int orderID, boolean hasShed, int LENGTH, int WIDTH)
     {
+        this.orderID = orderID;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;

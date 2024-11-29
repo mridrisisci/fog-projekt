@@ -1,12 +1,10 @@
 package app.controllers;
 
-import app.entities.Carport;
 import app.entities.Order;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
-import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -68,35 +66,26 @@ public class OrderController
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
 
-        String description = "";
 
-        // TODO: check at kunden har valgt mål til redskabsrummet
+
         boolean hasShed = true;
         // TODO: Lav carport-objekt efter ordren er oprettet
         try
         {
-            // populates accounts
-            // populate addresses
+
             int cityID = AccountMapper.createRecordInCities(city, pool);
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
             int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
             int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
-            // calculates posts
-            //MaterialController.calcPosts(carportHeight, carportWidth, ctx, pool);
-            // resten af styklisten her
 
-            // populates orders
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                    orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            // laver et carport objekt
-            //createCarport(orderID, ctx, pool);
+            createCarport(orderID, ctx, pool);
 
-            ctx.render("createquery.html");
-
+            ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -105,23 +94,25 @@ public class OrderController
             throw new IllegalArgumentException(e);
         }
     }
-
     //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
     // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
     // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
-/*
-        private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
+
+        private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
     {
-        //instantiere carport objekt med data fra formular
-        try{
-            Carport carport = OrderMapper.getCarportByOrderID(orderID, dbConnection);
+        // hardcoded for at teste
+        int materialID = 1;
+        int quantity = 1;
 
-        } catch (DatabaseException e){
-            ctx.attribute("message", e.getMessage());
+        try
+        {
+            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
         }
-
-
-    }*/
+    }
 
     private static void getOrderByID(Context ctx, ConnectionPool pool)
     {

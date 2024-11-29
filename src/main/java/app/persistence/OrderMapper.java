@@ -1,12 +1,10 @@
 package app.persistence;
 
-import app.entities.Carport;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper
@@ -47,6 +45,29 @@ public class OrderMapper
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public static void createCarportInOrdersMaterials(int orderID, int materialID, int quantity, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "INSERT INTO (orders_materials) VALUES (?,?,?)";
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql) )
+        {
+            int rowsAffected = ps.executeUpdate();
+            ps.setInt(1, orderID);
+            ps.setInt(2, materialID);
+            ps.setInt(3, quantity);
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("kunne ikke oprette carport");
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 
 
