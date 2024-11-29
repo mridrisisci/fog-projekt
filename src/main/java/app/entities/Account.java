@@ -2,30 +2,26 @@ package app.entities;
 
 public class Account
 {
-    private  int accountID;
-    private  String role;
-    private final String USERNAME;
-    private  String password;
-    private final int TELEPHONE;
-    private final String EMAIL;
-    private  String address;
+    private int accountID;
+    private String role;
+    private String username;
+    private String password;
+    private int telephone;
+    private String email;
+    private String address;
 
-    public Account(String ADDRESS, String EMAIL, int TELEPHONE, String password, String USERNAME, String role, int accountID)
+    public Account(int accountID, String username, String role)
     {
-        this.address = ADDRESS;
-        this.EMAIL = EMAIL;
-        this.TELEPHONE = TELEPHONE;
-        this.password = password;
-        this.USERNAME = USERNAME;
-        this.role = role;
         this.accountID = accountID;
+        this.username = username;
+        this.role = role;
     }
 
     public Account(String username, String email, int telephone)
     {
-        this.USERNAME = username;
-        this.EMAIL = email;
-        this.TELEPHONE = telephone;
+        this.username = username;
+        this.email = email;
+        this.telephone = telephone;
     }
 
     public int getAccountID()
@@ -38,9 +34,9 @@ public class Account
         return role;
     }
 
-    public String getUSERNAME()
+    public String getUsername()
     {
-        return USERNAME;
+        return username;
     }
 
     public String getPassword()
@@ -48,14 +44,14 @@ public class Account
         return password;
     }
 
-    public int getTELEPHONE()
+    public int getTelephone()
     {
-        return TELEPHONE;
+        return telephone;
     }
 
-    public String getEMAIL()
+    public String getEmail()
     {
-        return EMAIL;
+        return email;
     }
 
     public String getAddress()
