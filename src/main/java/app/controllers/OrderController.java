@@ -20,7 +20,6 @@ public class OrderController
         app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
-        app.get("/getorder/{id}", ctx -> getOrderByID(ctx, dBConnection));
     }
 
 
@@ -65,7 +64,7 @@ public class OrderController
         String status = "Under behandling";
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
-
+        Order order;
 
 
         boolean hasShed = true;
@@ -84,7 +83,8 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-            getOrderByID(orderID, ctx, pool);
+            order = getOrderByID(orderID, ctx, pool);
+            ctx.attribute("order", order);
 
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -115,26 +115,21 @@ public class OrderController
         }
     }
 
-    private static void getOrderByID(int orderID, Context ctx, ConnectionPool pool)
+    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            String orderIDString = ctx.formParam("orderID");
-            order = OrderMapper.getOrderByID(Integer.parseInt(orderIDString));
-            //orderID = Integer.parseInt(orderIDString);
-            if (orderID == 0) {
-                throw new IllegalArgumentException("Order ID mangler.");
-            }
+            //String orderIDString = ctx.formParam("orderID");
             order = OrderMapper.getOrderByID(orderID, pool);
-            ctx.attribute("getorder", order);
-            ctx.render("kvittering.html");
+            return order;
+            //ctx.attribute("order", order);
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
             ctx.render("kvittering.html");
+            return null;
         }
-
     }
 
     private static boolean validatePostalCode(Context ctx, String postalCode)

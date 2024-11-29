@@ -11,18 +11,14 @@ DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
 DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
--- Old tables no longer used
-DROP TABLE IF EXISTS public.material_variants CASCADE;
-DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
--- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
-    role character varying(11) NOT NULL,
-    username character varying(64) NOT NULL,
-    email character varying(100),
-    password character varying(100),
+    role character varying(11) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default",
+    password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
     addresses_id integer NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
@@ -31,7 +27,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
 CREATE TABLE IF NOT EXISTS public.addresses
 (
     addresses_id serial NOT NULL,
-    address character varying(64) NOT NULL,
+    address character varying(64) COLLATE pg_catalog."default" NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
@@ -40,30 +36,30 @@ CREATE TABLE IF NOT EXISTS public.addresses
 CREATE TABLE IF NOT EXISTS public.cities
 (
     city_id serial NOT NULL,
-    city character varying(50) NOT NULL,
+    city character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.materials
 (
     material_id serial NOT NULL,
-    name character varying(100) NOT NULL,
-    unit character varying(10) NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    unit character varying(10) COLLATE pg_catalog."default" NOT NULL,
     price integer NOT NULL,
     length integer,
     height integer,
     width integer,
-    type character varying(50),
-    description character varying(100),
+    type character varying(50) COLLATE pg_catalog."default",
+    description character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
-    carport_id character varying(8) NOT NULL,
+    carport_id character varying(8) COLLATE pg_catalog."default" NOT NULL,
     salesperson_id integer NOT NULL,
-    status character varying(10) NOT NULL,
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
     sales_price integer,
     coverage_ratio_percentage integer,
@@ -71,9 +67,9 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
-    length integer NOT NULL,
-    "hasShed" boolean,
-    roof_type character varying(6) NOT NULL,
+    length integer,
+    has_shed boolean NOT NULL,
+    roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
@@ -83,20 +79,8 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
     orders_materials_id serial NOT NULL,
     order_id integer NOT NULL,
     material_id integer NOT NULL,
-    -- TODO tilføj NOT NULL til type, når vi har lavet logic for det
     quantity integer NOT NULL,
-    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
-    --TODO tilføj denne CONSTRAIN når type logic er lavet.
-    -- Ideen er at et order_id, material_id og type forekommer unikt i tabellen
-    -- CONSTRAINT orders_materials_unique UNIQUE (order_id, material_id, type),
-    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -106,25 +90,44 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
-ALTER TABLE public.addresses
-    ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
-        REFERENCES public.cities (city_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    ADD CONSTRAINT addresses_account_fk FOREIGN KEY (account_id)
-        REFERENCES public.accounts (account_id) MATCH SIMPLE
+ALTER TABLE IF EXISTS public.accounts
+    ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)
+        REFERENCES public.addresses (addresses_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.addresses
+
+ALTER TABLE IF EXISTS public.addresses
+    ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
+        REFERENCES public.cities (city_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)
         REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.orders
+
+ALTER TABLE IF EXISTS public.orders
     ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)
         REFERENCES public.accounts (account_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.orders_materials
+    ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.orders_materials
+    ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
@@ -164,5 +167,5 @@ VALUES
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
 
 
--- End transaction
+
 END;

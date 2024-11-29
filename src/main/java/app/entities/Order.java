@@ -9,7 +9,7 @@ public class Order
     private final String CARPORT_ID;
     private int SALESPERSON_ID;
     private  int PRICE;
-    private final Timestamp TIME_PLACED;
+    private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
 
@@ -19,7 +19,7 @@ public class Order
         CARPORT_ID = carportId;
         SALESPERSON_ID = salespersonId;
         PRICE = price;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         IS_ASSIGNED = isAssigned;
         this.status = status;
     }
@@ -27,7 +27,7 @@ public class Order
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
         this.CARPORT_ID = carportID;
 
@@ -46,6 +46,11 @@ public class Order
     }
 
     public String getStatus() { return status;}
+
+    public Timestamp getORDER_PLACED()
+    {
+        return ORDER_PLACED;
+    }
 
 
     //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
@@ -72,7 +77,7 @@ public class Order
             ", carportId=" + CARPORT_ID +
             ", salespersonId=" + SALESPERSON_ID +
             ", price=" + PRICE +
-            ", timePlaced=" + TIME_PLACED +
+            ", timePlaced=" + ORDER_PLACED +
             ", status=" + status +
             ", isAssigned=" + IS_ASSIGNED +
             "}";
