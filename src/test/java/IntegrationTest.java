@@ -47,15 +47,101 @@ public class IntegrationTest
 
     private void initializeTestData() throws SQLException
     {
+        String sqlAccounts = "CREATE TABLE IF NOT EXISTS public.accounts\n" +
+                "(\n" +
+                "    account_id serial NOT NULL,\n" +
+                "    role character varying(11) NOT NULL,\n" +
+                "    username character varying(64) NOT NULL,\n" +
+                "    email character varying(100),\n" +
+                "    password character varying(100),\n" +
+                "    telephone integer,\n" +
+                "    CONSTRAINT account_pk PRIMARY KEY (account_id)\n" +
+                ");" +
+                "ALTER TABLE public.accounts\n" +
+                "    ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)\n" +
+                "        REFERENCES public.addresses (addresses_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE;" +
+                "INSERT INTO test_schema.accounts (role, username, email, password, telephone) VALUES(?,?,?,?,?)";
+
+        String sqlAddresses = "CREATE TABLE IF NOT EXISTS public.addresses\n" +
+                "(\n" +
+                "    addresses_id serial NOT NULL,\n" +
+                "    address character varying(64) NOT NULL,\n" +
+                "    postal_code_id integer NOT NULL,\n" +
+                "    city_id integer NOT NULL,\n" +
+                "    account_id integer NOT NULL,\n" +
+                "    CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)\n" +
+                ");" +
+                "ALTER TABLE public.addresses\n" +
+                "    ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)\n" +
+                "        REFERENCES public.cities (city_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE;" +
+                "ALTER TABLE public.addresses\n" +
+                "    ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)\n" +
+                "        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE;" +
+                "INSERT INTO test_schema.addresses (address) VALUES (?)";
+
+        String sqlCities = "CREATE TABLE IF NOT EXISTS public.cities\n" +
+                "(\n" +
+                "    city_id serial NOT NULL,\n" +
+                "    city character varying(50) NOT NULL,\n" +
+                "    CONSTRAINT cities_pkey PRIMARY KEY (city_id)\n" +
+                ");" +
+                "INSERT INTO test_schema.cities (city) VALUES (?)";
+
+        String sqlMaterials = "CREATE TABLE IF NOT EXISTS public.materials\n" +
+                "(\n" +
+                "    material_id serial NOT NULL,\n" +
+                "    name character varying(100) NOT NULL,\n" +
+                "    unit character varying(10) NOT NULL,\n" +
+                "    price integer NOT NULL,\n" +
+                "    length integer,\n" +
+                "    height integer,\n" +
+                "    width integer,\n" +
+                "    type character varying(50),\n" +
+                "    description character varying(100),\n" +
+                "    CONSTRAINT material_pk PRIMARY KEY (material_id)\n" +
+                ");" +
+                "INSERT INTO test_schema.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 
-        String sqlAccounts = "INSERT INTO test_schema.accounts (role, username, email, password, telephone) VALUES(?,?,?,?,?)";
+        String sqlOrders = "CREATE TABLE IF NOT EXISTS public.orders\n" +
+                "(\n" +
+                "    order_id serial NOT NULL,\n" +
+                "    carport_id character varying(8) NOT NULL,\n" +
+                "    salesperson_id integer NOT NULL,\n" +
+                "    status character varying(10) NOT NULL,\n" +
+                "    price integer,\n" +
+                "    sales_price integer,\n" +
+                "    coverage_ratio_percentage integer,\n" +
+                "    order_placed timestamp with time zone,\n" +
+                "    order_paid boolean NOT NULL,\n" +
+                "    height integer NOT NULL,\n" +
+                "    width integer NOT NULL,\n" +
+                "    length integer NOT NULL,\n" +
+                "    \"hasShed\" boolean,\n" +
+                "    roof_type character varying(6) NOT NULL,\n" +
+                "    account_id integer NOT NULL,\n" +
+                "    CONSTRAINT orders_pk PRIMARY KEY (order_id)\n" +
+                ");" +
+                "ALTER TABLE public.orders\n" +
+                "    ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)\n" +
+                "        REFERENCES public.accounts (account_id) MATCH SIMPLE\n" +
+                "        ON UPDATE CASCADE\n" +
+                "        ON DELETE CASCADE;" +
+                "INSERT INTO test_schema.orders (carport_id, salesperson_id, status, price, sales_price, coverage_ratio_percentage, order_placed, order_paid, height, width, length, hasShed, roof_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        String sqlOrders = "INSERT INTO test_schema.orders (carport_id, salesperson_id, status, price, sales_price, coverage_ratio_percentage, order_placed, order_paid, height, width, length, hasShed, roof_type) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sqlOrdersMaterials = "";
 
-        String sqlMaterials = "INSERT INTO test_schema.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlPostalCode = "INSERT INTO test_schema (postal_code) VALUES (?)";
 
-        String sql = "" + sqlAccounts + sqlOrders + sqlMaterials;
+
+
+        String sql = "" + sqlPostalCode + sqlCities + sqlAddresses + sqlAccounts + sqlOrders + sqlMaterials;
 
         try (Connection connection = connectionPoolTest.getConnection(); PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -86,7 +172,7 @@ public class IntegrationTest
             addMaterialToBatch(ps, "universal 190 mm venstre", "Stk", 50, 5, 150, 5, "Beslag - Venstre", "Til montering af spær på rem");
             addMaterialToBatch(ps, "4,5 x 60 mm. skruer 200 stk.", "Pakke", 169, 6, 1, 1, "Skruer", "Til montering af stern & vandbrædt");
             addMaterialToBatch(ps, "4,0 x 50 mm. beslagskruer", "Pakke", 139, 5, 1, 1, "Beslagskruer", "Til montering af universalbeslag + hulbånd");
-            addMaterialToBatch(ps, "bræddebolt 10 x 120 mm.", "Stk", 409, 1, 1, 1, "Bræddebolt", "Til montering af rem på stolper");
+            addMaterialToBatch(ps, "bræddebolt 10 x 120 mm.", "Stk", 16, 1, 1, 1, "Bræddebolt", "Til montering af rem på stolper");
             addMaterialToBatch(ps, "firkantskiver 40x40x11mm", "Stk", 9, 1, 1, 1, "Firkantskiver", "Til montering af rem på stolper");
             addMaterialToBatch(ps, "4,5 x 70 mm. Skruer 400 stk.", "Pakke", 165, 7, 1, 1, "Beklædningsskruer", "Til montering af yderste beklædning");
             addMaterialToBatch(ps, "4,5 x 50 mm. Skruer 300 stk.", "Pakke", 90, 5, 1, 1, "Beklædningsskruer", "Til montering af inderste beklædning");
