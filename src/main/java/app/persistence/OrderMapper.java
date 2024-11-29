@@ -1,12 +1,12 @@
 package app.persistence;
+import app.controllers.OrderController;
+import app.entities.Material;
 import app.entities.Order;
 import app.entities.OrderStatus;
 import app.exceptions.DatabaseException;
+import app.utilities.Calculator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.List;
 
 public class OrderMapper
@@ -48,6 +48,108 @@ public class OrderMapper
 
 
     }
+
+    public static int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT account_id, length, width FROM public.orders WHERE order_id = ?;";
+
+        int[] carportLengthAndWidth = new int[2];
+        int account_ID;
+        int length;
+        int width;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, order_ID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                length = rs.getInt("length");
+                width = rs.getInt("width");
+                //Account_ID bruges ikke indtil videre, men kunne være brugbar senere hen
+                account_ID = rs.getInt("account_id");
+                carportLengthAndWidth[0] = length;
+                carportLengthAndWidth[1] = width;
+            }
+            return carportLengthAndWidth;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static int getPickListPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int pickListPrice = 0;
+
+        String sql = "SELECT price FROM public.orders WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                pickListPrice = rs.getInt("price");
+            }
+            return pickListPrice;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static int getCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int coverageRatio = 0;
+
+        String sql = "SELECT coverage_ratio_percentage FROM public.orders WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                coverageRatio = rs.getInt("coverage_ratio_percentage");
+            }
+            return coverageRatio;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static int updateSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int pickListPrice = getPickListPriceByOrderID(orderID, pool);
+        double coverageRatio = getCoverageRatioByOrderID(orderID,pool)/100;
+        int salesPrice = Calculator.calcSalesPrice(pickListPrice,coverageRatio);
+
+        String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, salesPrice);
+            ps.setInt(2, orderID);
+            return salesPrice;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+
+
 
     public static Order getOrder()
     {
