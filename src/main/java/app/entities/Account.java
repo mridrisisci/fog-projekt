@@ -2,33 +2,40 @@ package app.entities;
 
 public class Account
 {
-    private final int ACCOUNT_ID;
-    private final String ROLE;
+    private  int accountID;
+    private  String role;
     private final String USERNAME;
-    private final String PASSWORD;
+    private  String password;
     private final int TELEPHONE;
     private final String EMAIL;
-    private final String ADDRESS;
+    private  String address;
 
-    public Account(String ADDRESS, String EMAIL, int TELEPHONE, String PASSWORD, String USERNAME, String ROLE, int ACCOUNT_ID)
+    public Account(String ADDRESS, String EMAIL, int TELEPHONE, String password, String USERNAME, String role, int accountID)
     {
-        this.ADDRESS = ADDRESS;
+        this.address = ADDRESS;
         this.EMAIL = EMAIL;
         this.TELEPHONE = TELEPHONE;
-        this.PASSWORD = PASSWORD;
+        this.password = password;
         this.USERNAME = USERNAME;
-        this.ROLE = ROLE;
-        this.ACCOUNT_ID = ACCOUNT_ID;
+        this.role = role;
+        this.accountID = accountID;
     }
 
-    public int getACCOUNT_ID()
+    public Account(String username, String email, int telephone)
     {
-        return ACCOUNT_ID;
+        this.USERNAME = username;
+        this.EMAIL = email;
+        this.TELEPHONE = telephone;
     }
 
-    public String getROLE()
+    public int getAccountID()
     {
-        return ROLE;
+        return accountID;
+    }
+
+    public String getRole()
+    {
+        return role;
     }
 
     public String getUSERNAME()
@@ -36,9 +43,9 @@ public class Account
         return USERNAME;
     }
 
-    public String getPASSWORD()
+    public String getPassword()
     {
-        return PASSWORD;
+        return password;
     }
 
     public int getTELEPHONE()
@@ -51,8 +58,8 @@ public class Account
         return EMAIL;
     }
 
-    public String getADDRESS()
+    public String getAddress()
     {
-        return ADDRESS;
+        return address;
     }
 }

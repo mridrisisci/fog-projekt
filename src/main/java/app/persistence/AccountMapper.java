@@ -3,8 +3,8 @@ package app.persistence;
 import app.entities.Account;
 import app.exceptions.DatabaseException;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountMapper
@@ -158,9 +158,32 @@ public class AccountMapper
     {
         return null;
     }
-    public static List<Account> getAllAccounts(Account account)
+    public static List<Account> getAllCustomers(ConnectionPool pool) throws DatabaseException
     {
+
+        String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";
+        String username;
+        String email;
+        int telephone;
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            List<Account> accounts = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                username = rs.getString("username");
+                email = rs.getString("email");
+                telephone = rs.getInt("telephone");
+                accounts.add(new Account(username, email, telephone) );
+                return accounts;
+            }
         return null;
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
     }
     public static void login()
     {
