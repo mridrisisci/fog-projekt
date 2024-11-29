@@ -1,6 +1,6 @@
 package app.persistence;
-import app.controllers.OrderController;
-import app.entities.Material;
+
+import app.entities.Carport;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
@@ -34,13 +34,16 @@ public class OrderMapper
             ps.setString(9, roofType);
             ps.setInt(10, accountID);
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("fejl");
+            // Execute the query and retrieve the generated key
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1); // Return the generated order_id
+                } else {
+                    throw new DatabaseException("Failed to retrieve order ID.");
+                }
             }
-        } catch (SQLException e)
-        {
+
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
@@ -185,14 +188,17 @@ public class OrderMapper
     {
         return null;
     }
+
     public static List<Order> getOrders()
     {
         return null;
     }
+
     public static void deleteOrderByID()
     {
 
     }
+
     public static void updateOrderByUserID()
     {
 

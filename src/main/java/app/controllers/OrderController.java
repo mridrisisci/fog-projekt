@@ -1,6 +1,5 @@
 package app.controllers;
 
-import app.entities.Account;
 import app.entities.Order;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
@@ -68,6 +67,7 @@ public class OrderController
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
 
+        String description = "";
 
         // TODO: check at kunden har valgt mål til redskabsrummet
         boolean hasShed = true;
@@ -87,10 +87,15 @@ public class OrderController
             // populates orders
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            ctx.render("kvittering.html");
+            int orderID = OrderMapper.createQueryInOrders(accountID, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
+                    carportHeight, carportWidth, hasShed, roofType.toString(), dbConnection);
+
+            // laver et carport objekt
+            //createCarport(orderID, ctx, pool);
+
+            ctx.render("createquery.html");
+
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -98,6 +103,23 @@ public class OrderController
         {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
+    // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
+    // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+    private static void createCarport(int orderID, Context ctx, ConnectionPool dbConnection)
+    {
+        //instantiere carport objekt med data fra formular
+        try{
+            Carport carport = OrderMapper.getCarportByOrderID(orderID, dbConnection);
+
+        } catch (DatabaseException e){
+            ctx.attribute("message", e.getMessage());
+        }
+
+
     }
 
     private static void getOrderByID(Context ctx, ConnectionPool pool)
@@ -144,9 +166,7 @@ public class OrderController
             return false;
         }
         return false;
-
     }
-
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {
