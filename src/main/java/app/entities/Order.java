@@ -8,7 +8,7 @@ public class Order
     private final int ORDER_ID;
     private final String CARPORT_ID;
     private int SALESPERSON_ID;
-    private final int PRICE;
+    private  int PRICE;
     private final Timestamp TIME_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
@@ -24,13 +24,12 @@ public class Order
         this.status = status;
     }
 
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int price)
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
         TIME_PLACED = orderPlaced;
         this.status = status;
         this.CARPORT_ID = carportID;
-        this.PRICE = price;
 
     }
 

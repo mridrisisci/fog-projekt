@@ -84,6 +84,7 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
+            getOrderByID(orderID, ctx, pool);
 
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -114,16 +115,17 @@ public class OrderController
         }
     }
 
-    private static void getOrderByID(Context ctx, ConnectionPool pool)
+    private static void getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            String orderID = ctx.formParam("orderID");
-            if (orderID == null || orderID.isEmpty()) {
+            //String orderIDString = ctx.formParam("orderID");
+            //orderID = Integer.parseInt(orderIDString);
+            if (orderID == 0) {
                 throw new IllegalArgumentException("Order ID mangler.");
             }
-            order = OrderMapper.getOrderByID(Integer.parseInt(orderID), pool);
+            order = OrderMapper.getOrderByID(orderID, pool);
             ctx.attribute("getorder", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
