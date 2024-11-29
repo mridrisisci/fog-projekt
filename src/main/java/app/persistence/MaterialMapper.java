@@ -724,7 +724,7 @@ public class MaterialMapper
     }
 
 
-    public static Material getRoofing(Carport carport, ConnectionPool pool)
+    public static Material getRoofPlatesLong(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -733,10 +733,10 @@ public class MaterialMapper
         String description;
         int price;
         int quantity = Calculator.calcRoofPlates(carport)[0];
-        int length = Calculator.calcRoofPlates(carport)[1];
+        int length = 600;
         String type = "Tagplade";
         int materialID;
-        Material underFasciaBoard = null;
+        Material roofing = null;
 
 
         try (Connection connection = pool.getConnection();
@@ -754,15 +754,56 @@ public class MaterialMapper
                 type = rs.getString("type");
                 materialID = rs.getInt("material_id");
                 price = rs.getInt("price");
-                underFasciaBoard = new Material(materialID, name, description, price, unit, quantity, length, type);
+                roofing = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
-            return underFasciaBoard;
+            return roofing;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static Material getRoofPlatesShort(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+
+        String name;
+        String unit;
+        String description;
+        int price;
+        int quantity = Calculator.calcRoofPlates(carport)[1];
+        int length = 360;
+        String type = "Tagplade";
+        int materialID;
+        Material roofing = null;
+
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ps.setInt(2, length);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                length = rs.getInt("length");
+                type = rs.getString("type");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                roofing = new Material(materialID, name, description, price, unit, quantity, length, type);
+            }
+            return roofing;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
 
     public static Material getMaterial()
     {
