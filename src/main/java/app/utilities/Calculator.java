@@ -222,18 +222,6 @@ public class Calculator
 
     }
 
-    public static int[] calcRoofPlates(Carport carport)
-    {
-        int[] roofPlates = new int[2];
-        int numberOf360plates = 0;
-        int numberOf600plates = 0;
-        //Todo: Mangler calculations til denne del
-        roofPlates[0] = numberOf360plates;
-        roofPlates[1] = numberOf600plates;
-
-        return roofPlates;
-    }
-
     public static int calcScrewsForRoofing(Carport carport)
     {
         int screwsForRoofing;
@@ -340,7 +328,7 @@ public class Calculator
         return numberOfBoardBolts;
     }
 
-    /**
+    /*
      * Calculates the number of long and short roof plates needed for a carport.
      *
      * @param carportLength The length of the carport in cm.
