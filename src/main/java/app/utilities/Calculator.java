@@ -203,18 +203,6 @@ public class Calculator
 
     }
 
-    public static int[] calcRoofPlates(Carport carport)
-    {
-        int[] roofPlates = new int[2];
-        int numberOf360plates = 0;
-        int numberOf600plates = 0;
-        //Todo: Mangler calculations til denne del
-        roofPlates[0] = numberOf360plates;
-        roofPlates[1] = numberOf600plates;
-
-        return roofPlates;
-    }
-
     public static int[] calcScrewsAndHardware(Carport carport)
     {
         int[] screwsAndHardware = new int[8];
