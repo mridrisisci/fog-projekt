@@ -19,35 +19,30 @@
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
              role="alert">Fejlbeskeder vises her
         </div>
-        <p class="h2 mb-5">Byens sejeste carports. Få din egen custom carport her:</p>
+        <p class="h2 mb-5">Bestillinger - Status: Betalt</p>
         <form action="/" method="GET">
-            <div class="container my-5">
-                <div class="row g-4">
-                    <!-- Første boks -->
-                    <div class="col-md-6">
-                        <a href="/side1" th:href="@{/}" class="text-decoration-none">
-                            <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                                <img src="../public/images/tag-med-rejsning.jpg"
-                                     th:src="@{/images/tag-med-rejsning.jpg}" alt="carport med rejsning"
-                                     class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                                <h2 class="h4 text-dark">Carport med høj rejsning</h2>
-                                <p class="text-muted">Her er lidt beskrivelse for den første boks.</p>
-                            </div>
-                        </a>
-                    </div>
+            <div class="table-container">
+                <table id="listOfUsersTable">
+                    <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Account ID</th>
+                        <th>Carport ID</th>
+                        <th>Total price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orders : ${orders}">
+                        <td th:text="${orders.orderId}">Order ID</td>
+                        <td th:text="${orders.accountId}">Account ID</td>
+                        <td th:text="${orders.carportId}">Carport ID</td>
+                        <td th:text="${orders.totalPrice}">Total price</td>
 
-                    <!-- Anden boks -->
-                    <div class="col-md-6">
-                        <a href="/side2" class="text-decoration-none"></a>
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/fladt-tag.jpg" th:src="@{/images/fladt-tag.jpg}" alt="fladt-tag"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med flat tag</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den anden boks.</p>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-
-                        </div>
-                    </div>
         </form>
     </div>
 
