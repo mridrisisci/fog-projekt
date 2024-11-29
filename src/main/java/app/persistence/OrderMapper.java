@@ -76,6 +76,36 @@ public class OrderMapper
 
     }
 
+    public static List<Order> getAllOrders(ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM public.orders;";
+        List<Order> orders = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int orderID = rs.getInt("order_id");
+                String carportID = rs.getString("carport_id");
+                int salespersonID = rs.getInt("salesperson_id");
+                String status = rs.getString("status");
+                int price = rs.getInt("price");
+                int salesPrice = rs.getInt("sales_price");
+                int coverageRatioPercentage = rs.getInt("coverage_ratio_percentage");
+                Timestamp orderPlaced = rs.getTimestamp("order_placed");
+                String roofType = rs.getString("roof_type");
+                int accountID = rs.getInt("account_id");
+
+                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching orders from the database", e.getMessage());
+        }
+        return orders;
+    }
+
     public static List<Order> getAllPaidOrders(ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM public.orders WHERE status = 'Betalt';";
@@ -101,7 +131,7 @@ public class OrderMapper
                 orders.add(order);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error fetching users from the database", e.getMessage());
+            throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
     }
