@@ -204,21 +204,18 @@ public class MaterialMapper
 
     //TODO: LAVE CARPORT OBJEKT når der er ny ordre, som bruges i parametrene
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
         String description;
+        int price;
         int quantity = Calculator.calcSidesFasciaBoard(carport)[0];
         int length = Calculator.calcSidesFasciaBoard(carport)[1];
-        int materialID;
         String type = "Understernbrædt";
-        int price;
+        int materialID;
         Material underFasciaBoard = null;
 
 
