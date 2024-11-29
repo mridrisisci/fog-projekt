@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS public.addresses
     address character varying(64) COLLATE pg_catalog."default" NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
-    account_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
 );
 
@@ -51,6 +50,7 @@ CREATE TABLE IF NOT EXISTS public.materials
     height integer,
     width integer,
     description character varying(100) COLLATE pg_catalog."default",
+    type character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
@@ -59,19 +59,28 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_id serial NOT NULL,
     carport_id character varying(8) COLLATE pg_catalog."default" NOT NULL,
     salesperson_id integer NOT NULL,
-    status character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
     sales_price integer,
     coverage_ratio_percentage integer,
-    order_placed timestamp with time zone,
+    order_placed timestamp with time zone NOT NULL,
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
-    length integer NOT NULL,
-    "hasShed" boolean,
-    roof_type character varying(6) COLLATE pg_catalog."default" NOT NULL,
+    length integer,
+    has_shed boolean NOT NULL,
+    roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.orders_materials
+(
+    orders_materials_id serial NOT NULL,
+    order_id integer NOT NULL,
+    material_id integer NOT NULL,
+    quantity integer NOT NULL,
+    CONSTRAINT orders_materials_pkey PRIMARY KEY (orders_materials_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -81,26 +90,9 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
-CREATE TABLE IF NOT EXISTS public.orders_materials
-(
-    orders_materials_id serial NOT NULL,
-    order_id integer NOT NULL,
-    material_id integer NOT NULL,
-    type character varying(50) NOT NULL,
-    quantity integer NOT NULL,
-    PRIMARY KEY (orders_materials_id)
-);
-
 ALTER TABLE IF EXISTS public.accounts
     ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)
         REFERENCES public.addresses (addresses_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
-
-
-ALTER TABLE IF EXISTS public.addresses
-    ADD CONSTRAINT addresses_account_fk FOREIGN KEY (account_id)
-        REFERENCES public.accounts (account_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
@@ -127,16 +119,16 @@ ALTER TABLE IF EXISTS public.orders
 
 
 ALTER TABLE IF EXISTS public.orders_materials
-    ADD CONSTRAINT orders_fk FOREIGN KEY (order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
+    ADD CONSTRAINT material_id_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
 
 
 ALTER TABLE IF EXISTS public.orders_materials
-    ADD CONSTRAINT material_id_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
+    ADD CONSTRAINT orders_fk FOREIGN KEY (order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID;
