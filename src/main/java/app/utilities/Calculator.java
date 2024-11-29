@@ -215,69 +215,85 @@ public class Calculator
         return roofPlates;
     }
 
-    public static int[] calcScrewsAndHardware(Carport carport)
+    public static int calcScrewsForRoofing(Carport carport)
     {
-        int[] screwsAndHardware = new int[8];
-        //Todo: Fiks så skruer og hulbånd ikke er hardcoded
-        int screws = 1; //Hardcoded til to, så man altid har to bånd af 10 meter.
-        int rollForWindCross = 2; //Hardcoded til to, så man altid har to bånd af 10 meter.
         int screwsForRoofing;
-        int hardwareForRaftersLeft = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
-        int hardwarescrews; //Beslagskruer til montering af universalbeslag+hulbånd
-        int boardBolt; //Bræddebolt
-        int squareWasher; //Firkantskive
-
-        //TODO: Gør så det ikke er hardcoded
-        //Udregning af beslagskruer - vi har valgt at give en ekstra pakke med
-        if (calcHardwareScrews(carport) <= 249)
-        {
-            hardwarescrews = 2;
-        } else
-        {
-            hardwarescrews = 3;
-        }
 
         //Udregning for skruer til taget
         //Man skal bruge ca. 12 skruer per kvadratmeter tagplade, der er skruer til 16,6 m^2 i en pakke. Vi runder ned til 16 m^2
         int squareCentimeterPerPackageOfScrews = 1600;
-        if ((carport.getWIDTH() * carport.getLENGTH())/squareCentimeterPerPackageOfScrews < 2)
+        if ((carport.getWIDTH() * carport.getLENGTH()) / squareCentimeterPerPackageOfScrews < 2)
         {
             screwsForRoofing = 2;
-        } else {
+        } else
+        {
             screwsForRoofing = 3;
         }
 
-        //Udregning for bræddebolt
-        boardBolt = calcBoardBolt(carport);
+        return screwsForRoofing;
+    }
 
+    public static int calcStandardScrews()
+    {
+        int packagesOfScrews = 1; //Hardcoded as the biggest carport FOG offers uses one package
+        return packagesOfScrews;
+    }
+
+    public static int calcRollForWindCross()
+    {
+        int numberOfRollsForWindCross = 2;
+        //Hardcoded til to, så man altid har to bånd af 10 meter.
+        return numberOfRollsForWindCross;
+    }
+
+    public static int calcSquareWasher(Carport carport)
+    {
+        int numberOfSquareWasher = calcPosts(carport) + 2;
         //Udregning for firkantskive - De får antallet af stolper plus 2
-        squareWasher = calcPosts(carport) + 2;
+        return numberOfSquareWasher;
+    }
 
-        screwsAndHardware[0] = screws;
-        screwsAndHardware[1] = rollForWindCross;
-        screwsAndHardware[2] = screwsForRoofing;
-        screwsAndHardware[3] = hardwareForRaftersLeft;
-        screwsAndHardware[4] = hardwareForRaftersRight;
-        screwsAndHardware[5] = hardwarescrews;
-        screwsAndHardware[6] = boardBolt;
-        screwsAndHardware[7] = squareWasher;
+    public static int calcHardwareForRaftersLeftAndRight(Carport carport)
+    {
+        int hardwareForRaftersLeft = calcRafters(carport); //Der skal bruges et beslag per spær
+        int hardwareForRaftersRight = calcRafters(carport); //Der skal bruges et beslag per spær
+        int hardwareForRafters = hardwareForRaftersLeft + hardwareForRaftersRight;
 
-        return screwsAndHardware;
+        return hardwareForRafters;
     }
 
     public static int calcHardwareScrews(Carport carport)
     {
+
         int numberOfHardwarescrews;
-        int hardwareForRafters = calcRafters(carport) * 2; //Et højre- og et venstrebeslag per spær
+
+        int packagesOfHardwarescrews; //Der er 250 skruer i en pakke
+
+        int hardwareForRafters = calcHardwareForRaftersLeftAndRight(carport); //Et højre- og et venstrebeslag per spær
+
         int sidesOnHardwareForRafters = 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
+
         int screwsForRaftersHardware = (hardwareForRafters * sidesOnHardwareForRafters) * 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
+
         int screwsOnIntersection = 2; //Der skal skrues 1-2 skruer i ved hulbåndskrydsning
+
         int screwsOnPunchedTape = 4 * 4; //Skruer til fastgørelse af hulbånd, der bliver sat 4 skruer af til hvert hjørne
 
+        //Udregning af hvor mange beslagsskruer der skal bruges
         numberOfHardwarescrews = hardwareForRafters + screwsForRaftersHardware + screwsOnIntersection + screwsOnPunchedTape;
 
-        return numberOfHardwarescrews;
+
+        //TODO: Gør så det ikke er hardcoded
+        //Udregning af pakker af beslagskruer - vi har valgt at give en ekstra pakke med
+        if (numberOfHardwarescrews <= 249)
+        {
+            packagesOfHardwarescrews = 2;
+        } else
+        {
+            packagesOfHardwarescrews = 3;
+        }
+
+        return packagesOfHardwarescrews;
     }
 
     public static int calcBoardBolt(Carport carport)
@@ -288,12 +304,13 @@ public class Calculator
         int extraBoltsPerAssembly = 2;
         int postsWithAssemblyPoint = 2;
 
-        if(calcPosts(carport) == 4)
+        if (calcPosts(carport) == 4)
         {
-            numberOfBoardBolts = calcPosts(carport)*2;
+            numberOfBoardBolts = calcPosts(carport) * 2;
 
-        } else {
-            numberOfBoardBolts = calcPosts(carport)*boltsPerPost+(postsWithAssemblyPoint*extraBoltsPerAssembly);
+        } else
+        {
+            numberOfBoardBolts = calcPosts(carport) * boltsPerPost + (postsWithAssemblyPoint * extraBoltsPerAssembly);
         }
         return numberOfBoardBolts;
     }
