@@ -211,6 +211,34 @@ public class OrderMapper
     }
 
 
+    //TODO: TEST om salgsprisen også bliver ændret
+    public static void updateCoverageRatioPercentageByOrderID(int newCoverageRatio, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID,pool)) + getPickListPriceByOrderID(orderID,pool);
+        //Salgspris = ((dækningsgrad/100) * kostpris) + kostpris
+
+        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newSalesPrice);
+            ps.setInt(2, newCoverageRatio);
+            ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update coverage ratio for order with ID: " + orderID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
+
+
     public static Order getOrder()
     {
         return null;
