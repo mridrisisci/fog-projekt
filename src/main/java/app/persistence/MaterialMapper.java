@@ -408,27 +408,24 @@ public class MaterialMapper
 
 
     //TODO: NOT DONE
-    public static Material getScrewsAndHardware(Carport carport, ConnectionPool pool)
+    public static Material getScrews(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: ÆNDRE MATERIAL_ID - Not done
-        String sql = "SELECT material_id, name, unit, description, price, length FROM public.materials WHERE material_id = ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ?;";
 
         String name;
         String unit;
         String description;
-        int[] screwsAndHardware = Calculator.calcScrewsAndHardware(carport);
-        int quantity = Calculator.calcRafters(carport);
+        int quantity = Calculator.calcStandardScrews();
         int materialID;
         int price;
-        Material other = null;
+        String type = "Skruer";
+        Material standardScrews = null;
 
         //TODO: Skal lige fikses
-        for (Material material = screwsAndHardware)
-        {
             try (Connection connection = pool.getConnection();
                  PreparedStatement ps = connection.prepareStatement(sql))
             {
+                ps.setString(1, type);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next())
                 {
@@ -437,16 +434,91 @@ public class MaterialMapper
                     description = rs.getString("description");
                     materialID = rs.getInt("material_id");
                     price = rs.getInt("price");
-                    other = new Material(materialID, name, description, price, unit, quantity, length);
+                    standardScrews = new Material(materialID, name, description, price, unit, quantity, type);
                 }
-                return other;
+                return standardScrews;
             } catch (SQLException e)
             {
                 System.out.println(e.getMessage());
                 throw new DatabaseException(e.getMessage());
             }
-        }
+
     }
+
+    public static Material getScrewsForRoofing(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcScrewsForRoofing(carport);
+        int materialID;
+        int price;
+        String type = "Tagskruer";
+        Material screwsForRoofing = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                screwsForRoofing = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return screwsForRoofing;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    public static Material getRollForWindCross(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+
+        String name;
+        String unit;
+        String description;
+        int quantity = Calculator.calcRollForWindCross();
+        int materialID;
+        int price;
+        String type = "Hulbånd";
+        Material rollForWindCross = null;
+
+        //TODO: Skal lige fikses
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                rollForWindCross = new Material(materialID, name, description, price, unit, quantity, type);
+            }
+            return rollForWindCross;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
 
 
     public static Material getMaterial()
