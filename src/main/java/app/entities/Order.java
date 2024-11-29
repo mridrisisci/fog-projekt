@@ -10,8 +10,27 @@ public class Order
     private int SALESPERSON_ID;
     private final int PRICE;
     private final Timestamp TIME_PLACED;
-    private  boolean IS_ASSIGNED;
+    private boolean IS_ASSIGNED;
     private String status;
+    private int salesPrice;
+    private String roofType;
+    private int coverageRatioPercentage;
+
+    private int accountID;
+
+    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        SALESPERSON_ID = salespersonId;
+        PRICE = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        TIME_PLACED = orderPlaced;
+        this.status = status;
+        this.roofType
+    }
+
 
     public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
     {
@@ -35,7 +54,6 @@ public class Order
     }
 
 
-
     public boolean isIS_ASSIGNED()
     {
         return IS_ASSIGNED;
@@ -46,16 +64,19 @@ public class Order
         return ORDER_ID;
     }
 
-    public String getStatus() { return status;}
+    public String getStatus()
+    {
+        return status;
+    }
 
 
     //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
-
 
     public String getCARPORT_ID()
     {
         return CARPORT_ID;
     }
+
     public int getSALESPERSON_ID()
     {
         return SALESPERSON_ID;
@@ -66,17 +87,38 @@ public class Order
         return PRICE;
     }
 
+    public int getSalesPrice()
+    {
+        return salesPrice;
+    }
+
+    public String getRoofType()
+    {
+        return roofType;
+    }
+
+    public int getCoverageRatioPercentage()
+    {
+        return coverageRatioPercentage;
+    }
+
+    public int getAccountID()
+    {
+        return accountID;
+    }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Order {" +
-            "orderId=" + ORDER_ID +
-            ", carportId=" + CARPORT_ID +
-            ", salespersonId=" + SALESPERSON_ID +
-            ", price=" + PRICE +
-            ", timePlaced=" + TIME_PLACED +
-            ", status=" + status +
-            ", isAssigned=" + IS_ASSIGNED +
-            "}";
+                "orderId=" + ORDER_ID +
+                ", carportId=" + CARPORT_ID +
+                ", salespersonId=" + SALESPERSON_ID +
+                ", price=" + PRICE +
+                ", timePlaced=" + TIME_PLACED +
+                ", status=" + status +
+                ", isAssigned=" + IS_ASSIGNED +
+                "}";
     }
 
 
