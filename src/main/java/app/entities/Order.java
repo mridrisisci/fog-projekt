@@ -15,7 +15,6 @@ public class Order
     private int salesPrice;
     private String roofType;
     private int coverageRatioPercentage;
-
     private int accountID;
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
@@ -28,7 +27,21 @@ public class Order
         this.coverageRatioPercentage = coverageRatioPercentage;
         TIME_PLACED = orderPlaced;
         this.status = status;
-        this.roofType
+        this.roofType = roofType;
+        this.accountID = accountID;
+    }
+
+    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        PRICE = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        TIME_PLACED = orderPlaced;
+        this.status = status;
+        this.roofType = roofType;
+        this.accountID = accountID;
     }
 
 
