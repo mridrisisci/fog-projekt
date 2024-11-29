@@ -62,7 +62,7 @@ public class MaterialMapper
         pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
         pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
         pickList.add(getRafters(carport, pool));
-        pickList.add(getBoardBolt(carport, pool);
+        pickList.add(getBoardBolt(carport, pool));
         pickList.add(getHardwareForRaftersLeft(carport, pool));
         pickList.add(getHardwareForRaftersRight(carport, pool));
         pickList.add(getHardwareScrews(carport, pool));
