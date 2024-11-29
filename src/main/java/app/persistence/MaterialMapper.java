@@ -48,6 +48,30 @@ public class MaterialMapper
 
     }
 
+
+    //TODO: TEST
+    public static void updateMaterialPriceByMaterialID(int newMaterialPrice, int materialID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE public.materials SET price = ? WHERE material_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newMaterialPrice);
+            ps.setInt(2, materialID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
+
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
     public static List<Material> createPickList(int orderID, ConnectionPool pool) throws DatabaseException
     {
