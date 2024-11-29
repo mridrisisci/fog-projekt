@@ -89,8 +89,6 @@ public class MaterialMapper
             int materialID = material.getMaterialID();
             //TODO: orderID bliver ikke hentet nogle steder fra - endnu
             int quantity = material.getQuantity();
-            //TODO: Mangler at få fikset type i get-metoderne og denne metode
-            int type;
 
             try (Connection connection = pool.getConnection();
                  PreparedStatement ps = connection.prepareStatement(sql))
@@ -98,7 +96,6 @@ public class MaterialMapper
                 ps.setInt(1, orderID);
                 ps.setInt(2, materialID);
                 ps.setInt(3, quantity);
-
             } catch (SQLException e)
             {
                 System.out.println(e.getMessage());
