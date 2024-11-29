@@ -2,7 +2,6 @@ package app.persistence;
 import app.controllers.OrderController;
 import app.entities.Material;
 import app.entities.Order;
-import app.entities.OrderStatus;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 

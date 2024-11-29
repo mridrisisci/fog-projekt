@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.entities.Account;
 import app.entities.Order;
-import app.entities.OrderStatus;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
@@ -27,7 +26,7 @@ public class OrderController
     }
 
 
-    private static void createQuery(Context ctx, ConnectionPool dbConnection)
+    private static void createQuery(Context ctx, ConnectionPool pool)
     {
         String carportWidthString = ctx.formParam("chooseWidth");
         String carportHeightString = ctx.formParam("chooseHeight");

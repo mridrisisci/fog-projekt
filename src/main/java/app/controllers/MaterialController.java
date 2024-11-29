@@ -36,7 +36,7 @@ public class MaterialController
     // Eks. på CalcPosts()
     //TODO:Metoden er udkommenteret da den fejler - skal fikses
 
-    public static int getNumberOfPosts(Carport carport, Context ctx, ConnectionPool pool)
+   /*public static int getNumberOfPosts(Carport carport, Context ctx, ConnectionPool pool)
     {
         // TODO: Der skal nok testes lidt på tallene så vi sørger for mindst mulig spild af materiale
         // TODO: Evt. laves en unit test her lidt ala. det Andrës gruppe lavede i går ( calcOptimalWood() )
@@ -55,13 +55,13 @@ public class MaterialController
 
 
         //return POSTS; // antal posts, der skal hentes vha. mapperen
-    }
+    }*/
 
 
 
 
     // Eks. på CalcPosts()
-    public static void calcPosts(int height, int width, Context ctx, ConnectionPool pool)
+    /*public static void calcPosts(int height, int width, Context ctx, ConnectionPool pool)
     {
         int[] quantity = new int[2];
 
@@ -88,7 +88,7 @@ public class MaterialController
 
 
         //return POSTS; // antal posts, der skal hentes vha. mapperen
-    }
+    }*/
 
 
 
