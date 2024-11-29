@@ -7,31 +7,38 @@ import java.util.List;
 
 public class Carport
 {
-    private final int HEIGHT;
+    // skal nok først bruges til 3D
+//    private final int HEIGHT;
     private final int WIDTH;
     private final int LENGTH;
     private boolean hasShed;
     private RoofType Rooftype;
+    private int price;
+    private int salesPrice;
     private List<Material> materialList = new ArrayList<>();
 
-    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int HEIGHT)
+    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
         this.materialList = materialList;
         Rooftype = rooftype;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
     }
 
-    public int calcCarportMaterial()
+    public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
-        return 0;
+        Rooftype = rooftype;
+        this.hasShed = hasShed;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
     }
 
-    public void calcCarportPrice()
+    public Carport(boolean hasShed, int LENGTH, int WIDTH)
     {
-
+        this.hasShed = hasShed;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
     }
 
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
@@ -178,10 +185,10 @@ public class Carport
         return newMaterial;
     }
 
-    public int getHEIGHT()
-    {
-        return HEIGHT;
-    }
+//    public int getHEIGHT()
+//    {
+//        return HEIGHT;
+//    }
 
     public int getWIDTH()
     {
@@ -193,6 +200,34 @@ public class Carport
         return LENGTH;
     }
 
+    public int getSalesPrice()
+    {
+        return salesPrice;
+    }
+
+    public int getPrice()
+    {
+        return price;
+    }
+    public void setPrice(int price)
+    {
+        this.price = price;
+    }
+
+    public void setSalesPrice(int salesPrice)
+    {
+        this.salesPrice = salesPrice;
+    }
+
+    public int calcCarportMaterial()
+    {
+        return 0;
+    }
+
+    public void calcCarportPrice()
+    {
+
+    }
     public boolean isHasShed()
     {
         return hasShed;
