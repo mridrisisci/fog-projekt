@@ -35,7 +35,7 @@ public class AccountController
         {
             ctx.attribute("message", e.getMessage());
         }
-        //CupcakeController.showFrontpage(ctx, dbConnection);
+        OrderController.showFrontpage(ctx, pool);
 
     }
 

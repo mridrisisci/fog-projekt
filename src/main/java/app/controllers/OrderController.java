@@ -17,9 +17,14 @@ public class OrderController
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
+        app.get("/", ctx -> showFrontpage(ctx, dBConnection) );
+    }
+
+    public static void showFrontpage(Context ctx, ConnectionPool pool)
+    {
+        ctx.render("index.html" );
     }
 
 
