@@ -136,9 +136,7 @@ public class OrderController
             return false;
         }
         return false;
-
     }
-
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {
