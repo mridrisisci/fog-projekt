@@ -70,7 +70,8 @@ public class MaterialMapper
         pickList.add(getRollForWindCross(carport, pool));
         pickList.add(getScrewsForRoofing(carport, pool));
         pickList.add(getSquareWasher(carport, pool));
-
+        pickList.add(getRoofPlatesLong(carport, pool));
+        pickList.add(getRoofPlatesShort(carport, pool));
 
         //TODO: tjek om materialer faktisk fjernes
         for (Material material : pickList)
