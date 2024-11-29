@@ -1,8 +1,6 @@
 package app.controllers;
 
-import app.entities.Account;
 import app.entities.Order;
-import app.entities.OrderStatus;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
@@ -25,12 +23,12 @@ public class OrderController
     }
 
 
-    private static void createQuery(Context ctx, ConnectionPool dbConnection)
+    private static void createQuery(Context ctx, ConnectionPool pool)
     {
+        String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        String carportHeightString = ctx.formParam("chooseHeight");
-        int carportWidth = Integer.parseInt(carportWidthString);
-        int carportHeight = Integer.parseInt(carportHeightString);
+        int carportWidth = Integer.parseInt(carportLengthString);
+        int carportHeight = Integer.parseInt(carportWidthString);
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -43,7 +41,8 @@ public class OrderController
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
-        String postalCode = ctx.formParam("choosePostalCode");
+        String postalCodeString = ctx.formParam("choosePostalCode");
+        int postalCode = Integer.parseInt(postalCodeString);
         String city = ctx.formParam("chooseCity");
         String telephoneString = ctx.formParam("choosePhoneNumber"); //
         int telephone = Integer.parseInt(telephoneString);
@@ -51,45 +50,82 @@ public class OrderController
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
 
-
-        // TODO: check at form-parameetrene ikke er null
-
-
+        // TODO: Færdiggør valideringsmetoderne
         //validatePhoneNumber(ctx, "choosePhoneNumber");
         //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: Oprette kundens ordre i 'orders'tabellen
-        int customerId = 0;
-        int carportId = 0;
+        // TODO: tag stilling til validateParams()
+
+        String carportId = "";
         int salesPersonId = 0;
-        OrderStatus status = OrderStatus.NOT_PAID;
+        String status = "Under behandling";
         RoofType roofType = RoofType.FLAT;
-        String description = "";
+        boolean orderPaid = false;
+        Order order;
 
-        // TODO: check at kunden har valgt mål til redskabsrummet
+
         boolean hasShed = true;
-
+        // TODO: Lav carport-objekt efter ordren er oprettet
         try
         {
-            Account account = ctx.sessionAttribute("currentAccount");
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, dbConnection);
-            ctx.attribute("message", "Din kundekonto er nu oprettet og dit pristilbud er sendt.");
 
-
+            int cityID = AccountMapper.createRecordInCities(city, pool);
+            int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
+            int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
+            int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
+            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
+                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            OrderMapper.createQueryInOrders(customerId, carportId, salesPersonId, status.NOT_PAID.toString(), orderPlaced,
-                carportHeight, carportWidth, hasShed, roofType.toString(), accountID, dbConnection);
-            ctx.render("createquery.html");
+            createCarport(orderID, ctx, pool);
+            order = getOrderByID(orderID, ctx, pool);
+            ctx.attribute("order", order);
+            ctx.render("kvittering.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
         } catch (NumberFormatException e)
         {
             throw new IllegalArgumentException(e);
+        }
+    }
+    //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
+    // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
+    // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+        private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+    {
+        // hardcoded for at teste
+        int materialID = 1;
+        int quantity = 1;
+
+        try
+        {
+            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
+        }
+    }
+
+    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
+    {
+        Order order;
+        try
+        {
+            //String orderIDString = ctx.formParam("orderID");
+            order = OrderMapper.getOrderByID(orderID, pool);
+            return order;
+            //ctx.attribute("order", order);
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("kvittering.html");
+            return null;
         }
     }
 
@@ -117,9 +153,7 @@ public class OrderController
             return false;
         }
         return false;
-
     }
-
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {

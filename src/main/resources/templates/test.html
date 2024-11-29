@@ -23,30 +23,22 @@
         <form action="/" method="GET">
             <div class="container my-5">
                 <div class="row g-4">
-                    <!-- Første boks -->
+
+
+                    <!-- Renderer materialelisten -->
                     <div class="col-md-6">
-                        <a href="/createquery" th:href="@{/createquery}" class="text-decoration-none">
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/fladt-tag.jpg" th:src="@{/images/fladt-tag.jpg}" alt="fladt-tag"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med flat tag</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den anden boks.</p>
-                        </a>
+                        <div th:each="material : ${materials}" class="col-md-4 mb-4">
+                            <div class="card">
+                                <p class="card-text" th:text="${material.materialID}"></p>
+                                <p class="card-text" th:text="${material.materialName}"></p>
+                                <p class="card-text" th:text="${material.description}"></p>
+                                <p class="card-text" th:text="${material.unit}"></p>
+                                <p class="card-text" th:text="${material.length}"></p>
+                                <p class="card-text" th:text="${material.height}"></p>
+                                <p class="card-text" th:text="${material.quantity}"></p>
+                            </div>
                         </div>
                     </div>
-
-                <!-- Anden boks -->
-                <div class="col-md-6">
-                    <a href="/side1" th:href="@{/}" class="text-decoration-none">
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/tag-med-rejsning.jpg"
-                                 th:src="@{/images/tag-med-rejsning.jpg}" alt="carport med rejsning"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med høj rejsning</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den første boks.</p>
-                        </div>
-                    </a>
-                </div>
         </form>
     </div>
 

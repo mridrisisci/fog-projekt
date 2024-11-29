@@ -19,35 +19,17 @@
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
              role="alert">Fejlbeskeder vises her
         </div>
-        <p class="h2 mb-5">Bestil din carport med fladt tag nedenfor:</p>
-        <form action="/" method="GET">
+        <p class="h2 mb-5">Bestilling af dit pristilbud er modtaget.</p>
             <div class="container my-5">
                 <div class="row g-4">
-                    <!-- Første boks -->
+                    <!-- Renderer kundens ordre på thymeleaf -->
                     <div class="col-md-6">
-                        <a href="/createquery" th:href="@{/createquery}" class="text-decoration-none">
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/fladt-tag.jpg" th:src="@{/images/fladt-tag.jpg}" alt="fladt-tag"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med flat tag</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den anden boks.</p>
-                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title"> [Ordrenummer] <span th:text="${order.ORDER_ID}"></span> </h5>
+                            <p class="card-text"> [DATO]: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
+                            <p class="card-text"> [Status på din ordre]: <span th:text="${order.status}">  </span>  </p>
                         </div>
                     </div>
-
-                <!-- Anden boks -->
-                <div class="col-md-6">
-                    <a href="/side1" th:href="@{/}" class="text-decoration-none">
-                        <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                            <img src="../public/images/tag-med-rejsning.jpg"
-                                 th:src="@{/images/tag-med-rejsning.jpg}" alt="carport med rejsning"
-                                 class="img-fluid rounded-4 mb-3" style="max-height: 200px;">
-                            <h2 class="h4 text-dark">Carport med høj rejsning</h2>
-                            <p class="text-muted">Her er lidt beskrivelse for den første boks.</p>
-                        </div>
-                    </a>
-                </div>
-        </form>
     </div>
 
 
