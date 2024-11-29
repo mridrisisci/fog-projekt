@@ -449,6 +449,52 @@ public class MaterialMapper
     }
 
 
+
+    public static List<Material> createMaterialList(int materialQuantity, Material material, ConnectionPool pool) throws DatabaseException
+    {
+        // TODO: Muligvis en join her? eller alternativt en SQL der henter fra forbindelsestabellen?
+        String sql = "SELECT name, unit, description, type FROM materials";
+
+        String name;
+        String unit;
+        String description;
+        String type = material.getType();
+
+
+
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ResultSet rs = ps.executeQuery();
+            List<Material> materialList = new ArrayList<>();
+            while(rs.next())
+            {
+                // TODO: Mangler en if-statement, der checker om material er == post
+                // TODO: brug 'materialQuantity' (antal posts) til at bestemme antallet af materiale der hentes fra db
+                // hvordan checker vi typen af et materiale?
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                String materialType = rs.getString("type");
+                if (materialType.equals(type))
+                {
+                    for (int i = 0; i <= materialQuantity; i++)
+                    {
+                        materialList.add(new Material(name, unit, type, description, materialQuantity));
+                    }
+
+                }
+            }
+            return materialList;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
     public static Material getMaterial()
     {
         return null;
