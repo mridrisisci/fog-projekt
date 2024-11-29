@@ -241,10 +241,11 @@ public class Calculator
         //Udregning for skruer til taget
         //Man skal bruge ca. 12 skruer per kvadratmeter tagplade, der er skruer til 16,6 m^2 i en pakke. Vi runder ned til 16 m^2
         int squareCentimeterPerPackageOfScrews = 1600;
-        if ((carport.getWIDTH() * carport.getLENGTH())/squareCentimeterPerPackageOfScrews < 2)
+        if ((carport.getWIDTH() * carport.getLENGTH()) / squareCentimeterPerPackageOfScrews < 2)
         {
             screwsForRoofing = 2;
-        } else {
+        } else
+        {
             screwsForRoofing = 3;
         }
 
@@ -288,12 +289,13 @@ public class Calculator
         int extraBoltsPerAssembly = 2;
         int postsWithAssemblyPoint = 2;
 
-        if(calcPosts(carport) == 4)
+        if (calcPosts(carport) == 4)
         {
-            numberOfBoardBolts = calcPosts(carport)*2;
+            numberOfBoardBolts = calcPosts(carport) * 2;
 
-        } else {
-            numberOfBoardBolts = calcPosts(carport)*boltsPerPost+(postsWithAssemblyPoint*extraBoltsPerAssembly);
+        } else
+        {
+            numberOfBoardBolts = calcPosts(carport) * boltsPerPost + (postsWithAssemblyPoint * extraBoltsPerAssembly);
         }
         return numberOfBoardBolts;
     }
@@ -305,7 +307,8 @@ public class Calculator
      * @param carportWidth  The width of the carport in cm.
      * @return An array where index 0 is the number of long plates, and index 1 is the number of short plates.
      */
-    public static int[] calcRoofPlates(int carportLength, int carportWidth) {
+    public static int[] calcRoofPlates(int carportLength, int carportWidth)
+    {
         // Plate dimensions in cm
         final int LONG_PLATE_LENGTH = 600;
         final int SHORT_PLATE_LENGTH = 360;
@@ -316,9 +319,11 @@ public class Calculator
         int platesAlongWidth = (int) Math.ceil((double) carportWidth / PLATE_WIDTH);
 
         // If length is less than or equal to a single plate, no overlap needed
-        if (carportLength <= SHORT_PLATE_LENGTH) {
+        if (carportLength <= SHORT_PLATE_LENGTH)
+        {
             return new int[]{0, platesAlongWidth};
-        } else if (carportLength <= LONG_PLATE_LENGTH) {
+        } else if (carportLength <= LONG_PLATE_LENGTH)
+        {
             return new int[]{platesAlongWidth, 0};
         }
 
@@ -334,7 +339,8 @@ public class Calculator
         int bestShortPlates = 0;
 
         // Loop to find the optimal combination of long and short plates
-        for (int longCount = 0; longCount <= longPlatesUsed; longCount++) {
+        for (int longCount = 0; longCount <= longPlatesUsed; longCount++)
+        {
             int lengthCoveredByLongPlates = longCount * LONG_PLATE_LENGTH - (longCount - 1) * OVERLAP;
             int remainingLength = carportLength - lengthCoveredByLongPlates;
 
@@ -346,7 +352,8 @@ public class Calculator
             int totalWaste = Math.abs((longCount * LONG_PLATE_LENGTH - (longCount - 1) * OVERLAP) + (shortPlatesUsed * SHORT_PLATE_LENGTH) - carportLength);
 
             // Check if this combination has less waste than the current minimum
-            if (totalWaste < minWaste) {
+            if (totalWaste < minWaste)
+            {
                 minWaste = totalWaste;
                 bestLongPlates = longCount;
                 bestShortPlates = shortPlatesUsed;
