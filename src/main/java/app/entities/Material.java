@@ -13,6 +13,23 @@ public class Material
     private int width;
     private boolean hasShedAddons;
     public int getNumbersOfShedAddons;
+    private String type;
+
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons, int getNumbersOfShedAddons, String type)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.unit = unit;
+        this.quantity = quantity;
+        this.length = length;
+        this.height = height;
+        this.width = width;
+        this.hasShedAddons = hasShedAddons;
+        this.getNumbersOfShedAddons = getNumbersOfShedAddons;
+        this.type = type;
+    }
 
     public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons, int getNumbersOfShedAddons)
     {
@@ -38,6 +55,19 @@ public class Material
         this.purchasePrice = purchasePrice;
         this.length = length;
     }
+
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, String type)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.unit = unit;
+        this.quantity = quantity;
+        this.type = type;
+    }
+
+
 
     public Material(String materialName, String unit, String description)
     {
@@ -100,4 +130,6 @@ public class Material
     {
         return getNumbersOfShedAddons;
     }
+
+    public String type(){return type;}
 }
