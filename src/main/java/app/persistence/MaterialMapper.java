@@ -117,8 +117,6 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ?;";
 
         String name;
@@ -158,11 +156,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getBeams(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
@@ -246,11 +241,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
@@ -291,11 +283,8 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        //HUSK AT MATERIAL_ID ER HARDCODED MED VILJE!!!!!!!
-        //TODO: GØR MATERIAL_ID = 10 DET DYNAMISK
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
         String name;
@@ -336,7 +325,6 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
@@ -379,7 +367,6 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    //TODO: Evt. tilføj i metoden vedr. type (String type - SQL og tilføjes i constructor i Material)
     public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?";
@@ -435,26 +422,26 @@ public class MaterialMapper
         Material material = null;
 
         //TODO: Skal lige fikses
-            try (Connection connection = pool.getConnection();
-                 PreparedStatement ps = connection.prepareStatement(sql))
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, type);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
             {
-                ps.setString(1, type);
-                ResultSet rs = ps.executeQuery();
-                while (rs.next())
-                {
-                    name = rs.getString("name");
-                    unit = rs.getString("unit");
-                    description = rs.getString("description");
-                    materialID = rs.getInt("material_id");
-                    price = rs.getInt("price");
-                    material = new Material(materialID, name, description, price, unit, quantity, type);
-                }
-                return material;
-            } catch (SQLException e)
-            {
-                System.out.println(e.getMessage());
-                throw new DatabaseException(e.getMessage());
+                name = rs.getString("name");
+                unit = rs.getString("unit");
+                description = rs.getString("description");
+                materialID = rs.getInt("material_id");
+                price = rs.getInt("price");
+                material = new Material(materialID, name, description, price, unit, quantity, type);
             }
+            return material;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
 
     }
 
@@ -717,8 +704,6 @@ public class MaterialMapper
         }
 
     }
-
-
 
 
     public static Material getMaterial()
