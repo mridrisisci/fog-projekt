@@ -23,29 +23,43 @@
 
             <div class="container my-5">
                 <div class="row g-4">
-                    <!-- Renderer kundens ordre på thymeleaf -->
-                    <div class="col-md-6">
-                        <card class="col-lg-4 col-md-6 mb-3">
-                            <div class="card-body">
-                                <!-- Kundeinformation-->
-                                <div th:each="account : ${accounts}">
-                                    <p class="card-text"> Kunde ID: <span th:text="${account.accountID}"></span> </p>
-                                    <p class="card-text"> Kundenavn: <span th:text="${account.username}"></span> </p>
-                                    <p class="card-text"> Email: <span th:text="${account.email}"></span> </p>
-                                    <p class="card-text"> Telefon: <span th:text="${account.telephone}"></span> </p>
-                                </div>
+                    <div class="content bg-light rounded-4 p-5">
+                        <h1 class="">Bestilte pristilbud</h1>
+                        <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient">Fejlbeskeder vises her</div>
 
-                                <!-- Ordreinformation-->
-                                <div th:each="order : ${orders}">
-                                    <h5 class="card-title"> [Ordrenummer <span th:text="${order.ORDER_ID}"></span> </h5>
-                                    <p class="card-text"> Dato: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
-                                    <p class="card-text"> Carport ID: <span th:text="${order.CARPORT_ID}">  </span>  </p>
-                                    <p class="card-text"> Status på din ordre: <span th:text="${order.status}">  </span>  </p>
-                                    <p class="card-text"> Pris </p>
-                                </div>
-
-                            </div>
-                        </card>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center"><i class="bi bi-trash3"></i></th>
+                                <th><a th:href="@{/seequeries(query=orderid)}">Order #</a></th>
+                                <th><a th:href="@{/seequeries(query=CARPORT_ID)}">Carport ID</a></th>
+                                <th><a th:href="@{/seequeries(query=username)}">Navn</a></th>
+                                <th><a th:href="@{/seequeries(query=status)}">Status</a></th>
+                                <th><a th:href="@{/seequeries(query=DATE_PLACED)}">Oprettet</a></th>
+                                <th><a th:href="@{/seequeries(query=order_paid)}">Betalt</a></th>
+                                <th><a th:href="@{/seequeries(query=HEIGHT}">Højde</a></th>
+                                <th><a th:href="@{/seequeries(query=order_paid)}">Længde</a></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="" th:each="order : ${orders}">
+                                <td class="text-center"><a th:if="${session.currentUser} != null}" class="link-danger link-opacity-50-hover" href="/order/delete" th:href="@{/order/delete(order_id=${order.order_ID})}" ><i class="bi bi-trash3"></i></a></td>
+                                <td><a class="" href="order/details" th:href="@{/order/details/{id}(id=${order.order_ID})}" th:text="${order.ORDER_ID}">order id</a></td>
+                                <td th:text="${order.name}">Navn</td>
+                                <td>
+                                    <a th:if="${order.user.userid}!=0" href="/customer" th:href="@{/customer/{id}(id=${order.user.userid})}" th:text="${order.username}">Konto</a>
+                                </td>
+                                <td><span class="badge text-bg-info" th:text="${order.status}">Status</span></td>
+                                <td th:text="${order.ORDER_PLACED}">Dato</td>
+                                <td th:text="${order.ORDER_PAID}">Dato</td>
+                                <td>
+                                    <a class="" th:if="${session.currentUser} != null and ${session.currentUser.isAdmin}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Afslut ordre</a>
+                                    <span th:text="${order.status}">Status</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     </div>
     </div>

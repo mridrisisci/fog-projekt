@@ -12,6 +12,7 @@ public class Order
     private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
+    private  Account account;
 
     public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
     {
@@ -24,6 +25,8 @@ public class Order
         this.status = status;
     }
 
+
+
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
@@ -33,6 +36,14 @@ public class Order
 
     }
 
+    public Order(int orderID, String carportID, String status, Timestamp orderPlaced, Account account)
+    {
+        this.ORDER_ID = orderID;
+        this.CARPORT_ID = carportID;
+        this.status = status;
+        this.ORDER_PLACED = orderPlaced;
+        this.account = account;
+    }
 
 
     public boolean isIS_ASSIGNED()

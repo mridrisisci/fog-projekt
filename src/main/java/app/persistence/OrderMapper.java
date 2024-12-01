@@ -1,10 +1,12 @@
 package app.persistence;
 
+import app.entities.Account;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper
@@ -78,7 +80,7 @@ public class OrderMapper
     }
 
 
-    public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static Order getOrderOnReceipt(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
@@ -105,6 +107,50 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static List<Order> seeAllQueries(String sortby, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT account_id, carport_id, status, orders.account_id, username, email, telephone FROM orders LEFT JOIN accounts ON orders.account_id ORDER BY ?;";
+
+        int orderID;
+        String carportID;
+        String status;
+        int height;
+        int length;
+        int accountID;
+
+        String name;
+        String email;
+        int telephone;
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, sortby);
+            ResultSet rs = ps.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while(rs.next())
+            {
+                orderID = rs.getInt("order_id");
+                carportID = rs.getString("carport_id");
+                status = rs.getString("status");
+                Timestamp orderPlaced = rs.getTimestamp("order_placed");
+                height = rs.getInt("height");
+                length = rs.getInt("length");
+                accountID = rs.getInt("account_id");
+                name = rs.getString("username");
+                email = rs.getString("email");
+                telephone = rs.getInt("telephone");
+                orders.add(new Order(orderID, carportID, status, orderPlaced,
+                            new Account(name, email, telephone)));
+            }
+            return orders;
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
 
     public static int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool) throws DatabaseException
     {

@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.entities.Account;
 import app.entities.Order;
 import app.entities.RoofType;
 import app.exceptions.DatabaseException;
@@ -11,6 +12,8 @@ import io.javalin.http.Context;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderController
 {
@@ -97,6 +100,38 @@ public class OrderController
             throw new IllegalArgumentException(e);
         }
     }
+
+    private static void seeAllQueries(Context ctx, ConnectionPool pool)
+    {
+        if (ctx.sessionAttribute("currentUser") == null)
+        {
+            ctx.attribute("message", "Du skal være logget ind for at se dette indhold.");
+            ctx.render("login.html");
+            return;
+        }
+        List<Order> orders = new ArrayList<>();
+        String sortby = ctx.formParam("query");
+
+        try
+        {
+            if (!(sortby==null || sortby.equals("name") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+            {
+                sortby = "order_id";
+            }
+            orders = OrderMapper.seeAllQueries(sortby, pool);
+        }
+        catch (DatabaseException e)
+        {
+            ctx.attribute("message","Noget gik galt. " + e.getMessage());
+        }
+        // Render Thymeleaf-skabelonen
+        ctx.attribute("orders", orders);
+        ctx.render("/seeallqueries.html");
+    }
+
+    }
+
+
     //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
     // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
     // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
@@ -122,7 +157,7 @@ public class OrderController
         Order order;
         try
         {
-            order = OrderMapper.getOrderByID(orderID, pool);
+            order = OrderMapper.getOrderOnReceipt(orderID, pool);
             return order;
         } catch (DatabaseException e)
         {
