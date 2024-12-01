@@ -36,7 +36,7 @@ public class AccountMapper
                 return rs.getInt(1);
             } else
             {
-                throw new DatabaseException("Kunne ikke hente autogenerert id");
+                throw new DatabaseException("Kunne ikke hente autogenereret id");
             }
         } catch (SQLException e)
         {
@@ -45,16 +45,19 @@ public class AccountMapper
 
     }
 
-    public static void createSalesAccount(String email, String password, ConnectionPool pool) throws DatabaseException
+    public static void createSalesAccount(String role, String username, String email, String password, int telephone,  int adressesID, ConnectionPool pool) throws DatabaseException
     { // TODO: Mangler at blive opdateret, så den kan eksekveres fra Controlleren.
-        String sql = "insert into users (email, password, role) VALUES (?,?,?);";
+        String sql = "insert into accounts (role, username, email, password, telephone, addresses_id) VALUES (?,?,?,?,?,?);";
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         try (Connection connection = pool.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, email);
-            ps.setString(2, hashedPassword);
-            ps.setString(3, "customer");
+            ps.setString(1, role);
+            ps.setString(2, username);
+            ps.setString(3, email);
+            ps.setString(4, hashedPassword);
+            ps.setInt(5, telephone);
+            ps.setInt(6, adressesID);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -70,7 +73,7 @@ public class AccountMapper
 
     public static Account login(String username, String password, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM users WHERE username=?";
+        String sql = "SELECT * FROM accounts WHERE username=?";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -83,7 +86,7 @@ public class AccountMapper
                 String storedHashedPassword = rs.getString("password");
                 if (BCrypt.checkpw(password, storedHashedPassword))
                 {
-                    int id = rs.getInt("user_id");
+                    int id = rs.getInt("account_id");
                     String role = rs.getString("role");
                     return new Account(id, username, role);
                 }

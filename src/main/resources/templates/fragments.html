@@ -39,11 +39,11 @@
                         <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
                             <a class="nav-link" href="/seequeries" th:href="@{/seequeries}">Se alle forespørgsler</a>
                         </li>
-                            <a href="/" th:href="@{/}" class="nav-link">Opret bruger</a>
+                            <a href="/createaccount" th:href="@{/createaccount}" class="nav-link">Opret bruger</a>
                         </li>
                             <a class="nav-link" href="/login" th:href="@{/login}">Log ind</a>
                         </li>
-                            <a class="nav-link" href="/" th:href="@{/}">Log ud</a>
+                            <a class="nav-link" href="/logout" th:href="@{/logout}">Log ud</a>
                         </li>
                     </ul>
                 </div>

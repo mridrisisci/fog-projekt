@@ -18,6 +18,7 @@ public class AccountController
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
         app.get("/createaccount", ctx -> ctx.render("createaccount.html") );
         app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection) );
+        app.post("/logout", AccountController::doLogout);
 
     }
 
@@ -49,28 +50,39 @@ public class AccountController
     }
 
     private static void createSalesAccount(Context ctx, ConnectionPool pool)
-    { //TODO: mangler at færdiggøres. Husk kryptering bruges også.
-        String username = "Jimmy";
+    {
+        String username = ctx.formParam("chooseName");
         String role = "salesperson";
-        String email = ctx.formParam("email");
-        String password = ctx.formParam("password");
-        String confirmPassword = ctx.formParam("confirmpassword");
+        String email = ctx.formParam("chooseEmail");
+        String telephoneString = ctx.formParam("choosePhoneNumber");
+        int telephone = Integer.parseInt(telephoneString);
+        String password = ctx.formParam("choosePassword");
+        String confirmPassword = ctx.formParam("confirmPassword");
+
+        String zipString = ctx.formParam("choosePostalCode");
+        int zip = Integer.parseInt(zipString);
+        String city = ctx.formParam("chooseCity");
+        String address = ctx.formParam("chooseAddress"); // chooseAdress
+
         // Simple email check
         if (email == null || !email.contains("@") || !email.contains("."))
         {
             ctx.attribute("message", "Venligst indtast en gyldig e-mail-adresse.");
-            ctx.render("createuser.html");
+            ctx.render("createaccount.html");
         } else if (password == null || confirmPassword == null)
         {
             ctx.attribute("message", "Venligst udfyld dit kodeord i begge felter.");
-            ctx.render("createuser.html");
+            ctx.render("createaccount.html");
         } else if (passwordCheck(ctx, password, confirmPassword))
         {
             try
             {
                 email = email.toLowerCase();
-                AccountMapper.createSalesAccount(role, username, email, password, pool);
-                ctx.attribute("message", "du er nu oprettet");
+                int cityID = AccountMapper.createRecordInCities(city, pool);
+                int zipID = AccountMapper.createRecordInPostalCode(zip, pool);
+                int addressID = AccountMapper.createRecordInAddresses(cityID, zipID, address, pool);
+                AccountMapper.createSalesAccount(role, username, email, password, telephone, addressID, pool);
+                ctx.attribute("message", "Din sælgerprofil er oprettet");
                 OrderController.showFrontpage(ctx, pool);
             } catch (DatabaseException e)
             {
@@ -82,11 +94,14 @@ public class AccountController
                 {
                     ctx.attribute("message", e.getMessage());
                 }
-                ctx.render("createuser.html");
+                ctx.render("createaccount.html");
+            } catch (NumberFormatException e)
+            {
+                ctx.attribute("message", e.getMessage());
             }
         } else
         {
-            ctx.render("createuser.html");
+            ctx.render("createaccount.html");
         }
     }
 
