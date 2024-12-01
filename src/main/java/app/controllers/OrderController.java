@@ -86,7 +86,7 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-            order = getOrderByID(orderID, ctx, pool);
+            order = getOrderOnReceipt(orderID, ctx, pool);
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -117,15 +117,13 @@ public class OrderController
         }
     }
 
-    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
+    private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            //String orderIDString = ctx.formParam("orderID");
             order = OrderMapper.getOrderByID(orderID, pool);
             return order;
-            //ctx.attribute("order", order);
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -149,16 +147,6 @@ public class OrderController
         return false;
     }
 
-    private static boolean validateEmail(Context ctx, String email)
-    {
-        String chars = "@.";
-        boolean hasChar = email.chars().anyMatch(ch -> chars.indexOf(ch) >= 0);
-        if (!email.equals(hasChar))
-        {
-            return false;
-        }
-        return false;
-    }
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {
@@ -174,17 +162,6 @@ public class OrderController
             return true;
         }
         return false;
-    }
-    private static boolean validateParams(String... params)
-    {
-        for (String p : params)
-        {
-            if (p.isEmpty())
-            {
-                return false;
-            }
-        }
-        return true;
     }
 
 
