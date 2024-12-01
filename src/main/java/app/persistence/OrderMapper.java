@@ -16,8 +16,8 @@ public class OrderMapper
                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-                "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?);";
+            "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
+            "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
         try (Connection connection = pool.getConnection();
@@ -35,19 +35,19 @@ public class OrderMapper
             ps.setInt(10, accountID);
 
             // Execute the query and retrieve the generated key
-           int rowsAffected = ps.executeUpdate();
-           if(rowsAffected != 1)
-           {
-               throw new DatabaseException("kunne ikke oprette ...");
-           }
-           ResultSet rs = ps.getGeneratedKeys();
-           if (rs.next())
-           {
-               return rs.getInt(1);
-           } else
-           {
-               throw new DatabaseException("kunne ikke hente autogenereret ID");
-           }
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected != 1)
+            {
+                throw new DatabaseException("kunne ikke oprette ...");
+            }
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next())
+            {
+                return rs.getInt(1);
+            } else
+            {
+                throw new DatabaseException("kunne ikke hente autogenereret ID");
+            }
 
         } catch (SQLException e)
         {
@@ -62,7 +62,7 @@ public class OrderMapper
         String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql) )
+             PreparedStatement ps = connection.prepareStatement(sql) )
         {
             int rowsAffected = ps.executeUpdate();
             ps.setInt(1, orderID);
@@ -124,7 +124,7 @@ public class OrderMapper
         int telephone;
 
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setString(1, sortby);
             ResultSet rs = ps.executeQuery();
@@ -142,7 +142,7 @@ public class OrderMapper
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
                 orders.add(new Order(orderID, carportID, status, orderPlaced,
-                            new Account(name, email, telephone)));
+                    new Account(name, email, telephone)));
             }
             return orders;
         } catch (SQLException e)

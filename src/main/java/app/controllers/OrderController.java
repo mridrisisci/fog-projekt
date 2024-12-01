@@ -23,6 +23,7 @@ public class OrderController
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection) );
+        app.get("/quer/details/{id}", ctx -> seeAllQueries(ctx, dBConnection) );
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
@@ -63,7 +64,6 @@ public class OrderController
         //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: tag stilling til validateParams()
 
         String carportId = "";
         int salesPersonId = 0;
@@ -126,103 +126,103 @@ public class OrderController
         }
         // Render Thymeleaf-skabelonen
         ctx.attribute("orders", orders);
-        ctx.render("/seeallqueries.html");
+        ctx.render("/requestedqueries.html");
     }
 
-    }
 
 
-    //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
-    // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
-    // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-        private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+//TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
+// det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
+// vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+{
+    // hardcoded for at teste
+    int materialID = 1;
+    int quantity = 1;
+
+    try
     {
-        // hardcoded for at teste
-        int materialID = 1;
-        int quantity = 1;
+        OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
 
-        try
-        {
-            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
-
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
-        }
-    }
-
-    private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
+    } catch (DatabaseException e)
     {
-        Order order;
-        try
-        {
-            order = OrderMapper.getOrderOnReceipt(orderID, pool);
-            return order;
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("kvittering.html");
-            return null;
-        }
+        ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
     }
+}
 
-    private static boolean validatePostalCode(Context ctx, String postalCode)
+private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
+{
+    Order order;
+    try
     {
-        int p = Integer.parseInt(postalCode); // does it need to be parsed ?
-
-        if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
-        {
-            return false;
-        }
-        if (postalCode.length() == 4)
-        {
-            return true;
-        }
-        return false;
-    }
-
-
-    private static boolean validatePhoneNumber(Context ctx, String number)
+        order = OrderMapper.getOrderOnReceipt(orderID, pool);
+        return order;
+    } catch (DatabaseException e)
     {
-        String numbers = "1234567890";
-        boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
-
-        if (number.length() < 8)
-        {
-            ctx.attribute("message", "Dit telefonnummer er ugyldigt");
-            return false;
-        } else if (number.length() == 8 && hasNumber)
-        {
-            return true;
-        }
-        return false;
+        ctx.attribute("message", e.getMessage());
+        ctx.render("kvittering.html");
+        return null;
     }
+}
 
+private static boolean validatePostalCode(Context ctx, String postalCode)
+{
+    int p = Integer.parseInt(postalCode); // does it need to be parsed ?
 
-    private static boolean validateOrderIsPaid()
+    if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
     {
         return false;
     }
-
-    private static void requestPaymentByID()
+    if (postalCode.length() == 4)
     {
+        return true;
     }
+    return false;
+}
 
-    private static void confirmPaymentByID()
-    {
-    }
 
-    private static void sendBOM()
-    {
-    }
+private static boolean validatePhoneNumber(Context ctx, String number)
+{
+    String numbers = "1234567890";
+    boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
 
-    private static void sendPickList()
+    if (number.length() < 8)
     {
+        ctx.attribute("message", "Dit telefonnummer er ugyldigt");
+        return false;
+    } else if (number.length() == 8 && hasNumber)
+    {
+        return true;
     }
+    return false;
+}
 
-    private static void sendInvoice()
-    {
-    }
+
+private static boolean validateOrderIsPaid()
+{
+    return false;
+}
+
+private static void requestPaymentByID()
+{
+}
+
+private static void confirmPaymentByID()
+{
+}
+
+private static void sendBOM()
+{
+}
+
+private static void sendPickList()
+{
+}
+
+private static void sendInvoice()
+{
+}
 
 }
