@@ -23,7 +23,7 @@ public class OrderController
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection) );
-        app.get("/quer/details/{id}", ctx -> seeAllQueries(ctx, dBConnection) );
+        app.get("/seeallqueries", ctx -> seeAllQueries(ctx, dBConnection) );
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
