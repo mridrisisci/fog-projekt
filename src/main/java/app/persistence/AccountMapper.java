@@ -71,14 +71,14 @@ public class AccountMapper
 
 
 
-    public static Account login(String username, String password, ConnectionPool pool) throws DatabaseException
+    public static Account login(String email, String password, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM accounts WHERE username=?";
+        String sql = "SELECT * FROM accounts WHERE email=?";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
 
-            ps.setString(1, username);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())
@@ -88,7 +88,7 @@ public class AccountMapper
                 {
                     int id = rs.getInt("account_id");
                     String role = rs.getString("role");
-                    return new Account(id, username, role);
+                    return new Account(id, email, role);
                 }
                 else
                 {

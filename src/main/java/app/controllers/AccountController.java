@@ -18,7 +18,7 @@ public class AccountController
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
         app.get("/createaccount", ctx -> ctx.render("createaccount.html") );
         app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection) );
-        app.post("/logout", AccountController::doLogout);
+        app.post("/logout", ctx -> doLogout(ctx));
 
     }
 
@@ -107,15 +107,15 @@ public class AccountController
 
     public static void doLogin(Context ctx, ConnectionPool pool)
     {
-        String name = ctx.formParam("username");
+        String email = ctx.formParam("email");
         String password = ctx.formParam("password");
-        if (name !=null )
+        if (email !=null )
         {
-            name = name.toLowerCase(); // Avoiding potential nullPointerExceptions
+            email = email.toLowerCase(); // Avoiding potential nullPointerExceptions
         }
         try
         {
-            Account account = AccountMapper.login(name, password, pool);
+            Account account = AccountMapper.login(email, password, pool);
             ctx.sessionAttribute("currentUser", account);
         } catch (DatabaseException e)
         {

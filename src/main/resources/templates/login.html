@@ -15,10 +15,10 @@
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient" role="alert">Fejlbeskeder vises her</div>
 
         <form action="/login" method="post">
-            <label class="form-label" for="username">E-mail</label>
-            <input class="form-control form-control-lg" type="email" name="username" id="username" placeholder="username"/><br>
+            <label class="form-label" for="email">E-mail</label>
+            <input class="form-control form-control-lg" type="email" name="email" id="email" placeholder="Indtast din sælger mailadresse"/><br>
             <label class="form-label"  for="password">Kodeord</label>
-            <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="password"/><br>
+            <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Indtast kodeord"/><br>
             <button class="btn btn-lg btn-primary" type="submit">Log på</button>
         </form>
     </div>

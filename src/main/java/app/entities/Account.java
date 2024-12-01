@@ -10,10 +10,10 @@ public class Account
     private String email;
     private String address;
 
-    public Account(int accountID, String username, String role)
+    public Account(int accountID, String email, String role)
     {
         this.accountID = accountID;
-        this.username = username;
+        this.username = email;
         this.role = role;
     }
 
