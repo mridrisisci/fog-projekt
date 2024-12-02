@@ -17,6 +17,7 @@ public class MaterialController
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
         app.get("/test.html", ctx -> ctx.render("test.html") );
+        app.get("/adminMaterialList.html", ctx -> ctx.render("adminMaterialList.html"));
     }
 
 
