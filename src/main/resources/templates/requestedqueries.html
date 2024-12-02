@@ -44,11 +44,11 @@
                                 <td><a class="" href="order/details" th:href="@{/order/details/{id}(id=${order.ORDER_ID})}" th:text="${order.ORDER_ID}">order id</a></td>
                                 <td th:text="${order.status}">Navn</td>
                                 <td>
-                                    <a th:if="${order.account.accountID}!=0" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
+                                    <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
                                 </td>
                                 <td><span class="badge text-bg-info" th:text="${order.status}">Status</span></td>
                                 <td th:text="${order.ORDER_PLACED}">Dato</td>
-                                <td th:text="${order.ORDER_PAID}">Dato</td>
+                                <td th:text="${order.orderPaid}">Dato</td>
                                 <td>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Afslut ordre</a>
                                     <span th:text="${order.status}">Status</span>

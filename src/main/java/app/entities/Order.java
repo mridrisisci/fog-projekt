@@ -41,6 +41,10 @@ public class Order
 
     }
 
+    public boolean getOrderPaid()
+    {
+        return orderPaid;
+    }
     public boolean isIS_ASSIGNED()
     {
         return IS_ASSIGNED;
@@ -86,6 +90,11 @@ public class Order
     public int getPRICE()
     {
         return PRICE;
+    }
+
+    public Account getAccount()
+    {
+        return account;
     }
 
     @Override
