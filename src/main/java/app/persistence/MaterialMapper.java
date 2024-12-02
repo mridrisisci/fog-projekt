@@ -48,6 +48,59 @@ public class MaterialMapper
 
     }
 
+    //TODO: Test
+    public static void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "INSERT INTO public.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql) )
+        {
+            int rowsAffected = ps.executeUpdate();
+            ps.setString(1, name);
+            ps.setString(2, unit);
+            ps.setInt(3, price);
+            ps.setInt(4, length);
+            ps.setInt(5, height);
+            ps.setInt(6, width);
+            ps.setString(7, type);
+            ps.setString(8, description);
+
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke oprette materialet");
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    //TODO: TEST
+    public static void updateMaterialPriceByMaterialID(int newMaterialPrice, int materialID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE public.materials SET price = ? WHERE material_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newMaterialPrice);
+            ps.setInt(2, materialID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
+
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
     public static List<Material> createPickList(int orderID, ConnectionPool pool) throws DatabaseException
     {

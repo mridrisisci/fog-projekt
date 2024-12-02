@@ -17,20 +17,49 @@ public class Order
     private int LENGTH;
     private int ACCOUNT_ID;
     private boolean orderPaid;
+    private int salesPrice;
+    private String roofType;
+    private int coverageRatioPercentage;
+    private int accountID;
 
-    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int height, int length, Account account)
-    { // this constructor is used to "see all queries // requestedqueries.html"
-        this.ORDER_ID = orderId;
-        this.CARPORT_ID = carportId;
+    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        SALESPERSON_ID = salespersonId;
+        PRICE = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
-        this.ORDER_PLACED = orderPlaced;
-        this.orderPaid = orderPaid;
-        this.HEIGHT = height;
-        this.LENGTH = length;
-        this.account = account;
+        this.roofType = roofType;
+        this.accountID = accountID;
+    }
+
+    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        PRICE = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        ORDER_PLACED = orderPlaced;
+        this.status = status;
+        this.roofType = roofType;
+        this.accountID = accountID;
     }
 
 
+    public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        SALESPERSON_ID = salespersonId;
+        PRICE = price;
+        ORDER_PLACED = orderPlaced;
+        IS_ASSIGNED = isAssigned;
+        this.status = status;
+    }
 
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
@@ -41,10 +70,8 @@ public class Order
 
     }
 
-    public boolean getOrderPaid()
-    {
-        return orderPaid;
-    }
+
+
     public boolean isIS_ASSIGNED()
     {
         return IS_ASSIGNED;
@@ -55,7 +82,10 @@ public class Order
         return ORDER_ID;
     }
 
-    public String getStatus() { return status;}
+    public String getStatus()
+    {
+        return status;
+    }
 
     public Timestamp getORDER_PLACED()
     {
@@ -97,8 +127,29 @@ public class Order
         return account;
     }
 
+    public int getSalesPrice()
+    {
+        return salesPrice;
+    }
+
+    public String getRoofType()
+    {
+        return roofType;
+    }
+
+    public int getCoverageRatioPercentage()
+    {
+        return coverageRatioPercentage;
+    }
+
+    public int getAccountID()
+    {
+        return accountID;
+    }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Order {" +
             "orderId=" + ORDER_ID +
             ", carportId=" + CARPORT_ID +
