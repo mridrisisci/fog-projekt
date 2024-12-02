@@ -110,11 +110,25 @@ public class OrderMapper
 
     public static List<Order> seeAllQueries(String sortby, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT account_id, carport_id, status, orders.account_id, username, email, telephone FROM orders LEFT JOIN accounts ON orders.account_id ORDER BY ?;";
+        String sql = "SELECT " +
+            "orders.order_id," +
+            "orders.carport_id, " +
+            "orders.status, " +
+            "accounts.username," +
+            "orders.order_placed," +
+            "orders.order_paid," +
+            "orders.height," +
+            "orders.width," + // change to length
+             "accounts.email," +
+            "accounts.telephone" +
+            "FROM orders" +
+            "LEFT JOIN accounts ON orders.account_id = accounts.account_id;";
 
         int orderID;
         String carportID;
         String status;
+        Timestamp orderPlaced;
+        boolean orderPaid;
         int height;
         int length;
         int accountID;
@@ -134,14 +148,14 @@ public class OrderMapper
                 orderID = rs.getInt("order_id");
                 carportID = rs.getString("carport_id");
                 status = rs.getString("status");
-                Timestamp orderPlaced = rs.getTimestamp("order_placed");
+                orderPlaced = rs.getTimestamp("order_placed");
+                orderPaid = rs.getBoolean("order_paid");
                 height = rs.getInt("height");
                 length = rs.getInt("length");
-                accountID = rs.getInt("account_id");
                 name = rs.getString("username");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
-                orders.add(new Order(orderID, carportID, status, orderPlaced,
+                orders.add(new Order(orderID, carportID, status, orderPlaced, orderPaid, height, length,
                     new Account(name, email, telephone)));
             }
             return orders;

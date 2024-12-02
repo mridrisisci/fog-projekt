@@ -12,17 +12,22 @@ public class Order
     private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
-    private  Account account;
+    private Account account;
+    private int HEIGHT;
+    private int LENGTH;
+    private int ACCOUNT_ID;
+    private boolean orderPaid;
 
-    public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
-    {
-        ORDER_ID = orderId;
-        CARPORT_ID = carportId;
-        SALESPERSON_ID = salespersonId;
-        PRICE = price;
-        ORDER_PLACED = orderPlaced;
-        IS_ASSIGNED = isAssigned;
+    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int height, int length, Account account)
+    { // this constructor is used to "see all queries // requestedqueries.html"
+        this.ORDER_ID = orderId;
+        this.CARPORT_ID = carportId;
         this.status = status;
+        this.ORDER_PLACED = orderPlaced;
+        this.orderPaid = orderPaid;
+        this.HEIGHT = height;
+        this.LENGTH = length;
+        this.account = account;
     }
 
 
@@ -35,16 +40,6 @@ public class Order
         this.CARPORT_ID = carportID;
 
     }
-
-    public Order(int orderID, String carportID, String status, Timestamp orderPlaced, Account account)
-    {
-        this.ORDER_ID = orderID;
-        this.CARPORT_ID = carportID;
-        this.status = status;
-        this.ORDER_PLACED = orderPlaced;
-        this.account = account;
-    }
-
 
     public boolean isIS_ASSIGNED()
     {
@@ -63,8 +58,20 @@ public class Order
         return ORDER_PLACED;
     }
 
+    public int getHEIGHT()
+    {
+        return HEIGHT;
+    }
 
-    //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
+    public int getLENGTH()
+    {
+        return LENGTH;
+    }
+
+    public int getACCOUNT_ID()
+    {
+        return ACCOUNT_ID;
+    }
 
 
     public String getCARPORT_ID()
