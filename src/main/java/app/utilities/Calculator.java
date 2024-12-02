@@ -50,7 +50,7 @@ public class Calculator
 
 
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
-        if ((carport.getLENGTH() * 100) - (2 * overhangDefault) - (2 * widthOfPost) <= totalWidthWithinMaxSpan)
+        if ((carport.getLENGTH() * 100) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
