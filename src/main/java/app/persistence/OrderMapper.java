@@ -195,6 +195,52 @@ public class OrderMapper
         return orders;
     }
 
+    public static List<Order> getOrderDetails(int orderId, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+             ps.setInt(1, orderId);
+             ResultSet rs = ps.executeQuery();
+             List<> orderdetails = new ArrayList<>();
+             String status = "";
+             boolean hasShed = false;
+             String roofType = "";
+             int height = 0;
+             int length = 0;
+             int salesPrice = 0;
+             int price = 0;
+             String carportID = "";
+             Account account = null;
+
+             while (rs.next())
+             {
+                 Order order = new Order(
+                     rs.getString("status");
+                     rs.getBoolean("has_shed");
+                     rs.getString("roof_type");
+                     rs.getInt("height");
+                     rs.getInt("wdith"); // CHANGE TO LENGTH
+                    rs.getInt("sales_price");
+                    rs.getString("carport_id");
+                    if (rs.getInt("account_id") != 0)
+                    {
+                        account = new Account(rs.getInt("account_id"), rs.getString("email"), rs.getInt("telephone"));
+                    }
+                    return orderdetails;
+                 )
+
+             }
+
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
     public static Order getOrderById(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";

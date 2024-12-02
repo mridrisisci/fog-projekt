@@ -113,7 +113,7 @@ public class OrderController
         try
         {
             String orderId = ctx.formParam("order_id");
-            order = OrderMapper.getOrderById(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
+            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
             ctx.attribute("order", order);
             ctx.render("showorderdetails.html");
         } catch (DatabaseException e)

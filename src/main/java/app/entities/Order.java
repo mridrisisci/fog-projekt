@@ -69,6 +69,21 @@ public class Order
 
     }
 
+    public Order(int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int HEIGHT, int LENGTH, int salesPrice, String roofType)
+    { // used for getorderdetails() || order/details/{id}
+        this.ORDER_ID = ORDER_ID;
+        this.CARPORT_ID = CARPORT_ID;
+        this.SALESPERSON_ID = SALESPERSON_ID;
+        this.price = price;
+        this.ORDER_PLACED = ORDER_PLACED;
+        this.status = status;
+        this.account = account;
+        this.HEIGHT = HEIGHT;
+        this.LENGTH = LENGTH;
+        this.salesPrice = salesPrice;
+        this.roofType = roofType;
+    }
+
 
 
     public boolean isIS_ASSIGNED()

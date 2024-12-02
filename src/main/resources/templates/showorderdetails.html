@@ -19,7 +19,7 @@
         <div class="col-6 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    Ordre id #<span th:text="${order.orderId}">Ordrenummer</span>
+                    Ordre id #<span th:text="${order.ORDER_ID}">Ordrenummer</span>
                 </div>
                 <div class="card-body">
                     <p class="card-text">Ordredato: <span th:text="${order.datePlaced}">Bestillingsdato</span></p>
@@ -27,14 +27,15 @@
                         Ordrenavn: <span th:text="${order.username}">Kundenavn</span>
                         <a th:if="${order.account.accountID}!=0" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="'(' + ${order.account} + ')'">(Konto)</a>
                     </p>
-                    <p class="card-text">Ordrestatus: <span th:text="${order.status}">status</span></p>
+                    <p class="card-text">Ordrestatus: <span th:text="${order.CARPORT_ID}">status</span></p>
                     <p class="card-text" th:if="${order.datePaid}!=null">Betalingsdato: <span th:text="${order.datePaid}">Betalingsstatus</span></p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li th:each="line : ${order.orderLines}" class="list-group-item">
-                        <span th:text="${line.quantity}">quantity</span> x
-                        <span th:text="${line.cupcake}">cupcake</span> :
-                        <span th:text="${line.price}/100">price</span> kr
+                    <li th:each="line : ${order.orders}" class="list-group-item">
+                        <span th:text="${order.height}">højde</span> Højde
+                        <span th:text="${order.length}">længde</span> Længde
+                        <span th:text="${order.hasShed}">cupcake</span> Redskabsrum
+                        <span th:text="${order.roofType}/100">tag</span> Type
                     </li>
                 </ul>
                 <div class="card-body">
