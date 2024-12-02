@@ -882,7 +882,7 @@ public class MaterialMapper
     {
     }
 
-    public static List<Material> getAllMaterials()
+    public static List<Material> getAllMaterials(ConnectionPool pool)
     {
         return null;
     }
