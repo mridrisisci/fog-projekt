@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderController
 {
@@ -22,13 +23,19 @@ public class OrderController
     {
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
-        app.get("/", ctx -> showFrontpage(ctx, dBConnection) );
-        app.get("/seeallqueries", ctx -> seeAllQueries(ctx, dBConnection) );
+        app.get("/", ctx -> showFrontpage(ctx, dBConnection));
+        app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
+        // TODO: opret order/delete-ruten
+        //app.get("/order/delete", ctx -> deleteOrder(ctx, dBConnection) ); // ikke lavet enndnu
+        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection));
+        // TODO: Opret /order/finish-ruten
+        //app.get("/order/finish", ctx -> completeOrder(ctx, dBConnection) ); // ikke lavet enndnu
+
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
     {
-        ctx.render("index.html" );
+        ctx.render("index.html");
     }
 
 
@@ -61,7 +68,6 @@ public class OrderController
 
         // TODO: Færdiggør valideringsmetoderne
         //validatePhoneNumber(ctx, "choosePhoneNumber");
-        //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
 
@@ -89,7 +95,7 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-            order = getOrderOnReceipt(orderID, ctx, pool);
+            order = getOrderById(orderID, ctx, pool);
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -101,7 +107,24 @@ public class OrderController
         }
     }
 
-    private static void seeAllQueries(Context ctx, ConnectionPool pool)
+    private static void showOrderDetails(Context ctx, ConnectionPool pool)
+    {
+        Order order;
+        try
+        {
+            String orderId = ctx.formParam("order_id");
+            order = OrderMapper.getOrderById(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
+            ctx.attribute("order", order);
+            ctx.render("showorderdetails.html");
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
+    }
+
+
+    private static void showOrderHistory(Context ctx, ConnectionPool pool)
     {
         if (ctx.sessionAttribute("currentUser") == null)
         {
@@ -110,7 +133,6 @@ public class OrderController
             return;
         }
         Account account = ctx.sessionAttribute("currentUser");
-        String role = account.getRole();
 
         if (account.getRole().equals("salesperson"))
         {
@@ -118,119 +140,115 @@ public class OrderController
             String sortby = ctx.formParam("query");
             try
             {
-                if (!(sortby==null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
                 {
                     sortby = "order_id";
                 }
-                orders = OrderMapper.seeAllQueries(sortby, pool);
-            }
-            catch (DatabaseException e)
+                orders = OrderMapper.showOrderHistory(sortby, pool);
+            } catch (DatabaseException e)
             {
-                ctx.attribute("message","Noget gik galt. " + e.getMessage());
+                ctx.attribute("message", "Noget gik galt. " + e.getMessage());
             }
             // Render Thymeleaf-skabelonen
             ctx.attribute("orders", orders);
-            ctx.render("/requestedqueries.html");
+            ctx.render("/orderhistory.html");
         }
 
 
-
     }
-
-
 
 
 //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
-{
-    // hardcoded for at teste
-    int materialID = 1;
-    int quantity = 1;
-
-    try
+    private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
     {
-        OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+        // hardcoded for at teste
+        int materialID = 1;
+        int quantity = 1;
 
-    } catch (DatabaseException e)
-    {
-        ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
+        try
+        {
+            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
+        }
     }
-}
 
-private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
-{
-    Order order;
-    try
+    private static Order getOrderById(int orderID, Context ctx, ConnectionPool pool)
     {
-        order = OrderMapper.getOrderOnReceipt(orderID, pool);
-        return order;
-    } catch (DatabaseException e)
-    {
-        ctx.attribute("message", e.getMessage());
-        ctx.render("kvittering.html");
-        return null;
+        Order order;
+        try
+        {
+            order = OrderMapper.getOrderById(orderID, pool);
+            return order;
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("kvittering.html");
+            return null;
+        }
     }
-}
 
-private static boolean validatePostalCode(Context ctx, String postalCode)
-{
-    int p = Integer.parseInt(postalCode); // does it need to be parsed ?
+    private static boolean validatePostalCode(Context ctx, String postalCode)
+    {
+        int p = Integer.parseInt(postalCode); // does it need to be parsed ?
 
-    if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
+        if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
+        {
+            return false;
+        }
+        if (postalCode.length() == 4)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private static boolean validatePhoneNumber(Context ctx, String number)
+    {
+        String numbers = "1234567890";
+        boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
+
+        if (number.length() < 8)
+        {
+            ctx.attribute("message", "Dit telefonnummer er ugyldigt");
+            return false;
+        } else if (number.length() == 8 && hasNumber)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    private static boolean validateOrderIsPaid()
     {
         return false;
     }
-    if (postalCode.length() == 4)
+
+    private static void requestPaymentByID()
     {
-        return true;
     }
-    return false;
-}
 
-
-private static boolean validatePhoneNumber(Context ctx, String number)
-{
-    String numbers = "1234567890";
-    boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
-
-    if (number.length() < 8)
+    private static void confirmPaymentByID()
     {
-        ctx.attribute("message", "Dit telefonnummer er ugyldigt");
-        return false;
-    } else if (number.length() == 8 && hasNumber)
-    {
-        return true;
     }
-    return false;
-}
 
+    private static void sendBOM()
+    {
+    }
 
-private static boolean validateOrderIsPaid()
-{
-    return false;
-}
+    private static void sendPickList()
+    {
+    }
 
-private static void requestPaymentByID()
-{
-}
-
-private static void confirmPaymentByID()
-{
-}
-
-private static void sendBOM()
-{
-}
-
-private static void sendPickList()
-{
-}
-
-private static void sendInvoice()
-{
-}
+    private static void sendInvoice()
+    {
+    }
 
 }

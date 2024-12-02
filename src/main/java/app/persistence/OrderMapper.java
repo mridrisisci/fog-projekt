@@ -5,7 +5,6 @@ import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +195,7 @@ public class OrderMapper
         return orders;
     }
 
-    public static Order getOrderOnReceipt(int orderID, ConnectionPool pool) throws DatabaseException
+    public static Order getOrderById(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
@@ -224,7 +223,7 @@ public class OrderMapper
         }
     }
 
-    public static List<Order> seeAllQueries(String sortby, ConnectionPool pool) throws DatabaseException
+    public static List<Order> showOrderHistory(String sortby, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
             "o.order_id," +
@@ -233,8 +232,8 @@ public class OrderMapper
             "o.order_placed," +
             "o.order_paid," +
             "o.height," +
-            "o.width," +
-            "o.account_id," +// change to length
+            "o.width," + // change to length
+            "o.account_id," +
              "a.email," +
             "a.username," +
             "a.telephone " +

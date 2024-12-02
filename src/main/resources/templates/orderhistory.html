@@ -28,14 +28,14 @@
                             <thead>
                             <tr>
                                 <th class="text-center"><i class="bi bi-trash3"></i></th>
-                                <th><a th:href="@{/seequeries(query=orderid)}">Order #</a></th>
-                                <th><a th:href="@{/seequeries(query=CARPORT_ID)}">Carport ID</a></th>
-                                <th><a th:href="@{/seequeries(query=username)}">Navn</a></th>
-                                <th><a th:href="@{/seequeries(query=status)}">Status</a></th>
-                                <th><a th:href="@{/seequeries(query=DATE_PLACED)}">Oprettet</a></th>
-                                <th><a th:href="@{/seequeries(query=order_paid)}">Betalt</a></th>
-                                <th><a th:href="@{/seequeries(query=HEIGHT)}">Højde</a></th>
-                                <th><a th:href="@{/seequeries(query=LENGTH)}">Længde</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderid)}">Order #</a></th>
+                                <th><a th:href="@{/orderhistory(query=CARPORT_ID)}">Carport ID</a></th>
+                                <th><a th:href="@{/orderhistory(query=username)}">Kundenavn</a></th>
+                                <th><a th:href="@{/orderhistory(query=status)}">Ordrestatus</a></th>
+                                <th><a th:href="@{/orderhistory(query=DATE_PLACED)}">Bestillingsdato</a></th>
+                                <th><a th:href="@{/orderhistory(query=order_paid)}">Betalingsstatus</a></th>
+                                <th><a th:href="@{/orderhistory(query=HEIGHT)}">Højde</a></th>
+                                <th><a th:href="@{/orderhistory(query=LENGTH)}">Længde</a></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -46,12 +46,14 @@
                                 <td>
                                     <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
                                 </td>
-                                <td><span class="badge text-bg-info" th:text="${order.status}">Status</span></td>
-                                <td th:text="${order.ORDER_PLACED}">Dato</td>
-                                <td th:text="${order.orderPaid}">Dato</td>
+                                <td><span class="badge text-bg-info" th:text="${order.status}">Ordrestatus</span></td>
+                                <td th:text="${order.ORDER_PLACED}">Bestillingsdato</td>
+                                <td th:text="${order.orderPaid}">Betalingsstatus</td>
                                 <td>
-                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Afslut ordre</a>
-                                    <span th:text="${order.status}">Status</span>
+                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Send pristilbud</a> </br>
+                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/update" th:href="@{/order/update/{id}(id=${order.ORDER_ID})}">Opdater ordre</a></br>
+                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/delete" th:href="@{/order/delete/{id}(id=${order.ORDER_ID})}">Afvis ordre</a>
+
                                 </td>
                             </tr>
                             </tbody>

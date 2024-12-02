@@ -50,7 +50,7 @@ public class Order
 
 
     public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int HEIGHT, int LENGTH, Account account)
-    { // used for 'seequeries.html'
+    { // used for 'orderhistory.html'
         this.ORDER_ID = orderId;
         this.CARPORT_ID = carportId;
         this.status = status;
@@ -61,7 +61,7 @@ public class Order
         this.account = account;
     }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
-    {
+    { // this is used for 'kvittering.html'
         this.ORDER_ID = orderID;
         ORDER_PLACED = orderPlaced;
         this.status = status;
