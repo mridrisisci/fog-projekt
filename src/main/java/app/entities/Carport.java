@@ -16,32 +16,17 @@ public class Carport
     private int price;
     private int salesPrice;
     private List<Material> materialList = new ArrayList<>();
-    private  int orderID;
 
-    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
+    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int price)
     {
         this.materialList = materialList;
         Rooftype = rooftype;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
+        this.price = price;
     }
 
-    public Carport(RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
-    {
-        Rooftype = rooftype;
-        this.hasShed = hasShed;
-        this.LENGTH = LENGTH;
-        this.WIDTH = WIDTH;
-    }
-
-    public Carport(int orderID, boolean hasShed, int LENGTH, int WIDTH)
-    {
-        this.orderID = orderID;
-        this.hasShed = hasShed;
-        this.LENGTH = LENGTH;
-        this.WIDTH = WIDTH;
-    }
 
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
      * så skal der være en metode der beregner salgspris
@@ -238,6 +223,11 @@ public class Carport
     public RoofType getRooftype()
     {
         return Rooftype;
+    }
+
+    public boolean hasShed()
+    {
+        return hasShed;
     }
 
     public List<Material> getMaterialList()

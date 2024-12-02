@@ -2,6 +2,7 @@ package app.entities;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Order
 {
@@ -20,6 +21,7 @@ public class Order
     private String roofType;
     private int coverageRatioPercentage;
     private int accountID;
+    private Carport carport;
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
     {
@@ -69,8 +71,9 @@ public class Order
 
     }
 
-    public Order(int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int HEIGHT, int LENGTH, int salesPrice, String roofType)
+    public Order(Carport carport, int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int HEIGHT, int LENGTH, int salesPrice, String roofType)
     { // used for getorderdetails() || order/details/{id}
+        this.carport = carport;
         this.ORDER_ID = ORDER_ID;
         this.CARPORT_ID = CARPORT_ID;
         this.SALESPERSON_ID = SALESPERSON_ID;
@@ -84,6 +87,10 @@ public class Order
         this.roofType = roofType;
     }
 
+    public Carport getCarport()
+    {
+        return carport;
+    }
 
 
     public boolean isIS_ASSIGNED()
