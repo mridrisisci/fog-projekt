@@ -109,24 +109,32 @@ public class OrderController
             ctx.render("login.html");
             return;
         }
-        List<Order> orders = new ArrayList<>();
-        String sortby = ctx.formParam("query");
+        Account account = ctx.sessionAttribute("currentUser");
+        String role = account.getRole();
 
-        try
+        if (account.getRole().equals("salesperson"))
         {
-            if (!(sortby==null || sortby.equals("name") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+            List<Order> orders = new ArrayList<>();
+            String sortby = ctx.formParam("query");
+            try
             {
-                sortby = "order_id";
+                if (!(sortby==null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+                {
+                    sortby = "order_id";
+                }
+                orders = OrderMapper.seeAllQueries(sortby, pool);
             }
-            orders = OrderMapper.seeAllQueries(sortby, pool);
+            catch (DatabaseException e)
+            {
+                ctx.attribute("message","Noget gik galt. " + e.getMessage());
+            }
+            // Render Thymeleaf-skabelonen
+            ctx.attribute("orders", orders);
+            ctx.render("/requestedqueries.html");
         }
-        catch (DatabaseException e)
-        {
-            ctx.attribute("message","Noget gik galt. " + e.getMessage());
-        }
-        // Render Thymeleaf-skabelonen
-        ctx.attribute("orders", orders);
-        ctx.render("/requestedqueries.html");
+
+
+
     }
 
 

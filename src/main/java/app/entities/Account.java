@@ -10,6 +10,13 @@ public class Account
     private String email;
     private String address;
 
+    public Account(String username, String email, int telephone)
+    {
+        this.username = username;
+        this.username = email;
+        this.telephone = telephone;
+    }
+
     public Account(int accountID, String email, String role)
     {
         this.accountID = accountID;
@@ -17,8 +24,9 @@ public class Account
         this.role = role;
     }
 
-    public Account(String username, String email, int telephone)
-    {
+    public Account(int accountID, String username, String email, int telephone)
+    { // this constructor is used for 'seeallqueries' mapper method
+        this.accountID = accountID;
         this.username = username;
         this.email = email;
         this.telephone = telephone;
