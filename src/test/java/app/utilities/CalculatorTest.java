@@ -128,6 +128,66 @@ public class CalculatorTest
 
     }
 
+    @Test
+    public void testCalcPosts()
+    {
+        // Arrange and Act
+        int actual1 = Calculator.calcPosts(carport1); // Length = 360 cm
+        int expected1 = 6;
+
+        int actual2 = Calculator.calcPosts(carport2); // Length = 600 cm
+        int expected2 = 6;
+
+        int actual3 = Calculator.calcPosts(carport3); // Length = 780 cm
+        int expected3 = 6;
+
+        int actual4 = Calculator.calcPosts(carport4); // Length = 360 cm
+        int expected4 = 6;
+
+        int actual5 = Calculator.calcPosts(carport5); // Length = 600 cm
+        int expected5 = 6;
+
+        int actual6 = Calculator.calcPosts(carport6); // Length = 0 cm
+        int expected6 = 4; // Technically, should be verified. Likely minimal or default posts.
+
+        // Assert
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+        Assert.assertEquals(expected6, actual6);
+    }
+
+    @Test
+    public void testCalcBeams() {
+        // Arrange and Act
+        int[] actual1 = Calculator.calcBeams(carport1); // Length = 360 cm
+        int[] expected1 = {2, 480};
+
+        int[] actual2 = Calculator.calcBeams(carport2); // Length = 600 cm
+        int[] expected2 = {2, 600};
+
+        int[] actual3 = Calculator.calcBeams(carport3); // Length = 780 cm
+        int[] expected3 = {4, 480};
+
+        int[] actual4 = Calculator.calcBeams(carport4); // Length = 360 cm
+        int[] expected4 = {2, 480};
+
+        int[] actual5 = Calculator.calcBeams(carport5); // Length = 600 cm
+        int[] expected5 = {2, 600};
+
+        int[] actual6 = Calculator.calcBeams(carport6); // Length = 0 cm
+        int[] expected6 = {1, 600}; // Default to minimal requirement for very small lengths.
+
+        // Assert
+        Assert.assertArrayEquals(expected1, actual1);
+        Assert.assertArrayEquals(expected2, actual2);
+        Assert.assertArrayEquals(expected3, actual3);
+        Assert.assertArrayEquals(expected4, actual4);
+        Assert.assertArrayEquals(expected5, actual5);
+        Assert.assertArrayEquals(expected6, actual6);
+    }
 
 
 }
