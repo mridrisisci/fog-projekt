@@ -2,7 +2,9 @@ package app.utilities;
 
 import app.entities.Carport;
 import app.entities.Material;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -24,16 +26,26 @@ public class CalculatorTest
     Material material6 = new Material(6, "test_name6", "test_description6", 45, "m", 1, 25, 25, 25, false, 12);
     Material material7 = new Material(7, "test_name7", "test_description7", 80, "Kg", 3, 35, 35, 35, true, 0);
     Material material8 = new Material(8, "test_name8", "test_description8", 55, "L", 4, 40, 40, 40, false, 3);
+    List<Material> materialList = new ArrayList<>();
 
-    List<Material> materials = new ArrayList<>();
-    materials.add(material1);
-    materials.add(material2);
-    materials.add(material3);
-    materials.add(material4);
-    materials.add(material5);
-    materials.add(material6);
-    materials.add(material7);
-    materials.add(material8);
+    @Before
+    public void addMaterialsToList()
+    {
+        materialList.add(material1);
+        materialList.add(material2);
+        materialList.add(material3);
+        materialList.add(material4);
+        materialList.add(material5);
+        materialList.add(material6);
+        materialList.add(material7);
+        materialList.add(material8);
+    }
+
+    @After
+    public void clearMaterialList()
+    {
+        materialList.clear();
+    }
 
     @Test
     public void testCalcRoofPlates()
@@ -88,4 +100,16 @@ public class CalculatorTest
         Assert.assertEquals(expected6Long, actual6[0]);
         Assert.assertEquals(expected6Short, actual6[1]);
     }
+
+    @Test
+    public void testCalcPickListPrice()
+    {
+        // Arrange and Act
+        int actual = Calculator.calcPickListPrice(materialList);
+        int expected = 1125;
+
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
 }
