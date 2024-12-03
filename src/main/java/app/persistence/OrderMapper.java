@@ -247,7 +247,7 @@ public class OrderMapper
     */
 
 
-    public static Order getOrderOnReceipt(int orderID, ConnectionPool pool) throws DatabaseException
+    public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
@@ -491,30 +491,43 @@ public class OrderMapper
 
     }
 
-    public static List<Material> getBOM(ConnectionPool pool) throws DatabaseException
+    public static List<Material> getBOM(int orderId, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "";
+        String sql = "SELECT " +
+            "m.material_id " +
+            "m.name " +
+            "m.description " +
+            "m.unit " +
+            "om.quantity " +
+            "m.type " +
+            "FROM materials m " +
+            "LEFT JOIN orders_materials om ON m.material_id = om.material_id " +
+            "WHERE m.order_id = ?" +
+            "ORDER BY m.material_id"
+            ;
+        List<Material> materials = new ArrayList<>();
 
         try (Connection connection = pool.getConnection();
         PreparedStatement ps = connection.prepareStatement(sql))
         {
-            List<Material> materials = new ArrayList<>();
+            ps.setInt(1, orderId);
             ResultSet rs = ps.executeQuery();
             while(rs.next())
             {
                 materials.add(new Material(
-                    rs.getInt("material_id");
-                    rs.getString("name");
-                    rs.getString("unit");
-                    rs.getString("description");
-                    )
-                )
+                    rs.getInt("material_id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getString("unit"),
+                    rs.getInt("quantity"),
+                    rs.getString("type")
+                    ));
             }
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
-        return null;
+        return materials;
     }
 
 

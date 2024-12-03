@@ -104,7 +104,7 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarportInOrdersMaterials(orderID, ctx, pool);
-            order = getOrderOnReceipt(orderID, ctx, pool);
+            order = getOrderByID(orderID, ctx, pool);
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             //CalcBOM
             ctx.attribute("order", order);
@@ -193,12 +193,12 @@ public class OrderController
         }
     }
 
-    private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
+    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            order = OrderMapper.getOrderOnReceipt(orderID, pool);
+            order = OrderMapper.getOrderByID(orderID, pool);
             return order;
         } catch (DatabaseException e)
         {
