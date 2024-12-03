@@ -7,14 +7,15 @@ import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
+import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class OrderController
 {
@@ -95,7 +96,8 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-            order = getOrderById(orderID, ctx, pool);
+            order = getOrderOnReceipt(orderID, ctx, pool);
+            SendGrid.sendEmail(email);
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -104,6 +106,9 @@ public class OrderController
         } catch (NumberFormatException e)
         {
             throw new IllegalArgumentException(e);
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 
