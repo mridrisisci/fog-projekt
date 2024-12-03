@@ -114,6 +114,12 @@
             <artifactId>sendgrid-java</artifactId>
             <version>4.10.1</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
 
 
     </dependencies>
