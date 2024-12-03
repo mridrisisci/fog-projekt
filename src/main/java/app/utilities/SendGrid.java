@@ -19,7 +19,7 @@ public class SendGrid
     private static final String subjectLine = "Carport Order";
 
 
-    public static void sendEmail() throws IOException
+    public static void sendEmail(String email) throws IOException
     {
         Email from = new Email(salespersonEmail); // kode: fog12345
         from.setName("Johannes Fog Byggemarked");
@@ -29,7 +29,7 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email(customerEmail)); // kode: fog12345
+        personalization.addTo(new Email(email)); // kode: fog12345
         personalization.addDynamicTemplateData("Name:", "Salesperson");
         personalization.addDynamicTemplateData("email", salespersonEmail);
         personalization.addDynamicTemplateData("zip", "2100");
@@ -58,10 +58,9 @@ public class SendGrid
             throw ex;
         }
     }
-
+/*
     public static boolean sendMailFromMain(Context ctx)
     {
-
 
         try
         {
@@ -72,7 +71,7 @@ public class SendGrid
             System.err.println("Failed to send email: " + ex.getMessage());
             return false; // Email did not send successfully
         }
-    }
+    }*/
 
     public String getAPI_KEY()
     {

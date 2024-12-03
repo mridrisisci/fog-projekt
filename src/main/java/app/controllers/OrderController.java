@@ -92,7 +92,7 @@ public class OrderController
 
             createCarport(orderID, ctx, pool);
             order = getOrderOnReceipt(orderID, ctx, pool);
-            SendGrid.sendEmail();
+            SendGrid.sendEmail(email);
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
