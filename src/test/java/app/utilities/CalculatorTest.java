@@ -160,7 +160,8 @@ public class CalculatorTest
     }
 
     @Test
-    public void testCalcBeams() {
+    public void testCalcBeams()
+    {
         // Arrange and Act
         int[] actual1 = Calculator.calcBeams(carport1); // Length = 360 cm
         int[] expected1 = {2, 480};
@@ -188,6 +189,37 @@ public class CalculatorTest
         Assert.assertArrayEquals(expected5, actual5);
         Assert.assertArrayEquals(expected6, actual6);
     }
+
+    @Test
+    public void testCalcSidesFasciaBoard() {
+        // Arrange and Act
+        int[] actual1 = Calculator.calcSidesFasciaBoard(carport1); // Length = 360 cm
+        int[] expected1 = {2, 360}; // Expected: Length is 360, Quantity is 2.
+
+        int[] actual2 = Calculator.calcSidesFasciaBoard(carport2); // Length = 600 cm
+        int[] expected2 = {4, 360}; // Expected: Length is 360, Quantity is 2.
+
+        int[] actual3 = Calculator.calcSidesFasciaBoard(carport3); // Length = 780 cm
+        int[] expected3 = {4, 540}; // Expected: Length is 540, Quantity is 4.
+
+        int[] actual4 = Calculator.calcSidesFasciaBoard(carport4); // Length = 360 cm
+        int[] expected4 = {2, 360}; // Expected: Same as `carport1`.
+
+        int[] actual5 = Calculator.calcSidesFasciaBoard(carport5); // Length = 600 cm
+        int[] expected5 = {4, 360}; // Expected: Same as `carport2`.
+
+        int[] actual6 = Calculator.calcSidesFasciaBoard(carport6); // Length = 0 cm
+        int[] expected6 = {1, 540}; // Expected: Length is 540, Quantity is 1.
+
+        // Assert
+        Assert.assertArrayEquals(expected1, actual1);
+        Assert.assertArrayEquals(expected2, actual2);
+        Assert.assertArrayEquals(expected3, actual3);
+        Assert.assertArrayEquals(expected4, actual4);
+        Assert.assertArrayEquals(expected5, actual5);
+        Assert.assertArrayEquals(expected6, actual6);
+    }
+
 
 
 }
