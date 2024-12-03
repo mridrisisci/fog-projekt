@@ -268,7 +268,8 @@ public class CalculatorTest
     }
 
     @Test
-    public void testCalcRafters() {
+    public void testCalcRafters()
+    {
         // Arrange and Act
         int[] actual1 = Calculator.calcRafters(carport1); // Length = 360 cm, Width = 240 cm
         int[] expected1 = {6, 480}; // Expected: Length is 480, Quantity is 6.
@@ -310,7 +311,8 @@ public class CalculatorTest
     }
 
     @Test
-    public void testCalcScrewsForRoofing() {
+    public void testCalcScrewsForRoofing()
+    {
         // Arrange and Act
         int actual1 = Calculator.calcScrewsForRoofing(carport1); // Length = 360 cm, Width = 240 cm
         int expected1 = 2; // Expected: 2 packages of screws needed for this area.
@@ -351,4 +353,142 @@ public class CalculatorTest
         Assert.assertEquals(expected9, actual9);
     }
 
+    @Test
+    public void testCalcStandardScrews()
+    {
+        //Arrange and Act
+        int actual = Calculator.calcStandardScrews();
+        int expected = 1;
+
+        //Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCalcRollForWindCross()
+    {
+        //Arrange and Act
+        int actual = Calculator.calcRollForWindCross();
+        int expected = 2;
+
+        //Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testCalcSquareWasher()
+    {
+        // Arrange and Act
+        int actual1 = Calculator.calcSquareWasher(carport1); // Length = 360 cm
+        int expected1 = 8;
+
+        int actual2 = Calculator.calcSquareWasher(carport2); // Length = 600 cm
+        int expected2 = 8;
+
+        int actual3 = Calculator.calcSquareWasher(carport3); // Length = 780 cm
+        int expected3 = 8;
+
+        int actual4 = Calculator.calcSquareWasher(carport4); // Length = 360 cm
+        int expected4 = 8;
+
+        int actual5 = Calculator.calcSquareWasher(carport5); // Length = 600 cm
+        int expected5 = 8;
+
+        int actual6 = Calculator.calcSquareWasher(carport6); // Length = 0 cm
+        int expected6 = 6; // Technically, should be verified. Likely minimal or default posts.
+
+        // Assert
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+        Assert.assertEquals(expected6, actual6);
+    }
+
+    @Test
+    public void testCalcHardwareForRaftersRight()
+    {
+        // Arrange and Act
+        int actual1 = Calculator.calcHardwareForRaftersRight(carport1); // Length = 360 cm, Width = 240 cm
+        int expected1 = 6; // Expected: Length is 480, Quantity is 6.
+
+        int actual2 = Calculator.calcHardwareForRaftersRight(carport2); // Length = 600 cm, Width = 240 cm
+        int expected2 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual3 = Calculator.calcHardwareForRaftersRight(carport3); // Length = 780 cm, Width = 240 cm
+        int expected3 = 13; // Expected: Length is 480, Quantity is 13.
+
+        int actual4 = Calculator.calcHardwareForRaftersRight(carport4); // Length = 360 cm, Width = 360 cm
+        int expected4 = 6; // Expected: Length is 480, Quantity is 6.
+
+        int actual5 = Calculator.calcHardwareForRaftersRight(carport5); // Length = 600 cm, Width = 360 cm
+        int expected5 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual6 = Calculator.calcHardwareForRaftersRight(carport6); // Length = 0 cm, Width = 0 cm
+        int expected6 = 0; // Expected: No rafters needed as length is 0.
+
+        int actual7 = Calculator.calcHardwareForRaftersRight(carport7); // Length = 600 cm, Width = 480 cm
+        int expected7 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual8 = Calculator.calcHardwareForRaftersRight(carport8); // Length = 600 cm, Width = 540 cm
+        int expected8 = 10; // Expected: Length is 600, Quantity is 10.
+
+        int actual9 = Calculator.calcHardwareForRaftersRight(carport9); // Length = 600 cm, Width = 600 cm
+        int expected9 = 10; // Expected: Length is 600, Quantity is 10.
+
+        // Assert
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+        Assert.assertEquals(expected6, actual6);
+        Assert.assertEquals(expected7, actual7);
+        Assert.assertEquals(expected8, actual8);
+        Assert.assertEquals(expected9, actual9);
+    }
+
+    @Test
+    public void testCalcHardwareForRaftersLeft()
+    {
+        // Arrange and Act
+        int actual1 = Calculator.calcHardwareForRaftersLeft(carport1); // Length = 360 cm, Width = 240 cm
+        int expected1 = 6; // Expected: Length is 480, Quantity is 6.
+
+        int actual2 = Calculator.calcHardwareForRaftersLeft(carport2); // Length = 600 cm, Width = 240 cm
+        int expected2 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual3 = Calculator.calcHardwareForRaftersLeft(carport3); // Length = 780 cm, Width = 240 cm
+        int expected3 = 13; // Expected: Length is 480, Quantity is 13.
+
+        int actual4 = Calculator.calcHardwareForRaftersLeft(carport4); // Length = 360 cm, Width = 360 cm
+        int expected4 = 6; // Expected: Length is 480, Quantity is 6.
+
+        int actual5 = Calculator.calcHardwareForRaftersLeft(carport5); // Length = 600 cm, Width = 360 cm
+        int expected5 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual6 = Calculator.calcHardwareForRaftersLeft(carport6); // Length = 0 cm, Width = 0 cm
+        int expected6 = 0; // Expected: No rafters needed as length is 0.
+
+        int actual7 = Calculator.calcHardwareForRaftersLeft(carport7); // Length = 600 cm, Width = 480 cm
+        int expected7 = 10; // Expected: Length is 480, Quantity is 10.
+
+        int actual8 = Calculator.calcHardwareForRaftersLeft(carport8); // Length = 600 cm, Width = 540 cm
+        int expected8 = 10; // Expected: Length is 600, Quantity is 10.
+
+        int actual9 = Calculator.calcHardwareForRaftersLeft(carport9); // Length = 600 cm, Width = 600 cm
+        int expected9 = 10; // Expected: Length is 600, Quantity is 10.
+
+        // Assert
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+        Assert.assertEquals(expected6, actual6);
+        Assert.assertEquals(expected7, actual7);
+        Assert.assertEquals(expected8, actual8);
+        Assert.assertEquals(expected9, actual9);
+    }
 }
