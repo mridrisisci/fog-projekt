@@ -8,29 +8,64 @@ public class Order
     private final int ORDER_ID;
     private final String CARPORT_ID;
     private int SALESPERSON_ID;
-    private final int PRICE;
-    private final Timestamp TIME_PLACED;
+    private int price;
+    private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
+    private Account account;
+    private int HEIGHT;
+    private int LENGTH;
+    private boolean orderPaid;
+    private int salesPrice;
+    private String roofType;
+    private int coverageRatioPercentage;
+    private int accountID;
 
-    public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
+    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
     {
         ORDER_ID = orderId;
         CARPORT_ID = carportId;
         SALESPERSON_ID = salespersonId;
-        PRICE = price;
-        TIME_PLACED = orderPlaced;
-        IS_ASSIGNED = isAssigned;
+        this.price = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
+        this.roofType = roofType;
+        this.accountID = accountID;
     }
 
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int price)
+    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    {
+        ORDER_ID = orderId;
+        CARPORT_ID = carportId;
+        this.price = price;
+        this.salesPrice = salesPrice;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+        ORDER_PLACED = orderPlaced;
+        this.status = status;
+        this.roofType = roofType;
+        this.accountID = accountID;
+    }
+
+
+    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int HEIGHT, int LENGTH, Account account)
+    { // used for 'seequeries.html'
+        this.ORDER_ID = orderId;
+        this.CARPORT_ID = carportId;
+        this.status = status;
+        this.ORDER_PLACED = orderPlaced;
+        this.orderPaid = orderPaid;
+        this.HEIGHT = HEIGHT;
+        this.LENGTH = LENGTH;
+        this.account = account;
+    }
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
-        TIME_PLACED = orderPlaced;
+        ORDER_PLACED = orderPlaced;
         this.status = status;
         this.CARPORT_ID = carportID;
-        this.PRICE = price;
 
     }
 
@@ -46,10 +81,29 @@ public class Order
         return ORDER_ID;
     }
 
-    public String getStatus() { return status;}
+    public String getStatus()
+    {
+        return status;
+    }
+    public boolean getOrderPaid()
+    {
+        return orderPaid;
+    }
 
+    public Timestamp getORDER_PLACED()
+    {
+        return ORDER_PLACED;
+    }
 
-    //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
+    public int getHEIGHT()
+    {
+        return HEIGHT;
+    }
+
+    public int getLENGTH()
+    {
+        return LENGTH;
+    }
 
 
     public String getCARPORT_ID()
@@ -61,19 +115,45 @@ public class Order
         return SALESPERSON_ID;
     }
 
-    public int getPRICE()
+    public int getPrice()
     {
-        return PRICE;
+        return price;
+    }
+
+    public Account getAccount()
+    {
+        return account;
+    }
+
+    public int getSalesPrice()
+    {
+        return salesPrice;
+    }
+
+    public String getRoofType()
+    {
+        return roofType;
+    }
+
+    public int getCoverageRatioPercentage()
+    {
+        return coverageRatioPercentage;
+    }
+
+    public int getAccountID()
+    {
+        return accountID;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Order {" +
             "orderId=" + ORDER_ID +
             ", carportId=" + CARPORT_ID +
             ", salespersonId=" + SALESPERSON_ID +
-            ", price=" + PRICE +
-            ", timePlaced=" + TIME_PLACED +
+            ", price=" + price +
+            ", timePlaced=" + ORDER_PLACED +
             ", status=" + status +
             ", isAssigned=" + IS_ASSIGNED +
             "}";

@@ -2,57 +2,68 @@ package app.entities;
 
 public class Account
 {
-    private final int ACCOUNT_ID;
-    private final String ROLE;
-    private final String USERNAME;
-    private final String PASSWORD;
-    private final int TELEPHONE;
-    private final String EMAIL;
-    private final String ADDRESS;
+    private int accountID;
+    private String role;
+    private String username;
+    private String password;
+    private int telephone;
+    private String email;
+    private String address;
 
-    public Account(String ADDRESS, String EMAIL, int TELEPHONE, String PASSWORD, String USERNAME, String ROLE, int ACCOUNT_ID)
+    public Account(String username, String email, int telephone)
     {
-        this.ADDRESS = ADDRESS;
-        this.EMAIL = EMAIL;
-        this.TELEPHONE = TELEPHONE;
-        this.PASSWORD = PASSWORD;
-        this.USERNAME = USERNAME;
-        this.ROLE = ROLE;
-        this.ACCOUNT_ID = ACCOUNT_ID;
+        this.username = username;
+        this.username = email;
+        this.telephone = telephone;
     }
 
-    public int getACCOUNT_ID()
+    public Account(int accountID, String email, String role)
     {
-        return ACCOUNT_ID;
+        this.accountID = accountID;
+        this.username = email;
+        this.role = role;
     }
 
-    public String getROLE()
-    {
-        return ROLE;
+    public Account(int accountID, String username, String email, int telephone)
+    { // this constructor is used for 'seeallqueries' mapper method
+        this.accountID = accountID;
+        this.username = username;
+        this.email = email;
+        this.telephone = telephone;
     }
 
-    public String getUSERNAME()
+    public int getAccountID()
     {
-        return USERNAME;
+        return accountID;
     }
 
-    public String getPASSWORD()
+    public String getRole()
     {
-        return PASSWORD;
+        return role;
     }
 
-    public int getTELEPHONE()
+    public String getUsername()
     {
-        return TELEPHONE;
+        return username;
     }
 
-    public String getEMAIL()
+    public String getPassword()
     {
-        return EMAIL;
+        return password;
     }
 
-    public String getADDRESS()
+    public int getTelephone()
     {
-        return ADDRESS;
+        return telephone;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public String getAddress()
+    {
+        return address;
     }
 }

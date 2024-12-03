@@ -11,9 +11,6 @@ DROP TABLE IF EXISTS public.postal_code CASCADE;
 DROP TABLE IF EXISTS public.materials CASCADE;
 DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
--- Old tables no longer used
-DROP TABLE IF EXISTS public.material_variants CASCADE;
-DROP TABLE IF EXISTS public.orders_material_variants CASCADE;
 
 -- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
@@ -71,9 +68,9 @@ CREATE TABLE IF NOT EXISTS public.orders
     order_paid boolean NOT NULL,
     height integer NOT NULL,
     width integer NOT NULL,
-    length integer NOT NULL,
-    "hasShed" boolean,
-    roof_type character varying(6) NOT NULL,
+    length integer,
+    has_shed boolean NOT NULL,
+    roof_type character varying(10) NOT NULL,
     account_id integer NOT NULL,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
@@ -84,15 +81,7 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
     order_id integer NOT NULL,
     material_id integer NOT NULL,
     quantity integer NOT NULL,
-    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),
-    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
+    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
@@ -102,28 +91,44 @@ CREATE TABLE IF NOT EXISTS public.postal_code
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
 );
 
--- Add foreign key constraints
-ALTER TABLE public.accounts
+ALTER TABLE IF EXISTS public.accounts
     ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)
         REFERENCES public.addresses (addresses_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.addresses
+
+ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
         REFERENCES public.cities (city_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.addresses
+
+ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)
         REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-ALTER TABLE public.orders
+
+ALTER TABLE IF EXISTS public.orders
     ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)
         REFERENCES public.accounts (account_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.orders_materials
+    ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
+        REFERENCES public.materials (material_id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.orders_materials
+    ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
+        REFERENCES public.orders (order_id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
@@ -161,7 +166,6 @@ VALUES
     ('stalddørsgreb 50x75', 'Sæt', 269, 3, 1, 1, 'Stalddørsgreb', 'Til lås på dør i skur'),
     ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Hængsel', 'Til skurdør'),
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
-
 
 -- End transaction
 END;
