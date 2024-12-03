@@ -277,7 +277,6 @@ public class OrderMapper
 
         Timestamp orderPlaced;
         String status;
-        String carportID;
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -287,8 +286,11 @@ public class OrderMapper
             {
                 orderPlaced = rs.getTimestamp("order_placed");
                 status = rs.getString("status");
-                carportID = rs.getString("carport_id");
-                return new Order(orderID, orderPlaced, status, carportID);
+                int length = rs.getInt("height"); // CHANGE TO LENGTH
+                int width = rs.getInt("width");
+                boolean hasShed = rs.getBoolean("has_shed");
+                String roofType = rs.getString("roof_type");
+                return new Order(orderID, orderPlaced, status, length, width, hasShed, roofType);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
@@ -303,7 +305,6 @@ public class OrderMapper
     {
         String sql = "SELECT " +
             "o.order_id," +
-            "o.carport_id, " +
             "o.status, " +
             "o.order_placed," +
             "o.order_paid," +
@@ -318,7 +319,6 @@ public class OrderMapper
             "ORDER BY ?;";
 
         int orderID;
-        String carportID;
         String status;
         Timestamp orderPlaced;
         boolean orderPaid;
@@ -339,7 +339,6 @@ public class OrderMapper
             while(rs.next())
             {
                 orderID = rs.getInt("order_id");
-                carportID = rs.getString("carport_id");
                 status = rs.getString("status");
                 orderPlaced = rs.getTimestamp("order_placed");
                 orderPaid = rs.getBoolean("order_paid");
@@ -349,7 +348,7 @@ public class OrderMapper
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
-                orders.add(new Order(orderID, carportID, status, orderPlaced, orderPaid, height, length,
+                orders.add(new Order(orderID, status, orderPlaced, orderPaid, height, length,
                     new Account(accountID, name, email, telephone)));
             }
             return orders;

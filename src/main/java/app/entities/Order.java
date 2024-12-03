@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 public class Order
 {
     private final int ORDER_ID;
-    private final String CARPORT_ID;
-    private int SALESPERSON_ID;
+    private  String carportID;
+    private int salesPersonID;
     private int price;
     private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
@@ -26,8 +26,8 @@ public class Order
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
     {
         ORDER_ID = orderId;
-        CARPORT_ID = carportId;
-        SALESPERSON_ID = salespersonId;
+        carportID = carportId;
+        salesPersonID = salespersonId;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
@@ -40,7 +40,7 @@ public class Order
     public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
     {
         ORDER_ID = orderId;
-        CARPORT_ID = carportId;
+        carportID = carportId;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
@@ -51,10 +51,9 @@ public class Order
     }
 
 
-    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int width, int length, Account account)
+    public Order(int orderId, String status, Timestamp orderPlaced, boolean orderPaid, int width, int length, Account account)
     { // used for 'orderhistory.html'
         this.ORDER_ID = orderId;
-        this.CARPORT_ID = carportId;
         this.status = status;
         this.ORDER_PLACED = orderPlaced;
         this.orderPaid = orderPaid;
@@ -62,30 +61,19 @@ public class Order
         this.length = length;
         this.account = account;
     }
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
+    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, String roofType)
     { // this is used for 'kvittering.html'
         this.ORDER_ID = orderID;
         ORDER_PLACED = orderPlaced;
         this.status = status;
-        this.CARPORT_ID = carportID;
-
-    }
-
-    public Order(Carport carport, int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int width, int length, int salesPrice, String roofType)
-    { // used for getorderdetails() || order/details/{id}
-        this.carport = carport;
-        this.ORDER_ID = ORDER_ID;
-        this.CARPORT_ID = CARPORT_ID;
-        this.SALESPERSON_ID = SALESPERSON_ID;
-        this.price = price;
-        this.ORDER_PLACED = ORDER_PLACED;
-        this.status = status;
-        this.account = account;
-        this.width = width;
         this.length = length;
-        this.salesPrice = salesPrice;
+        this.width = width;
+        this.hasShed = hasShed;
         this.roofType = roofType;
+
     }
+
+
 
     public boolean getHasShed()
     {
@@ -133,13 +121,13 @@ public class Order
     }
 
 
-    public String getCARPORT_ID()
+    public String getCarportID()
     {
-        return CARPORT_ID;
+        return carportID;
     }
-    public int getSALESPERSON_ID()
+    public int getSalesPersonID()
     {
-        return SALESPERSON_ID;
+        return salesPersonID;
     }
 
     public int getPrice()
@@ -177,8 +165,8 @@ public class Order
     {
         return "Order {" +
             "orderId=" + ORDER_ID +
-            ", carportId=" + CARPORT_ID +
-            ", salespersonId=" + SALESPERSON_ID +
+            ", carportId=" + carportID +
+            ", salespersonId=" + salesPersonID +
             ", price=" + price +
             ", timePlaced=" + ORDER_PLACED +
             ", status=" + status +

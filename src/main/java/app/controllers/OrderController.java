@@ -36,6 +36,7 @@ public class OrderController
 
     private static void sendBOM(Context ctx)
     {
+        // TODO: Lav mapper-metode, der går op i DB og henter kundens stykliste (ud fra order_id + material_id)
 
         //SendGrid.sendBOM(email, "Stykliste");
     }
@@ -51,25 +52,25 @@ public class OrderController
     {
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        int carportWidth = Integer.parseInt(carportLengthString);
-        int carportHeight = Integer.parseInt(carportWidthString);
+        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportLengthString));
+        int carportHeight = Integer.parseInt(Objects.requireNonNull(carportWidthString));
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
 
         String shedWidthString = ctx.formParam("chooseShedWidth");
-        Integer shedWidth = Integer.parseInt(shedWidthString);
+        Integer shedWidth = Integer.parseInt(Objects.requireNonNull(shedWidthString));
         String shedLengthString = ctx.formParam("chooseShedLength");
-        Integer shedLength = Integer.parseInt(shedLengthString);
+        Integer shedLength = Integer.parseInt(Objects.requireNonNull(shedLengthString));
 
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
         String postalCodeString = ctx.formParam("choosePostalCode");
-        int postalCode = Integer.parseInt(postalCodeString);
+        int postalCode = Integer.parseInt(Objects.requireNonNull(postalCodeString));
         String city = ctx.formParam("chooseCity");
         String telephoneString = ctx.formParam("choosePhoneNumber"); //
-        int telephone = Integer.parseInt(telephoneString);
+        int telephone = Integer.parseInt(Objects.requireNonNull(telephoneString));
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
