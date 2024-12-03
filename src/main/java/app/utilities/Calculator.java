@@ -67,6 +67,7 @@ public class Calculator
         int[] beams = new int[2];
         int quantity = 0;
         int length = 0;
+        int lenghtTest = carport.getLENGTH();
 
         //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (carport.getLENGTH() <= 300)
@@ -75,17 +76,17 @@ public class Calculator
             length = 600;
             quantity = 1;
 
-        } else if (300 < carport.getLENGTH() || carport.getLENGTH() <= 480)
+        } else if (300 > carport.getLENGTH() || carport.getLENGTH() <= 480)
         {
             //Woodmaterial length = 480
             length = 480;
             quantity = 2;
-        } else if (480 < carport.getLENGTH() || carport.getLENGTH() <= 600)
+        } else if (480 > carport.getLENGTH() || carport.getLENGTH() <= 600)
         {
             //Woodmaterial length = 600
             length = 600;
             quantity = 2;
-        } else if (600 < carport.getLENGTH() || carport.getLENGTH() <= 780)
+        } else if (600 > carport.getLENGTH() || carport.getLENGTH() <= 780)
         {
             //Woodmaterial length = 480
             length = 480;
