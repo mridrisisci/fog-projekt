@@ -1,8 +1,12 @@
 package app.utilities;
 
 import app.entities.Carport;
+import app.entities.Material;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalculatorTest
 {
@@ -12,6 +16,24 @@ public class CalculatorTest
     Carport carport4 = new Carport(1, false, 360, 360);
     Carport carport5 = new Carport(1, false, 600, 360);
     Carport carport6 = new Carport(1, false, 0, 0);
+    Material material1 = new Material(1, "test_name1", "test_description1", 50, "Stk", 1, 20, 20, 20, false, 0);
+    Material material2 = new Material(2, "test_name2", "test_description2", 25, "Stk", 1, 20, 20, 20, false, 0);
+    Material material3 = new Material(3, "test_name3", "test_description3", 100, "Kg", 2, 15, 15, 15, true, 5);
+    Material material4 = new Material(4, "test_name4", "test_description4", 75, "L", 3, 30, 30, 30, false, 10);
+    Material material5 = new Material(5, "test_name5", "test_description5", 60, "Stk", 2, 10, 10, 10, true, 8);
+    Material material6 = new Material(6, "test_name6", "test_description6", 45, "m", 1, 25, 25, 25, false, 12);
+    Material material7 = new Material(7, "test_name7", "test_description7", 80, "Kg", 3, 35, 35, 35, true, 0);
+    Material material8 = new Material(8, "test_name8", "test_description8", 55, "L", 4, 40, 40, 40, false, 3);
+
+    List<Material> materials = new ArrayList<>();
+    materials.add(material1);
+    materials.add(material2);
+    materials.add(material3);
+    materials.add(material4);
+    materials.add(material5);
+    materials.add(material6);
+    materials.add(material7);
+    materials.add(material8);
 
     @Test
     public void testCalcRoofPlates()
