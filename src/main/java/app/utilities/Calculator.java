@@ -158,17 +158,17 @@ public class Calculator
             //Woodmaterial length = 540
             length = 540;
             quantity = 1;
-        } else if (270 < carport.getWIDTH() || carport.getWIDTH() <= 360)
+        } else if (270 > carport.getWIDTH() || carport.getWIDTH() <= 360)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 2;
-        } else if (360 < carport.getWIDTH() || carport.getWIDTH() <= 540)
+        } else if (360 > carport.getWIDTH() || carport.getWIDTH() <= 540)
         {
             //Woodmaterial length = 540
             length = 540;
             quantity = 2;
-        } else if (540 < carport.getWIDTH() || carport.getWIDTH() <= 600)
+        } else if (540 > carport.getWIDTH() || carport.getWIDTH() <= 600)
         {
             //Woodmaterial length = 360
             length = 360;
@@ -187,6 +187,8 @@ public class Calculator
         int[] rafters = new int[2];
         int quantity = 0;
         int length = 0;
+        int testL = carport.getLENGTH();
+        int testW = carport.getWIDTH();
 
 
         //Beregning af mængde af spær
@@ -211,9 +213,11 @@ public class Calculator
         //Beregning af længden på spær
 
         //Længden på det "korte bredt" er hardcoded ind
-        if (carport.getWIDTH()<=480){
+        if (carport.getWIDTH() <= 480)
+        {
             length = 480;
-        } else {
+        } else
+        {
             length = 600;
         }
 
@@ -225,17 +229,19 @@ public class Calculator
 
     public static int calcScrewsForRoofing(Carport carport)
     {
-        int screwsForRoofing;
-
         //Udregning for skruer til taget
         //Man skal bruge ca. 12 skruer per kvadratmeter tagplade, der er skruer til 16,6 m^2 i en pakke. Vi runder ned til 16 m^2
-        int squareCentimeterPerPackageOfScrews = 1600;
-        if ((carport.getWIDTH() * carport.getLENGTH()) / squareCentimeterPerPackageOfScrews < 2)
+        int squareCentimeterPerPackageOfScrews = 160000;
+        double carportRoofInSquareCentimeters = carport.getWIDTH() * carport.getLENGTH();
+        //Beregner antal pakker af skruer der skal bruges i decimaltal
+        double packagesNeeded = carportRoofInSquareCentimeters / squareCentimeterPerPackageOfScrews;
+        //Runder decimal tal op til nærmeste hele tal (Math.ceil)
+        int screwsForRoofing = (int) Math.ceil(packagesNeeded);
+
+        //Giver en ekstra pakke skruer man skulle bruge 1 eller 2 pakker
+        if (screwsForRoofing < 3 && screwsForRoofing != 0)
         {
-            screwsForRoofing = 2;
-        } else
-        {
-            screwsForRoofing = 3;
+            screwsForRoofing += 1;
         }
 
         return screwsForRoofing;
@@ -283,7 +289,7 @@ public class Calculator
 
         int packagesOfHardwarescrews; //Der er 250 skruer i en pakke
 
-        int hardwareForRafters = calcHardwareForRaftersLeft(carport)+calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
+        int hardwareForRafters = calcHardwareForRaftersLeft(carport) + calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
 
         int sidesOnHardwareForRafters = 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
 
