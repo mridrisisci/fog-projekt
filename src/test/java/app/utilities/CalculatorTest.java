@@ -112,4 +112,22 @@ public class CalculatorTest
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void testCalcSalesPrice()
+    {
+        // Arrange and Act
+        // pickListPrice should be 1125
+        int pickListPrice = Calculator.calcPickListPrice(materialList);
+        double coverageRatio = 0.35;
+
+        int actual = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
+        int expected = 1518;
+
+        // Assert
+        Assert.assertEquals(expected, actual);
+
+    }
+
+
+
 }
