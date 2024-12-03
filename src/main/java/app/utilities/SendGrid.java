@@ -13,47 +13,26 @@ import java.io.IOException;
 public class SendGrid
 {
 
-    private static String API_KEY = System.getenv("SENDGRID_API_KEY");
-    private static String salespersonEmail = "salesperson@example.com";
-    private static String customerEmail;
+    private static String API_KEY = System.getenv("API_SEND_GRID");
+    private static String salespersonEmail = "sales.person.fog@gmail.com";
+    private static String customerEmail = "customer.fog.test@gmail.com";
     private static String adminEmail = "admin@example.com";
     private static String subjectLine = "Carport Order";
     private static String body;
 
-    // Getters for attributes
-    public String getAPI_KEY()
-    {
-        return API_KEY;
-    }
-
-    public String getSalespersonEmail()
-    {
-        return salespersonEmail;
-    }
-
-    public String getCustomerEmail()
-    {
-        return customerEmail;
-    }
-
-    public String getAdminEmail()
-    {
-        return adminEmail;
-    }
-
-    public String getSubjectLine()
-    {
-        return subjectLine;
-    }
-
-    public String getBody()
-    {
-        return body;
+    public boolean sendGrid(String to, String name, String email, String zip, String body) {
+        try {
+            SendGrid.sendEmail(to, name, email, zip, body);
+            return true; // Email sent successfully
+        } catch (IOException e) {
+            System.err.println("Failed to send email: " + e.getMessage());
+            return false; // Email sending failed
+        }
     }
 
     public static void sendEmail(String to, String name, String email, String zip, String body) throws IOException
     {
-        Email from = new Email("christofferleisted@gmail.com");
+        Email from = new Email("sales.person.fog@gmail.com"); // kode: fog12345
         from.setName("Johannes Fog Byggemarked");
 
         Mail mail = new Mail();
@@ -61,10 +40,10 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email(to));
-        personalization.addDynamicTemplateData("name", name);
-        personalization.addDynamicTemplateData("email", email);
-        personalization.addDynamicTemplateData("zip", zip);
+        personalization.addTo(new Email("customer.fog.test@gmail.com")); // kode: fog12345
+        personalization.addDynamicTemplateData("Name:", "Salesperson");
+        personalization.addDynamicTemplateData("email", "sales.person.fog@gmail.com");
+        personalization.addDynamicTemplateData("zip", "2100");
         personalization.addDynamicTemplateData("body", body);
         mail.addPersonalization(personalization);
 
@@ -110,4 +89,35 @@ public class SendGrid
             return false; // Email did not send successfully
         }
     }
+
+    public String getAPI_KEY()
+    {
+        return API_KEY;
+    }
+
+    public String getSalespersonEmail()
+    {
+        return salespersonEmail;
+    }
+
+    public String getCustomerEmail()
+    {
+        return customerEmail;
+    }
+
+    public String getAdminEmail()
+    {
+        return adminEmail;
+    }
+
+    public String getSubjectLine()
+    {
+        return subjectLine;
+    }
+
+    public String getBody()
+    {
+        return body;
+    }
+
 }

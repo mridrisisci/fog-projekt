@@ -90,6 +90,7 @@ public class OrderController
 
             createCarport(orderID, ctx, pool);
             order = getOrderOnReceipt(orderID, ctx, pool);
+            //SendGridController
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
