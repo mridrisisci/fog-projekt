@@ -13,26 +13,15 @@ import java.io.IOException;
 public class SendGrid
 {
 
-    private static String API_KEY = System.getenv("API_SEND_GRID");
-    private static String salespersonEmail = "sales.person.fog@gmail.com";
-    private static String customerEmail = "customer.fog.test@gmail.com";
-    private static String adminEmail = "admin@example.com";
-    private static String subjectLine = "Carport Order";
-    private static String body;
+    private static final String API_KEY = System.getenv("API_SEND_GRID");
+    private static final String salespersonEmail = "sales.person.fog@gmail.com";
+    private static final String customerEmail = "customer.fog.test@gmail.com";
+    private static final String subjectLine = "Carport Order";
 
-    public boolean sendGrid(String to, String name, String email, String zip, String body) {
-        try {
-            SendGrid.sendEmail(to, name, email, zip, body);
-            return true; // Email sent successfully
-        } catch (IOException e) {
-            System.err.println("Failed to send email: " + e.getMessage());
-            return false; // Email sending failed
-        }
-    }
 
-    public static void sendEmail(String to, String name, String email, String zip, String body) throws IOException
+    public static void sendEmail() throws IOException
     {
-        Email from = new Email("sales.person.fog@gmail.com"); // kode: fog12345
+        Email from = new Email(salespersonEmail); // kode: fog12345
         from.setName("Johannes Fog Byggemarked");
 
         Mail mail = new Mail();
@@ -40,11 +29,10 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email("customer.fog.test@gmail.com")); // kode: fog12345
+        personalization.addTo(new Email(customerEmail)); // kode: fog12345
         personalization.addDynamicTemplateData("Name:", "Salesperson");
-        personalization.addDynamicTemplateData("email", "sales.person.fog@gmail.com");
+        personalization.addDynamicTemplateData("email", salespersonEmail);
         personalization.addDynamicTemplateData("zip", "2100");
-        personalization.addDynamicTemplateData("body", body);
         mail.addPersonalization(personalization);
 
         // Add category and template ID
@@ -73,15 +61,11 @@ public class SendGrid
 
     public static boolean sendMailFromMain(Context ctx)
     {
-        String to = ctx.formParam("to");
-        String name = ctx.formParam("name");
-        String email = ctx.formParam("email");
-        String zip = ctx.formParam("zip");
-        String body = ctx.formParam("body");
+
 
         try
         {
-            sendEmail(to, name, email, zip, body);
+            sendEmail();
             return true; // Email sent successfully
         } catch (IOException ex)
         {
@@ -105,19 +89,11 @@ public class SendGrid
         return customerEmail;
     }
 
-    public String getAdminEmail()
-    {
-        return adminEmail;
-    }
-
     public String getSubjectLine()
     {
         return subjectLine;
     }
 
-    public String getBody()
-    {
-        return body;
-    }
+
 
 }
