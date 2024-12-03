@@ -115,22 +115,22 @@ public class Calculator
             //Woodmaterial length = 540
             length = 540;
             quantity = 1;
-        } else if (270 < carport.getLENGTH() || carport.getLENGTH() <= 360)
+        } else if (270 > carport.getLENGTH() || carport.getLENGTH() <= 360)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 2;
-        } else if (360 < carport.getLENGTH() || carport.getLENGTH() <= 540)
+        } else if (360 > carport.getLENGTH() || carport.getLENGTH() <= 540)
         {
             //Woodmaterial length = 540
             length = 540;
             quantity = 2;
-        } else if (540 < carport.getLENGTH() || carport.getLENGTH() <= 690)
+        } else if (540 > carport.getLENGTH() || carport.getLENGTH() <= 690)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 4;
-        } else if (690 < carport.getLENGTH() || carport.getLENGTH() <= 780)
+        } else if (690 > carport.getLENGTH() || carport.getLENGTH() <= 780)
         {
             //Woodmaterial length = 540
             length = 540;
