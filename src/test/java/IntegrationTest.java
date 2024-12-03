@@ -52,20 +52,20 @@ public class IntegrationTest
                 "BEGIN;\n" +
                 "\n" +
                 "-- Drop tables if they exist\n" +
-                "DROP TABLE IF EXISTS test_schemaaddresses CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemaaccounts CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemacities CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemaorders CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemapostal_code CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemamaterials CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemaorders_materials CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.addresses CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.accounts CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.cities CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.orders CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.postal_code CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.materials CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.orders_materials CASCADE;\n" +
                 "\n" +
                 "-- Old tables no longer used\n" +
-                "DROP TABLE IF EXISTS test_schemamaterial_variants CASCADE;\n" +
-                "DROP TABLE IF EXISTS test_schemaorders_material_variants CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.material_variants CASCADE;\n" +
+                "DROP TABLE IF EXISTS test_schema.orders_material_variants CASCADE;\n" +
                 "\n" +
                 "-- Create tables\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemaaccounts\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.accounts\n" +
                 "(\n" +
                 "    account_id serial NOT NULL,\n" +
                 "    role character varying(11) NOT NULL,\n" +
@@ -77,7 +77,7 @@ public class IntegrationTest
                 "    CONSTRAINT account_pk PRIMARY KEY (account_id)\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemaaddresses\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.addresses\n" +
                 "(\n" +
                 "    addresses_id serial NOT NULL,\n" +
                 "    address character varying(64) NOT NULL,\n" +
@@ -86,14 +86,14 @@ public class IntegrationTest
                 "    CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemacities\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.cities\n" +
                 "(\n" +
                 "    city_id serial NOT NULL,\n" +
                 "    city character varying(50) NOT NULL,\n" +
                 "    CONSTRAINT cities_pkey PRIMARY KEY (city_id)\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemamaterials\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.materials\n" +
                 "(\n" +
                 "    material_id serial NOT NULL,\n" +
                 "    name character varying(100) NOT NULL,\n" +
@@ -107,7 +107,7 @@ public class IntegrationTest
                 "    CONSTRAINT material_pk PRIMARY KEY (material_id)\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemaorders\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.orders\n" +
                 "(\n" +
                 "    order_id serial NOT NULL,\n" +
                 "    carport_id character varying(8) NOT NULL,\n" +
@@ -127,7 +127,7 @@ public class IntegrationTest
                 "    CONSTRAINT orders_pk PRIMARY KEY (order_id)\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemaorders_materials\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.orders_materials\n" +
                 "(\n" +
                 "    orders_materials_id serial NOT NULL,\n" +
                 "    order_id integer NOT NULL,\n" +
@@ -135,16 +135,16 @@ public class IntegrationTest
                 "    quantity integer NOT NULL,\n" +
                 "    CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id),\n" +
                 "    CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)\n" +
-                "        REFERENCES test_schemamaterials (material_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.materials (material_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE,\n" +
                 "    CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)\n" +
-                "        REFERENCES test_schemaorders (order_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.orders (order_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE\n" +
                 ");\n" +
                 "\n" +
-                "CREATE TABLE IF NOT EXISTS test_schemapostal_code\n" +
+                "CREATE TABLE IF NOT EXISTS test_schema.postal_code\n" +
                 "(\n" +
                 "    postal_code_id serial NOT NULL,\n" +
                 "    postal_code integer NOT NULL,\n" +
@@ -152,33 +152,33 @@ public class IntegrationTest
                 ");\n" +
                 "\n" +
                 "-- Add foreign key constraints\n" +
-                "ALTER TABLE test_schemaaccounts\n" +
+                "ALTER TABLE test_schema.accounts\n" +
                 "    ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)\n" +
-                "        REFERENCES test_schemaaddresses (addresses_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.addresses (addresses_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE;\n" +
                 "\n" +
-                "ALTER TABLE test_schemaaddresses\n" +
+                "ALTER TABLE test_schema.addresses\n" +
                 "    ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)\n" +
-                "        REFERENCES test_schemacities (city_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.cities (city_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE;\n" +
                 "\n" +
-                "ALTER TABLE test_schemaaddresses\n" +
+                "ALTER TABLE test_schema.addresses\n" +
                 "    ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)\n" +
-                "        REFERENCES test_schemapostal_code (postal_code_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.postal_code (postal_code_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE;\n" +
                 "\n" +
-                "ALTER TABLE test_schemaorders\n" +
+                "ALTER TABLE test_schema.orders\n" +
                 "    ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)\n" +
-                "        REFERENCES test_schemaaccounts (account_id) MATCH SIMPLE\n" +
+                "        REFERENCES test_schema.accounts (account_id) MATCH SIMPLE\n" +
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE;\n" +
                 "\n" +
                 "\n" +
                 "-- Insert data into materials\n" +
-                "INSERT INTO test_schemamaterials (name, unit, price, length, height, width, type, description)\n" +
+                "INSERT INTO test_schema.materials (name, unit, price, length, height, width, type, description)\n" +
                 "VALUES\n" +
                 "    ('25x200 mm. trykimp. Brædt', 'Stk', 177, 360, 25, 200, 'Understernbrædt', 'understernbrædder til for & bag ende'),\n" +
                 "    ('25x200 mm. trykimp. Brædt', 'Stk', 265, 540, 25, 200, 'Understernbrædt', 'understernbrædder til siderne'),\n" +
