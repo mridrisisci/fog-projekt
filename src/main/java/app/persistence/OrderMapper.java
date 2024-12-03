@@ -538,7 +538,7 @@ public class OrderMapper
         return null;
     }
 
-    public static void deleteOrderByID()
+    public static void deleteOrderByID(int orderId)
     {
 
     }

@@ -29,9 +29,14 @@ public class OrderController
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
         app.get("/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
         app.post("/acceptoffer", OrderController::sendBOM);
-        // TODO: opret order/delete-ruten
-        //app.get("/order/delete", ctx -> deleteOrder(ctx, dBConnection) ); // ikke lavet enndnu
+        app.get("/order/delete", ctx -> OrderController::deleteOrderByID);
 
+    }
+    private static void deleteOrderByID(Context ctx, ConnectionPool pool)
+    {
+        String orderId = ctx.formParam("id");
+
+        OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderId)));
     }
 
     private static void sendBOM(Context ctx)
