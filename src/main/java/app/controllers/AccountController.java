@@ -136,7 +136,7 @@ public class AccountController
     {
         try
         {
-            List<Account> allCustomers = AccountMapper.getAllCustomerQueries(pool);
+            List<Account> allCustomers = AccountMapper.getAllCustomers(pool);
             ctx.attribute("allcustomers", allCustomers);
             ctx.render("orderhistory.html");
         } catch (DatabaseException e)

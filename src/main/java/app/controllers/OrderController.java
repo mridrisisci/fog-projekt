@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderController
 {
@@ -26,13 +27,19 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
+        app.get("/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
+        app.post("/acceptoffer", OrderController::sendBOM);
         // TODO: opret order/delete-ruten
         //app.get("/order/delete", ctx -> deleteOrder(ctx, dBConnection) ); // ikke lavet enndnu
-        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection));
-        // TODO: Opret /order/finish-ruten
-        //app.get("/order/finish", ctx -> completeOrder(ctx, dBConnection) ); // ikke lavet enndnu
 
     }
+
+    private static void sendBOM(Context ctx)
+    {
+
+        //SendGrid.sendBOM(email, "Stykliste");
+    }
+
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
     {
@@ -95,9 +102,10 @@ public class OrderController
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            createCarport(orderID, ctx, pool);
+            createCarportInOrdersMaterials(orderID, ctx, pool);
             order = getOrderOnReceipt(orderID, ctx, pool);
-            SendGrid.sendEmail(email);
+            SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
+            //CalcBOM
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -108,17 +116,18 @@ public class OrderController
             throw new IllegalArgumentException(e);
         } catch (IOException e)
         {
-            throw new RuntimeException(e);
+            ctx.attribute("message", e.getMessage());
+            ctx.render("kvittering.html");
         }
     }
-
+/*
     private static void showOrderDetails(Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
             String orderId = ctx.formParam("order_id");
-            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
+            order = (Order) OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
             ctx.attribute("order", order);
             ctx.render("showorderdetails.html");
         } catch (DatabaseException e)
@@ -127,7 +136,7 @@ public class OrderController
             showOrderHistory(ctx, pool);
         }
     }
-
+*/
 
     private static void showOrderHistory(Context ctx, ConnectionPool pool)
     {
@@ -167,7 +176,7 @@ public class OrderController
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-    private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+    private static void createCarportInOrdersMaterials(int orderID, Context ctx, ConnectionPool pool)
     {
         // hardcoded for at teste
         int materialID = 1;
@@ -183,12 +192,12 @@ public class OrderController
         }
     }
 
-    private static Order getOrderById(int orderID, Context ctx, ConnectionPool pool)
+    private static Order getOrderOnReceipt(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            order = OrderMapper.getOrderById(orderID, pool);
+            order = OrderMapper.getOrderOnReceipt(orderID, pool);
             return order;
         } catch (DatabaseException e)
         {

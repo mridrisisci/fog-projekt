@@ -50,7 +50,7 @@
                                 <td th:text="${order.ORDER_PLACED}">Bestillingsdato</td>
                                 <td th:text="${order.orderPaid}">Betalingsstatus</td>
                                 <td>
-                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Send pristilbud</a> </br>
+                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="/order/sendoffer" th:href="@{/order/sendoffer}">Send pristilbud</a> </br>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/update" th:href="@{/order/update/{id}(id=${order.ORDER_ID})}">Opdater ordre</a></br>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/delete" th:href="@{/order/delete/{id}(id=${order.ORDER_ID})}">Afvis ordre</a>
 

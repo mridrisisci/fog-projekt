@@ -12,6 +12,32 @@ import java.util.List;
 public class OrderMapper
 {
 
+    public static Order getOrderByID(int orderId, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM orders WHERE order_id = ?";
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                String roofType = rs.getString("roof_type");
+                boolean hasShed = rs.getBoolean("has_shed");
+                int length = rs.getInt("length");
+
+            }
+
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+        return null;
+
+    }
+
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
@@ -195,6 +221,8 @@ public class OrderMapper
         return orders;
     }
 
+
+/*
     public static List<Order> getOrderDetails(int orderId, ConnectionPool pool) throws DatabaseException
     {
         String sql = "";
@@ -240,8 +268,10 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+    */
 
-    public static Order getOrderById(int orderID, ConnectionPool pool) throws DatabaseException
+
+    public static Order getOrderOnReceipt(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
@@ -487,10 +517,7 @@ public class OrderMapper
     }
 
 
-    public static Order getOrder()
-    {
-        return null;
-    }
+
 
     public static List<Order> getOrders()
     {

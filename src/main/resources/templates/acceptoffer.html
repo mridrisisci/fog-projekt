@@ -19,27 +19,17 @@
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
              role="alert">Fejlbeskeder vises her
         </div>
-        <p class="h2 mb-5">Bestil din carport med fladt tag nedenfor:</p>
-        <form action="/" method="GET">
+        <p class="h2 mb-5">Bestilling af dit pristilbud er modtaget.</p>
             <div class="container my-5">
                 <div class="row g-4">
-
-
-                    <!-- Renderer materialelisten -->
+                    <!-- Renderer kundens ordre på thymeleaf -->
                     <div class="col-md-6">
-                        <div th:each="material : ${materials}" class="col-md-4 mb-4">
-                            <div class="card">
-                                <p class="card-text" th:text="${material.materialID}"></p>
-                                <p class="card-text" th:text="${material.materialName}"></p>
-                                <p class="card-text" th:text="${material.description}"></p>
-                                <p class="card-text" th:text="${material.unit}"></p>
-                                <p class="card-text" th:text="${material.length}"></p>
-                                <p class="card-text" th:text="${material.height}"></p>
-                                <p class="card-text" th:text="${material.quantity}"></p>
-                            </div>
+                        <div class="card-body">
+                            <h5 class="card-title"> [Ordrenummer] <span th:text="${order.ORDER_ID}"></span> </h5>
+                            <p class="card-text"> [DATO]: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
+                            <p class="card-text"> [Status på din ordre]: <span th:text="${order.status}">  </span>  </p>
                         </div>
                     </div>
-        </form>
     </div>
 
 

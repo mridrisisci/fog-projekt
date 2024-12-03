@@ -217,11 +217,54 @@ public class AccountMapper
     {
 
     }
-    public static Account getAccountByID(Account account)
+
+    public static Account getAccountByID(int orderId, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "SELECT * FROM orders where order_id = ?";
+        int accountID;
+        String username;
+        String email;
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                accountID = rs.getInt("account_id");
+                username = rs.getString("username");
+                email = rs.getString("email");
+                return new Account(username,email);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
         return null;
     }
-    public static List<Account> getAllCustomerQueries(ConnectionPool pool) throws DatabaseException
+    public static Account getCustomerByID(Account account, String sortby, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT username, email FROM accounts WHERE account_id = ? ORDER BY ?";
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, account.getAccountID());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                int id = rs.getInt("account_id");
+                String username = rs.getString("username");
+                String email = rs.getString("email");
+                return new Account(id, username,email);
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+        return null;
+    }
+    public static List<Account> getAllCustomers(ConnectionPool pool) throws DatabaseException
     {
 
         String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";

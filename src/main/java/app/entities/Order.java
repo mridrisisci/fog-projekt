@@ -2,7 +2,6 @@ package app.entities;
 
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class Order
 {
@@ -14,14 +13,15 @@ public class Order
     private  boolean IS_ASSIGNED;
     private String status;
     private Account account;
-    private int HEIGHT;
-    private int LENGTH;
+    private int width;
+    private int length;
     private boolean orderPaid;
     private int salesPrice;
     private String roofType;
     private int coverageRatioPercentage;
     private int accountID;
     private Carport carport;
+    private boolean hasShed;
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
     {
@@ -51,15 +51,15 @@ public class Order
     }
 
 
-    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int HEIGHT, int LENGTH, Account account)
+    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int width, int length, Account account)
     { // used for 'orderhistory.html'
         this.ORDER_ID = orderId;
         this.CARPORT_ID = carportId;
         this.status = status;
         this.ORDER_PLACED = orderPlaced;
         this.orderPaid = orderPaid;
-        this.HEIGHT = HEIGHT;
-        this.LENGTH = LENGTH;
+        this.width = width;
+        this.length = length;
         this.account = account;
     }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
@@ -71,7 +71,7 @@ public class Order
 
     }
 
-    public Order(Carport carport, int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int HEIGHT, int LENGTH, int salesPrice, String roofType)
+    public Order(Carport carport, int ORDER_ID, String CARPORT_ID, int SALESPERSON_ID, int price, Timestamp ORDER_PLACED, String status, Account account, int width, int length, int salesPrice, String roofType)
     { // used for getorderdetails() || order/details/{id}
         this.carport = carport;
         this.ORDER_ID = ORDER_ID;
@@ -81,10 +81,15 @@ public class Order
         this.ORDER_PLACED = ORDER_PLACED;
         this.status = status;
         this.account = account;
-        this.HEIGHT = HEIGHT;
-        this.LENGTH = LENGTH;
+        this.width = width;
+        this.length = length;
         this.salesPrice = salesPrice;
         this.roofType = roofType;
+    }
+
+    public boolean getHasShed()
+    {
+        return hasShed;
     }
 
     public Carport getCarport()
@@ -117,14 +122,14 @@ public class Order
         return ORDER_PLACED;
     }
 
-    public int getHEIGHT()
+    public int getWidth()
     {
-        return HEIGHT;
+        return width;
     }
 
-    public int getLENGTH()
+    public int getLength()
     {
-        return LENGTH;
+        return length;
     }
 
 
