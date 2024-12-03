@@ -1,6 +1,7 @@
 package app.persistence;
 
 import app.entities.Account;
+import app.entities.Material;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
@@ -12,31 +13,6 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static Order getOrderByID(int orderId, ConnectionPool pool) throws DatabaseException
-    {
-        String sql = "SELECT * FROM orders WHERE order_id = ?";
-
-        try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next())
-            {
-                String roofType = rs.getString("roof_type");
-                boolean hasShed = rs.getBoolean("has_shed");
-                int length = rs.getInt("length");
-
-            }
-
-
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-        return null;
-
-    }
 
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
@@ -515,6 +491,32 @@ public class OrderMapper
 
     }
 
+    public static List<Material> getBOM(ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "";
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            List<Material> materials = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                materials.add(new Material(
+                    rs.getInt("material_id");
+                    rs.getString("name");
+                    rs.getString("unit");
+                    rs.getString("description");
+                    )
+                )
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+        return null;
+    }
+
 
 
 
@@ -533,8 +535,5 @@ public class OrderMapper
 
     }
 
-    public static void addOrderToDB()
-    {
 
-    }
 }
