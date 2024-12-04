@@ -21,6 +21,8 @@ public class MaterialController
     {
         app.get("/test.html", ctx -> ctx.render("test.html") );
         app.get("adminMaterialList", ctx -> ctx.render("adminMaterialList.html"));
+        app.get("listOfMaterials", ctx -> listOfMaterials(ctx, dBConnection));
+        app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
     }
 
     //TODO: gennemgå med andre, nuppet fra Cupcake
@@ -51,7 +53,7 @@ public class MaterialController
         ctx.attribute("materials", materials);
         ctx.render("adminMaterialList.html");
         //TODO: Spørg Chrisser
-        /*try {
+      /*  try {
             List<Material> materials = MaterialMapper.getAllMaterials(pool);
             ctx.attribute("materials", materials);
             ctx.render("listOfUsers.html");
@@ -59,7 +61,7 @@ public class MaterialController
         } catch (DatabaseException e) {
             ctx.attribute("message", "Unable to retrieve users from the database.");
             ctx.render("error.html");
-        }*/
+         }*/
     }
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
