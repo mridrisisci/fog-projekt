@@ -99,8 +99,13 @@ public class OrderMapper
                 Timestamp orderPlaced = rs.getTimestamp("order_placed");
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
+                Roof roof = null;
+                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
+                {
+                    roof = new Roof(RoofType.FLAT);
+                }
 
-                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
+                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roof.getRoofType(), accountID);
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -185,8 +190,13 @@ public class OrderMapper
                 Timestamp orderPlaced = rs.getTimestamp("order_placed");
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
+                Roof roof = null;
+                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
+                {
+                    roof = new Roof(RoofType.FLAT);
+                }
 
-                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
+                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roof.getRoofType(), accountID);
                 orders.add(order);
             }
         } catch (SQLException e) {

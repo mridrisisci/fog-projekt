@@ -40,9 +40,13 @@ public class OrderController
 
     private static void sendOffer(Context ctx, ConnectionPool pool)
     {
+        // TODO : Account objekt, så man kan bruge kundens mail
+        String orderID = ctx.formParam("orderID");
+        String email = ctx.formParam("email");
+
         try
         {
-            Order order = OrderMapper.getOrderByID(orderId, pool);
+            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             SendGrid.sendOffer(email, "Pristilbud", order);
             ctx.attribute("message", "Dit pristilbud er sendt til kunden");
             ctx.render("orderhistory.html");
@@ -50,6 +54,10 @@ public class OrderController
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
+            ctx.render("orderhistory.html");
+        } catch (IOException e)
+        {
+            ctx.attribute("message", e);
             ctx.render("orderhistory.html");
         }
     }

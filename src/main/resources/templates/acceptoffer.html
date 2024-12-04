@@ -26,6 +26,8 @@
                     <div class="col-md-6">
                         <div class="card-body">
                             <h5 class="card-title"> Ordrenummer <span th:text="${order.ORDER_ID}"></span> </h5>
+                            <input type="hidden" name="orderID" th:value="${order.ORDER_ID}"> <!-- Sends IDs to controller-->
+                            <input type="hidden" name="orderID" th:value="${account.accountID}"> <!-- Sends IDs to controller-->
                             <p class="card-text"> Pris: 200kr</p>
                             <p class="card-text"> DATO: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
                             <p class="card-text"> Carport længde: <span th:text="${order.width}"></span></p>

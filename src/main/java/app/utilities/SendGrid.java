@@ -1,6 +1,7 @@
 package app.utilities;
 
 import app.entities.Order;
+import app.entities.RoofType;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -19,13 +20,20 @@ public class SendGrid
     private static final String customerEmail = "customer.fog.test@gmail.com";
     private static String subject;
 
-    public static void sendOffer(String email, String subject) throws IOException
+    public static void sendOffer(String email, String subject, Order order) throws IOException
     {
         Email from = new Email(salespersonEmail); // kode: fog12345
         from.setName("Johannes Fog Byggemarked");
 
         Mail mail = new Mail();
         mail.setFrom(from);
+
+        int length = order.getLength();
+        int width = order.getWidth();
+        boolean hasShed = order.getHasShed();
+        String roofType = order.getRoofType().toString();
+        String status = order.getStatus();
+
 
         Personalization personalization = new Personalization();
 
@@ -106,7 +114,7 @@ public class SendGrid
         int length = order.getLength();
         int width = order.getWidth();
         int price = 200;
-        String roofType = order.getRoofType();
+        String roofType = order.getRoofType().toString();
         boolean hasShed = order.getHasShed();
         Timestamp orderPlaced = order.getORDER_PLACED();
         String hasShed2;
