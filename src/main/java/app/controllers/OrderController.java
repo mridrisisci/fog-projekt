@@ -184,18 +184,26 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            List<Order> order;
             String orderID = ctx.pathParam("id");
-            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            Order accountIndex = Objects.requireNonNull(order).getLast();
+
+            List<Order> orderDetails;
+            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+
+
+            // get Account object from orderdetails
+            Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
             Account account = accountIndex.getAccount();
-            String email = account.getEmail();
+
+
+            Order order = orderDetails.removeLast(); // removes Account object
+            ctx.attribute("orderdetails", order);
             ctx.attribute("account", account);
             ctx.render("/orderdetails.html");
 
             if ("send".equals(action))
             {
-                SendGrid.sendOffer(email, "Pristilbud", (Order) Objects.requireNonNull(order));
+                String email = account.getEmail();
+                SendGrid.sendOffer(email, "Pristilbud", (Order) Objects.requireNonNull(orderDetails));
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }
