@@ -74,29 +74,6 @@ public class OrderController
 
     }
 
-    private static void sendOffer(Context ctx, ConnectionPool pool)
-    {
-        // TODO : Account objekt, så man kan bruge kundens mail
-        String orderID = ctx.formParam("orderID");
-        String email = ctx.formParam("email");
-
-        try
-        {
-            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            SendGrid.sendOffer(email, "Pristilbud", order);
-            ctx.attribute("message", "Dit pristilbud er sendt til kunden");
-            ctx.render("orderhistory.html");
-
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("orderhistory.html");
-        } catch (IOException e)
-        {
-            ctx.attribute("message", e);
-            ctx.render("orderhistory.html");
-        }
-    }
 
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
@@ -177,10 +154,8 @@ public class OrderController
         }
     }
 
-    private static void showOrderDetails(Context ctx, ConnectionPool pool)
+    private static void sendOffer(Context ctx, ConnectionPool pool)
     {
-
-
         try
         {
             String action = ctx.formParam("action");
@@ -189,16 +164,9 @@ public class OrderController
             List<Order> orderDetails;
             orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
 
-
             // get Account object from orderdetails
             Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
             Account account = accountIndex.getAccount();
-
-
-            Order order = orderDetails.removeLast(); // removes Account object
-            ctx.attribute("orderdetails", order);
-            ctx.attribute("account", account);
-            ctx.render("/orderdetails.html");
 
             if ("send".equals(action))
             {
@@ -215,6 +183,29 @@ public class OrderController
             }
 
         } catch (DatabaseException | IOException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
+    }
+
+    private static void showOrderDetails(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            List<Order> orderDetails;
+            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+
+            // get Account object from orderdetails
+            Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
+            Account account = accountIndex.getAccount();
+
+            Order order = orderDetails.removeLast(); // removes Account object
+            ctx.attribute("orderdetails", order);
+            ctx.attribute("account", account);
+            ctx.render("/orderdetails.html");
+        } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);
