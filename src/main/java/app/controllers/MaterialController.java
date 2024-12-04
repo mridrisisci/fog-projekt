@@ -29,6 +29,8 @@ public class MaterialController
         });
         //app.get("listOfAllMaterials", ctx -> listOfMaterials(ctx, dBConnection));
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
+        app.post("updateMaterialPrice", ctx -> updateMaterialPrice(ctx, dBConnection));
+
     }
 
     //TODO: gennemgå med andre, nuppet fra Cupcake
@@ -65,6 +67,20 @@ public class MaterialController
             ctx.attribute("message", "Unable to retrieve material from the database.");
             ctx.render("error.html");
         }
+    }
+
+    public static void updateMaterialPrice(Context ctx, ConnectionPool pool) {
+        int materialID = Integer.parseInt(ctx.formParam("materialID"));
+        int newMaterialPrice = Integer.parseInt(ctx.formParam("newMaterialPrice"));
+
+        try {
+            MaterialMapper.updateMaterialPriceByMaterialID(newMaterialPrice, materialID, pool);
+            ctx.attribute("message", "Price updated successfully!");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error updating price: " + e.getMessage());
+        }
+
+        ctx.redirect("/listOfMaterials"); // Redirect back to the user list after update
     }
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
