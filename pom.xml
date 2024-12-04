@@ -11,7 +11,11 @@
 
     <name>${project.artifactId}</name>
 
+
+
+
     <properties>
+
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <javalin.version>6.3.0</javalin.version>

@@ -2,9 +2,10 @@ package app.persistence;
 
 import app.entities.Account;
 import app.exceptions.DatabaseException;
+import org.mindrot.jbcrypt.BCrypt;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountMapper
@@ -35,13 +36,75 @@ public class AccountMapper
                 return rs.getInt(1);
             } else
             {
-                throw new DatabaseException("Kunne ikke hente autogenerert id");
+                throw new DatabaseException("Kunne ikke hente autogenereret id");
             }
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
 
+    }
+
+    public static void createSalesAccount(String role, String username, String email, String password, int telephone,  int adressesID, ConnectionPool pool) throws DatabaseException
+    { // TODO: Mangler at blive opdateret, så den kan eksekveres fra Controlleren.
+        String sql = "insert into accounts (role, username, email, password, telephone, addresses_id) VALUES (?,?,?,?,?,?);";
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        try (Connection connection = pool.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, role);
+            ps.setString(2, username);
+            ps.setString(3, email);
+            ps.setString(4, hashedPassword);
+            ps.setInt(5, telephone);
+            ps.setInt(6, adressesID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved oprettelse af konto");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+
+
+
+    public static Account login(String email, String password, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM accounts WHERE email=?";
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                String storedHashedPassword = rs.getString("password");
+                if (BCrypt.checkpw(password, storedHashedPassword))
+                {
+                    int id = rs.getInt("account_id");
+                    String role = rs.getString("role");
+                    return new Account(id, email, role);
+                }
+                else
+                {
+                    // Catching wrong passwords.
+                    throw new DatabaseException("Kodeord matcher ikke. Prøv igen");
+                }
+            }
+            else
+            {
+                // Catching wrong usernames.
+                throw new DatabaseException("Brugernavn matcher ikke. Prøv igen");
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
 
@@ -107,7 +170,7 @@ public class AccountMapper
 
     }
 
-    public static int createAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
+    public static int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO accounts (role, username, telephone, email, addresses_id) VALUES (?,?,?,?,?)";
         try (Connection connection = pool.getConnection();
@@ -158,9 +221,32 @@ public class AccountMapper
     {
         return null;
     }
-    public static List<Account> getAllAccounts(Account account)
+    public static List<Account> getAllCustomerQueries(ConnectionPool pool) throws DatabaseException
     {
+
+        String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";
+        String username;
+        String email;
+        int telephone;
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            List<Account> accounts = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                username = rs.getString("username");
+                email = rs.getString("email");
+                telephone = rs.getInt("telephone");
+                accounts.add(new Account(username, email, telephone) );
+                return accounts;
+            }
         return null;
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
     }
     public static void login()
     {

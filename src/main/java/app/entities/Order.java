@@ -8,10 +8,14 @@ public class Order
     private final int ORDER_ID;
     private final String CARPORT_ID;
     private int SALESPERSON_ID;
-    private final int PRICE;
+    private int price;
     private final Timestamp ORDER_PLACED;
     private  boolean IS_ASSIGNED;
     private String status;
+    private Account account;
+    private int HEIGHT;
+    private int LENGTH;
+    private boolean orderPaid;
     private int salesPrice;
     private String roofType;
     private int coverageRatioPercentage;
@@ -22,7 +26,7 @@ public class Order
         ORDER_ID = orderId;
         CARPORT_ID = carportId;
         SALESPERSON_ID = salespersonId;
-        PRICE = price;
+        this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
         ORDER_PLACED = orderPlaced;
@@ -35,7 +39,7 @@ public class Order
     {
         ORDER_ID = orderId;
         CARPORT_ID = carportId;
-        PRICE = price;
+        this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
         ORDER_PLACED = orderPlaced;
@@ -45,17 +49,17 @@ public class Order
     }
 
 
-    public Order(int orderId, String carportId, int salespersonId, int price, String status, Timestamp orderPlaced, boolean isAssigned)
-    {
-        ORDER_ID = orderId;
-        CARPORT_ID = carportId;
-        SALESPERSON_ID = salespersonId;
-        PRICE = price;
-        ORDER_PLACED = orderPlaced;
-        IS_ASSIGNED = isAssigned;
+    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int HEIGHT, int LENGTH, Account account)
+    { // used for 'seequeries.html'
+        this.ORDER_ID = orderId;
+        this.CARPORT_ID = carportId;
         this.status = status;
+        this.ORDER_PLACED = orderPlaced;
+        this.orderPaid = orderPaid;
+        this.HEIGHT = HEIGHT;
+        this.LENGTH = LENGTH;
+        this.account = account;
     }
-
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
     {
         this.ORDER_ID = orderID;
@@ -81,29 +85,44 @@ public class Order
     {
         return status;
     }
+    public boolean getOrderPaid()
+    {
+        return orderPaid;
+    }
 
     public Timestamp getORDER_PLACED()
     {
         return ORDER_PLACED;
     }
 
+    public int getHEIGHT()
+    {
+        return HEIGHT;
+    }
 
-    //public void setStatus(OrderStatus newStatus) { this.status = newStatus;}
+    public int getLENGTH()
+    {
+        return LENGTH;
+    }
 
 
     public String getCARPORT_ID()
     {
         return CARPORT_ID;
     }
-
     public int getSALESPERSON_ID()
     {
         return SALESPERSON_ID;
     }
 
-    public int getPRICE()
+    public int getPrice()
     {
-        return PRICE;
+        return price;
+    }
+
+    public Account getAccount()
+    {
+        return account;
     }
 
     public int getSalesPrice()
@@ -133,7 +152,7 @@ public class Order
             "orderId=" + ORDER_ID +
             ", carportId=" + CARPORT_ID +
             ", salespersonId=" + SALESPERSON_ID +
-            ", price=" + PRICE +
+            ", price=" + price +
             ", timePlaced=" + ORDER_PLACED +
             ", status=" + status +
             ", isAssigned=" + IS_ASSIGNED +

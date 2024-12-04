@@ -2,6 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.AccountController;
 import app.controllers.MaterialController;
 import app.controllers.OrderController;
 import app.persistence.ConnectionPool;
@@ -42,6 +43,7 @@ public class Main {
 
         OrderController.addRoutes(app, dBConnection);
         MaterialController.addRoutes(app, dBConnection);
+        AccountController.addRoutes(app, dBConnection);
 
         app.get("/send-email", ctx -> ctx.render("send_email.html"));
 

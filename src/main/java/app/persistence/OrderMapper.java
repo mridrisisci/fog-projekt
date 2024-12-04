@@ -1,5 +1,6 @@
 package app.persistence;
 
+import app.entities.Account;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
@@ -16,8 +17,8 @@ public class OrderMapper
                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-                "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?);";
+            "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
+            "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
         try (Connection connection = pool.getConnection();
@@ -35,19 +36,19 @@ public class OrderMapper
             ps.setInt(10, accountID);
 
             // Execute the query and retrieve the generated key
-           int rowsAffected = ps.executeUpdate();
-           if(rowsAffected != 1)
-           {
-               throw new DatabaseException("kunne ikke oprette ...");
-           }
-           ResultSet rs = ps.getGeneratedKeys();
-           if (rs.next())
-           {
-               return rs.getInt(1);
-           } else
-           {
-               throw new DatabaseException("kunne ikke hente autogenereret ID");
-           }
+            int rowsAffected = ps.executeUpdate();
+            if(rowsAffected != 1)
+            {
+                throw new DatabaseException("kunne ikke oprette ...");
+            }
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next())
+            {
+                return rs.getInt(1);
+            } else
+            {
+                throw new DatabaseException("kunne ikke hente autogenereret ID");
+            }
 
         } catch (SQLException e)
         {
@@ -62,7 +63,7 @@ public class OrderMapper
         String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql) )
+             PreparedStatement ps = connection.prepareStatement(sql) )
         {
             int rowsAffected = ps.executeUpdate();
             ps.setInt(1, orderID);
@@ -195,7 +196,7 @@ public class OrderMapper
         return orders;
     }
 
-    public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static Order getOrderOnReceipt(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
 
@@ -222,6 +223,67 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
+    public static List<Order> seeAllQueries(String sortby, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT " +
+            "o.order_id," +
+            "o.carport_id, " +
+            "o.status, " +
+            "o.order_placed," +
+            "o.order_paid," +
+            "o.height," +
+            "o.width," +
+            "o.account_id," +// change to length
+             "a.email," +
+            "a.username," +
+            "a.telephone " +
+            "FROM orders o " +
+            "LEFT JOIN accounts a ON o.account_id = a.account_id " +
+            "ORDER BY ?;";
+
+        int orderID;
+        String carportID;
+        String status;
+        Timestamp orderPlaced;
+        boolean orderPaid;
+        int height;
+        int length;
+        int accountID;
+
+        String name;
+        String email;
+        int telephone;
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, sortby);
+            ResultSet rs = ps.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while(rs.next())
+            {
+                orderID = rs.getInt("order_id");
+                carportID = rs.getString("carport_id");
+                status = rs.getString("status");
+                orderPlaced = rs.getTimestamp("order_placed");
+                orderPaid = rs.getBoolean("order_paid");
+                height = rs.getInt("height");
+                length = rs.getInt("width"); // change to length (length is null)
+                name = rs.getString("username");
+                accountID = rs.getInt("account_id");
+                email = rs.getString("email");
+                telephone = rs.getInt("telephone");
+                orders.add(new Order(orderID, carportID, status, orderPlaced, orderPaid, height, length,
+                    new Account(accountID, name, email, telephone)));
+            }
+            return orders;
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
 
     public static int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool) throws DatabaseException
     {
