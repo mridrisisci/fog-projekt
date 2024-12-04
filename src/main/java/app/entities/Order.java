@@ -17,7 +17,7 @@ public class Order
     private int length;
     private boolean orderPaid;
     private int salesPrice;
-    private String roofType;
+    private Roof roofType;
     private int coverageRatioPercentage;
     private int accountID;
     private Carport carport;
@@ -37,7 +37,7 @@ public class Order
         this.accountID = accountID;
     }
 
-    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, Roof roofType, int accountID)
     {
         ORDER_ID = orderId;
         carportID = carportId;
@@ -61,7 +61,7 @@ public class Order
         this.length = length;
         this.account = account;
     }
-    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, String roofType)
+    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, Roof roofType)
     { // this is used for 'kvittering.html'
         this.ORDER_ID = orderID;
         ORDER_PLACED = orderPlaced;

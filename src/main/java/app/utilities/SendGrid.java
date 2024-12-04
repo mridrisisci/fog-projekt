@@ -37,7 +37,7 @@ public class SendGrid
 
         // Add category and template ID
         mail.addCategory("carportapp");
-        mail.setTemplateId("d-cd10b548b86849aea9d1785fce4952b7");
+        mail.setTemplateId("d-d-6ac3727740a24341b323aef7805519ae");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
@@ -75,7 +75,7 @@ public class SendGrid
 
         // Add category and template ID
         mail.addCategory("carportapp");
-        mail.setTemplateId("d-cd10b548b86849aea9d1785fce4952b7");
+        mail.setTemplateId("d-d24c871f01c543b390ed32391f9fc8ca");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
@@ -109,21 +109,36 @@ public class SendGrid
         String roofType = order.getRoofType();
         boolean hasShed = order.getHasShed();
         Timestamp orderPlaced = order.getORDER_PLACED();
+        String hasShed2;
+        String length2 = String.valueOf(length);
+        length2 = length2 + " cm";
+        String width2 = String.valueOf(width);
+        width2 = width2 + " cm";
+
+        if (hasShed)
+        {
+            hasShed2 = "Med skur";
+        } else
+        {
+            hasShed2 = "Uden skur";
+        }
+
 
         Mail mail = new Mail();
         mail.setFrom(from);
+        mail.setSubject(subject);
 
         Personalization personalization = new Personalization();
 
         personalization.addTo(new Email(email)); // kode: fog12345
         personalization.addDynamicTemplateData("Emne:", subject);
         personalization.addDynamicTemplateData("email", salespersonEmail);
-        personalization.addDynamicTemplateData("Carport længde: ", length);
-        personalization.addDynamicTemplateData("Carport bredde: ", width);
-        personalization.addDynamicTemplateData("Total pris: ", price);
-        personalization.addDynamicTemplateData("Tagtype: ", roofType);
-        personalization.addDynamicTemplateData("Redskabsrum: ", hasShed);
-        personalization.addDynamicTemplateData("Bestillingsdato: ", orderPlaced);
+        personalization.addDynamicTemplateData("Carport_length", length2);
+        personalization.addDynamicTemplateData("Carport_bredde", width2);
+        personalization.addDynamicTemplateData("Total_pris", price);
+        personalization.addDynamicTemplateData("Tagtype", roofType);
+        personalization.addDynamicTemplateData("Redskabsrum", hasShed2);
+        personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         mail.addPersonalization(personalization);
 
         // Add category and template ID

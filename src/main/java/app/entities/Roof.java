@@ -4,7 +4,7 @@ public class Roof
 {
     private int roofLength;
     private int roofWidth;
-    private final RoofType type;
+    private  RoofType roofType;
 
     public int getRoofLength()
     {
@@ -16,15 +16,20 @@ public class Roof
         return roofWidth;
     }
 
-    public RoofType getType()
+    public RoofType getRoofType()
     {
-        return type;
+        return roofType;
     }
 
-    public Roof(RoofType type, int roofWidth, int roofLength)
+    public Roof(RoofType roofType, int roofWidth, int roofLength)
     {
-        this.type = type;
+        this.roofType = roofType;
         this.roofWidth = roofWidth;
         this.roofLength = roofLength;
+    }
+
+    public Roof(RoofType roofType)
+    {
+        this.roofType = roofType;
     }
 }

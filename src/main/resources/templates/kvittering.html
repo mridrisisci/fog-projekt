@@ -25,9 +25,13 @@
                     <!-- Renderer kundens ordre på thymeleaf -->
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h5 class="card-title"> [Ordrenummer] <span th:text="${order.ORDER_ID}"></span> </h5>
-                            <p class="card-text"> [DATO]: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
-                            <p class="card-text"> [Status på din ordre]: <span th:text="${order.status}">  </span>  </p>
+                            <h5 class="card-title"> Ordrenummer: <span th:text="${order.ORDER_ID}"></span> </h5>
+                            <p class="card-text"> Ordre oprettet: <span th:text="${order.ORDER_PLACED}">  </span>  </p>
+                            <p class="card-text"> Carport længde: <span th:text="${order.length}">  </span>  </p>
+                            <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span>  </p>
+                            <p class="card-text"> Redskabsrum: <span th:text="${order.hasShed}">  </span>  </p>
+                            <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span>  </p>
+                            <p class="card-text"> Status på din ordre: <span th:text="${order.status}">  </span>  </p>
                         </div>
                     </div>
     </div>

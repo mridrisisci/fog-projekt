@@ -27,9 +27,8 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.get("/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
-        app.post("/acceptoffer", OrderController::sendBOM);
-        //app.get("/order/delete", ctx -> OrderController::deleteOrderByID);
+        app.get("/order/{id}/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
+        app.post("/order/{id}/acceptoffer", OrderController::sendBOM);
 
     }
     private static void deleteOrderByID(Context ctx, ConnectionPool pool)
@@ -37,6 +36,22 @@ public class OrderController
         String orderId = ctx.formParam("id");
 
         OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderId)));
+    }
+
+    private static void sendOffer(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            Order order = OrderMapper.getOrderByID(orderId, pool);
+            SendGrid.sendOffer(email, "Pristilbud", order);
+            ctx.attribute("message", "Dit pristilbud er sendt til kunden");
+            ctx.render("orderhistory.html");
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("orderhistory.html");
+        }
     }
 
     private static void sendBOM(Context ctx)
@@ -92,7 +107,7 @@ public class OrderController
         boolean orderPaid = false;
         Order order;
         boolean hasShed = true;
-        // TODO: Lav carport-objekt efter ordren er oprettet
+
         try
         {
 
@@ -206,7 +221,6 @@ public class OrderController
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("kvittering.html");
             return null;
         }
     }

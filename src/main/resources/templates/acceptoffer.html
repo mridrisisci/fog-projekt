@@ -33,6 +33,10 @@
                             <p class="card-text"> Redskabsrum <span th:text="${order.hasShed}"></span></p>
                             <p class="card-text"> Tagtype: <span th:text="${order.roofType}"></span></p>
                             <p class="card-text"> Status på din ordre: <span th:text="${order.status}">  </span>  </p>
+                            <form method="post" action="/accept/offer">
+                                <button class="btn btn-lg btn-primary" type="submit">Accepter pristilbud</button>
+                                <button class="btn btn-lg btn-primary" type="submit">Afvis pristilbud</button>
+                            </form>
                         </div>
                     </div>
     </div>

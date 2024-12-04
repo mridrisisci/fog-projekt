@@ -1,8 +1,6 @@
 package app.persistence;
 
-import app.entities.Account;
-import app.entities.Material;
-import app.entities.Order;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
@@ -112,7 +110,7 @@ public class OrderMapper
     }
 
     //TODO: tilføj hasShed på denne
-    public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
+    /*public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM public.orders WHERE salesperson_id = null;";
         List<Order> orders = new ArrayList<>();
@@ -139,7 +137,7 @@ public class OrderMapper
             throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
-    }
+    }*/
 
 
     //TODO: Test om den virker når salesperson står både som ? og null
@@ -249,7 +247,8 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_placed, status, carport_id FROM orders WHERE order_id = ?";
+        // CHANGE HEIGHT TO LENGTH HERE
+        String sql = "SELECT order_id, order_placed, height, width, has_shed, roof_type, status FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
@@ -260,13 +259,19 @@ public class OrderMapper
             ResultSet rs = ps.executeQuery();
             if (rs.next())
             {
+                int orderId = rs.getInt("order_id");
                 orderPlaced = rs.getTimestamp("order_placed");
-                status = rs.getString("status");
                 int length = rs.getInt("height"); // CHANGE TO LENGTH
                 int width = rs.getInt("width");
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
-                return new Order(orderID, orderPlaced, status, length, width, hasShed, roofType);
+                status = rs.getString("status");
+                Roof roof = null;
+                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
+                {
+                    roof = new Roof(RoofType.FLAT);
+                }
+                return new Order(orderId, orderPlaced, status, length, width, hasShed, roof);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
