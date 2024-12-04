@@ -279,8 +279,8 @@ public class OrderMapper
             "o.status, " +
             "o.order_placed," +
             "o.order_paid," +
-            "o.height," +
-            "o.width," + // change to length
+            "o.height," + // change to length
+            "o.width," +
             "o.account_id," +
              "a.email," +
             "a.username," +
@@ -313,8 +313,8 @@ public class OrderMapper
                 status = rs.getString("status");
                 orderPlaced = rs.getTimestamp("order_placed");
                 orderPaid = rs.getBoolean("order_paid");
-                height = rs.getInt("height");
-                length = rs.getInt("width"); // change to length (length is null)
+                height = rs.getInt("height"); // change to length (length is null)
+                length = rs.getInt("width");
                 name = rs.getString("username");
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");

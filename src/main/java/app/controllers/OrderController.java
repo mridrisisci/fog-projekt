@@ -32,7 +32,7 @@ public class OrderController
         app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
         app.post("/order/sendoffer", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
-        app.get("/order/details/{id}", ctx -> ctx.render("orderdetails.html") );
+        //app.get("/order/details/{id}", ctx -> ctx.render("orderdetails.html") );
     }
 
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
@@ -96,13 +96,6 @@ public class OrderController
             ctx.attribute("message", e);
             ctx.render("orderhistory.html");
         }
-    }
-
-    private static void sendBOM(Context ctx)
-    {
-        // TODO: Lav mapper-metode, der går op i DB og henter kundens stykliste (ud fra order_id + material_id)
-
-        //SendGrid.sendBOM(email, "Stykliste");
     }
 
 
@@ -187,7 +180,7 @@ public class OrderController
     private static void showOrderDetails(Context ctx, ConnectionPool pool)
     {
         String action = ctx.formParam("action");
-        String orderID = ctx.formParam("id"); //TODO: check thymeleaf-værdi her
+        String orderID = ctx.pathParam("id");
         String email = ctx.formParam("email"); // TODO: check thymeleaf værdi her
         Order order;
 
@@ -195,18 +188,20 @@ public class OrderController
         try
         {
             // render customer order on "orderdetails"
-            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), account, pool);
+            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), Objects.requireNonNull(account), pool);
             ctx.render("orderdetails.html");
 
             if ("send".equals(action))
             {
                 SendGrid.sendOffer(email, "Pristilbud", Objects.requireNonNull(order));
-                String orderId = ctx.formParam("order_id"); //TODO: Check thymeleaf værdien her
-                ctx.attribute("order", order);
+                ctx.attribute("message", "Dit pristilbud er sendt til kunden");
+                showOrderHistory(ctx,pool);
             }
             else if ("afvis".equals(action))
             {
                 OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                ctx.attribute("message", "Bestilte pristilbud er afvist og kundens data er slettet fra systemet");
+                showOrderHistory(ctx,pool);
             }
 
         } catch (DatabaseException | IOException e)

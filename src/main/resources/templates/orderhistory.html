@@ -29,13 +29,11 @@
                             <tr>
                                 <th class="text-center"><i class="bi bi-trash3"></i></th>
                                 <th><a th:href="@{/orderhistory(query=orderid)}">Order #</a></th>
-                                <th><a th:href="@{/orderhistory(query=CARPORT_ID)}">Carport ID</a></th>
+                                <th><a th:href="@{/orderhistory(query=carportID)}">Carport ID</a></th>
                                 <th><a th:href="@{/orderhistory(query=username)}">Kundenavn</a></th>
-                                <th><a th:href="@{/orderhistory(query=status)}">Ordrestatus</a></th>
-                                <th><a th:href="@{/orderhistory(query=DATE_PLACED)}">Bestillingsdato</a></th>
-                                <th><a th:href="@{/orderhistory(query=order_paid)}">Betalingsstatus</a></th>
-                                <th><a th:href="@{/orderhistory(query=HEIGHT)}">Højde</a></th>
-                                <th><a th:href="@{/orderhistory(query=LENGTH)}">Længde</a></th>
+                                <th><a th:href="@{/orderhistory(query=status)}">Status på behandling</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderPlaced)}">Ordre oprettet</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderPaid)}">Betalingsstatus</a></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -47,7 +45,7 @@
                                     <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
                                 </td>
                                 <td><span class="badge text-bg-info" th:text="${order.status}">Ordrestatus</span></td>
-                                <td th:text="${order.ORDER_PLACED}">Bestillingsdato</td>
+                                <td th:text="${order.orderPlaced}">Bestillingsdato</td>
                                 <td th:text="${order.orderPaid}">Betalingsstatus</td>
                                 <td>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="/order/details" th:href="@{/order/details/{id}(id=${order.ORDER_ID})}">Se ordre</a> </br>
