@@ -194,53 +194,50 @@ public class OrderMapper
     }
 
 
-/*
-    public static List<Order> getOrderDetails(int orderId, ConnectionPool pool) throws DatabaseException
+
+    public static Order getOrderDetails(int orderID, Account account, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "";
+        String sql = "SELECT " +
+            "o.length " +
+            "o.width " +
+            "o.has_shed " +
+            "o.roof_type " +
+            "o.price " +
+            "a.username " +
+            "a.email " +
+            "a.telephone " +
+            "FROM orders as o " +
+            "INNER JOIN accounts a ON o.account_id = a.account_id " +
+            "ORDER BY ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-             ps.setInt(1, orderId);
+             ps.setInt(1, account.getAccountID());
              ResultSet rs = ps.executeQuery();
-             List<> orderdetails = new ArrayList<>();
-             String status = "";
-             boolean hasShed = false;
-             String roofType = "";
-             int height = 0;
-             int length = 0;
-             int salesPrice = 0;
-             int price = 0;
-             String carportID = "";
-             Account account = null;
 
-             while (rs.next())
-             {
-                 Order order = new Order(
-                     rs.getString("status");
-                     rs.getBoolean("has_shed");
-                     rs.getString("roof_type");
-                     rs.getInt("height");
-                     rs.getInt("wdith"); // CHANGE TO LENGTH
-                    rs.getInt("sales_price");
-                    rs.getString("carport_id");
-                    if (rs.getInt("account_id") != 0)
-                    {
-                        account = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("email"), rs.getInt("telephone"));
-                    }
-                    return orderdetails;
-                 )
-
-             }
+            while (rs.next())
+            {
+                boolean hasShed = rs.getBoolean("has_shed");
+                String roofType = rs.getString("roof_type");
+                int width = rs.getInt("width");
+                int length = rs.getInt("height"); // CHANGE TO LENGTH
+                int price = rs.getInt("price"); // NULL FOR NOW?
+                if (rs.getInt("account_id") != 0)
+                {
+                    account = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("email"), rs.getInt("telephone"));
+                }
+                return new Order(orderID, account);
+            }
 
 
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
+        return null;
     }
-    */
+
 
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException

@@ -10,6 +10,7 @@ import app.persistence.OrderMapper;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.eclipse.jetty.util.IO;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -27,10 +28,11 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.post("/order/{id}/acceptoffer", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
-        app.get("/order/{id}/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
-        app.post("/send/offer", ctx -> sendOffer(ctx, dBConnection) );
-
+        app.post("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
+        app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
+        app.post("/order/sendoffer", ctx -> sendOffer(ctx, dBConnection) );
+        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
+        app.get("/order/details/{id}", ctx -> ctx.render("orderdetails.html") );
     }
 
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
@@ -51,7 +53,7 @@ public class OrderController
             {
                 OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
                 ctx.attribute("message", "Din ordre er slettet. ");
-                ctx.render("/order/{id}/acceptoffer");
+                ctx.redirect("/");
             }
         } catch (DatabaseException e)
         {
@@ -181,23 +183,40 @@ public class OrderController
             ctx.render("kvittering.html");
         }
     }
-/*
+
     private static void showOrderDetails(Context ctx, ConnectionPool pool)
     {
+        String action = ctx.formParam("action");
+        String orderID = ctx.formParam("id"); //TODO: check thymeleaf-værdi her
+        String email = ctx.formParam("email"); // TODO: check thymeleaf værdi her
         Order order;
+
+        Account account = ctx.sessionAttribute("accountID"); // TODO: check thymeleaf værdi her
         try
         {
-            String orderId = ctx.formParam("order_id");
-            order = (Order) OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderId)), pool);
-            ctx.attribute("order", order);
-            ctx.render("showorderdetails.html");
-        } catch (DatabaseException e)
+            // render customer order on "orderdetails"
+            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), account, pool);
+            ctx.render("orderdetails.html");
+
+            if ("send".equals(action))
+            {
+                SendGrid.sendOffer(email, "Pristilbud", Objects.requireNonNull(order));
+                String orderId = ctx.formParam("order_id"); //TODO: Check thymeleaf værdien her
+                ctx.attribute("order", order);
+            }
+            else if ("afvis".equals(action))
+            {
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+            }
+
+        } catch (DatabaseException | IOException e)
         {
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);
         }
+
     }
-*/
+
 
     private static void showOrderHistory(Context ctx, ConnectionPool pool)
     {
@@ -209,7 +228,7 @@ public class OrderController
         }
         Account account = ctx.sessionAttribute("currentUser");
 
-        if (account.getRole().equals("salesperson"))
+        if (Objects.requireNonNull(account).getRole().equals("salesperson"))
         {
             List<Order> orders = new ArrayList<>();
             String sortby = ctx.formParam("query");
@@ -305,24 +324,8 @@ public class OrderController
         return false;
     }
 
-    private static void requestPaymentByID()
-    {
-    }
 
-    private static void confirmPaymentByID()
-    {
-    }
 
-    private static void sendBOM()
-    {
-    }
 
-    private static void sendPickList()
-    {
-    }
-
-    private static void sendInvoice()
-    {
-    }
 
 }

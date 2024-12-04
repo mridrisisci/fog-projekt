@@ -9,7 +9,7 @@ public class Order
     private  String carportID;
     private int salesPersonID;
     private int price;
-    private final Timestamp ORDER_PLACED;
+    private Timestamp orderPlaced;
     private  boolean IS_ASSIGNED;
     private String status;
     private Account account;
@@ -31,7 +31,7 @@ public class Order
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
@@ -44,7 +44,7 @@ public class Order
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
@@ -55,7 +55,7 @@ public class Order
     { // used for 'orderhistory.html'
         this.ORDER_ID = orderId;
         this.status = status;
-        this.ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.orderPaid = orderPaid;
         this.width = width;
         this.length = length;
@@ -64,7 +64,7 @@ public class Order
     public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, RoofType roofType)
     { // this is used for 'kvittering.html'
         this.ORDER_ID = orderID;
-        ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.status = status;
         this.length = length;
         this.width = width;
@@ -72,6 +72,13 @@ public class Order
         this.roofType = roofType;
 
     }
+
+    public Order(int orderID, Account account)
+    { // used for orderdetails
+        this.ORDER_ID = orderID;
+        this.account = account;
+    }
+
 
 
 
@@ -105,9 +112,9 @@ public class Order
         return orderPaid;
     }
 
-    public Timestamp getORDER_PLACED()
+    public Timestamp getOrderPlaced()
     {
-        return ORDER_PLACED;
+        return orderPlaced;
     }
 
     public int getWidth()
@@ -168,7 +175,7 @@ public class Order
             ", carportId=" + carportID +
             ", salespersonId=" + salesPersonID +
             ", price=" + price +
-            ", timePlaced=" + ORDER_PLACED +
+            ", timePlaced=" + orderPlaced +
             ", status=" + status +
             ", isAssigned=" + IS_ASSIGNED +
             "}";

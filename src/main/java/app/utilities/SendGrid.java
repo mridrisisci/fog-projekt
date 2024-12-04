@@ -1,7 +1,6 @@
 package app.utilities;
 
 import app.entities.Order;
-import app.entities.RoofType;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -114,7 +113,7 @@ public class SendGrid
         int price = 200;
         String roofType = order.getRoofType().toString();
         boolean hasShed = order.getHasShed();
-        Timestamp orderPlaced = order.getORDER_PLACED();
+        Timestamp orderPlaced = order.getOrderPlaced();
         String hasShed2;
         String length2 = String.valueOf(length);
         length2 = length2 + " cm";
