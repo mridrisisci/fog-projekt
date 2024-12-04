@@ -17,7 +17,7 @@ public class Account
     }
 
     public Account(String username, String email, int telephone)
-    { // isnt used
+    {
         this.username = username;
         this.email = email;
         this.telephone = telephone;

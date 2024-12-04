@@ -179,21 +179,23 @@ public class OrderController
 
     private static void showOrderDetails(Context ctx, ConnectionPool pool)
     {
-        String action = ctx.formParam("action");
-        String orderID = ctx.pathParam("id");
-        String email = ctx.formParam("email"); // TODO: check thymeleaf værdi her
-        Order order;
 
-        Account account = ctx.sessionAttribute("accountID"); // TODO: check thymeleaf værdi her
+
         try
         {
-            // render customer order on "orderdetails"
-            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), Objects.requireNonNull(account), pool);
-            ctx.render("orderdetails.html");
+            String action = ctx.formParam("action");
+            List<Order> order;
+            String orderID = ctx.pathParam("id");
+            order = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            Order accountIndex = Objects.requireNonNull(order).getLast();
+            Account account = accountIndex.getAccount();
+            String email = account.getEmail();
+            ctx.attribute("account", account);
+            ctx.render("/orderdetails.html");
 
             if ("send".equals(action))
             {
-                SendGrid.sendOffer(email, "Pristilbud", Objects.requireNonNull(order));
+                SendGrid.sendOffer(email, "Pristilbud", (Order) Objects.requireNonNull(order));
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }

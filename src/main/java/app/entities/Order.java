@@ -2,10 +2,11 @@ package app.entities;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Order
 {
-    private final int ORDER_ID;
+    private int ORDER_ID;
     private  String carportID;
     private int salesPersonID;
     private int price;
@@ -22,6 +23,7 @@ public class Order
     private int accountID;
     private Carport carport;
     private boolean hasShed;
+    private List<String> orderDetails;
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
@@ -73,13 +75,22 @@ public class Order
 
     }
 
-    public Order(int orderID, Account account)
+    public Order(int width, int length, boolean hasShed, RoofType roofType, int price, Account account)
     { // used for orderdetails
-        this.ORDER_ID = orderID;
+        this.width = width;
+        this.length = length;
+        this.hasShed = hasShed;
+        this.roofType = roofType;
+        this.price = price;
         this.account = account;
+
     }
 
 
+    public List<String> getOrderDetails()
+    {
+        return orderDetails;
+    }
 
 
     public boolean getHasShed()

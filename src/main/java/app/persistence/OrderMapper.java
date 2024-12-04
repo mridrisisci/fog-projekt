@@ -195,26 +195,28 @@ public class OrderMapper
 
 
 
-    public static Order getOrderDetails(int orderID, Account account, ConnectionPool pool) throws DatabaseException
+    public static List<Order> getOrderDetails(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
-            "o.length " +
-            "o.width " +
-            "o.has_shed " +
-            "o.roof_type " +
-            "o.price " +
-            "a.username " +
-            "a.email " +
+            "o.height, " +
+            "o.width, " +
+            "o.has_shed, " +
+            "o.roof_type, " +
+            "o.price, " +
+            "a.account_id, " +
+            "a.username, " +
+            "a.email, " +
             "a.telephone " +
             "FROM orders as o " +
             "INNER JOIN accounts a ON o.account_id = a.account_id " +
-            "ORDER BY ?;";
+            "WHERE o.order_id = ?";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-             ps.setInt(1, account.getAccountID());
+             ps.setInt(1, orderID);
              ResultSet rs = ps.executeQuery();
+             List<Order> orderDetails = new ArrayList<>();
 
             while (rs.next())
             {
@@ -222,20 +224,20 @@ public class OrderMapper
                 String roofType = rs.getString("roof_type");
                 int width = rs.getInt("width");
                 int length = rs.getInt("height"); // CHANGE TO LENGTH
-                int price = rs.getInt("price"); // NULL FOR NOW?
-                if (rs.getInt("account_id") != 0)
-                {
-                    account = new Account(rs.getInt("account_id"), rs.getString("username"), rs.getString("email"), rs.getInt("telephone"));
-                }
-                return new Order(orderID, account);
-            }
+                //int price = rs.getInt("price"); // NULL FOR NOW?
 
+                int accountID = rs.getInt("account_id");
+                String name = rs.getString("username");
+                String email = rs.getString("email");
+                int telephone = rs.getInt("telephone");
+                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, 200, new Account(accountID, name, email, telephone)));
+            }
+            return orderDetails;
 
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
-        return null;
     }
 
 
@@ -293,7 +295,7 @@ public class OrderMapper
         String status;
         Timestamp orderPlaced;
         boolean orderPaid;
-        int height;
+        int width;
         int length;
         int accountID;
 
@@ -313,13 +315,13 @@ public class OrderMapper
                 status = rs.getString("status");
                 orderPlaced = rs.getTimestamp("order_placed");
                 orderPaid = rs.getBoolean("order_paid");
-                height = rs.getInt("height"); // change to length (length is null)
+                width = rs.getInt("height"); // change to length (length is null om dn)
                 length = rs.getInt("width");
                 name = rs.getString("username");
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
-                orders.add(new Order(orderID, status, orderPlaced, orderPaid, height, length,
+                orders.add(new Order(orderID, status, orderPlaced, orderPaid, width, length,
                     new Account(accountID, name, email, telephone)));
             }
             return orders;

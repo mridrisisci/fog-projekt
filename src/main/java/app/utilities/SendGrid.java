@@ -1,5 +1,6 @@
 package app.utilities;
 
+import app.entities.Account;
 import app.entities.Order;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -26,6 +27,7 @@ public class SendGrid
 
         Mail mail = new Mail();
         mail.setFrom(from);
+
 
         int length = order.getLength();
         int width = order.getWidth();

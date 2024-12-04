@@ -23,12 +23,13 @@
         <div class="container my-5">
             <div class="row g-4">
                 <!-- Renderer kundens info på thymeleaf -->
-                <div class="col-md-6" th:each="account : ${accounts}">
+                <div class="col-md-6" th:each="account : ${account}">
                     <div class="card-body">
                         <h5 class="card-title"> Kundedetaljer</h5>
                         <p class="card-title"> Navn: <span th:text="${account.username}"></span></p>
                         <p class="card-text"> Email: <span th:text="${account.email}">  </span></p>
                         <p class="card-text"> Telefon: <span th:text="${account.telephone}">  </span></p>
+                        <input type="hidden" th:value="${account.email}" name="email"> <!-- Sends ID to controller -->
                     </div>
                 </div>
 
@@ -37,7 +38,7 @@
                     <div class="card-body">
                         <h5 class="card-title"> Ordredetaljer</h5>
                         <p class="card-title"> Ordrenummer: <span th:text="${order.ORDER_ID}"></span></p>
-                        <p class="card-text"> Carport længde: <span th:text="${order.length}">  </span></p>
+                        <p class="card-text"> Carport længde: <span th:text="${order.height}">  </span></p> <!-- CHANGE TO LENGTH-->
                         <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span></p>
                         <p class="card-text"> Redskabsrum: <span th:text="${order.hasShed}">  </span></p>
                         <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span></p>
