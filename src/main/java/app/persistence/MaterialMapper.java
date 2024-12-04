@@ -5,6 +5,7 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -882,8 +883,35 @@ public class MaterialMapper
     {
     }
 
-    public static List<Material> getAllMaterials(ConnectionPool pool)
+    public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
     {
-        return null;
+
+        String sql = "SELECT * FROM materials";
+        List<Material> materials = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                int id = rs.getInt("material_id");
+                String name = rs.getString("name");
+                String unit = rs.getString("unit");
+                int price = rs.getInt("price");
+                int length = rs.getInt("length");
+                int height = rs.getInt("height");
+                int width = rs.getInt("width");
+                String type = rs.getString("type");
+                String description = rs.getString("description");
+
+                Material material = new Material(id, name, description, price, unit, length, height, width, type);
+                materials.add(material);
+
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching materials from the database", e.getMessage());
+        }
+        return materials;
     }
 }
