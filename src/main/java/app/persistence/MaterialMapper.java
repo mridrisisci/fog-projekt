@@ -156,30 +156,6 @@ public class MaterialMapper
         return pickList;
     }
 
-    public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
-    {
-
-        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
-
-        int orderID = carport.getOrderID();
-        List<Material> pickList = createPickList(carport, pool);
-        int pickListPrice = Calculator.calcPickListPrice(pickList);
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, pickListPrice);
-            ps.setInt(2, orderID);
-
-        } catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            throw new DatabaseException(e.getMessage());
-        }
-
-        return pickListPrice;
-    }
-
 
     //TODO: MANGLER TEST!
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
