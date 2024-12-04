@@ -7,7 +7,6 @@ import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,8 @@ public class OrderMapper
                                           boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-            "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
-            "VALUES (?,?,?,?,?,?,?,?,?,?);";
+                "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
         try (Connection connection = pool.getConnection();
@@ -39,7 +38,7 @@ public class OrderMapper
 
             // Execute the query and retrieve the generated key
             int rowsAffected = ps.executeUpdate();
-            if(rowsAffected != 1)
+            if (rowsAffected != 1)
             {
                 throw new DatabaseException("kunne ikke oprette ...");
             }
@@ -59,13 +58,14 @@ public class OrderMapper
         }
     }
 
+    //TODO bruger vi denne? Check createPickList metoden
     public static void createCarportInOrdersMaterials(int orderID, int materialID, int quantity, ConnectionPool pool) throws DatabaseException
     {
 
         String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql) )
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             int rowsAffected = ps.executeUpdate();
             ps.setInt(1, orderID);
@@ -89,9 +89,11 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 int salespersonID = rs.getInt("salesperson_id");
@@ -106,7 +108,8 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching orders from the database", e.getMessage());
         }
         return orders;
@@ -120,9 +123,11 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 String status = rs.getString("status");
@@ -136,7 +141,8 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
@@ -151,7 +157,8 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
             ps.setInt(1, salespersonID);
             ps.setInt(2, orderID);
@@ -175,9 +182,11 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 int salespersonID = rs.getInt("salesperson_id");
@@ -192,7 +201,8 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
@@ -229,20 +239,20 @@ public class OrderMapper
     public static List<Order> seeAllQueries(String sortby, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
-            "o.order_id," +
-            "o.carport_id, " +
-            "o.status, " +
-            "o.order_placed," +
-            "o.order_paid," +
-            "o.height," +
-            "o.width," +
-            "o.account_id," +// change to length
-             "a.email," +
-            "a.username," +
-            "a.telephone " +
-            "FROM orders o " +
-            "LEFT JOIN accounts a ON o.account_id = a.account_id " +
-            "ORDER BY ?;";
+                "o.order_id," +
+                "o.carport_id, " +
+                "o.status, " +
+                "o.order_placed," +
+                "o.order_paid," +
+                "o.height," +
+                "o.width," +
+                "o.account_id," +// change to length
+                "a.email," +
+                "a.username," +
+                "a.telephone " +
+                "FROM orders o " +
+                "LEFT JOIN accounts a ON o.account_id = a.account_id " +
+                "ORDER BY ?;";
 
         int orderID;
         String carportID;
@@ -263,7 +273,7 @@ public class OrderMapper
             ps.setString(1, sortby);
             ResultSet rs = ps.executeQuery();
             List<Order> orders = new ArrayList<>();
-            while(rs.next())
+            while (rs.next())
             {
                 orderID = rs.getInt("order_id");
                 carportID = rs.getString("carport_id");
@@ -277,7 +287,7 @@ public class OrderMapper
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
                 orders.add(new Order(orderID, carportID, status, orderPlaced, orderPaid, height, length,
-                    new Account(accountID, name, email, telephone)));
+                        new Account(accountID, name, email, telephone)));
             }
             return orders;
         } catch (SQLException e)
@@ -364,6 +374,7 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
     public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
     {
 
@@ -379,6 +390,12 @@ public class OrderMapper
             ps.setInt(1, pickListPrice);
             ps.setInt(2, orderID);
 
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update picklist price for order with ID: " + orderID);
+            }
+
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -388,21 +405,30 @@ public class OrderMapper
         return pickListPrice;
     }
 
-    public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int setDefaultSalesPriceAndCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
-        double coverageRatio = getCoverageRatioByOrderID(orderID, pool) / 100;
+        double coverageRatio = 0.35;
+        int coverageRatioPercentage = (int) Math.ceil(coverageRatio * 100);
         int salesPrice = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
 
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
-        String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
+        String sql = "UPDATE public.orders SET sales_price = ?, coverage_ratio_percentage = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, salesPrice);
+            ps.setInt(2, coverageRatioPercentage);
             ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to set default sales price for order with ID: " + orderID);
+            }
+
             return salesPrice;
         } catch (SQLException e)
         {
@@ -442,7 +468,7 @@ public class OrderMapper
     //TODO: TEST om salgsprisen også bliver ændret
     public static void updateCoverageRatioPercentageByOrderID(int newCoverageRatio, int orderID, ConnectionPool pool) throws DatabaseException
     {
-        int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID,pool)) + getPickListPriceByOrderID(orderID,pool);
+        int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID, pool)) + getPickListPriceByOrderID(orderID, pool);
         //Salgspris = ((dækningsgrad/100) * kostpris) + kostpris
 
         String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
