@@ -1,14 +1,16 @@
 
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -25,7 +27,7 @@ public class IntegrationTest
         initializeTestData();
     }
 
-    @AfterEach
+    @After
     public void tearDown()
     {
         // Close the connection pool after tests
@@ -39,9 +41,10 @@ public class IntegrationTest
         String sql = "DROP SCHEMA IF EXISTS test_schema CASCADE; " +
                 "CREATE SCHEMA test_schema;";
 
-        try (Connection connectionTest = connectionPoolTest.getConnection(); PreparedStatement ps = connectionTest.prepareStatement(sql))
+        try (Connection connectionTest = connectionPoolTest.getConnection();
+             PreparedStatement ps = connectionTest.prepareStatement(sql))
         {
-            ps.executeQuery();
+            ps.executeUpdate();
         }
     }
 
@@ -112,16 +115,16 @@ public class IntegrationTest
                 "    order_id serial NOT NULL,\n" +
                 "    carport_id character varying(8) NOT NULL,\n" +
                 "    salesperson_id integer NOT NULL,\n" +
-                "    status character varying(10) NOT NULL,\n" +
+                "    status character varying(20) NOT NULL,\n" +
                 "    price integer,\n" +
                 "    sales_price integer,\n" +
                 "    coverage_ratio_percentage integer,\n" +
                 "    order_placed timestamp with time zone,\n" +
                 "    order_paid boolean NOT NULL,\n" +
-                "    height integer NOT NULL,\n" +
+                "    height integer,\n" +
                 "    width integer NOT NULL,\n" +
                 "    length integer NOT NULL,\n" +
-                "    \"hasShed\" boolean,\n" +
+                "    \"has_shed\" boolean,\n" +
                 "    roof_type character varying(6) NOT NULL,\n" +
                 "    account_id integer NOT NULL,\n" +
                 "    CONSTRAINT orders_pk PRIMARY KEY (order_id)\n" +
@@ -170,12 +173,6 @@ public class IntegrationTest
                 "        ON UPDATE CASCADE\n" +
                 "        ON DELETE CASCADE;\n" +
                 "\n" +
-                "ALTER TABLE test_schema.orders\n" +
-                "    ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)\n" +
-                "        REFERENCES test_schema.accounts (account_id) MATCH SIMPLE\n" +
-                "        ON UPDATE CASCADE\n" +
-                "        ON DELETE CASCADE;\n" +
-                "\n" +
                 "\n" +
                 "-- Insert data into materials\n" +
                 "INSERT INTO test_schema.materials (name, unit, price, length, height, width, type, description)\n" +
@@ -217,10 +214,40 @@ public class IntegrationTest
 
         try (Connection connection = connectionPoolTest.getConnection(); PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.executeQuery();
-        } catch (SQLException e){
+            ps.executeUpdate();
+        } catch (SQLException e)
+        {
             throw new DatabaseException(e.getMessage(), "Database test fejl!");
         }
+    }
+
+    @Test
+    public void testCreateQueryInOrders() throws DatabaseException
+    {
+        // Arrange
+        String carportID_expected = "CP01 DUR";
+        int salesPersonID_expected = 1;
+        String status_expected = "Under behandling";
+        Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
+        boolean orderPaid_expected = false;
+        int length_expected = 720;
+        int width_expected = 480;
+        boolean hasShed_expected = true;
+        String roofType_expected = "FLAT";
+        int accountID_expected = 1;
+
+        // Act
+        int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+
+        int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(orderID, connectionPoolTest);
+
+        int length_actual = lengthAndWidth[0];
+        int width_actual = lengthAndWidth[1];
+
+        // Assert
+
+        Assert.assertEquals(length_expected, length_actual);
+        Assert.assertEquals(width_expected, width_actual);
     }
 
 
