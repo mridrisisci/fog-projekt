@@ -218,16 +218,16 @@ public class AccountMapper
 
     }
 
-    public static Account getAccountByID(int orderId, ConnectionPool pool) throws DatabaseException
+    public static Account getAccountByID(int accountID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM orders where order_id = ?";
+        String sql = "SELECT * FROM accounts where account_id = ?";
         int accountID;
         String username;
         String email;
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderId);
+            ps.setInt(1, accountID);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {

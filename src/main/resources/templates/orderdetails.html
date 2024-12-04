@@ -25,10 +25,11 @@
                 <div class="col-md-6" th:each="account : ${account}">
                     <div class="card-body">
                         <h5 class="card-title"> Kundedetaljer</h5>
-                        <p class="card-title"> Navn: <span th:text="${account.username}"></span></p>
+                        <p class="card-text"> Kunde id: <span th:text="${account.accountID}"></span></p>
+                        <input type="hidden" name="accountid" th:value="${account.accountID}"> <!-- sends id to coontroller-->
+                        <b><p class="card-text"> Navn: <span th:text="${account.username}"></span></p></b>
                         <p class="card-text"> Email: <span th:text="${account.email}">  </span></p>
                         <p class="card-text"> Telefon: <span th:text="${account.telephone}">  </span></p>
-                        <input type="hidden" th:value="${account.email}" name="email"> <!-- Sends ID to controller -->
                     </div>
                 </div>
 
@@ -41,7 +42,8 @@
                         <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span></p>
                         <p class="card-text"> Redskabsrum: <span th:text="${order.hasShed}">  </span></p>
                         <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span></p>
-                        <form method="GET" th:action="@{/order/sendoffer/{id}(id=${order.ORDER_ID})}">
+                        <input type="hidden" name="sendOfferID" th:value="${order.ORDER_ID}"> <!-- SEND ID TO CONTROLLEr -->
+                        <form method="POST" th:action="@{/order/sendoffer/{id}(id=${order.ORDER_ID})}">
                             <button class="btn btn-lg btn-primary" type="submit" name="action" value="send">Send
                                 pristilbud
                             </button>

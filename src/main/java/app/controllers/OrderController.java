@@ -30,7 +30,7 @@ public class OrderController
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
         app.post("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
-        app.get("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
+        app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
         //app.get("/order/details/{id}", ctx -> ctx.render("orderdetails.html") );
     }
@@ -160,10 +160,12 @@ public class OrderController
         {
             String action = ctx.formParam("action");
             String orderID = ctx.pathParam("id");
+            String accountID = ctx.formParam("accountid");
+            Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            String email = Objects.requireNonNull(account).getEmail();
 
             if ("send".equals(action))
             {
-                String email = ctx.formParam("email");
                 SendGrid.sendOffer(email, "Pristilbud");
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
@@ -175,7 +177,7 @@ public class OrderController
                 showOrderHistory(ctx,pool);
             }
 
-        } catch (DatabaseException | IOException e)
+        } catch (IOException | DatabaseException e )
         {
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);

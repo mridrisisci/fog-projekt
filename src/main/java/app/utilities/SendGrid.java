@@ -33,14 +33,14 @@ public class SendGrid
 
 
         Personalization personalization = new Personalization();
-
         personalization.addTo(new Email(email)); // kode: fog12345
+        personalization.setSubject(subject);
         personalization.addDynamicTemplateData("email", salespersonEmail);
         mail.addPersonalization(personalization);
 
         // Add category and template ID
         mail.addCategory("carportapp");
-        mail.setTemplateId("d-d-6ac3727740a24341b323aef7805519ae");
+        mail.setTemplateId("d-6ac3727740a24341b323aef7805519ae");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
@@ -60,6 +60,7 @@ public class SendGrid
             System.out.println("Error sending mail");
             throw ex;
         }
+        System.out.println("mail er sendt");
     }
 
     public static void sendBOM(String email, String subject, Order order) throws IOException
