@@ -9,6 +9,7 @@ import app.persistence.OrderMapper;
 import app.utilities.Calculator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -20,8 +21,13 @@ public class MaterialController
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
         app.get("/test.html", ctx -> ctx.render("test.html") );
-        app.get("adminMaterialList", ctx -> ctx.render("adminMaterialList.html"));
-        app.get("listOfMaterials", ctx -> listOfMaterials(ctx, dBConnection));
+
+
+        app.get("listOfMaterials", ctx -> {
+            listOfMaterials(ctx, dBConnection);
+            ctx.render("listOfMaterials.html");
+        });
+        //app.get("listOfAllMaterials", ctx -> listOfMaterials(ctx, dBConnection));
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
     }
 
@@ -44,19 +50,19 @@ public class MaterialController
         }
 
         // Redirect back to the material list after update
-        ctx.redirect("adminMaterialList");
+        ctx.redirect("listOfMaterials");
     }
 
 //TODO: gennemgå med andre, nuppet fra Cupcake
     public static void listOfMaterials(Context ctx, ConnectionPool pool) {
-        //TODO: Spørg Chrisser
         try {
             List<Material> materials = MaterialMapper.getAllMaterials(pool);
             ctx.attribute("materials", materials);
-            ctx.render("adminMaterialList.html");
+            ctx.render("listOfMaterials.html");
         } catch (DatabaseException e)
         {
-            ctx.attribute("message", "Unable to retrieve users from the database.");
+            System.out.println(e.getMessage());
+            ctx.attribute("message", "Unable to retrieve material from the database.");
             ctx.render("error.html");
         }
     }
