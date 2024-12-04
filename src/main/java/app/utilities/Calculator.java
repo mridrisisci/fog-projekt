@@ -183,8 +183,6 @@ public class Calculator
         int[] rafters = new int[2];
         int quantity = 0;
         int length = 0;
-        int testL = carport.getLENGTH();
-        int testW = carport.getWIDTH();
 
 
         //Beregning af mængde af spær
