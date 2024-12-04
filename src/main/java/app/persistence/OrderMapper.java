@@ -14,10 +14,10 @@ public class OrderMapper
 {
 
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
-                                          boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
+                                          boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-            "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
+            "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
             "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
@@ -29,7 +29,7 @@ public class OrderMapper
             ps.setString(3, status);
             ps.setTimestamp(4, orderPlaced);
             ps.setBoolean(5, orderPaid);
-            ps.setInt(6, height);
+            ps.setInt(6, length);
             ps.setInt(7, width);
             ps.setBoolean(8, hasShed);
             ps.setString(9, roofType);
