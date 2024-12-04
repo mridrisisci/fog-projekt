@@ -143,22 +143,18 @@ private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
     // hardcoded for at teste
     int materialID = 1;
     int quantity = 1;
-
-    final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
-    final int LENGTH = LENGTH_AND_WIDTH[0];
-    final int WIDTH = LENGTH_AND_WIDTH[1];
-
-    Carport carport = new Carport(orderID, LENGTH, WIDTH);
-
-    List<Material> pickList = MaterialMapper.createPickList(carport, pool);
-
-    carport.setMaterialList(pickList);
-
-
-
     try
     {
-        OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+        final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
+        final int LENGTH = LENGTH_AND_WIDTH[0];
+        final int WIDTH = LENGTH_AND_WIDTH[1];
+
+        Carport carport = new Carport(orderID, LENGTH, WIDTH);
+        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        carport.setMaterialList(pickList);
+        OrderMapper.updatePickListPrice(carport, pool);
+        OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
+
 
     } catch (DatabaseException e)
     {
