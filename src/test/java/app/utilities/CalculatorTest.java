@@ -51,18 +51,7 @@ public class CalculatorTest
     {
         materialList.clear();
     }
-
-//    @Test
-//    public void testCalcCarportMaterial()
-//    {
-//        // Arrange and Act
-//        int actual = Calculator.calcCarportMaterial;
-//        int expected = 0;
-//
-//        // Assert
-//        Assert.assertEquals(expected, actual);
-//    }
-
+    
     @Test
     public void testCalcRoofPlates()
     {
