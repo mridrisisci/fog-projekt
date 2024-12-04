@@ -51,7 +51,7 @@ public class CalculatorTest
     {
         materialList.clear();
     }
-    
+
     @Test
     public void testCalcRoofPlates()
     {
