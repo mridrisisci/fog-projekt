@@ -161,6 +161,7 @@ public class OrderController
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
             Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
             String email = account.getEmail();
+            System.out.println(email);
 
             if ("send".equals(action))
             {
@@ -177,6 +178,7 @@ public class OrderController
 
         } catch (IOException | DatabaseException e )
         {
+            System.out.println(e.getMessage());
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);
         }
@@ -217,6 +219,8 @@ public class OrderController
         }
         Account account = ctx.sessionAttribute("currentUser");
         String role = Objects.requireNonNull(account).getRole();
+        System.out.println(role);
+        System.out.println(account.getUsername() + " | " + account.getEmail());
 
         if ("salesperson".equals(role))
         {

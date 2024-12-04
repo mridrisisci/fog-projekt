@@ -87,8 +87,10 @@ public class AccountMapper
                 if (BCrypt.checkpw(password, storedHashedPassword))
                 {
                     int id = rs.getInt("account_id");
+                    String username = rs.getString("username");
                     int telephone = rs.getInt("telephone");
-                    return new Account(id, email, telephone);
+                    String role = rs.getString("role");
+                    return new Account(id, username, email, telephone, role);
                 }
                 else
                 {
@@ -220,7 +222,7 @@ public class AccountMapper
 
     public static Account getAccountByID(int accountID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT account_id, username, email, telephone FROM accounts WHERE account_id = ?";
+        String sql = "SELECT account_id, username, email, telephone, role FROM accounts WHERE account_id = ?";
         String username;
         String email;
         try (Connection connection = pool.getConnection();

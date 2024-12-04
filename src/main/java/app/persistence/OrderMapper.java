@@ -206,7 +206,8 @@ public class OrderMapper
             "a.account_id, " +
             "a.username, " +
             "a.email, " +
-            "a.telephone " +
+            "a.telephone, " +
+            "a.role " +
             "FROM orders as o " +
             "INNER JOIN accounts a ON o.account_id = a.account_id " +
             "WHERE o.order_id = ?";
@@ -287,10 +288,11 @@ public class OrderMapper
             "o.account_id," +
              "a.email," +
             "a.username," +
-            "a.telephone " +
+            "a.telephone, " +
+            "a.role " +
             "FROM orders o " +
-            "LEFT JOIN accounts a ON o.account_id = a.account_id " +
-            "ORDER BY ?;";
+            "LEFT JOIN accounts a ON o.account_id = a.account_id ORDER BY order_id";
+
 
         int orderID;
         String status;
@@ -307,7 +309,7 @@ public class OrderMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setString(1, sortby);
+            //ps.setString(1, sortby);
             ResultSet rs = ps.executeQuery();
             List<Order> orders = new ArrayList<>();
             while(rs.next())
