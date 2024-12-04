@@ -38,30 +38,27 @@ public class MaterialController
 
         try {
             MaterialMapper.insertNewMaterial(name, unit, price, length, height, width, type, description, pool);
-            ctx.attribute("message", "Balance updated successfully!");
+            ctx.attribute("message", "Material added successfully!");
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error updating balance: " + e.getMessage());
         }
 
         // Redirect back to the material list after update
-        ctx.redirect("/adminMaterialList");
+        ctx.redirect("adminMaterialList");
     }
 
 //TODO: gennemgå med andre, nuppet fra Cupcake
     public static void listOfMaterials(Context ctx, ConnectionPool pool) {
-        List<Material> materials = MaterialMapper.getAllMaterials(pool);
-        ctx.attribute("materials", materials);
-        ctx.render("adminMaterialList.html");
         //TODO: Spørg Chrisser
-      /*  try {
+        try {
             List<Material> materials = MaterialMapper.getAllMaterials(pool);
             ctx.attribute("materials", materials);
-            ctx.render("listOfUsers.html");
-            //TODO: Spørg Chrisser
-        } catch (DatabaseException e) {
+            ctx.render("adminMaterialList.html");
+        } catch (DatabaseException e)
+        {
             ctx.attribute("message", "Unable to retrieve users from the database.");
             ctx.render("error.html");
-         }*/
+        }
     }
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
