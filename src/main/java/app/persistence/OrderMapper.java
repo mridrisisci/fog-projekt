@@ -99,13 +99,7 @@ public class OrderMapper
                 Timestamp orderPlaced = rs.getTimestamp("order_placed");
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
-                Roof roof = null;
-                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
-                {
-                    roof = new Roof(RoofType.FLAT);
-                }
-
-                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roof.getRoofType(), accountID);
+                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -190,13 +184,7 @@ public class OrderMapper
                 Timestamp orderPlaced = rs.getTimestamp("order_placed");
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
-                Roof roof = null;
-                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
-                {
-                    roof = new Roof(RoofType.FLAT);
-                }
-
-                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roof.getRoofType(), accountID);
+                Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
         } catch (SQLException e) {
@@ -276,12 +264,7 @@ public class OrderMapper
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
-                Roof roof = null;
-                if (roofType != null && "flat".equalsIgnoreCase(roofType.trim()))
-                {
-                    roof = new Roof(RoofType.FLAT);
-                }
-                return new Order(orderId, orderPlaced, status, length, width, hasShed, roof);
+                return new Order(orderId, orderPlaced, status, length, width, hasShed, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
