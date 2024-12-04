@@ -27,15 +27,49 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
+        app.post("/order/{id}/acceptoffer", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.get("/order/{id}/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
-        app.post("/order/{id}/acceptoffer", OrderController::sendBOM);
+        app.post("/send/offer", ctx -> sendOffer(ctx, dBConnection) );
+
+    }
+
+    private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
+    {
+        String orderID = ctx.formParam("orderID");
+        String action = ctx.formParam("action");
+        String email = ctx.formParam("email");
+
+        try
+        {
+            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            if ("accept".equals(action)) // if customer pays for order, BOM is sent
+            {
+                SendGrid.sendBOM(email, "Stykliste", order);
+                ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
+            }
+            else if ("reject".equals(action)) // if customer declines order, customer data is deleted
+            {
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                ctx.attribute("message", "Din ordre er slettet. ");
+                ctx.render("/order/{id}/acceptoffer");
+            }
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        } catch (IOException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        }
+
 
     }
     private static void deleteOrderByID(Context ctx, ConnectionPool pool)
     {
         String orderId = ctx.formParam("id");
-
         OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderId)));
+
     }
 
     private static void sendOffer(Context ctx, ConnectionPool pool)

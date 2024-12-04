@@ -38,9 +38,7 @@ public class SendGrid
         Personalization personalization = new Personalization();
 
         personalization.addTo(new Email(email)); // kode: fog12345
-        personalization.addDynamicTemplateData("Name:", "Salesperson");
         personalization.addDynamicTemplateData("email", salespersonEmail);
-        personalization.addDynamicTemplateData("zip", "2100");
         mail.addPersonalization(personalization);
 
         // Add category and template ID
@@ -67,7 +65,7 @@ public class SendGrid
         }
     }
 
-    public static void sendBOM(String email, String subject) throws IOException
+    public static void sendBOM(String email, String subject, Order order) throws IOException
     {
         Email from = new Email(salespersonEmail); // kode: fog12345
         from.setName("Johannes Fog Byggemarked");
@@ -172,20 +170,7 @@ public class SendGrid
             throw ex;
         }
     }
-/*
-    public static boolean sendMailFromMain(Context ctx)
-    {
 
-        try
-        {
-            sendEmail();
-            return true; // Email sent successfully
-        } catch (IOException ex)
-        {
-            System.err.println("Failed to send email: " + ex.getMessage());
-            return false; // Email did not send successfully
-        }
-    }*/
 
     public String getAPI_KEY()
     {
