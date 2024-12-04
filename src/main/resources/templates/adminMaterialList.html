@@ -20,13 +20,13 @@
              role="alert">Fejlbeskeder vises her
         </div>
         <p class="h2 mb-5">Materiale liste</p>
-        <form action="/" method="GET">
+        <form action="/listOfMaterials" method="GET">
             <div class="container my-5">
                 <div class="row g-4">
                     <div class="col-md-6">
                         <a href="/adminMaterialList.html" th:href="@{/adminMaterialList}" class="text-decoration-none">
                             <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
-                                <table id="listOfUsersTable">
+                                <table id="listOfMaterialsTable">
                                     <thead>
                                     <tr>
                                         <th>Material ID</th>
@@ -52,23 +52,24 @@
                                         <td th:text="${material.width}">Width</td>
                                         <td th:text="${material.type}">Type</td>
                                         <td th:text="${material.description}">Description</td>
-                                        <td>
-<!--                                            TODO: IKKE LAVET RESTEN, har bare sat lidt op ad HTML'en-->
-                                            <div class="button-on-line">
-                                                <form th:action="@{/updateBalance}" method="post">
-                                                    <input type="hidden" class="inputbox" th:name="userId"
-                                                           th:value="${material.userId}"/>
-                                                    <input type="number" class="inputbox" th:name="newBalance" min="0"
-                                                           step="1"
-                                                           th:value="${material.balance}"/>
-                                                    <button type="submit">Update</button>
-                                                </form>
-                                            </div>
-                                        </td>
 
                                     </tr>
                                     </tbody>
                                 </table>
+
+                                <h2>Tilføj nyt materiale</h2>
+                                <form th:action="@{/addMaterial}" method="post">
+                                    <!-- Formularfelter til input -->
+                                    <input type="text" name="name" placeholder="Navn" required/><br/>
+                                    <input type="text" name="unit" placeholder="Enhed" required/><br/>
+                                    <input type="number" name="price" placeholder="Pris" step="0.01" required/><br/>
+                                    <input type="number" name="length" placeholder="Længde" step="0.01" required/><br/>
+                                    <input type="number" name="height" placeholder="Højde" step="0.01" required/><br/>
+                                    <input type="number" name="width" placeholder="Bredde" step="0.01" required/><br/>
+                                    <input type="text" name="type" placeholder="Type" required/><br/>
+                                    <textarea name="description" placeholder="Beskrivelse"></textarea><br/>
+                                    <input type="submit" value="Tilføj materiale"/>
+                                </form>
                             </div>
                         </a>
                     </div>
