@@ -10,7 +10,6 @@ import app.persistence.OrderMapper;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import org.eclipse.jetty.util.IO;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -32,7 +31,6 @@ public class OrderController
         app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
-        //app.get("/order/details/{id}", ctx -> ctx.render("orderdetails.html") );
     }
 
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
@@ -159,10 +157,10 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            String orderID = ctx.pathParam("id");
-            String accountID = ctx.formParam("accountid");
+            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
+            String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
             Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
-            String email = Objects.requireNonNull(account).getEmail();
+            String email = account.getEmail();
 
             if ("send".equals(action))
             {
@@ -218,8 +216,9 @@ public class OrderController
             return;
         }
         Account account = ctx.sessionAttribute("currentUser");
+        String role = Objects.requireNonNull(account).getRole();
 
-        if (Objects.requireNonNull(account).getRole().equals("salesperson"))
+        if ("salesperson".equals(role))
         {
             List<Order> orders = new ArrayList<>();
             String sortby = ctx.formParam("query");
@@ -229,10 +228,10 @@ public class OrderController
                 {
                     sortby = "order_id";
                 }
-                orders = OrderMapper.showOrderHistory(sortby, pool);
+                orders = OrderMapper.getOrderHistory(sortby, pool);
             } catch (DatabaseException e)
             {
-                ctx.attribute("message", "Noget gik galt. " + e.getMessage());
+                ctx.attribute("message", e.getMessage());
             }
             // Render Thymeleaf-skabelonen
             ctx.attribute("orders", orders);

@@ -23,19 +23,21 @@ public class Account
         this.telephone = telephone;
     }
 
-    public Account(int accountID, String email, String role)
+
+    public Account(int accountID, String email, int telephone)
     { // used to log in
         this.accountID = accountID;
         this.username = email;
-        this.role = role;
+        this.telephone = telephone;
     }
 
-    public Account(int accountID, String username, String email, int telephone)
+    public Account(int accountID, String username, String email, int telephone, String role)
     { // this constructor is used for 'orderhistory' mapper method
         this.accountID = accountID;
         this.username = username;
         this.email = email;
         this.telephone = telephone;
+        this.role = role;
     }
 
     public int getAccountID()

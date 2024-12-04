@@ -87,8 +87,8 @@ public class AccountMapper
                 if (BCrypt.checkpw(password, storedHashedPassword))
                 {
                     int id = rs.getInt("account_id");
-                    String role = rs.getString("role");
-                    return new Account(id, email, role);
+                    int telephone = rs.getInt("telephone");
+                    return new Account(id, email, telephone);
                 }
                 else
                 {
@@ -220,8 +220,7 @@ public class AccountMapper
 
     public static Account getAccountByID(int accountID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM accounts where account_id = ?";
-        int accountID;
+        String sql = "SELECT account_id, username, email, telephone FROM accounts WHERE account_id = ?";
         String username;
         String email;
         try (Connection connection = pool.getConnection();
@@ -234,7 +233,9 @@ public class AccountMapper
                 accountID = rs.getInt("account_id");
                 username = rs.getString("username");
                 email = rs.getString("email");
-                return new Account(username,email);
+                int telephone = rs.getInt("telephone");
+                String role = rs.getString("role");
+                return new Account(accountID, username, email, telephone, role);
             }
         } catch (SQLException e)
         {
@@ -242,28 +243,7 @@ public class AccountMapper
         }
         return null;
     }
-    public static Account getCustomerByID(Account account, String sortby, ConnectionPool pool) throws DatabaseException
-    {
-        String sql = "SELECT username, email FROM accounts WHERE account_id = ? ORDER BY ?";
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, account.getAccountID());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next())
-            {
-                int id = rs.getInt("account_id");
-                String username = rs.getString("username");
-                String email = rs.getString("email");
-                return new Account(id, username,email);
-            }
 
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-        return null;
-    }
     public static List<Account> getAllCustomers(ConnectionPool pool) throws DatabaseException
     {
 

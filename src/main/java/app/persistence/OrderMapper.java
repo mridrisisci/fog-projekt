@@ -230,7 +230,8 @@ public class OrderMapper
                 String name = rs.getString("username");
                 String email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
-                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, 200, new Account(accountID, name, email, telephone)));
+                String role = rs.getString("role");
+                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, 200, new Account(accountID, name, email, telephone, role)));
             }
             return orderDetails;
 
@@ -274,7 +275,7 @@ public class OrderMapper
         }
     }
 
-    public static List<Order> showOrderHistory(String sortby, ConnectionPool pool) throws DatabaseException
+    public static List<Order> getOrderHistory(String sortby, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
             "o.order_id," +
@@ -321,8 +322,9 @@ public class OrderMapper
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
+                String role = rs.getString("role");
                 orders.add(new Order(orderID, status, orderPlaced, orderPaid, width, length,
-                    new Account(accountID, name, email, telephone)));
+                    new Account(accountID, name, email, telephone, role)));
             }
             return orders;
         } catch (SQLException e)
