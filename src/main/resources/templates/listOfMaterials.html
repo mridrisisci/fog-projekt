@@ -50,7 +50,16 @@
                                 <td th:text="${material.width}">Width</td>
                                 <td th:text="${material.type}">Type</td>
                                 <td th:text="${material.description}">Description</td>
-                            </tr>
+                                <td>
+                                    <div class="button-on-line">
+                                        <form th:action="@{/updateMaterialPrice}" method="post">
+                                            <input type="hidden" class="inputbox" th:name="materialID" th:value="${material.materialID}"/>
+                                            <input type="number" class="inputbox" th:name="newPrice" min="0" step="1"
+                                                   th:value="${material.price}" />
+                                            <button type="submit">Update</button>
+                                        </form>
+                                    </div>
+                                </td></tr>
                             </tbody>
                         </table>
                         </form>
