@@ -1,6 +1,8 @@
 package app.persistence;
 
 import app.entities.Account;
+import app.entities.Carport;
+import app.entities.Material;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
@@ -361,6 +363,29 @@ public class OrderMapper
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
+    }
+    public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
+
+        int orderID = carport.getOrderID();
+        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        int pickListPrice = Calculator.calcPickListPrice(pickList);
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, pickListPrice);
+            ps.setInt(2, orderID);
+
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return pickListPrice;
     }
 
     public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
