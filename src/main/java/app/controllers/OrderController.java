@@ -29,7 +29,7 @@ public class OrderController
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
         app.get("/acceptoffer", ctx -> ctx.render("acceptoffer.html") );
         app.post("/acceptoffer", OrderController::sendBOM);
-        app.get("/order/delete", ctx -> OrderController::deleteOrderByID);
+        //app.get("/order/delete", ctx -> OrderController::deleteOrderByID);
 
     }
     private static void deleteOrderByID(Context ctx, ConnectionPool pool)
@@ -91,8 +91,6 @@ public class OrderController
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
         Order order;
-
-
         boolean hasShed = true;
         // TODO: Lav carport-objekt efter ordren er oprettet
         try
