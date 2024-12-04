@@ -11,12 +11,17 @@ public class Carport
 //    private final int HEIGHT;
     private final int WIDTH;
     private final int LENGTH;
+    private int orderID;
     private boolean hasShed;
     private RoofType Rooftype;
     private int price;
     private int salesPrice;
+    public void setMaterialList(List<Material> materialList)
+    {
+        this.materialList = materialList;
+    }
+
     private List<Material> materialList = new ArrayList<>();
-    private  int orderID;
 
     public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH)
     {
@@ -43,11 +48,18 @@ public class Carport
         this.WIDTH = WIDTH;
     }
 
+    public Carport(int orderID, int LENGTH, int WIDTH)
+    {
+        this.orderID = orderID;
+        this.LENGTH = LENGTH;
+        this.WIDTH = WIDTH;
+    }
+
     /*Der skal laves noget hvor der er metoder der tager kostpris ud fra hvormange beams,posts,rafters
      * så skal der være en metode der beregner salgspris
      * en der beregner dækningspris*/
-
     //Stolpe
+
     public int calcPosts(Order order)
     {
         //Antal stolper
@@ -69,8 +81,8 @@ public class Carport
         return quantity;
 
     }
-
     //Remme
+
     public int calcBeams(Material material)
     {
         //Der skal være minimum 2 af alt, da der på hver side af carporten er en rem.
@@ -101,6 +113,10 @@ public class Carport
 
         return quantity;
 
+    }
+    public int getOrderID()
+    {
+        return orderID;
     }
 
     //Stern på remme
