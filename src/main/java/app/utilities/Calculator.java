@@ -10,10 +10,6 @@ import java.util.List;
 
 public class Calculator
 {
-    public int calcCarportMaterial()
-    {
-        return 0;
-    }
 
     //Udregner kostpris
     public static int calcPickListPrice(List<Material> pickList)
