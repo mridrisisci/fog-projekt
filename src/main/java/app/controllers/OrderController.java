@@ -1,11 +1,10 @@
 package app.controllers;
 
-import app.entities.Account;
-import app.entities.Order;
-import app.entities.RoofType;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -36,8 +35,8 @@ public class OrderController
     {
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        int carportWidth = Integer.parseInt(carportLengthString);
-        int carportHeight = Integer.parseInt(carportWidthString);
+        int carportWidth = Integer.parseInt(carportWidthString);
+        int carportLength = Integer.parseInt(carportLengthString);
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -86,7 +85,7 @@ public class OrderController
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
             order = getOrderOnReceipt(orderID, ctx, pool);
@@ -133,22 +132,29 @@ public class OrderController
             ctx.render("/requestedqueries.html");
         }
 
-
-
     }
-
-
-
 
 //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+private static void createCarport(int orderID, Context ctx, ConnectionPool pool) throws DatabaseException
 {
     // hardcoded for at teste
     int materialID = 1;
     int quantity = 1;
+
+    final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
+    final int LENGTH = LENGTH_AND_WIDTH[0];
+    final int WIDTH = LENGTH_AND_WIDTH[1];
+
+    Carport carport = new Carport(orderID, LENGTH, WIDTH);
+
+    List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+
+    carport.setMaterialList(pickList);
+
+
 
     try
     {
