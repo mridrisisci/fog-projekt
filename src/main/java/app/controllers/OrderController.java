@@ -64,14 +64,6 @@ public class OrderController
 
 
     }
-    private static void deleteOrderByID(Context ctx, ConnectionPool pool)
-    {
-        String orderId = ctx.formParam("id");
-        OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderId)));
-
-    }
-
-
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
     {
@@ -84,7 +76,7 @@ public class OrderController
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
         int carportWidth = Integer.parseInt(Objects.requireNonNull(carportLengthString));
-        int carportHeight = Integer.parseInt(Objects.requireNonNull(carportWidthString));
+        int carportLength = Integer.parseInt(Objects.requireNonNull(carportWidthString));
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -132,8 +124,8 @@ public class OrderController
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
                 orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            createCarportInOrdersMaterials(orderID, ctx, pool);
-            order = getOrderByID(orderID, ctx, pool);
+            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+            order = OrderMapper.getOrderByID(orderID, pool);
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             //CalcBOM
             ctx.attribute("order", order);
@@ -250,22 +242,6 @@ public class OrderController
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-private static void createCarport(int orderID, Context ctx, ConnectionPool pool) throws DatabaseException
-{
-    // hardcoded for at teste
-    int materialID = 1;
-    int quantity = 1;
-    try
-    {
-        final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
-        final int LENGTH = LENGTH_AND_WIDTH[0];
-        final int WIDTH = LENGTH_AND_WIDTH[1];
-
-        Carport carport = new Carport(orderID, LENGTH, WIDTH);
-        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
-        carport.setMaterialList(pickList);
-        OrderMapper.updatePickListPrice(carport, pool);
-        OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
 
     private static void createCarportInOrdersMaterials(int orderID, Context ctx, ConnectionPool pool)
     {
