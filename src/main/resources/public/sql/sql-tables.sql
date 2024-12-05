@@ -2,6 +2,20 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+-- Update admin & Sales accounts
+/*
+UPDATE public.accounts
+SET role = 'salesperson'
+WHERE account_id = ?;
+
+UPDATE public.accounts
+SET role = 'admin'
+WHERE account_id = ?;
+
+
+
+*/
+
 -- Drop tables if they exist
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.accounts CASCADE;
