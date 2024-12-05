@@ -79,6 +79,7 @@ public class OrderMapper
 
     }
 
+
     public static List<Order> getAllOrders(ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM public.orders;";
