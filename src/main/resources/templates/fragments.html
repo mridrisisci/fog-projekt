@@ -42,7 +42,7 @@
                         <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
                             <a class="nav-link" href="/orderhistory" th:href="@{/orderhistory}">Se alle forespørgsler</a>
                         </li>
-                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
+                        <!--<li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">-->
                             <a href="/createaccount" th:href="@{/createaccount}" class="nav-link">Opret bruger</a>
                         </li>
                         <li>
