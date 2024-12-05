@@ -124,7 +124,7 @@ public class OrderController
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
                 orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
-            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+            createCarport(orderID, ctx, pool);
             order = OrderMapper.getOrderByID(orderID, pool);
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             //CalcBOM
@@ -140,6 +140,27 @@ public class OrderController
         {
             ctx.attribute("message", e.getMessage());
             ctx.render("kvittering.html");
+        }
+    }
+
+    private static void createCarport(int orderID, Context ctx, ConnectionPool pool) throws DatabaseException
+    {
+        try
+        {
+            final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
+            final int LENGTH = LENGTH_AND_WIDTH[0];
+            final int WIDTH = LENGTH_AND_WIDTH[1];
+
+            Carport carport = new Carport(orderID, LENGTH, WIDTH);
+            List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+            carport.setMaterialList(pickList);
+            OrderMapper.updatePickListPrice(carport, pool);
+            OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
+
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
         }
     }
 

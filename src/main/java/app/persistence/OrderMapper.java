@@ -55,30 +55,6 @@ public class OrderMapper
         }
     }
 
-    //TODO bruger vi denne? Check createPickList metoden
-    public static void createCarportInOrdersMaterials(int orderID, int materialID, int quantity, ConnectionPool pool) throws DatabaseException
-    {
-
-        String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            int rowsAffected = ps.executeUpdate();
-            ps.setInt(1, orderID);
-            ps.setInt(2, materialID);
-            ps.setInt(3, quantity);
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("kunne ikke oprette carport");
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-
-    }
-
 
     public static List<Order> getAllOrders(ConnectionPool pool) throws DatabaseException
     {

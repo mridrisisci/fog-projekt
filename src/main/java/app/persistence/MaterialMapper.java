@@ -102,6 +102,8 @@ public class MaterialMapper
     }
 
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
+
+
     public static List<Material> createPickList(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         List<Material> pickList = new ArrayList<>();
