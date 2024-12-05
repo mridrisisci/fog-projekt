@@ -28,6 +28,7 @@ public class MaterialController
             ctx.render("listOfMaterials.html");
         });
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
+        app.post("removeMaterial", ctx -> removeMaterial(ctx, dBConnection));
     }
 
     public static void insertNewMaterial(Context ctx, ConnectionPool pool) {
@@ -47,6 +48,14 @@ public class MaterialController
             ctx.attribute("message", "Error updating balance: " + e.getMessage());
         }
 
+        // Redirect back to the material list after update
+        ctx.redirect("listOfMaterials");
+    }
+
+    public static void removeMaterial(Context ctx, ConnectionPool pool) throws DatabaseException
+    {
+        int materialID = Integer.parseInt(ctx.formParam("price"));
+        MaterialMapper.deleteMaterial( materialID, pool);
         // Redirect back to the material list after update
         ctx.redirect("listOfMaterials");
     }
