@@ -24,7 +24,7 @@
         <div class="container my-5">
             <div class="row g-4">
                 <div class="col-md-6">
-                        <form th:action="@{listOfMaterials}" method="get">
+                    <form th:action="@{listOfMaterials}" method="get">
                         <table class="table table-striped" id="listOfMaterialsTable">
                             <thead>
                             <tr>
@@ -53,30 +53,33 @@
                                 <td th:text="${material.description}">Description</td>
                                 <td>
                                     <div class="button-on-line">
-                                        <form th:action="@{/updateMaterialPrice}" method="post">
-                                            <input type="hidden" class="inputbox" th:name="materialID" th:value="${material.materialID}"/>
+                                        <form th:action="@{updateMaterialPrice}" method="post">
+                                            <input type="hidden" class="inputbox" th:name="materialID"
+                                                   th:value="${material.materialID}"/>
                                             <input type="number" class="inputbox" th:name="newPrice" min="0" step="1"
-                                                   th:value="${material.price}" />
+                                                   th:value="${material.price}"/>
                                             <button class="btn btn-outline-dark btn-sm" type="submit">Update</button>
                                         </form>
                                     </div>
-                                </td></tr>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
-                        </form>
+                    </form>
                     <br><br>
-                        <h2>Tilføj nyt materiale</h2>
-                        <form method="post">
-                            <input class="w-50" type="text" name="name" placeholder="Navn" required/><br/>
-                            <input class="w-50" type="text" name="unit" placeholder="Enhed" required/><br/>
-                            <input class="w-50" type="number" name="price" placeholder="Pris" step="1" required/><br/>
-                            <input class="w-50" type="number" name="length" placeholder="Længde" step="1" required/><br/>
-                            <input class="w-50" type="number" name="height" placeholder="Højde" step="1" required/><br/>
-                            <input class="w-50" type="number" name="width" placeholder="Bredde" step="1" required/><br/>
-                            <input class="w-50" type="text" name="type" placeholder="Type" required/><br/>
-                            <textarea class="w-50" name="description" placeholder="Beskrivelse"></textarea><br/>
-                            <input class="btn btn-outline-dark btn-sm"  type="submit" formaction="addMaterial" value="Tilføj materiale"/>
-                        </form>
+                    <h2>Tilføj nyt materiale</h2>
+                    <form method="post">
+                        <input class="w-50" type="text" name="name" placeholder="Navn" required/><br/>
+                        <input class="w-50" type="text" name="unit" placeholder="Enhed" required/><br/>
+                        <input class="w-50" type="number" name="price" placeholder="Pris" step="1" required/><br/>
+                        <input class="w-50" type="number" name="length" placeholder="Længde" step="1" required/><br/>
+                        <input class="w-50" type="number" name="height" placeholder="Højde" step="1" required/><br/>
+                        <input class="w-50" type="number" name="width" placeholder="Bredde" step="1" required/><br/>
+                        <input class="w-50" type="text" name="type" placeholder="Type" required/><br/>
+                        <textarea class="w-50" name="description" placeholder="Beskrivelse"></textarea><br/>
+                        <input class="btn btn-outline-dark btn-sm" type="submit" formaction="addMaterial"
+                               value="Tilføj materiale"/>
+                    </form>
                 </div>
             </div>
         </div>
