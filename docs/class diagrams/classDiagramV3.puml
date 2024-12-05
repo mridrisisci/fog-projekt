@@ -1,0 +1,235 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Main {
++main(String[] args)
+}
+
+package utilities {
+
+class Calculator {
++ int calcPickListPrice()
++ int calcSalesPrice()
++ int calcPosts()
++ int[] calcBeams()
++ int[] calcSideFasciaBoard()
++ int[] calcFrontAndBackFasciaBoard()
++ int[] calcRafters()
++ int calcScrewsForRoofing()
++ int calcStandardScrews()
++ int calcRollForWindCross()
++ int calcSquareWasher()
++ int calcHardwareForRaftersLeft()
++ int calcHardwareForRaftersRight()
++ int calcHardwareScrews()
++ int calcBoardBolt()
++ int[] calcRoofPlates()
+
+
+}
+    class SVG {
+    - StringBuilder svg
+    + SVG()
+    + addRectangle()
+    + addLine()
+    + addArrow()
+    + addText()
+    + addSvg()
+    'Override
+    + toString()
+    }
+    class SendGrid
+    {
+    - String API_KEY
+    - String salespersonEmail
+    - String customerEmail
+    - String adminEmail
+    - String subjectLine
+    - String body
+    + SendGrid(String to, String name, String from)
+    }
+}
+
+package controllers {
+    class OrderController {
+    + addRoutes()
+    - boolean validateOrderIsPaid()
+    - void requestPaymentByID()
+    - void confirmPaymentByID()
+    - void sendBOM()
+    - void sendPickList()
+    - void sendInvoice()
+    }
+
+    class AccountController {
+    + addRoutes()
+    - User login()
+    - void logout()
+
+    }
+    class MaterialController {
+    + addRoutes()
+    }
+}
+
+package entities {
+    class Carport {
+    - final int height
+    - final int width
+    - final int length
+    - boolean hasShed
+    '- boolean hasShedAddons
+    - RoofType roofType
+    + Carport()
+    + List<Material> materialsList
+    'metoden skal eksekvere alle beregningerne heri
+    'samlet
+    + int calcCarportMaterial()
+    'Pris som kunden skal betale
+    + calcCarportPrice()
+    + Material calcPosts(Material material)
+    + Material calcBeams(Material material)
+    + Material calcRafters(Material material)
+    + int getRafters()
+    + int getBeams()
+    + int getPosts()
+    }
+    class Account {
+    - int accountID
+    - String role
+    - String username
+    - String password
+    - int telephone
+    - String email
+    - String address
+    + int getAccountID()
+    + String getRole()
+    + String getAccountName()
+    + String getPassword()
+    + int getTelephone()
+    + String getAddress()
+    }
+
+    class Order {
+    - final int orderID
+    - final int customerID
+    - final int carportID
+    - int salesPersonID
+    'public enum orderStatus { PAID,NOT_PAID,ORDER_COMPLETED}
+    - enum status
+    - int price
+    - final TimeStamp orderPlaced
+    - boolean orderPaid
+    - boolean isAssigned
+    + boolean IsAssigned()
+    + boolean getOrderPaid()
+    + getters()
+    }
+
+    class Material {
+    - int materialID
+    - String materialName
+    - String description
+    'prisen for Fog at købe materialerne
+    - int purchasePrice
+    - String unit
+    - int quantity
+    - int length
+    - int height
+    - int width
+    - boolean hasShedAddons
+    - String type
+    }
+    enum RoofType {
+    FLAT,
+    PITCHED
+    }
+    class Roof
+    {
+    - int roofLength
+    - int roofWidth
+    - final RoofType type
+    }
+
+}
+
+package exceptions {
+
+}
+
+package persistence {
+    class OrderMapper {
+    + Order getOrder()
+    'hent alle forespørgsler
+    + List<Order> getOrders()
+    + void deleteOrderByID()
+    + void updateOrderByUserID()
+    + void addOrderToDB()
+    }
+
+    class MaterialMapper {
+    + List<Material> createMaterialList()
+    + void insertNewMaterial()
+    + void updateMaterialPriceByMaterialID()
+    + List<Material> createPickList()
+    + int updatePickListPrice()
+    + Material getPosts()
+    + Material getBeams()
+    + Material getSideUnderFasciaBoard()
+    + Material getSideOverFasciaBoard()
+    + Material getFrontAndBackUnderFasciaBoard()
+    + Material getFrontAndBackOverFasciaBoard()
+    + Material getRafters()
+    + Material getStandardScrews()
+    + Material getScrewsForRoofing()
+    + Material getRollForWindCross()
+    + Material getSquareWasher()
+    + Material getHardwareForRaftersLeft()
+    + Material getHardwareForRaftersRight()
+    + Material getHardwareScrews()
+    + Material getBoardBolt()
+    + Material getRoofPlatesLong()
+    + Material getRoofPlatesShort()
+    + Material getMaterial()
+    + Material getMaterialByID()
+    + void updateMaterial()
+    + void updateMaterialByPrice()
+    + void deleteMaterial()
+    + List<Material> getAllMaterials()
+    }
+
+    class AccountMapper {
+    + void addAccount())
+    + void deleteAccount(Account account))
+    + void updateAccount(Account account)
+    + Account getAccountByID(Account account)
+    + List<Account> getAllAccounts(Account account)
+    + void login()
+    }
+}
+
+package Test {
+    class OrderMapperTest {
+    }
+    class MaterialMapperTest {
+    }
+    class AccountMapperTest {
+    }
+}
+
+Main -- controllers
+
+OrderController -- OrderMapper
+
+MaterialController -- MaterialMapper
+AccountController -- AccountMapper
+
+Order o-- Carport
+Carport *-- Material
+Carport *-- Roof
+Roof *-- RoofType
+
+persistence *-- Calculator
+
+@enduml
