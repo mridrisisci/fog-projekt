@@ -82,7 +82,7 @@ public class OrderMapper
 
     public static List<Order> getAllOrders(ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM public.orders;";
+        String sql = "SELECT * FROM orders;";
         List<Order> orders = new ArrayList<>();
 
         try (Connection connection = pool.getConnection();
@@ -116,7 +116,7 @@ public class OrderMapper
     //TODO: tilføj hasShed på denne
     public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM public.orders WHERE salesperson_id = null;";
+        String sql = "SELECT * FROM orders WHERE salesperson_id = null;";
         List<Order> orders = new ArrayList<>();
 
         try (Connection connection = pool.getConnection();
@@ -150,7 +150,7 @@ public class OrderMapper
     //TODO: Test om den virker når salesperson står både som ? og null
     public static void updateSalespersonAssignedByOrderID(int salespersonID, int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "UPDATE public.orders SET salesperson_id = ? WHERE salesperson_id = null AND order_id = ?;";
+        String sql = "UPDATE orders SET salesperson_id = ? WHERE salesperson_id = null AND order_id = ?;";
 
 
         try (Connection connection = pool.getConnection();
@@ -175,7 +175,7 @@ public class OrderMapper
 
     public static List<Order> getAllPaidOrders(ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM public.orders WHERE status = 'Betalt';";
+        String sql = "SELECT * FROM orders WHERE status = 'Betalt';";
         List<Order> orders = new ArrayList<>();
 
         try (Connection connection = pool.getConnection();
@@ -331,7 +331,7 @@ public class OrderMapper
     {
         int pickListPrice = 0;
 
-        String sql = "SELECT price FROM public.orders WHERE order_id = ?;";
+        String sql = "SELECT price FROM orders WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -354,7 +354,7 @@ public class OrderMapper
     {
         int coverageRatio = 0;
 
-        String sql = "SELECT coverage_ratio_percentage FROM public.orders WHERE order_id = ?;";
+        String sql = "SELECT coverage_ratio_percentage FROM orders WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -381,7 +381,7 @@ public class OrderMapper
 
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
-        String sql = "UPDATE public.orders SET sales_price = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET sales_price = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -402,7 +402,7 @@ public class OrderMapper
         int newCoverageRatio = ((newSalesPrice / (getPickListPriceByOrderID(orderID, pool))) - 1) * 100;
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
-        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -430,7 +430,7 @@ public class OrderMapper
         int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID, pool)) + getPickListPriceByOrderID(orderID, pool);
         //Salgspris = ((dækningsgrad/100) * kostpris) + kostpris
 
-        String sql = "UPDATE public.orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
