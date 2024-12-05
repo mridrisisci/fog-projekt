@@ -10,10 +10,6 @@ import java.util.List;
 
 public class Calculator
 {
-    public int calcCarportMaterial()
-    {
-        return 0;
-    }
 
     //Udregner kostpris
     public static int calcPickListPrice(List<Material> pickList)
@@ -67,6 +63,7 @@ public class Calculator
         int[] beams = new int[2];
         int quantity = 0;
         int length = 0;
+        int lenghtTest = carport.getLENGTH();
 
         //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (carport.getLENGTH() <= 300)
@@ -75,17 +72,17 @@ public class Calculator
             length = 600;
             quantity = 1;
 
-        } else if (300 < carport.getLENGTH() || carport.getLENGTH() <= 480)
+        } else if (300 > carport.getLENGTH() || carport.getLENGTH() <= 480)
         {
             //Woodmaterial length = 480
             length = 480;
             quantity = 2;
-        } else if (480 < carport.getLENGTH() || carport.getLENGTH() <= 600)
+        } else if (480 > carport.getLENGTH() || carport.getLENGTH() <= 600)
         {
             //Woodmaterial length = 600
             length = 600;
             quantity = 2;
-        } else if (600 < carport.getLENGTH() || carport.getLENGTH() <= 780)
+        } else if (600 > carport.getLENGTH() || carport.getLENGTH() <= 780)
         {
             //Woodmaterial length = 480
             length = 480;
@@ -114,22 +111,22 @@ public class Calculator
             //Woodmaterial length = 540
             length = 540;
             quantity = 1;
-        } else if (270 < carport.getLENGTH() || carport.getLENGTH() <= 360)
+        } else if (270 > carport.getLENGTH() || carport.getLENGTH() <= 360)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 2;
-        } else if (360 < carport.getLENGTH() || carport.getLENGTH() <= 540)
+        } else if (360 > carport.getLENGTH() || carport.getLENGTH() <= 540)
         {
             //Woodmaterial length = 540
             length = 540;
             quantity = 2;
-        } else if (540 < carport.getLENGTH() || carport.getLENGTH() <= 690)
+        } else if (540 > carport.getLENGTH() || carport.getLENGTH() <= 690)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 4;
-        } else if (690 < carport.getLENGTH() || carport.getLENGTH() <= 780)
+        } else if (690 > carport.getLENGTH() || carport.getLENGTH() <= 780)
         {
             //Woodmaterial length = 540
             length = 540;
@@ -157,17 +154,17 @@ public class Calculator
             //Woodmaterial length = 540
             length = 540;
             quantity = 1;
-        } else if (270 < carport.getWIDTH() || carport.getWIDTH() <= 360)
+        } else if (270 > carport.getWIDTH() || carport.getWIDTH() <= 360)
         {
             //Woodmaterial length = 360
             length = 360;
             quantity = 2;
-        } else if (360 < carport.getWIDTH() || carport.getWIDTH() <= 540)
+        } else if (360 > carport.getWIDTH() || carport.getWIDTH() <= 540)
         {
             //Woodmaterial length = 540
             length = 540;
             quantity = 2;
-        } else if (540 < carport.getWIDTH() || carport.getWIDTH() <= 600)
+        } else if (540 > carport.getWIDTH() || carport.getWIDTH() <= 600)
         {
             //Woodmaterial length = 360
             length = 360;
@@ -210,9 +207,11 @@ public class Calculator
         //Beregning af længden på spær
 
         //Længden på det "korte bredt" er hardcoded ind
-        if (carport.getWIDTH()<=480){
+        if (carport.getWIDTH() <= 480)
+        {
             length = 480;
-        } else {
+        } else
+        {
             length = 600;
         }
 
@@ -224,17 +223,19 @@ public class Calculator
 
     public static int calcScrewsForRoofing(Carport carport)
     {
-        int screwsForRoofing;
-
         //Udregning for skruer til taget
         //Man skal bruge ca. 12 skruer per kvadratmeter tagplade, der er skruer til 16,6 m^2 i en pakke. Vi runder ned til 16 m^2
-        int squareCentimeterPerPackageOfScrews = 1600;
-        if ((carport.getWIDTH() * carport.getLENGTH()) / squareCentimeterPerPackageOfScrews < 2)
+        int squareCentimeterPerPackageOfScrews = 160000;
+        double carportRoofInSquareCentimeters = carport.getWIDTH() * carport.getLENGTH();
+        //Beregner antal pakker af skruer der skal bruges i decimaltal
+        double packagesNeeded = carportRoofInSquareCentimeters / squareCentimeterPerPackageOfScrews;
+        //Runder decimal tal op til nærmeste hele tal (Math.ceil)
+        int screwsForRoofing = (int) Math.ceil(packagesNeeded);
+
+        //Giver en ekstra pakke skruer man skulle bruge 1 eller 2 pakker
+        if (screwsForRoofing < 3 && screwsForRoofing != 0)
         {
-            screwsForRoofing = 2;
-        } else
-        {
-            screwsForRoofing = 3;
+            screwsForRoofing += 1;
         }
 
         return screwsForRoofing;
@@ -282,7 +283,7 @@ public class Calculator
 
         int packagesOfHardwarescrews; //Der er 250 skruer i en pakke
 
-        int hardwareForRafters = calcHardwareForRaftersLeft(carport)+calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
+        int hardwareForRafters = calcHardwareForRaftersLeft(carport) + calcHardwareForRaftersRight(carport); //Et højre- og et venstrebeslag per spær
 
         int sidesOnHardwareForRafters = 3; //Jf. Materialelisten fra Fog skal der bruges 3 skruer per flade, og på et beslag er der 3 flade
 

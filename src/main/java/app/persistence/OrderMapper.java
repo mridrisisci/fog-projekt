@@ -1,9 +1,11 @@
 package app.persistence;
 
-import app.entities.*;
+import app.entities.Account;
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +13,12 @@ import java.util.List;
 public class OrderMapper
 {
 
-
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
                                           boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
-            "order_placed, order_paid, height, width, has_shed, roof_type, account_id) " +
-            "VALUES (?,?,?,?,?,?,?,?,?,?);";
+                "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?);";
 
 
         try (Connection connection = pool.getConnection();
@@ -28,7 +29,7 @@ public class OrderMapper
             ps.setString(3, status);
             ps.setTimestamp(4, orderPlaced);
             ps.setBoolean(5, orderPaid);
-            ps.setInt(6, height);
+            ps.setInt(6, length);
             ps.setInt(7, width);
             ps.setBoolean(8, hasShed);
             ps.setString(9, roofType);
@@ -36,7 +37,7 @@ public class OrderMapper
 
             // Execute the query and retrieve the generated key
             int rowsAffected = ps.executeUpdate();
-            if(rowsAffected != 1)
+            if (rowsAffected != 1)
             {
                 throw new DatabaseException("kunne ikke oprette ...");
             }
@@ -62,7 +63,7 @@ public class OrderMapper
         String sql = "INSERT INTO orders_materials VALUES (?,?,?)";
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql) )
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             int rowsAffected = ps.executeUpdate();
             ps.setInt(1, orderID);
@@ -86,9 +87,11 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 int salespersonID = rs.getInt("salesperson_id");
@@ -102,23 +105,26 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching orders from the database", e.getMessage());
         }
         return orders;
     }
 
     //TODO: tilføj hasShed på denne
-    /*public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
+    public static List<Order> getAllOrdersWithoutSalesperson(ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT * FROM public.orders WHERE salesperson_id = null;";
         List<Order> orders = new ArrayList<>();
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 String status = rs.getString("status");
@@ -132,11 +138,12 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
-    }*/
+    }
 
 
     //TODO: Test om den virker når salesperson står både som ? og null
@@ -147,7 +154,8 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
             ps.setInt(1, salespersonID);
             ps.setInt(2, orderID);
@@ -171,9 +179,11 @@ public class OrderMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
                 int orderID = rs.getInt("order_id");
                 String carportID = rs.getString("carport_id");
                 int salespersonID = rs.getInt("salesperson_id");
@@ -187,7 +197,8 @@ public class OrderMapper
                 Order order = new Order(orderID, carportID, salespersonID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching paid orders from the database", e.getMessage());
         }
         return orders;
@@ -312,7 +323,7 @@ public class OrderMapper
             //ps.setString(1, sortby);
             ResultSet rs = ps.executeQuery();
             List<Order> orders = new ArrayList<>();
-            while(rs.next())
+            while (rs.next())
             {
                 orderID = rs.getInt("order_id");
                 status = rs.getString("status");
@@ -338,7 +349,7 @@ public class OrderMapper
 
     public static int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT account_id, length, width FROM public.orders WHERE order_id = ?;";
+        String sql = "SELECT account_id, length, width FROM orders WHERE order_id = ?;";
 
         int[] carportLengthAndWidth = new int[2];
         int account_ID;
@@ -492,54 +503,18 @@ public class OrderMapper
 
     }
 
-    public static List<Material> getBOM(int orderId, ConnectionPool pool) throws DatabaseException
+
+    public static Order getOrder()
     {
-        String sql = "SELECT " +
-            "m.material_id " +
-            "m.name " +
-            "m.description " +
-            "m.unit " +
-            "om.quantity " +
-            "m.type " +
-            "FROM materials m " +
-            "LEFT JOIN orders_materials om ON m.material_id = om.material_id " +
-            "WHERE m.order_id = ?" +
-            "ORDER BY m.material_id"
-            ;
-        List<Material> materials = new ArrayList<>();
-
-        try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            while(rs.next())
-            {
-                materials.add(new Material(
-                    rs.getInt("material_id"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getString("unit"),
-                    rs.getInt("quantity"),
-                    rs.getString("type")
-                    ));
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-        return materials;
+        return null;
     }
-
-
-
 
     public static List<Order> getOrders()
     {
         return null;
     }
 
-    public static void deleteOrderByID(int orderId)
+    public static void deleteOrderByID()
     {
 
     }
@@ -549,5 +524,8 @@ public class OrderMapper
 
     }
 
+    public static void addOrderToDB()
+    {
 
+    }
 }
