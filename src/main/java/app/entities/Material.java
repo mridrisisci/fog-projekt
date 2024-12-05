@@ -49,6 +49,7 @@ public class Material
         this.unit = unit;
         this.description = description;
         this.price = purchasePrice;
+        this.quantity = quantity;
         this.length = length;
         this.type = type;
     }
@@ -60,6 +61,7 @@ public class Material
         this.unit = unit;
         this.description = description;
         this.price = purchasePrice;
+        this.quantity = quantity;
         this.length = length;
     }
 

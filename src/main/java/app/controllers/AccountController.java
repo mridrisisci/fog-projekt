@@ -13,7 +13,7 @@ public class AccountController
 {
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/seequeries", ctx -> ctx.render("requestedqueries.html") );
+        app.get("/seequeries", ctx -> ctx.render("orderhistory.html") );
         app.get("/login", ctx -> ctx.render("login.html") );
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
         app.get("/createaccount", ctx -> ctx.render("createaccount.html") );
@@ -136,13 +136,13 @@ public class AccountController
     {
         try
         {
-            List<Account> allCustomers = AccountMapper.getAllCustomerQueries(pool);
+            List<Account> allCustomers = AccountMapper.getAllCustomers(pool);
             ctx.attribute("allcustomers", allCustomers);
-            ctx.render("requestedqueries.html");
+            ctx.render("orderhistory.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("requestedqueries.html");
+            ctx.render("orderhistory.html");
         }
     }
 
