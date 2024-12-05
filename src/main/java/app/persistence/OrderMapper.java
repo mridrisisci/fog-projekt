@@ -1,11 +1,12 @@
 package app.persistence;
 
 import app.entities.Account;
+import app.entities.Carport;
+import app.entities.Material;
 import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class OrderMapper
 {
 
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
-                                          boolean orderPaid, int height, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
+                                          boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
                 "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
@@ -57,6 +58,7 @@ public class OrderMapper
         }
     }
 
+    //TODO bruger vi denne? Check createPickList metoden
     public static void createCarportInOrdersMaterials(int orderID, int materialID, int quantity, ConnectionPool pool) throws DatabaseException
     {
 
@@ -262,6 +264,7 @@ public class OrderMapper
 
         Timestamp orderPlaced;
         String status;
+        String carportID;
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {

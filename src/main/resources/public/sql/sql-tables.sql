@@ -147,7 +147,7 @@ VALUES
     ('45x195 mm. spærtræ ubh.', 'Stk', 342, 600, 45, 195, 'Rem', 'Remme i sider, sadles ned i stolper (skur del, deles)'),
     ('45x195 mm. spærtræ ubh.', 'Stk', 274, 480, 45, 195, 'Spær', 'Spær, monteres på rem'),
     ('45x195 mm. spærtræ ubh.', 'Stk', 342, 600, 45, 195, 'Spær', 'Spær, monteres på rem'),
-    ('97x97 mm. trykimp. Stolpe', 'Stk', 266, 300, 97, 97, 'Stolpe', 'stolper nedgraves 90 cm i jord'),
+    ('97x97 mm. trykimp. Stolpe', 'Stk', 266, 97, 300, 97, 'Stolpe', 'stolper nedgraves 90 cm i jord'),
     ('19x100 mm. trykimp. Brædt', 'Stk', 19, 210, 19, 100, 'Beklædning', 'beklædning af skur 1 på 2'),
     ('19x100 mm. trykimp. Brædt', 'Stk', 48, 540, 19, 100, 'Vandbrædt', 'vandbrædt på stern i sider'),
     ('19x100 mm. trykimp. Brædt', 'Stk', 32, 360, 19, 100, 'Vandbrædt', 'vandbrædt på stern i forende'),

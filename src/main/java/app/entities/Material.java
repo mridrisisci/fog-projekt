@@ -12,9 +12,23 @@ public class Material
     private int height;
     private int width;
     private boolean hasShedAddons;
-    public int numberOfShedAddons;
+    public int getNumbersOfShedAddons;
     private String type;
 
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons, int getNumbersOfShedAddons)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.unit = unit;
+        this.quantity = quantity;
+        this.length = length;
+        this.height = height;
+        this.width = width;
+        this.hasShedAddons = hasShedAddons;
+        this.getNumbersOfShedAddons = getNumbersOfShedAddons;
+    }
 
     public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, String type)
     {
@@ -23,10 +37,21 @@ public class Material
         this.unit = unit;
         this.description = description;
         this.purchasePrice = purchasePrice;
+        this.quantity = quantity;
         this.length = length;
         this.type = type;
     }
 
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+        this.purchasePrice = purchasePrice;
+        this.quantity = quantity;
+        this.length = length;
+    }
 
     public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, String type)
     {
@@ -46,14 +71,13 @@ public class Material
         this.description = description;
     }
 
-    public Material(int materialID, String materialName, String description, String unit, int quantity, String type)
-    { // Used for getting the BOM
-        this.materialID = materialID;
-        this.materialName = materialName;
-        this.description = description;
+    public Material(String name, String unit, String description, String type, int quantity)
+    {
+        this.materialName = name;
         this.unit = unit;
-        this.quantity = quantity;
+        this.description = description;
         this.type = type;
+        this.quantity = quantity;
     }
 
     public Material(String type)
@@ -116,8 +140,8 @@ public class Material
         return hasShedAddons;
     }
 
-    public int getNumberOfShedAddons()
+    public int getGetNumbersOfShedAddons()
     {
-        return numberOfShedAddons;
+        return getNumbersOfShedAddons;
     }
 }

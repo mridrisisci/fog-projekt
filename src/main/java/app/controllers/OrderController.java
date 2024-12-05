@@ -6,6 +6,7 @@ import app.entities.RoofType;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
@@ -131,7 +132,7 @@ public class OrderController
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarportInOrdersMaterials(orderID, ctx, pool);
             order = getOrderByID(orderID, ctx, pool);
@@ -243,12 +244,30 @@ public class OrderController
         }
 
 
+
     }
 
 
 //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+private static void createCarport(int orderID, Context ctx, ConnectionPool pool) throws DatabaseException
+{
+    // hardcoded for at teste
+    int materialID = 1;
+    int quantity = 1;
+    try
+    {
+        final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
+        final int LENGTH = LENGTH_AND_WIDTH[0];
+        final int WIDTH = LENGTH_AND_WIDTH[1];
+
+        Carport carport = new Carport(orderID, LENGTH, WIDTH);
+        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        carport.setMaterialList(pickList);
+        OrderMapper.updatePickListPrice(carport, pool);
+        OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
 
     private static void createCarportInOrdersMaterials(int orderID, Context ctx, ConnectionPool pool)
     {
