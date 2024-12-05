@@ -185,7 +185,7 @@ public class OrderMapper
     public static List<Order> getOrderDetails(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
-            "o.height, " +
+            "o.length, " +
             "o.width, " +
             "o.has_shed, " +
             "o.roof_type, " +
@@ -211,15 +211,14 @@ public class OrderMapper
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 int width = rs.getInt("width");
-                int length = rs.getInt("height"); // CHANGE TO LENGTH
-                //int price = rs.getInt("price"); // NULL FOR NOW?
-
+                int length = rs.getInt("length");
+                int price = rs.getInt("price");
                 int accountID = rs.getInt("account_id");
                 String name = rs.getString("username");
                 String email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, 200, new Account(accountID, name, email, telephone, role)));
+                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
             }
             return orderDetails;
 
@@ -233,12 +232,10 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        // CHANGE HEIGHT TO LENGTH HERE
-        String sql = "SELECT order_id, order_placed, height, width, has_shed, roof_type, status FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_id, order_placed, length, width, has_shed, roof_type, status FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
-        String carportID;
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -248,7 +245,7 @@ public class OrderMapper
             {
                 int orderId = rs.getInt("order_id");
                 orderPlaced = rs.getTimestamp("order_placed");
-                int length = rs.getInt("height"); // CHANGE TO LENGTH
+                int length = rs.getInt("length");
                 int width = rs.getInt("width");
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
@@ -271,7 +268,7 @@ public class OrderMapper
             "o.status, " +
             "o.order_placed," +
             "o.order_paid," +
-            "o.height," + // change to length
+            "o.length," +
             "o.width," +
             "o.account_id," +
              "a.email," +
@@ -306,8 +303,8 @@ public class OrderMapper
                 status = rs.getString("status");
                 orderPlaced = rs.getTimestamp("order_placed");
                 orderPaid = rs.getBoolean("order_paid");
-                width = rs.getInt("height"); // change to length (length is null om dn)
-                length = rs.getInt("width");
+                width = rs.getInt("width");
+                length = rs.getInt("length");
                 name = rs.getString("username");
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
