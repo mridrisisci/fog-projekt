@@ -2,8 +2,6 @@ package app.utilities;
 
 import app.entities.Carport;
 import app.entities.Material;
-import app.persistence.ConnectionPool;
-import app.persistence.MaterialMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ public class Calculator
         for (Material material : pickList)
         {
             int materialQuantity = material.getQuantity();
-            int materialPrice = material.getPurchasePrice();
+            int materialPrice = material.getPrice();
             totalPrice += materialPrice * materialQuantity;
         }
 
