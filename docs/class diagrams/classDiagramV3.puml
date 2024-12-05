@@ -160,12 +160,22 @@ package exceptions {
 
 package persistence {
     class OrderMapper {
-    + Order getOrder()
-    'hent alle forespørgsler
-    + List<Order> getOrders()
+    + int createQueryInOrders()
+    + void createCarportInOrdersMaterials()
+    + List<Order> getAllOrders()
+    + List<Order> getAllWithoutSalesperson()
+    + void updateSalespersonByOrderID()
+    + List<Order> getAllPaidOrders()
+    + Order getOrderOnReceipt()
+    + List<Order> seeAllQueries()
+    + int[] getLengthAndWidthByOrderID()
+    + int getPickListPriceByOrderID()
+    + int getCoverageRatioByOrderID()
+    + int setDefaultSalesPriceByOrderID()
+    + void updateSalesPriceByOrderID()
+    + void updateCoverageRatioPercentageByOrderID()
     + void deleteOrderByID()
     + void updateOrderByUserID()
-    + void addOrderToDB()
     }
 
     class MaterialMapper {
@@ -200,12 +210,17 @@ package persistence {
     }
 
     class AccountMapper {
+    + int createRecordInAddresses()
+    + void createSalesAccount()
+    + Account login()
+    + int createRecordInPostalCode()
+    + int createRecordInCities()
+    + int createCustomerAccount()
     + void addAccount())
     + void deleteAccount(Account account))
     + void updateAccount(Account account)
     + Account getAccountByID(Account account)
-    + List<Account> getAllAccounts(Account account)
-    + void login()
+    + List<Account> getAllCustomerQueries()
     }
 }
 
