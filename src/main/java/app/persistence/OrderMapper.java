@@ -450,9 +450,4 @@ public class OrderMapper
     {
 
     }
-
-    public static void addOrderToDB()
-    {
-
-    }
 }
