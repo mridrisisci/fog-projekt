@@ -5,6 +5,7 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ public class MaterialMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql) )
         {
-            int rowsAffected = ps.executeUpdate();
             ps.setString(1, name);
             ps.setString(2, unit);
             ps.setInt(3, price);
@@ -67,10 +67,12 @@ public class MaterialMapper
             ps.setString(7, type);
             ps.setString(8, description);
 
+            int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
                 throw new DatabaseException("Kunne ikke oprette materialet");
             }
+            ResultSet rs = ps.getGeneratedKeys();
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
