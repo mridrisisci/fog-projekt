@@ -853,8 +853,21 @@ public class MaterialMapper
     {
     }
 
-    public static void deleteMaterial()
+    //TODO: Lav metoden færdig
+    public static void deleteMaterial(int materialID, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "DELETE FROM materials WHERE material_id = ?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, materialID);
+            ResultSet rs = ps.executeQuery();
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
