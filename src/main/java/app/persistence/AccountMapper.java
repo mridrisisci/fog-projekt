@@ -248,8 +248,4 @@ public class AccountMapper
             throw new DatabaseException(e.getMessage());
         }
     }
-    public static void login()
-    {
-
-    }
 }
