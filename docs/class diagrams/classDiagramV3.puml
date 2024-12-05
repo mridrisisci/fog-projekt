@@ -132,7 +132,7 @@ package entities {
     - String materialName
     - String description
     'prisen for Fog at købe materialerne
-    - int purchasePrice
+    - int price
     - String unit
     - int quantity
     - int length
@@ -155,6 +155,11 @@ package entities {
 }
 
 package exceptions {
+
+class DatabaseException{
++ DatabaseException(String errorMessage)
++ DatabaseException(String userMessage, String systemMessage)
+}
 
 }
 
@@ -246,5 +251,6 @@ Carport *-- Roof
 Roof *-- RoofType
 
 persistence *-- Calculator
+persistence *-- exceptions
 
 @enduml
