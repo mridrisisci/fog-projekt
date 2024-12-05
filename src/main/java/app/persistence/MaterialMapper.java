@@ -100,7 +100,6 @@ public class MaterialMapper
         {
             throw new DatabaseException("Database error while updating balance", e.getMessage());
         }
-
     }
 
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
