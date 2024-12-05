@@ -425,6 +425,68 @@ public class OrderMapper
         }
     }
 
+    public static int setDefaultSalesPriceAndCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int pickListPrice = getPickListPriceByOrderID(orderID, pool);
+        double coverageRatio = 0.35;
+        int coverageRatioPercentage = (int) Math.ceil(coverageRatio * 100);
+        int salesPrice = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
+
+        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
+
+        String sql = "UPDATE public.orders SET sales_price = ?, coverage_ratio_percentage = ? WHERE order_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, salesPrice);
+            ps.setInt(2, coverageRatioPercentage);
+            ps.setInt(3, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to set default sales price for order with ID: " + orderID);
+            }
+
+            return salesPrice;
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
+
+        int orderID = carport.getOrderID();
+        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        int pickListPrice = Calculator.calcPickListPrice(pickList);
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, pickListPrice);
+            ps.setInt(2, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update picklist price for order with ID: " + orderID);
+            }
+
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return pickListPrice;
+    }
+
     public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
