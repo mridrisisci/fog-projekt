@@ -2,10 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
-import app.controllers.AccountController;
-import app.controllers.MaterialController;
-import app.controllers.OrderController;
-import app.controllers.SendGridController;
+import app.controllers.*;
 import app.persistence.ConnectionPool;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
@@ -37,6 +34,9 @@ public class Main {
         MaterialController.addRoutes(app, dBConnection);
         AccountController.addRoutes(app, dBConnection);
         SendGridController.addRoutes(app);
+
+
+        app.get("/svg/carport", SVGController::generateSVG);
 
 
     }
