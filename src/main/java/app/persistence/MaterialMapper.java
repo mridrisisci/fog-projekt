@@ -5,7 +5,6 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,10 +110,10 @@ public class MaterialMapper
         Carport carport = null;
         pickList.add(getPosts(carport, pool));
         pickList.add(getBeams(carport, pool));
-        pickList.add(getSideUnderfasciaBoard(carport, pool));
-        pickList.add(getSideOverfasciaBoard(carport, pool));
-        pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
-        pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
+        pickList.add(getSideUnderFasciaBoard(carport, pool));
+        pickList.add(getSideOverFasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackUnderFasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackOverFasciaBoard(carport, pool));
         pickList.add(getRafters(carport, pool));
         pickList.add(getBoardBolt(carport, pool));
         pickList.add(getHardwareForRaftersLeft(carport, pool));
@@ -269,7 +268,7 @@ public class MaterialMapper
 
     //TODO: LAVE CARPORT OBJEKT når der er ny ordre, som bruges i parametrene
     //TODO: MANGLER TEST!
-    public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getSideUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -311,7 +310,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getSideOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -353,7 +352,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -395,7 +394,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getFrontAndBackOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -872,10 +871,6 @@ public class MaterialMapper
     }
 
     public static void updateMaterialByPrice()
-    {
-    }
-
-    public static void addMaterialToDB()
     {
     }
 
