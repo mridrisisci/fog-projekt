@@ -46,6 +46,10 @@ public class SendGrid
             hasShed2 = "Uden skur";
         }
 
+        // ngrok dynamic URL for testing redirects with dynamic mail
+        String ngrokURL = "https://ec9c-149-50-217-162.ngrok-free.app";
+        String URL = ngrokURL + "/order/acceptoffer/" + order.getORDER_ID();
+
         // Dynamisk URL til produktion // når app skal deployes
         String acceptURL = "https://dataduck.dk/order/acceptoffer/" + order.getORDER_ID();
 
@@ -66,6 +70,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Tagtype", roofType);
         personalization.addDynamicTemplateData("Redskabsrum", hasShed2);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
+        personalization.addDynamicTemplateData("ngrokURL", URL);
         //personalization.addDynamicTemplateData("AcceptUrl", acceptURL); // uncomment before deploying
         mail.addPersonalization(personalization);
 
