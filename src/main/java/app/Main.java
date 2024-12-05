@@ -36,8 +36,6 @@ public class Main {
         SendGridController.addRoutes(app);
 
 
-        app.get("/svg/carport", SVGController::generateSVG);
-
 
     }
 }
