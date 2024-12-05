@@ -162,7 +162,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ?;";
 
         String name;
         String unit;
