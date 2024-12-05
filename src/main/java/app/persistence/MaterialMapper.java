@@ -887,23 +887,36 @@ public class MaterialMapper
         return null;
     }
 
-    public static List<Material> getSVGMaterialList(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        List<Material> SVGMaterials;
-        //TODO join med materials tabel på  mat_id
-        String sql = "SELECT * FROM public.orders_materials INNER JOIN material_id ON material_id WHERE order_id = ?";
+    public static List<Material> getSVGMaterialList(int orderID, ConnectionPool pool) throws DatabaseException {
+        List<Material> svgMaterials = new ArrayList<>();
+
+        String sql = "SELECT material.material_id, material.type, material.length, material.width, material.height " +
+                "FROM public.orders_materials order_materials " +
+                "INNER JOIN public.materials material ON order_materials.material_id = material.material_id " +
+                "WHERE om.order_id = ?";
 
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql)){
+             PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setInt(1,orderID);
-            ps.setInt(2,);
+            ps.setInt(1, orderID);
 
-        } catch (SQLException e){
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int materialID = rs.getInt("material_id");
+                    String materialType = rs.getString("type");
+                    int materialLength = rs.getInt("length");
+                    int materialWidth = rs.getInt("width");
+                    Material material = new Material(materialID, materialLength, materialWidth, materialType);
+
+                    svgMaterials.add(material);
+                }
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
 
-
+        return svgMaterials;
     }
+
 }
