@@ -27,13 +27,11 @@ public class MaterialController
             listOfMaterials(ctx, dBConnection);
             ctx.render("listOfMaterials.html");
         });
-        //app.get("listOfAllMaterials", ctx -> listOfMaterials(ctx, dBConnection));
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
         app.post("updateMaterialPrice", ctx -> updateMaterialPrice(ctx, dBConnection));
 
     }
 
-    //TODO: gennemgå med andre, nuppet fra Cupcake
     public static void insertNewMaterial(Context ctx, ConnectionPool pool) {
         String name = ctx.formParam("name");
         String unit = ctx.formParam("unit");
@@ -55,7 +53,6 @@ public class MaterialController
         ctx.redirect("listOfMaterials");
     }
 
-//TODO: gennemgå med andre, nuppet fra Cupcake
     public static void listOfMaterials(Context ctx, ConnectionPool pool) {
         try {
             List<Material> materials = MaterialMapper.getAllMaterials(pool);
