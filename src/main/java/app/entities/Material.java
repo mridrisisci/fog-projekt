@@ -5,7 +5,7 @@ public class Material
     private int materialID;
     private String materialName;
     private String description;
-    private int purchasePrice;
+    private int price;
     private String unit;
     private int quantity;
     private int length;
@@ -19,7 +19,7 @@ public class Material
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = purchasePrice;
         this.unit = unit;
         this.quantity = quantity;
         this.length = length;
@@ -33,7 +33,7 @@ public class Material
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = purchasePrice;
         this.unit = unit;
         this.length = length;
         this.height = height;
@@ -48,7 +48,7 @@ public class Material
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = purchasePrice;
         this.length = length;
         this.type = type;
     }
@@ -59,7 +59,7 @@ public class Material
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = purchasePrice;
         this.length = length;
     }
 
@@ -68,7 +68,7 @@ public class Material
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = purchasePrice;
         this.unit = unit;
         this.quantity = quantity;
         this.type = type;
@@ -115,9 +115,9 @@ public class Material
         return description;
     }
 
-    public int getPurchasePrice()
+    public int getPrice()
     {
-        return purchasePrice;
+        return price;
     }
 
     public String getUnit()
