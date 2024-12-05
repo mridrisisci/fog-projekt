@@ -1,7 +1,6 @@
 package app.persistence;
 
-import app.entities.Account;
-import app.entities.Order;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 import java.math.BigDecimal;
