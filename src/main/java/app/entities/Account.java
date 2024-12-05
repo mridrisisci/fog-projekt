@@ -2,57 +2,76 @@ package app.entities;
 
 public class Account
 {
-    private final int ACCOUNT_ID;
-    private final String ROLE;
-    private final String USERNAME;
-    private final String PASSWORD;
-    private final int TELEPHONE;
-    private final String EMAIL;
-    private final String ADDRESS;
+    private int accountID;
+    private String role;
+    private String username;
+    private String password;
+    private int telephone;
+    private String email;
+    private String address;
 
-    public Account(String ADDRESS, String EMAIL, int TELEPHONE, String PASSWORD, String USERNAME, String ROLE, int ACCOUNT_ID)
-    {
-        this.ADDRESS = ADDRESS;
-        this.EMAIL = EMAIL;
-        this.TELEPHONE = TELEPHONE;
-        this.PASSWORD = PASSWORD;
-        this.USERNAME = USERNAME;
-        this.ROLE = ROLE;
-        this.ACCOUNT_ID = ACCOUNT_ID;
+    public Account(String username, String email)
+    { // used for send tilbud-route
+        this.username = username;
+        this.email = email;
     }
 
-    public int getACCOUNT_ID()
+    public Account(String username, String email, int telephone)
     {
-        return ACCOUNT_ID;
+        this.username = username;
+        this.email = email;
+        this.telephone = telephone;
     }
 
-    public String getROLE()
-    {
-        return ROLE;
+
+    public Account(int accountID, String email, int telephone)
+    { // used to log in
+        this.accountID = accountID;
+        this.username = email;
+        this.telephone = telephone;
     }
 
-    public String getUSERNAME()
-    {
-        return USERNAME;
+    public Account(int accountID, String username, String email, int telephone, String role)
+    { // this constructor is used for 'orderhistory' mapper method
+        this.accountID = accountID;
+        this.username = username;
+        this.email = email;
+        this.telephone = telephone;
+        this.role = role;
     }
 
-    public String getPASSWORD()
+    public int getAccountID()
     {
-        return PASSWORD;
+        return accountID;
     }
 
-    public int getTELEPHONE()
+    public String getRole()
     {
-        return TELEPHONE;
+        return role;
     }
 
-    public String getEMAIL()
+    public String getUsername()
     {
-        return EMAIL;
+        return username;
     }
 
-    public String getADDRESS()
+    public String getPassword()
     {
-        return ADDRESS;
+        return password;
+    }
+
+    public int getTelephone()
+    {
+        return telephone;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public String getAddress()
+    {
+        return address;
     }
 }

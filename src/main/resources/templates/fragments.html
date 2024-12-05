@@ -35,15 +35,21 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav nav-underline mb-2 mb-lg-0">
+                    <ul class="navbar-nav nav-underline ms-auto mb-2 me-1 mb-lg-0">
+                        <li class="nav-item" th:if="${session.currentUser != null}">
+                            <span class="nav-link" th:text="'Hej, ' + ${session.currentUser.username}">Velkommen, </span>
+                        </li>
+                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
+                            <a class="nav-link" href="/orderhistory" th:href="@{/orderhistory}">Se alle forespørgsler</a>
+                        </li>
                         <!--<li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">-->
-                            <a class="nav-link" href="/" th:href="@{/}">Se alle forespørgsler</a>
+                            <a href="/createaccount" th:href="@{/createaccount}" class="nav-link">Opret bruger</a>
                         </li>
-                            <a href="/" th:href="@{/}" class="nav-link">Opret bruger</a>
+                        <li>
+                            <a class="nav-link" href="/login" th:href="@{/login}">Log ind</a>
                         </li>
-                            <a class="nav-link" href="/" th:href="@{/}">Log ind</a>
-                        </li>
-                            <a class="nav-link" href="/" th:href="@{/}">Log ud</a>
+                        <li>
+                            <a class="nav-link" href="/logout" th:href="@{/logout}">Log ud</a>
                         </li>
                     </ul>
                 </div>

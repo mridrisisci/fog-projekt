@@ -48,13 +48,66 @@ public class MaterialMapper
 
     }
 
+    //TODO: Test
+    public static void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool) throws DatabaseException
+    {
+
+        String sql = "INSERT INTO public.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, name);
+            ps.setString(2, unit);
+            ps.setInt(3, price);
+            ps.setInt(4, length);
+            ps.setInt(5, height);
+            ps.setInt(6, width);
+            ps.setString(7, type);
+            ps.setString(8, description);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke oprette materialet");
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+    //TODO: TEST
+    public static void updateMaterialPriceByMaterialID(int newMaterialPrice, int materialID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE public.materials SET price = ? WHERE material_id = ?;";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, newMaterialPrice);
+            ps.setInt(2, materialID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Database error while updating balance", e.getMessage());
+        }
+
+    }
+
     //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
-    public static List<Material> createPickList(int orderID, ConnectionPool pool) throws DatabaseException
+
+
+    public static List<Material> createPickList(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         List<Material> pickList = new ArrayList<>();
 
-        //TODO: sørg for carport ikke er null
-        Carport carport = null;
         pickList.add(getPosts(carport, pool));
         pickList.add(getBeams(carport, pool));
         pickList.add(getSideUnderfasciaBoard(carport, pool));
@@ -74,20 +127,14 @@ public class MaterialMapper
         pickList.add(getRoofPlatesShort(carport, pool));
 
         //TODO: tjek om materialer faktisk fjernes
-        for (Material material : pickList)
-        {
-            if (material.getQuantity() == 0)
-            {
-                pickList.remove(material);
-            }
-        }
+        pickList.removeIf(material -> material.getQuantity() == 0);
 
         for (Material material : pickList)
         {
-            String sql = "INSERT INTO public.orders_materials(material_id,quantity) WHERE order_id = ? VALUES(?,?);";
+            String sql = "INSERT INTO orders_materials(order_id, material_id, quantity) VALUES (?, ?, ?);";
 
+            int orderID = carport.getOrderID();
             int materialID = material.getMaterialID();
-            //TODO: orderID bliver ikke hentet nogle steder fra - endnu
             int quantity = material.getQuantity();
 
             try (Connection connection = pool.getConnection();
@@ -96,6 +143,11 @@ public class MaterialMapper
                 ps.setInt(1, orderID);
                 ps.setInt(2, materialID);
                 ps.setInt(3, quantity);
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected != 1)
+                {
+                    throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
+                }
             } catch (SQLException e)
             {
                 System.out.println(e.getMessage());
@@ -106,34 +158,11 @@ public class MaterialMapper
         return pickList;
     }
 
-    public static int updatePickListPrice(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-
-        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
-
-        List<Material> pickList = createPickList(orderID, pool);
-        int pickListPrice = Calculator.calcPickListPrice(pickList);
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, pickListPrice);
-            ps.setInt(2, orderID);
-
-        } catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            throw new DatabaseException(e.getMessage());
-        }
-
-        return pickListPrice;
-    }
-
 
     //TODO: MANGLER TEST!
     public static Material getPosts(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ?;";
 
         String name;
         String unit;
@@ -143,7 +172,7 @@ public class MaterialMapper
         int length;
         int price;
         String type = "Stolpe";
-        Material posts = null;
+        Material material = null;
 
 
         try (Connection connection = pool.getConnection();
@@ -160,9 +189,9 @@ public class MaterialMapper
                 length = rs.getInt("length");
                 type = rs.getString("type");
                 price = rs.getInt("price");
-                posts = new Material(materialID, name, description, price, unit, quantity, length, type);
+                material = new Material(materialID, name, description, price, unit, quantity, length, type);
             }
-            return posts;
+            return material;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());

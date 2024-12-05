@@ -1,25 +1,73 @@
 package app.controllers;
 
-import app.entities.Order;
-import app.entities.RoofType;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
+import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class OrderController
 {
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/", ctx -> ctx.render("index.html"));
         app.get("/createquery", ctx -> ctx.render("createquery.html"));
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
+        app.get("/", ctx -> showFrontpage(ctx, dBConnection));
+        app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
+        app.post("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
+        app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
+        app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
+        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
+    }
+
+    private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
+    {
+        String orderID = ctx.formParam("orderID");
+        String action = ctx.formParam("action");
+        String email = ctx.formParam("email");
+
+        try
+        {
+            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            if ("accept".equals(action)) // if customer pays for order, BOM is sent
+            {
+                SendGrid.sendBOM(email, "Stykliste", order);
+                ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
+            }
+            else if ("reject".equals(action)) // if customer declines order, customer data is deleted
+            {
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                ctx.attribute("message", "Din ordre er slettet. ");
+                ctx.redirect("/");
+            }
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        } catch (IOException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        }
+
+
+    }
+
+    public static void showFrontpage(Context ctx, ConnectionPool pool)
+    {
+        ctx.render("index.html");
     }
 
 
@@ -27,35 +75,33 @@ public class OrderController
     {
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        int carportWidth = Integer.parseInt(carportLengthString);
-        int carportHeight = Integer.parseInt(carportWidthString);
+        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportLengthString));
+        int carportLength = Integer.parseInt(Objects.requireNonNull(carportWidthString));
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
 
         String shedWidthString = ctx.formParam("chooseShedWidth");
-        Integer shedWidth = Integer.parseInt(shedWidthString);
+        Integer shedWidth = Integer.parseInt(Objects.requireNonNull(shedWidthString));
         String shedLengthString = ctx.formParam("chooseShedLength");
-        Integer shedLength = Integer.parseInt(shedLengthString);
+        Integer shedLength = Integer.parseInt(Objects.requireNonNull(shedLengthString));
 
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
         String postalCodeString = ctx.formParam("choosePostalCode");
-        int postalCode = Integer.parseInt(postalCodeString);
+        int postalCode = Integer.parseInt(Objects.requireNonNull(postalCodeString));
         String city = ctx.formParam("chooseCity");
         String telephoneString = ctx.formParam("choosePhoneNumber"); //
-        int telephone = Integer.parseInt(telephoneString);
+        int telephone = Integer.parseInt(Objects.requireNonNull(telephoneString));
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
 
         // TODO: Færdiggør valideringsmetoderne
         //validatePhoneNumber(ctx, "choosePhoneNumber");
-        //validateEmail(ctx, "chooseEmail");
         //validatePostalCode(ctx, "choosePostalCode");
 
-        // TODO: tag stilling til validateParams()
 
         String carportId = "";
         int salesPersonId = 0;
@@ -63,25 +109,24 @@ public class OrderController
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
         Order order;
-
-
         boolean hasShed = true;
-        // TODO: Lav carport-objekt efter ordren er oprettet
+
         try
         {
 
             int cityID = AccountMapper.createRecordInCities(city, pool);
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
             int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
-            int accountID = AccountMapper.createAccount(role, username, telephone, email, addressID, pool);
+            int accountID = AccountMapper.createCustomerAccount(role, username, telephone, email, addressID, pool);
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
-            order = getOrderByID(orderID, ctx, pool);
+            order = OrderMapper.getOrderByID(orderID, pool);
+            SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -90,21 +135,27 @@ public class OrderController
         } catch (NumberFormatException e)
         {
             throw new IllegalArgumentException(e);
+        } catch (IOException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("kvittering.html");
         }
     }
-    //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
-    // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
-    // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
-        private static void createCarport(int orderID, Context ctx, ConnectionPool pool)
+    private static void createCarport(int orderID, Context ctx, ConnectionPool pool) throws DatabaseException
     {
-        // hardcoded for at teste
-        int materialID = 1;
-        int quantity = 1;
-
         try
         {
-            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
+            final int[] LENGTH_AND_WIDTH = OrderMapper.getLengthAndWidthByOrderID(orderID, pool);
+            final int LENGTH = LENGTH_AND_WIDTH[0];
+            final int WIDTH = LENGTH_AND_WIDTH[1];
+
+            Carport carport = new Carport(orderID, LENGTH, WIDTH);
+            List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+            carport.setMaterialList(pickList);
+            OrderMapper.updatePickListPrice(carport, pool);
+            OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
+
 
         } catch (DatabaseException e)
         {
@@ -112,19 +163,118 @@ public class OrderController
         }
     }
 
+    private static void sendOffer(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String action = ctx.formParam("action");
+            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
+            String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
+            Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            String email = account.getEmail();
+            System.out.println(email);
+
+            if ("send".equals(action))
+            {
+                SendGrid.sendOffer(email, "Pristilbud");
+                ctx.attribute("message", "Dit pristilbud er sendt til kunden");
+                showOrderHistory(ctx,pool);
+            }
+            else if ("afvis".equals(action))
+            {
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                ctx.attribute("message", "Bestilte pristilbud er afvist og kundens data er slettet fra systemet");
+                showOrderHistory(ctx,pool);
+            }
+
+        } catch (IOException | DatabaseException e )
+        {
+            System.out.println(e.getMessage());
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
+    }
+
+    private static void showOrderDetails(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            List<Order> orderDetails;
+            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+
+            // get Account object from orderdetails
+            Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
+            Account account = accountIndex.getAccount();
+
+            Order order = orderDetails.removeLast(); // removes Account object
+            ctx.attribute("orderdetails", order);
+            ctx.attribute("account", account);
+            ctx.render("/orderdetails.html");
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
+
+    }
+
+
+    private static void showOrderHistory(Context ctx, ConnectionPool pool)
+    {
+        if (ctx.sessionAttribute("currentUser") == null)
+        {
+            ctx.attribute("message", "Du skal være logget ind for at se dette indhold.");
+            ctx.render("login.html");
+            return;
+        }
+        Account account = ctx.sessionAttribute("currentUser");
+        String role = Objects.requireNonNull(account).getRole();
+        System.out.println(role);
+        System.out.println(account.getUsername() + " | " + account.getEmail());
+
+        if ("salesperson".equals(role))
+        {
+            List<Order> orders = new ArrayList<>();
+            String sortby = ctx.formParam("query");
+            try
+            {
+                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+                {
+                    sortby = "order_id";
+                }
+                orders = OrderMapper.getOrderHistory(sortby, pool);
+            } catch (DatabaseException e)
+            {
+                ctx.attribute("message", e.getMessage());
+            }
+            // Render Thymeleaf-skabelonen
+            ctx.attribute("orders", orders);
+            ctx.render("/orderhistory.html");
+        }
+
+
+
+    }
+
+
+//TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
+// det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
+// vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+
+
+
+
     private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
         Order order;
         try
         {
-            //String orderIDString = ctx.formParam("orderID");
             order = OrderMapper.getOrderByID(orderID, pool);
             return order;
-            //ctx.attribute("order", order);
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("kvittering.html");
             return null;
         }
     }
@@ -144,16 +294,6 @@ public class OrderController
         return false;
     }
 
-    private static boolean validateEmail(Context ctx, String email)
-    {
-        String chars = "@.";
-        boolean hasChar = email.chars().anyMatch(ch -> chars.indexOf(ch) >= 0);
-        if (!email.equals(hasChar))
-        {
-            return false;
-        }
-        return false;
-    }
 
     private static boolean validatePhoneNumber(Context ctx, String number)
     {
@@ -170,17 +310,6 @@ public class OrderController
         }
         return false;
     }
-    private static boolean validateParams(String... params)
-    {
-        for (String p : params)
-        {
-            if (p.isEmpty())
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 
 
     private static boolean validateOrderIsPaid()
@@ -188,24 +317,8 @@ public class OrderController
         return false;
     }
 
-    private static void requestPaymentByID()
-    {
-    }
 
-    private static void confirmPaymentByID()
-    {
-    }
 
-    private static void sendBOM()
-    {
-    }
 
-    private static void sendPickList()
-    {
-    }
-
-    private static void sendInvoice()
-    {
-    }
 
 }

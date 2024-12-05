@@ -11,7 +11,11 @@
 
     <name>${project.artifactId}</name>
 
+
+
+
     <properties>
+
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <javalin.version>6.3.0</javalin.version>
@@ -109,6 +113,12 @@
             <groupId>com.sendgrid</groupId>
             <artifactId>sendgrid-java</artifactId>
             <version>4.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
 

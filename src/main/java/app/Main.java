@@ -2,8 +2,10 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.AccountController;
 import app.controllers.MaterialController;
 import app.controllers.OrderController;
+import app.controllers.SendGridController;
 import app.persistence.ConnectionPool;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
@@ -20,15 +22,6 @@ public class Main {
     private static final String DB = "carport";
 
     private static final ConnectionPool dBConnection = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
-    public boolean sendGrid(String to, String name, String email, String zip, String body) {
-        try {
-            SendGrid.sendEmail(to, name, email, zip, body);
-            return true; // Email sent successfully
-        } catch (IOException e) {
-            System.err.println("Failed to send email: " + e.getMessage());
-            return false; // Email sending failed
-        }
-    }
 
     public static void main(String[] args) {
 
@@ -42,17 +35,9 @@ public class Main {
 
         OrderController.addRoutes(app, dBConnection);
         MaterialController.addRoutes(app, dBConnection);
+        AccountController.addRoutes(app, dBConnection);
+        SendGridController.addRoutes(app);
 
-        app.get("/send-email", ctx -> ctx.render("send_email.html"));
 
-        app.post("/send-email", ctx ->
-        {
-            boolean result = SendGrid.sendMailFromMain(ctx);
-            if (result) {
-                ctx.result("Email sent successfully!");
-            } else {
-                ctx.result("Failed to send email. Please try again.");
-            }
-        });
     }
 }
