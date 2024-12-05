@@ -441,17 +441,6 @@ public class OrderMapper
 
     }
 
-
-    public static Order getOrder()
-    {
-        return null;
-    }
-
-    public static List<Order> getOrders()
-    {
-        return null;
-    }
-
     public static void deleteOrderByID()
     {
 
