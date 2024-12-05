@@ -12,10 +12,9 @@ public class Material
     private int height;
     private int width;
     private boolean hasShedAddons;
-    public int getNumbersOfShedAddons;
     private String type;
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons, int getNumbersOfShedAddons)
+    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
         this.materialName = materialName;
@@ -27,7 +26,6 @@ public class Material
         this.height = height;
         this.width = width;
         this.hasShedAddons = hasShedAddons;
-        this.getNumbersOfShedAddons = getNumbersOfShedAddons;
     }
 
     public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int length, int height, int width, String type)
@@ -152,8 +150,4 @@ public class Material
         return hasShedAddons;
     }
 
-    public int getGetNumbersOfShedAddons()
-    {
-        return getNumbersOfShedAddons;
-    }
 }
