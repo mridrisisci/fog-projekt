@@ -243,21 +243,7 @@ public class OrderController
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
 
-    private static void createCarportInOrdersMaterials(int orderID, Context ctx, ConnectionPool pool)
-    {
-        // hardcoded for at teste
-        int materialID = 1;
-        int quantity = 1;
 
-        try
-        {
-            OrderMapper.createCarportInOrdersMaterials(orderID, materialID, quantity, pool);
-
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("kunne ikke oprette carporten i forbindelsestabellen", e.getMessage());
-        }
-    }
 
     private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
