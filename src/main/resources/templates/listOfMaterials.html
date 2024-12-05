@@ -37,7 +37,7 @@
                                 <th scope="col">Width</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Update price</th>
+                                <th scope="col">Fjern materialet</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,6 +51,7 @@
                                 <td th:text="${material.width}">Width</td>
                                 <td th:text="${material.type}">Type</td>
                                 <td th:text="${material.description}">Description</td>
+                                <td><input type="button" value="Fjern" onclick="removeMaterial('${material.materialID}');"/></td>
                             </tr>
                             </tbody>
                         </table>
