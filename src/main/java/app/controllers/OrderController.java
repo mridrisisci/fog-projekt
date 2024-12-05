@@ -26,21 +26,42 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.get("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
+        app.get("/order/acceptoffer/{id}", ctx -> payOrDeclinePage(ctx, dBConnection));
+        app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
     }
 
+    private static void payOrDeclinePage(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)),pool);
+            ctx.attribute("order", order);
+            ctx.attribute("account", account);
+            ctx.render("acceptoffer.html");
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        }
+    }
+
+
+
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
     {
-        String orderID = ctx.pathParam("id");
         String action = ctx.formParam("action");
         String email = ctx.formParam("email");
 
         try
         {
+
+            String orderID = ctx.formParam("offerid");
             Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            ctx.attribute("order", order);
             if ("accept".equals(action)) // if customer pays for order, BOM is sent
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
