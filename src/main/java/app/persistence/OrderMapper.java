@@ -217,7 +217,7 @@ public class OrderMapper
                 String email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orderDetails.add(new Order(width, length, hasShed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
+                orderDetails.add(new Order(orderID, width, length, hasShed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
             }
             return orderDetails;
 
@@ -231,7 +231,7 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_id, order_placed, length, width, has_shed, roof_type, status FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_id, order_placed, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
@@ -249,7 +249,8 @@ public class OrderMapper
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
-                return new Order(orderId, orderPlaced, status, length, width, hasShed, RoofType.FLAT);
+                int price = rs.getInt("price");
+                return new Order(orderId, orderPlaced, status, length, width, hasShed, price, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);

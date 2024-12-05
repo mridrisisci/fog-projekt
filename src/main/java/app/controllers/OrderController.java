@@ -26,25 +26,26 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.post("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
-        app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
+        app.get("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
     }
 
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
     {
-        String orderID = ctx.formParam("orderID");
+        String orderID = ctx.pathParam("id");
         String action = ctx.formParam("action");
         String email = ctx.formParam("email");
 
         try
         {
             Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            ctx.attribute("order", order);
             if ("accept".equals(action)) // if customer pays for order, BOM is sent
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
+                ctx.redirect("/"); // opdater denne side ?
             }
             else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
@@ -61,7 +62,7 @@ public class OrderController
             ctx.attribute("message", e.getMessage());
             ctx.render("/order/{id}/acceptoffer");
         }
-
+        ctx.render("acceptoffer.html");
 
     }
 
@@ -168,15 +169,15 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
+            String orderID = ctx.pathParam("id"); // to remove order from DB
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
-            Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
             String email = account.getEmail();
-            System.out.println(email);
 
             if ("send".equals(action))
             {
-                SendGrid.sendOffer(email, "Pristilbud");
+                Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+                SendGrid.sendOffer(email, "Pristilbud", order);
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }
