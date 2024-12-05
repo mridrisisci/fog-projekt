@@ -1,11 +1,10 @@
 package app.controllers;
 
-import app.entities.Account;
-import app.entities.Order;
-import app.entities.RoofType;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
@@ -26,6 +25,8 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection) );
         app.get("/seeallqueries", ctx -> seeAllQueries(ctx, dBConnection) );
+        // TODO find ud af routing til denne her
+        // app.get("/svg/carport", ctx -> generateSVG());
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
@@ -91,6 +92,8 @@ public class OrderController
                 orderPaid, carportHeight, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
+            generateSVG(orderID, ctx, pool);
+
             order = getOrderOnReceipt(orderID, ctx, pool);
             SendGrid.sendEmail(email);
             ctx.attribute("order", order);
@@ -144,7 +147,70 @@ public class OrderController
     }
 
 
+    private static void generateSVG(int orderID, Context ctx, ConnectionPool pool) throws IOException, DatabaseException
+    {
 
+        List<Material> svgMatrialList = MaterialMapper.getSVGMaterialList(orderID, pool);
+        int postLength = 0;
+        int postWidth = 0;
+        int beamLength = 0;
+        int beamWidth = 0;
+        int rafterLength = 0;
+        int rafterWidth = 0;
+        int fasciaBoardLength = 0;
+        int fasciaBoardWidth = 0;
+        int crossRafterLength = 0;
+        int crossRafterWidth = 0;
+        int quantityOfPosts = 0;
+        int quantityOfBeams = 0;
+        int quantityOfFaciaBoards = 0;
+
+        for(Material mat: svgMatrialList){
+            if(mat.getType().equals("Stolpe")){
+                postLength = mat.getLength();
+                postWidth = mat.getLength();
+            }
+            if(mat.getType().equals("Rem")){
+                beamLength = mat.getLength();
+                beamWidth = mat.getLength();
+            }
+            if(mat.getType().equals("Spær")){
+                rafterLength = mat.getLength();
+                rafterWidth = mat.getLength();
+            }
+            if(mat.getType().equals("Stern")){
+                fasciaBoardLength = mat.getLength();
+                fasciaBoardWidth = mat.getLength();
+            }
+            if(mat.getType().equals("Hulbånd")){
+                crossRafterLength = mat.getLength();
+                crossRafterWidth = mat.getLength();
+            }
+        }
+
+        String svgContent = SVGCreation.loadSVGFromFile("SVG.xml");
+        svgContent = SVGCreation.generateCarportSVG(
+                postLength,
+                postWidth,
+                beamLength,
+                beamWidth,
+                rafterLength,
+                rafterWidth,
+                fasciaBoardLength,
+                fasciaBoardWidth,
+                crossRafterLength,
+                crossRafterWidth,
+                100,     // spacing
+                quantityOfPosts,
+                quantityOfBeams,
+                quantityOfFaciaBoards
+        );
+
+        SVGCreation.saveSVGToFile("carport.svg", svgContent);
+        //HTTP Request hvis vi vil have det
+        ctx.result(svgContent).contentType("image/svg+xml");
+
+    }
 
 //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
