@@ -131,7 +131,7 @@ public class MaterialMapper
 
         for (Material material : pickList)
         {
-            String sql = "INSERT INTO public.orders_materials(order_id, material_id, quantity) VALUES (?, ?, ?);";
+            String sql = "INSERT INTO orders_materials(order_id, material_id, quantity) VALUES (?, ?, ?);";
 
             int orderID = carport.getOrderID();
             int materialID = material.getMaterialID();
