@@ -1,8 +1,10 @@
 package app.persistence;
 
-import app.entities.*;
+import app.entities.Account;
+import app.entities.Order;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
+import java.math.BigDecimal;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,8 +13,7 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced,
-                                          boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
+    public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
                 "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
@@ -54,6 +55,7 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
+
 
 
     public static List<Order> getAllOrders(ConnectionPool pool) throws DatabaseException
@@ -110,7 +112,6 @@ public class OrderMapper
                 Timestamp orderPlaced = rs.getTimestamp("order_placed");
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
-
                 Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
@@ -157,7 +158,6 @@ public class OrderMapper
              PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery())
         {
-
             while (rs.next())
             {
                 int orderID = rs.getInt("order_id");
@@ -540,28 +540,12 @@ public class OrderMapper
     }
 
 
-    public static Order getOrder()
-    {
-        return null;
-    }
 
-    public static List<Order> getOrders()
-    {
-        return null;
-    }
 
     public static void deleteOrderByID(int orderID)
     {
 
     }
 
-    public static void updateOrderByUserID()
-    {
 
-    }
-
-    public static void addOrderToDB()
-    {
-
-    }
 }

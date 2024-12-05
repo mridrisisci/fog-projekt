@@ -5,6 +5,7 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,32 +72,10 @@ public class MaterialMapper
             {
                 throw new DatabaseException("Kunne ikke oprette materialet");
             }
+            ResultSet rs = ps.getGeneratedKeys();
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
-        }
-
-    }
-
-    //TODO: TEST
-    public static void updateMaterialPriceByMaterialID(int newMaterialPrice, int materialID, ConnectionPool pool) throws DatabaseException
-    {
-        String sql = "UPDATE public.materials SET price = ? WHERE material_id = ?;";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, newMaterialPrice);
-            ps.setInt(2, materialID);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException("Database error while updating balance", e.getMessage());
         }
 
     }
@@ -110,10 +89,10 @@ public class MaterialMapper
 
         pickList.add(getPosts(carport, pool));
         pickList.add(getBeams(carport, pool));
-        pickList.add(getSideUnderfasciaBoard(carport, pool));
-        pickList.add(getSideOverfasciaBoard(carport, pool));
-        pickList.add(getFrontAndBackUnderfasciaBoard(carport, pool));
-        pickList.add(getFrontAndBackOverfasciaBoard(carport, pool));
+        pickList.add(getSideUnderFasciaBoard(carport, pool));
+        pickList.add(getSideOverFasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackUnderFasciaBoard(carport, pool));
+        pickList.add(getFrontAndBackOverFasciaBoard(carport, pool));
         pickList.add(getRafters(carport, pool));
         pickList.add(getBoardBolt(carport, pool));
         pickList.add(getHardwareForRaftersLeft(carport, pool));
@@ -244,7 +223,7 @@ public class MaterialMapper
 
     //TODO: LAVE CARPORT OBJEKT når der er ny ordre, som bruges i parametrene
     //TODO: MANGLER TEST!
-    public static Material getSideUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getSideUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -286,7 +265,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getSideOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getSideOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -328,7 +307,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getFrontAndBackUnderfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -370,7 +349,7 @@ public class MaterialMapper
     }
 
     //TODO: MANGLER TEST!
-    public static Material getFrontAndBackOverfasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
+    public static Material getFrontAndBackOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
 
@@ -850,16 +829,39 @@ public class MaterialMapper
     {
     }
 
-    public static void addMaterialToDB()
-    {
-    }
-
     public static void deleteMaterial()
     {
     }
 
-    public static List<Material> getAllMaterials()
+    public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
     {
-        return null;
+
+        String sql = "SELECT * FROM materials";
+        List<Material> materials = new ArrayList<>();
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                int id = rs.getInt("material_id");
+                String name = rs.getString("name");
+                String unit = rs.getString("unit");
+                int price = rs.getInt("price");
+                int length = rs.getInt("length");
+                int height = rs.getInt("height");
+                int width = rs.getInt("width");
+                String type = rs.getString("type");
+                String description = rs.getString("description");
+
+                Material material = new Material(id, name, description, price, unit, length, height, width, type);
+                materials.add(material);
+
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error fetching materials from the database", e.getMessage());
+        }
+        return materials;
     }
 }

@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.entities.Carport;
+import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
@@ -8,8 +9,11 @@ import app.persistence.OrderMapper;
 import app.utilities.Calculator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 
 public class MaterialController
 {
@@ -17,8 +21,48 @@ public class MaterialController
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
         app.get("/test.html", ctx -> ctx.render("test.html") );
+
+
+        app.get("listOfMaterials", ctx -> {
+            listOfMaterials(ctx, dBConnection);
+            ctx.render("listOfMaterials.html");
+        });
+        app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
     }
 
+    public static void insertNewMaterial(Context ctx, ConnectionPool pool) {
+        String name = ctx.formParam("name");
+        String unit = ctx.formParam("unit");
+        int price = Integer.parseInt(ctx.formParam("price"));
+        int length = Integer.parseInt(ctx.formParam("length"));
+        int height = Integer.parseInt(ctx.formParam("height"));
+        int width = Integer.parseInt(ctx.formParam("width"));
+        String type = ctx.formParam("type");
+        String description = ctx.formParam("description");
+
+        try {
+            MaterialMapper.insertNewMaterial(name, unit, price, length, height, width, type, description, pool);
+            ctx.attribute("message", "Material added successfully!");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error updating balance: " + e.getMessage());
+        }
+
+        // Redirect back to the material list after update
+        ctx.redirect("listOfMaterials");
+    }
+
+    public static void listOfMaterials(Context ctx, ConnectionPool pool) {
+        try {
+            List<Material> materials = MaterialMapper.getAllMaterials(pool);
+            ctx.attribute("materials", materials);
+            ctx.render("listOfMaterials.html");
+        } catch (DatabaseException e)
+        {
+            System.out.println(e.getMessage());
+            ctx.attribute("message", "Unable to retrieve material from the database.");
+            ctx.render("error.html");
+        }
+    }
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
         OrderMapper orderMapper = new OrderMapper();
