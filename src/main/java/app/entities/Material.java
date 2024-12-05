@@ -78,6 +78,14 @@ public class Material
         this.quantity = quantity;
     }
 
+    public Material(int materialID, int length, int width, String type)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+    }
+
     public Material(String type)
     {
         this.type = type;
