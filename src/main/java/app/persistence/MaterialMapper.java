@@ -886,4 +886,24 @@ public class MaterialMapper
     {
         return null;
     }
+
+    public static List<Material> getSVGMaterialList(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        List<Material> SVGMaterials;
+        //TODO join med materials tabel på  mat_id
+        String sql = "SELECT * FROM public.orders_materials INNER JOIN material_id ON material_id WHERE order_id = ?";
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ps.setInt(1,orderID);
+            ps.setInt(2,);
+
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+
+    }
 }
