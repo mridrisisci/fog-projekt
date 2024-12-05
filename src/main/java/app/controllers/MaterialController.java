@@ -76,8 +76,7 @@ public class MaterialController
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error updating price: " + e.getMessage());
         }
-
-        ctx.redirect("/listOfMaterials"); // Redirect back to the user list after update
+        ctx.redirect("listOfMaterials");
     }
 
     public static int[] getLengthAndWidth(Context ctx, ConnectionPool pool){
