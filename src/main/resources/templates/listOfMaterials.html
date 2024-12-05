@@ -16,6 +16,7 @@
 
     <div class="content bg-light rounded-4 p-5">
         <h2 class="display-1">Custom Carport - Fog</h2>
+        <br>
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
              role="alert">Fejlbeskeder vises her
         </div>
@@ -23,20 +24,20 @@
         <div class="container my-5">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <div class="box border rounded-4 shadow-sm bg-light p-4 text-center h-100 d-flex flex-column align-items-center">
                         <form th:action="@{listOfMaterials}" method="get">
-                        <table id="listOfMaterialsTable">
+                        <table class="table table-striped" id="listOfMaterialsTable">
                             <thead>
                             <tr>
-                                <th>Material ID</th>
-                                <th>Name</th>
-                                <th>Unit</th>
-                                <th>Price</th>
-                                <th>Length</th>
-                                <th>Height</th>
-                                <th>Width</th>
-                                <th>Type</th>
-                                <th>Description</th>
+                                <th scope="col">Material ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Length</th>
+                                <th scope="col">Height</th>
+                                <th scope="col">Width</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Update price</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,30 +57,29 @@
                                             <input type="hidden" class="inputbox" th:name="materialID" th:value="${material.materialID}"/>
                                             <input type="number" class="inputbox" th:name="newPrice" min="0" step="1"
                                                    th:value="${material.price}" />
-                                            <button type="submit">Update</button>
+                                            <button class="btn btn-outline-dark btn-sm" type="submit">Update</button>
                                         </form>
                                     </div>
                                 </td></tr>
                             </tbody>
                         </table>
                         </form>
-
+                    <br><br>
                         <h2>Tilføj nyt materiale</h2>
                         <form th:action="@{/addMaterial}" method="post">
                             <!-- Formularfelter til input -->
                             <!--TODO: Find ud af hvorfor det ikke kommer i databasen-->
                             <!--TODO: Evt. se Caspers dims hvor de laver nye forespørgsler-->
-                            <input type="text" name="name" placeholder="Navn" required/><br/>
-                            <input type="text" name="unit" placeholder="Enhed" required/><br/>
-                            <input type="number" name="price" placeholder="Pris" step="1" required/><br/>
-                            <input type="number" name="length" placeholder="Længde" step="1" required/><br/>
-                            <input type="number" name="height" placeholder="Højde" step="1" required/><br/>
-                            <input type="number" name="width" placeholder="Bredde" step="1" required/><br/>
-                            <input type="text" name="type" placeholder="Type" required/><br/>
-                            <textarea name="description" placeholder="Beskrivelse"></textarea><br/>
-                            <input type="submit" value="Tilføj materiale"/>
+                            <input class="w-50" type="text" name="name" placeholder="Navn" required/><br/>
+                            <input class="w-50" type="text" name="unit" placeholder="Enhed" required/><br/>
+                            <input class="w-50" type="number" name="price" placeholder="Pris" step="1" required/><br/>
+                            <input class="w-50" type="number" name="length" placeholder="Længde" step="1" required/><br/>
+                            <input class="w-50" type="number" name="height" placeholder="Højde" step="1" required/><br/>
+                            <input class="w-50" type="number" name="width" placeholder="Bredde" step="1" required/><br/>
+                            <input class="w-50" type="text" name="type" placeholder="Type" required/><br/>
+                            <textarea class="w-50" name="description" placeholder="Beskrivelse"></textarea><br/>
+                            <input class="btn btn-outline-dark btn-sm"  type="submit" value="Tilføj materiale"/>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>
