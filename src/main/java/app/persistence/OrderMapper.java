@@ -1,9 +1,6 @@
 package app.persistence;
 
-import app.entities.Account;
-import app.entities.Carport;
-import app.entities.Material;
-import app.entities.Order;
+import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
@@ -137,7 +134,7 @@ public class OrderMapper
                 String roofType = rs.getString("roof_type");
                 int accountID = rs.getInt("account_id");
 
-                Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, roofType, accountID);
+                Order order = new Order(orderID, carportID, price, salesPrice, coverageRatioPercentage, status, orderPlaced, RoofType.FLAT, accountID);
                 orders.add(order);
             }
         } catch (SQLException e)
