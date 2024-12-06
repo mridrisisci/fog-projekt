@@ -200,7 +200,7 @@ public class IntegrationTest
                 "    ('universal 190 mm venstre', 'Stk', 50, 5, 150, 5, 'Beslag - Venstre', 'Til montering af spær på rem'),\n" +
                 "    ('4,5 x 60 mm. skruer 200 stk.', 'Pakke', 169, 6, 1, 1, 'Skruer', 'Til montering af stern & vandbrædt'),\n" +
                 "    ('4,0 x 50 mm. beslagskruer', 'Pakke', 139, 5, 1, 1, 'Beslagskruer', 'Til montering af universalbeslag + hulbånd'),\n" +
-                "    ('bræddebolt 10 x 120 mm.', 'Stk', 409, 1, 1, 1, 'Bræddebolt', 'Til montering af rem på stolper'),\n" +
+                "    ('bræddebolt 10 x 120 mm.', 'Stk', 16, 1, 1, 1, 'Bræddebolt', 'Til montering af rem på stolper'),\n" +
                 "    ('firkantskiver 40x40x11mm', 'Stk', 9, 1, 1, 1, 'Firkantskiver','Til montering af rem på stolper'),\n" +
                 "    ('4,5 x 70 mm. Skruer 400 stk.', 'Pakke', 165, 7, 1, 1, 'Beklædningsskruer', 'Til montering af yderste beklædning'),\n" +
                 "    ('4,5 x 50 mm. Skruer 300 stk.', 'Pakke', 90, 5, 1, 1, 'Beklædningsskruer', 'Til montering af inderste beklædning'),\n" +
