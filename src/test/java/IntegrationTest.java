@@ -1,4 +1,5 @@
 
+import app.entities.Carport;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
@@ -6,14 +7,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 public class IntegrationTest
 {
@@ -255,6 +251,10 @@ public class IntegrationTest
         // Arrange
         int expected = 12705;
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+        Carport carport = new Carport(orderID, length_expected, width_expected);
+//        MaterialMapper.createPickList(carport, connectionPoolTest);
+        OrderMapper.updatePickListPrice(carport, connectionPoolTest);
+        OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(orderID, connectionPoolTest);
 
         // Act
         int actual = OrderMapper.getPickListPriceByOrderID(orderID, connectionPoolTest);
