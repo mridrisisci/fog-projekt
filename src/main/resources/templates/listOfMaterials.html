@@ -37,7 +37,6 @@
                                 <th scope="col">Width</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Fjern materialet</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,7 +50,6 @@
                                 <td th:text="${material.width}">Width</td>
                                 <td th:text="${material.type}">Type</td>
                                 <td th:text="${material.description}">Description</td>
-                                <td><input type="button" value="Fjern" onclick="removeMaterial('${material.materialID}');"/></td>
                             </tr>
                             </tbody>
                         </table>
@@ -70,6 +68,21 @@
                         <input class="btn btn-outline-dark btn-sm" type="submit" formaction="addMaterial"
                                value="Tilføj materiale"/>
                     </form>
+
+
+                    </form>
+                    <br><br>
+                    <h2>Fjern et materiale</h2>
+                    <form method="post">
+                        <input class="w-50" type="number" name="materialID" placeholder="MaterialeID" required/><br/>
+                        <input class="w-50" type="text" name="name" placeholder="Navn" required/><br/>
+                        <input class="w-50" type="number" name="length" placeholder="Længde" step="1" required/><br/>
+                        <input class="w-50" type="number" name="height" placeholder="Højde" step="1" required/><br/>
+                        <input class="w-50" type="number" name="width" placeholder="Bredde" step="1" required/><br/>
+                        <input class="btn btn-outline-dark btn-sm" type="submit" formaction="removeMaterial"
+                               value="Fjern materialet"/>
+                    </form>
+
                 </div>
             </div>
         </div>
