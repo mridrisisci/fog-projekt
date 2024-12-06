@@ -87,8 +87,10 @@ public class AccountMapper
                 if (BCrypt.checkpw(password, storedHashedPassword))
                 {
                     int id = rs.getInt("account_id");
+                    String username = rs.getString("username");
+                    int telephone = rs.getInt("telephone");
                     String role = rs.getString("role");
-                    return new Account(id, email, role);
+                    return new Account(id, username, email, telephone, role);
                 }
                 else
                 {
@@ -217,11 +219,34 @@ public class AccountMapper
     {
 
     }
-    public static Account getAccountByID(Account account)
+
+    public static Account getAccountByID(int accountID, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "SELECT account_id, username, email, telephone, role FROM accounts WHERE account_id = ?";
+        String username;
+        String email;
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, accountID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next())
+            {
+                accountID = rs.getInt("account_id");
+                username = rs.getString("username");
+                email = rs.getString("email");
+                int telephone = rs.getInt("telephone");
+                String role = rs.getString("role");
+                return new Account(accountID, username, email, telephone, role);
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
         return null;
     }
-    public static List<Account> getAllCustomerQueries(ConnectionPool pool) throws DatabaseException
+
+    public static List<Account> getAllCustomers(ConnectionPool pool) throws DatabaseException
     {
 
         String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";
@@ -247,9 +272,5 @@ public class AccountMapper
         {
             throw new DatabaseException(e.getMessage());
         }
-    }
-    public static void login()
-    {
-
     }
 }
