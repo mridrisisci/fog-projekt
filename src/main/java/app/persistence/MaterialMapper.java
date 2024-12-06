@@ -837,14 +837,25 @@ public class MaterialMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
+
             ps.setInt(1, materialID);
-            ResultSet rs = ps.executeQuery();
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0)
+            {
+                System.out.println("Materiale med ID " + materialID + " blev slettet.");
+            } else
+            {
+                System.out.println("Ingen materiale fundet med ID " + materialID);
+            }
+
         } catch (SQLException e)
         {
-            System.out.println(e.getMessage());
-            throw new DatabaseException(e.getMessage());
+            e.printStackTrace();
+            System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
         }
     }
+
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
     {
@@ -854,9 +865,11 @@ public class MaterialMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int id = rs.getInt("material_id");
                 String name = rs.getString("name");
@@ -872,7 +885,8 @@ public class MaterialMapper
                 materials.add(material);
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching materials from the database", e.getMessage());
         }
         return materials;
