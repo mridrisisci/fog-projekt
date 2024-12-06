@@ -28,8 +28,10 @@ public class MaterialController
             ctx.render("listOfMaterials.html");
         });
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
+        app.post("removeMaterial", ctx -> removeMaterial(ctx, dBConnection));
     }
 
+    //TODO: Der kommer ikke en besked ud til admin
     public static void insertNewMaterial(Context ctx, ConnectionPool pool) {
         String name = ctx.formParam("name");
         String unit = ctx.formParam("unit");
@@ -51,6 +53,25 @@ public class MaterialController
         ctx.redirect("listOfMaterials");
     }
 
+    //TODO: Der kommer ikke en besked ud til admin
+    public static void removeMaterial(Context ctx, ConnectionPool pool) {
+        int materialID = Integer.parseInt(ctx.formParam("materialID"));
+        String name = ctx.formParam("name");
+        int length = Integer.parseInt(ctx.formParam("length"));
+        int height = Integer.parseInt(ctx.formParam("height"));
+        int width = Integer.parseInt(ctx.formParam("width"));
+
+        try {
+            MaterialMapper.removeMaterial(materialID, name, length, height, width, pool);
+            ctx.attribute("message", "Material added successfully!");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error adding a material: " + e.getMessage());
+        }
+
+        // Redirect back to the material list after update
+        ctx.redirect("listOfMaterials");
+    }
+
     public static void listOfMaterials(Context ctx, ConnectionPool pool) {
         try {
             List<Material> materials = MaterialMapper.getAllMaterials(pool);
@@ -59,7 +80,7 @@ public class MaterialController
         } catch (DatabaseException e)
         {
             System.out.println(e.getMessage());
-            ctx.attribute("message", "Unable to retrieve material from the database.");
+            ctx.attribute("message", "Unable to retrieve materials from the database.");
             ctx.render("error.html");
         }
     }

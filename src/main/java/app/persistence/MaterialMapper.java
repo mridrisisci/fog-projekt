@@ -829,8 +829,36 @@ public class MaterialMapper
     {
     }
 
-    public static void deleteMaterial()
+
+    public static void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "DELETE FROM materials WHERE material_id = ? AND name = ? AND length = ? AND height = ? AND width = ?; ";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+
+            ps.setInt(1, materialID);
+            ps.setString(2, name);
+            ps.setInt(3, length);
+            ps.setInt(4, height);
+            ps.setInt(5, width);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0)
+            {
+                System.out.println("Materiale med ID " + materialID + " blev slettet.");
+            } else
+            {
+                System.out.println("Ingen materiale fundet med ID " + materialID);
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
+        }
+
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
@@ -841,9 +869,11 @@ public class MaterialMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int id = rs.getInt("material_id");
                 String name = rs.getString("name");
@@ -859,7 +889,8 @@ public class MaterialMapper
                 materials.add(material);
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching materials from the database", e.getMessage());
         }
         return materials;
