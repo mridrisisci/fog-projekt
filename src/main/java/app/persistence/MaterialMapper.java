@@ -829,16 +829,20 @@ public class MaterialMapper
     {
     }
 
-    //TODO: Lav metoden færdig
-    public static void deleteMaterial(int materialID, ConnectionPool pool) throws DatabaseException
+
+    public static void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "DELETE FROM materials WHERE material_id = ?";
+        String sql = "DELETE FROM materials WHERE material_id = ? AND name = ? AND length = ? AND height = ? AND width = ?; ";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
 
             ps.setInt(1, materialID);
+            ps.setString(2, name);
+            ps.setInt(3, length);
+            ps.setInt(4, height);
+            ps.setInt(5, width);
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected > 0)
@@ -854,8 +858,8 @@ public class MaterialMapper
             e.printStackTrace();
             System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
         }
-    }
 
+    }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
     {
