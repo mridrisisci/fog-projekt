@@ -52,16 +52,22 @@ public class MaterialController
         ctx.redirect("listOfMaterials");
     }
 
-    public static void removeMaterial(Context ctx, ConnectionPool pool) throws DatabaseException
-    {
-        int materialID = Integer.parseInt(ctx.formParam("price"));
-        // Redirect back to the material list after update
+    //TODO: Der kommer ikke en besked ud til admin
+    public static void removeMaterial(Context ctx, ConnectionPool pool) {
+        int materialID = Integer.parseInt(ctx.formParam("materialID"));
+        String name = ctx.formParam("name");
+        int length = Integer.parseInt(ctx.formParam("length"));
+        int height = Integer.parseInt(ctx.formParam("height"));
+        int width = Integer.parseInt(ctx.formParam("width"));
+
         try {
-            MaterialMapper.deleteMaterial( materialID, pool);
+            MaterialMapper.removeMaterial(materialID, name, length, height, width, pool);
             ctx.attribute("message", "Material added successfully!");
         } catch (DatabaseException e) {
             ctx.attribute("message", "Error updating balance: " + e.getMessage());
         }
+
+        // Redirect back to the material list after update
         ctx.redirect("listOfMaterials");
     }
 
