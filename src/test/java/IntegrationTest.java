@@ -235,11 +235,9 @@ public class IntegrationTest
     public void testCreateQueryInOrders() throws DatabaseException
     {
         // Arrange
-        // variables declared in global scope for other tests
-
-        // Act
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
 
+        // Act
         int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(orderID, connectionPoolTest);
 
         int length_actual = lengthAndWidth[0];
@@ -252,10 +250,17 @@ public class IntegrationTest
     }
 
     @Test
-    public void testGetPickListPriceByOrderID()
+    public void testGetPickListPriceByOrderID() throws DatabaseException
     {
         // Arrange
-        int expected = 0;
+        int expected = 12705;
+        int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+
+        // Act
+        int actual = OrderMapper.getPickListPriceByOrderID(orderID, connectionPoolTest);
+
+        // Assert
+        Assert.assertEquals(expected, actual);
     }
 
 
