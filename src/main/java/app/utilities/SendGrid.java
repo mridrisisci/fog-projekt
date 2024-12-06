@@ -47,7 +47,7 @@ public class SendGrid
         }
 
         // ngrok dynamic URL for testing redirects with dynamic mail
-        String ngrokURL = "https://ec9c-149-50-217-162.ngrok-free.app";
+        String ngrokURL = "  https://e36b-193-29-107-174.ngrok-free.app ";
         String URL = ngrokURL + "/order/acceptoffer/" + order.getORDER_ID();
 
         // Dynamisk URL til produktion // når app skal deployes
