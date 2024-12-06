@@ -406,7 +406,7 @@ public class OrderMapper
 
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
-        String sql = "UPDATE public.orders SET sales_price = ?, coverage_ratio_percentage = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET sales_price = ?, coverage_ratio_percentage = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -432,7 +432,7 @@ public class OrderMapper
     public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "UPDATE public.orders SET price = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET price = ? WHERE order_id = ?;";
 
         int orderID = carport.getOrderID();
         List<Material> pickList = MaterialMapper.createPickList(carport, pool);
