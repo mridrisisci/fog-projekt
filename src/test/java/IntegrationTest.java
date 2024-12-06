@@ -16,8 +16,18 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class IntegrationTest
-
 {
+    String carportID_expected = "CP01 DUR";
+    int salesPersonID_expected = 1;
+    String status_expected = "Under behandling";
+    Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
+    boolean orderPaid_expected = false;
+    int length_expected = 720;
+    int width_expected = 480;
+    boolean hasShed_expected = true;
+    String roofType_expected = "FLAT";
+    int accountID_expected = 1;
+
     ConnectionPool connectionPoolTest = ConnectionPool.getInstance("postgres", "postgres", "jdbc:postgresql://localhost:5432/%s?currentSchema=test_schema", "carport");
 
     @Before
@@ -225,16 +235,7 @@ public class IntegrationTest
     public void testCreateQueryInOrders() throws DatabaseException
     {
         // Arrange
-        String carportID_expected = "CP01 DUR";
-        int salesPersonID_expected = 1;
-        String status_expected = "Under behandling";
-        Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
-        boolean orderPaid_expected = false;
-        int length_expected = 720;
-        int width_expected = 480;
-        boolean hasShed_expected = true;
-        String roofType_expected = "FLAT";
-        int accountID_expected = 1;
+        // variables declared in global scope for other tests
 
         // Act
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
@@ -248,6 +249,13 @@ public class IntegrationTest
 
         Assert.assertEquals(length_expected, length_actual);
         Assert.assertEquals(width_expected, width_actual);
+    }
+
+    @Test
+    public void testGetPickListPriceByOrderID()
+    {
+        // Arrange
+        int expected = 0;
     }
 
 
