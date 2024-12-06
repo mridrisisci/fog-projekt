@@ -539,11 +539,49 @@ public class OrderMapper
 
     }
 
-
-
-
-    public static void deleteOrderByID(int orderID)
+    public static void updateOrderPaymentStatus(int orderID, ConnectionPool pool)
     {
+        String sql = "SELECT * FROM orders SET order_paid = 'true' WHERE order_id = ?";
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ps.setBoolean();
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke slette ordren med ordre id: " + orderID);
+            }
+
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
+
+
+
+    public static void deleteOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM orders DROP COLUMN WHERE ORDER = ?";
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke slette ordren med ordre id: " + orderID);
+            }
+
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
 
     }
 
