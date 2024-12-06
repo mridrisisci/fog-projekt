@@ -304,7 +304,6 @@ public class OrderMapper
         int length;
         int width;
 
-
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
