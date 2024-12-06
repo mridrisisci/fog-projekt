@@ -55,8 +55,13 @@ public class MaterialController
     public static void removeMaterial(Context ctx, ConnectionPool pool) throws DatabaseException
     {
         int materialID = Integer.parseInt(ctx.formParam("price"));
-        MaterialMapper.deleteMaterial( materialID, pool);
         // Redirect back to the material list after update
+        try {
+            MaterialMapper.deleteMaterial( materialID, pool);
+            ctx.attribute("message", "Material added successfully!");
+        } catch (DatabaseException e) {
+            ctx.attribute("message", "Error updating balance: " + e.getMessage());
+        }
         ctx.redirect("listOfMaterials");
     }
 
