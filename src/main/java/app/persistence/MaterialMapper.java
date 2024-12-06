@@ -152,8 +152,7 @@ public class MaterialMapper
         int price;
         String type = "Stolpe";
         Material material = null;
-
-
+        
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
