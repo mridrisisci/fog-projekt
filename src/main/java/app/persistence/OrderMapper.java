@@ -3,7 +3,6 @@ package app.persistence;
 import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
-import java.math.BigDecimal;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -539,14 +538,13 @@ public class OrderMapper
 
     }
 
-    public static void updateOrderPaymentStatus(int orderID, ConnectionPool pool)
+    public static void setPaymentStatusToPaid(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM orders SET order_paid = 'true' WHERE order_id = ?";
+        String sql = "UPDATE orders SET order_paid = 'true' WHERE order_id = ?";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, orderID);
-            ps.setBoolean();
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
@@ -566,7 +564,8 @@ public class OrderMapper
 
     public static void deleteOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT * FROM orders DROP COLUMN WHERE ORDER = ?";
+        String sql = "DELETE FROM orders WHERE order_id = ? ";
+
         try (Connection connection = pool.getConnection();
         PreparedStatement ps = connection.prepareStatement(sql))
         {

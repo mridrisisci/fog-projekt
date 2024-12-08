@@ -65,12 +65,13 @@ public class OrderController
             if ("accept".equals(action)) // if customer pays for order, BOM is sent
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
+                OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
                 ctx.redirect("/"); // opdater denne side ?
             }
             else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
-                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Din ordre er slettet. ");
                 ctx.redirect("/");
             }
@@ -204,7 +205,7 @@ public class OrderController
             }
             else if ("afvis".equals(action))
             {
-                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Bestilte pristilbud er afvist og kundens data er slettet fra systemet");
                 showOrderHistory(ctx,pool);
             }
@@ -252,8 +253,6 @@ public class OrderController
         }
         Account account = ctx.sessionAttribute("currentUser");
         String role = Objects.requireNonNull(account).getRole();
-        System.out.println(role);
-        System.out.println(account.getUsername() + " | " + account.getEmail());
 
         if ("salesperson".equals(role))
         {
