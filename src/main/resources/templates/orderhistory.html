@@ -41,7 +41,7 @@
                                 <td><a class="" href="order/details" th:href="@{/order/details/{id}(id=${order.ORDER_ID})}" th:text="${order.ORDER_ID}">order id</a></td>
                                 <td th:text="${order.status}">Navn</td>
                                 <td>
-                                    <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
+                                    <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.account.username}">Konto</a>
                                 </td>
                                 <td><span class="badge text-bg-info" th:text="${order.status}">Ordrestatus</span></td>
                                 <td th:text="${order.orderPlaced}">Bestillingsdato</td>

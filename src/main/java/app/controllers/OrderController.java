@@ -253,6 +253,7 @@ public class OrderController
         }
         Account account = ctx.sessionAttribute("currentUser");
         String role = Objects.requireNonNull(account).getRole();
+        String username = Objects.requireNonNull(account).getUsername();
 
         if ("salesperson".equals(role))
         {
@@ -260,7 +261,7 @@ public class OrderController
             String sortby = ctx.formParam("query");
             try
             {
-                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("order_paid")))
                 {
                     sortby = "order_id";
                 }
