@@ -26,13 +26,13 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.get("/order/acceptoffer/{id}", ctx -> payOrDeclinePage(ctx, dBConnection));
+        app.get("/order/acceptoffer/{id}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
         app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
     }
 
-    private static void payOrDeclinePage(Context ctx, ConnectionPool pool)
+    private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
     {
         try
         {
@@ -66,8 +66,9 @@ public class OrderController
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
                 OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILDBUD_GODKENDT, pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
-                ctx.redirect("/"); // opdater denne side ?
+                ctx.redirect("/"); // opdater denne side ?½
             }
             else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
@@ -128,7 +129,7 @@ public class OrderController
 
         String carportId = "";
         int salesPersonId = 0;
-        String status = "Under behandling";
+        //String status = "Under behandling";
         RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
         Order order;
@@ -144,7 +145,7 @@ public class OrderController
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
+            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, StatusType.AFVENTER_BEHANDLING.toString(), orderPlaced,
                 orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
@@ -200,6 +201,7 @@ public class OrderController
             {
                 Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 SendGrid.sendOffer(email, "Pristilbud", order);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_SENDT, pool);
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }

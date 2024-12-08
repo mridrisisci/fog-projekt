@@ -538,6 +538,29 @@ public class OrderMapper
 
     }
 
+    public static void updateOrderStatusAfterPayment(int orderID, StatusType status, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ps.setString(2, status.toString());
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke slette ordren med ordre id: " + orderID);
+            }
+
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+    }
+
     public static void setPaymentStatusToPaid(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "UPDATE orders SET order_paid = 'true' WHERE order_id = ?";
