@@ -53,21 +53,23 @@ public class Order
     }
 
 
-    public Order(int orderId, String status, Timestamp orderPlaced, boolean orderPaid, int width, int length, Account account)
+    public Order(int orderId, String status, String carportID, Timestamp orderPlaced, boolean orderPaid, int width, int length, Account account)
     { // used for 'orderhistory.html'
         this.ORDER_ID = orderId;
         this.status = status;
+        this.carportID = carportID;
         this.orderPlaced = orderPlaced;
         this.orderPaid = orderPaid;
         this.width = width;
         this.length = length;
         this.account = account;
     }
-    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, int price, RoofType roofType)
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, boolean hasShed, int price, RoofType roofType)
     { // this is used for 'kvittering.html' && sendOffer
         this.ORDER_ID = orderID;
         this.orderPlaced = orderPlaced;
         this.status = status;
+        this.carportID = carportID;
         this.length = length;
         this.width = width;
         this.hasShed = hasShed;

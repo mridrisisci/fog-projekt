@@ -245,11 +245,12 @@ public class OrderMapper
                 orderPlaced = rs.getTimestamp("order_placed");
                 int length = rs.getInt("length");
                 int width = rs.getInt("width");
+                String carportID = rs.getString("carport_id");
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
                 int price = rs.getInt("price");
-                return new Order(orderId, orderPlaced, status, length, width, hasShed, price, RoofType.FLAT);
+                return new Order(orderId, orderPlaced, status.toString(), carportID, length, width, hasShed, price, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
@@ -265,6 +266,7 @@ public class OrderMapper
         String sql = "SELECT " +
             "o.order_id," +
             "o.status, " +
+            "o.carport_id, " +
             "o.order_placed," +
             "o.order_paid," +
             "o.length," +
@@ -285,6 +287,7 @@ public class OrderMapper
         int width;
         int length;
         int accountID;
+        String carportID = "";
 
         String name;
         String email;
@@ -304,12 +307,13 @@ public class OrderMapper
                 orderPaid = rs.getBoolean("order_paid");
                 width = rs.getInt("width");
                 length = rs.getInt("length");
+                carportID = rs.getString("carport_id");
                 name = rs.getString("username");
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orders.add(new Order(orderID, status, orderPlaced, orderPaid, width, length,
+                orders.add(new Order(orderID, status.toString(), carportID, orderPlaced, orderPaid, width, length,
                     new Account(accountID, name, email, telephone, role)));
             }
             return orders;
