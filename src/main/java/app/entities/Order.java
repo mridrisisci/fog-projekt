@@ -63,20 +63,22 @@ public class Order
         this.length = length;
         this.account = account;
     }
-    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, RoofType roofType)
-    { // this is used for 'kvittering.html'
+    public Order(int orderID, Timestamp orderPlaced, String status, int length, int width, boolean hasShed, int price, RoofType roofType)
+    { // this is used for 'kvittering.html' && sendOffer
         this.ORDER_ID = orderID;
         this.orderPlaced = orderPlaced;
         this.status = status;
         this.length = length;
         this.width = width;
         this.hasShed = hasShed;
+        this.price = price;
         this.roofType = roofType;
 
     }
 
-    public Order(int width, int length, boolean hasShed, RoofType roofType, int price, Account account)
+    public Order(int orderID, int width, int length, boolean hasShed, RoofType roofType, int price, Account account)
     { // used for orderdetails
+        this.ORDER_ID = orderID;
         this.width = width;
         this.length = length;
         this.hasShed = hasShed;

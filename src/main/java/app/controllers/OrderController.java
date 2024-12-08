@@ -26,29 +26,53 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.post("/order/acceptoffer/{id}", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
-        app.get("/order/acceptoffer/{id}", ctx -> ctx.render("acceptoffer.html") );
+        app.get("/order/acceptoffer/{id}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
+        app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
     }
 
+    private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)),pool);
+            ctx.attribute("order", order);
+            ctx.attribute("account", account);
+            ctx.render("acceptoffer.html");
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/{id}/acceptoffer");
+        }
+    }
+
+
+
     private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
     {
-        String orderID = ctx.formParam("orderID");
         String action = ctx.formParam("action");
         String email = ctx.formParam("email");
 
         try
         {
+
+            String orderID = ctx.formParam("offerid");
             Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             if ("accept".equals(action)) // if customer pays for order, BOM is sent
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
+                OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILDBUD_GODKENDT, pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
+                ctx.redirect("/"); // opdater denne side ?½
             }
             else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
-                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Din ordre er slettet. ");
                 ctx.redirect("/");
             }
@@ -61,7 +85,7 @@ public class OrderController
             ctx.attribute("message", e.getMessage());
             ctx.render("/order/{id}/acceptoffer");
         }
-
+        ctx.render("acceptoffer.html");
 
     }
 
@@ -103,10 +127,8 @@ public class OrderController
         //validatePostalCode(ctx, "choosePostalCode");
 
 
-        String carportId = "";
+        String carportId = "CFUS";
         int salesPersonId = 0;
-        String status = "Under behandling";
-        RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
         Order order;
         boolean hasShed = true;
@@ -121,12 +143,13 @@ public class OrderController
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, status, orderPlaced,
-                orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
+            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, StatusType.AFVENTER_BEHANDLING.toString(), orderPlaced,
+                orderPaid, carportLength, carportWidth, hasShed, RoofType.FLAT.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
             order = OrderMapper.getOrderByID(orderID, pool);
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
+            SendGrid.notifySalesPersonOfNewOrder("sales.person.fog@gmail.com", "Ny bestilling af et pristilbud"); // INDSÆT SÆLGERMAIL KORREKT
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
@@ -168,21 +191,22 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
+            String orderID = ctx.pathParam("id"); // to remove order from DB
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
-            Account account = AccountMapper.getAccountByID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
             String email = account.getEmail();
-            System.out.println(email);
 
             if ("send".equals(action))
             {
-                SendGrid.sendOffer(email, "Pristilbud");
+                Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+                SendGrid.sendOffer(email, "Pristilbud", order);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_SENDT, pool);
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }
             else if ("afvis".equals(action))
             {
-                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)));
+                OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Bestilte pristilbud er afvist og kundens data er slettet fra systemet");
                 showOrderHistory(ctx,pool);
             }
@@ -230,8 +254,7 @@ public class OrderController
         }
         Account account = ctx.sessionAttribute("currentUser");
         String role = Objects.requireNonNull(account).getRole();
-        System.out.println(role);
-        System.out.println(account.getUsername() + " | " + account.getEmail());
+        String username = Objects.requireNonNull(account).getUsername();
 
         if ("salesperson".equals(role))
         {
@@ -239,7 +262,7 @@ public class OrderController
             String sortby = ctx.formParam("query");
             try
             {
-                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("date_paid")))
+                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("order_paid")))
                 {
                     sortby = "order_id";
                 }
