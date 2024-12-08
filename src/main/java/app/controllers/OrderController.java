@@ -127,6 +127,7 @@ public class OrderController
             createCarport(orderID, ctx, pool);
             order = OrderMapper.getOrderByID(orderID, pool);
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
+            SendGrid.notifySalesPersonOfNewOrder("sales.person.fog@gmail.com", "Ny bestilling af et pristilbud"); // INDSÆT SÆLGERMAIL KORREKT
             ctx.attribute("order", order);
             ctx.render("kvittering.html");
         } catch (DatabaseException e)
