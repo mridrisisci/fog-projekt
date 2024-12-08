@@ -226,10 +226,12 @@ public class AccountMapper
             "FROM accounts a " +
             "INNER JOIN orders o ON a.account_id = o.account_id " +
             "WHERE order_id = ?";
+
+        String sql2 = "SELECT * FROM accounts WHERE account_id = ?";
         String username;
         String email;
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql2))
         {
             ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
@@ -244,6 +246,7 @@ public class AccountMapper
             }
         } catch (SQLException e)
         {
+            System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
         return null;

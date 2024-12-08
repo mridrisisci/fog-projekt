@@ -230,7 +230,7 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_id, order_placed, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_id, order_placed, carport_id, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
@@ -250,7 +250,7 @@ public class OrderMapper
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
                 int price = rs.getInt("price");
-                return new Order(orderId, orderPlaced, status.toString(), carportID, length, width, hasShed, price, RoofType.FLAT);
+                return new Order(orderId, orderPlaced, status, carportID, length, width, hasShed, price, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
@@ -554,6 +554,7 @@ public class OrderMapper
 
             if (rowsAffected != 1)
             {
+                System.out.println("fejl");
                 throw new DatabaseException("Kunne ikke slette ordren med ordre id: " + orderID);
             }
 

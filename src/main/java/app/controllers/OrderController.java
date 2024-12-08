@@ -199,8 +199,8 @@ public class OrderController
             if ("send".equals(action))
             {
                 Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-                SendGrid.sendOffer(email, "Pristilbud", order);
                 OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_SENDT, pool);
+                SendGrid.sendOffer(email, "Pristilbud", order);
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }
