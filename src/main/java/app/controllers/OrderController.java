@@ -127,10 +127,8 @@ public class OrderController
         //validatePostalCode(ctx, "choosePostalCode");
 
 
-        String carportId = "";
+        String carportId = "CFUS";
         int salesPersonId = 0;
-        //String status = "Under behandling";
-        RoofType roofType = RoofType.FLAT;
         boolean orderPaid = false;
         Order order;
         boolean hasShed = true;
@@ -146,7 +144,7 @@ public class OrderController
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
             int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, StatusType.AFVENTER_BEHANDLING.toString(), orderPlaced,
-                orderPaid, carportLength, carportWidth, hasShed, roofType.toString(), accountID, pool);
+                orderPaid, carportLength, carportWidth, hasShed, RoofType.FLAT.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
             order = OrderMapper.getOrderByID(orderID, pool);
