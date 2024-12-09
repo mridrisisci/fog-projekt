@@ -253,7 +253,7 @@ public class IntegrationTest
         Carport carport = new Carport(orderID, length_expected, width_expected);
 //        MaterialMapper.createPickList(carport, connectionPoolTest);
         OrderMapper.updatePickListPrice(carport, connectionPoolTest);
-        OrderMapper.setSalesPriceAndCoverage(orderID, connectionPoolTest);
+        OrderMapper.setSalesPriceAndCoverageDefault(carport, connectionPoolTest);
 
         // Act
         int actual = OrderMapper.getPickListPriceByOrderID(orderID, connectionPoolTest);
