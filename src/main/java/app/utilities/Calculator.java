@@ -64,8 +64,10 @@ public class Calculator
         // length is the x-axis
         int length = carport.getLENGTH();
 
+        int overhang = 15;
+
         int posX = 0;
-        int posY = 0;
+        int posY = overhang;
 
         if (quantity == 4)
         {
@@ -75,14 +77,14 @@ public class Calculator
             } else if (matNum == 1)
             {
                 posX = length / 4;
-                posY = width;
+                posY = width - overhang;
             } else if (matNum == 2)
             {
                 posX = (length / 4) * 3;
             } else if (matNum == 3)
             {
                 posX = (length / 4) * 3;
-                posY = width;
+                posY = width - overhang;
             }
         } else if (quantity == 6)
         {
@@ -92,21 +94,21 @@ public class Calculator
             } else if (matNum == 1)
             {
                 posX = (length / 8) * 2;
-                posY = width;
+                posY = width - overhang;
             } else if (matNum == 2)
             {
                 posX = (length / 8) * 4;
             } else if (matNum == 3)
             {
                 posX = (length / 8) * 4;
-                posY = width;
+                posY = width - overhang;
             } else if (matNum == 4)
             {
                 posX = (length / 8) * 7;
             } else if (matNum == 5)
             {
                 posX = (length / 8) * 7;
-                posY = width;
+                posY = width - overhang;
             }
         }
         posXY[0] = posX;
@@ -151,6 +153,51 @@ public class Calculator
         beams[1] = length;
 
         return beams;
+    }
+
+    // metode til SVG tegning
+    public static int[] calcBeamsXY(Carport carport, int quantity, int matNum)
+    {
+        int[] posXY = new int[4];
+
+        int length = carport.getLENGTH();
+        int width = carport.getWIDTH();
+        
+        //Udhænget kommer fra materialelisten
+        int overhang = 15;
+
+        int startPosX = 0;
+        int endPosX = length;
+        int startPosY = overhang;
+        int endPosY = overhang;
+
+        if (matNum == 1)
+        {
+            startPosY = width - overhang;
+            endPosY = width - overhang;
+        } else if (quantity == 4)
+        {
+            if (matNum == 2)
+            {
+                startPosX = length;
+                endPosX = 0;
+                startPosY = overhang;
+                endPosY = overhang;
+            } else
+            {
+                startPosX = length;
+                endPosX = 0;
+                startPosY = width - overhang;
+                endPosY = width - overhang;
+            }
+        }
+
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
     }
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
@@ -258,8 +305,8 @@ public class Calculator
             raftersQuantity.add(i);
             totalLength += distanceBetweenRafters;
         }
-        // Antallet af spær er størrelsen af listen
-        quantity = raftersQuantity.size();
+        // Antallet af spær er størrelsen af listen, plus 1 for enden
+        quantity = raftersQuantity.size() + 1;
         rafters[0] = quantity;
 
         //Beregning af længden på spær
@@ -288,14 +335,12 @@ public class Calculator
         // length is the x-axis
         int length = carport.getLENGTH();
 
-        int posX = 0;
+        // afstanden mellem spærrene er taget fra materialelisten vi fik udleveret
+        int spacing = 60;
+
+        int posX = matNum * spacing;
         int startPosY = 0;
-        int endPosY = 0;
-
-        int spacing = length / quantity;
-
-        posX = matNum * spacing;
-        endPosY = width;
+        int endPosY = width;
 
         posXY[0] = posX;
         posXY[1] = posX;
