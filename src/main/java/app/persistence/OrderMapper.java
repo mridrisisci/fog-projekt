@@ -396,12 +396,14 @@ public class OrderMapper
         }
     }
 
-    public static int setSalesPriceAndCoverage(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int setSalesPriceAndCoverageDefault(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        int pickListPrice = getPickListPriceByOrderID(orderID, pool);
+        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        int pickListPrice = Calculator.calcPickListPrice(pickList);
         double coverageRatio = 0.35;
         int coverageRatioPercentage = (int) Math.ceil(coverageRatio * 100);
         int salesPrice = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
+        int orderID = carport.getOrderID();
 
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
@@ -430,11 +432,10 @@ public class OrderMapper
 
     public static int updatePickListPrice(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-
         String sql = "UPDATE orders SET price = ? WHERE order_id = ?;";
 
         int orderID = carport.getOrderID();
-        List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+        List<Material> pickList = carport.getMaterialList();
         int pickListPrice = Calculator.calcPickListPrice(pickList);
 
         try (Connection connection = pool.getConnection();
