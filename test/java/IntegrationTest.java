@@ -1,23 +1,32 @@
 
+import app.entities.Carport;
+import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 public class IntegrationTest
-
 {
+    String carportID_expected = "CP01 DUR";
+    int salesPersonID_expected = 1;
+    String status_expected = "Under behandling";
+    Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
+    boolean orderPaid_expected = false;
+    int length_expected = 720;
+    int width_expected = 480;
+    boolean hasShed_expected = true;
+    String roofType_expected = "FLAT";
+    int accountID_expected = 1;
+
     ConnectionPool connectionPoolTest = ConnectionPool.getInstance("postgres", "postgres", "jdbc:postgresql://localhost:5432/%s?currentSchema=test_schema", "carport");
 
     @Before
@@ -200,7 +209,7 @@ public class IntegrationTest
                 "    ('universal 190 mm venstre', 'Stk', 50, 5, 150, 5, 'Beslag - Venstre', 'Til montering af spær på rem'),\n" +
                 "    ('4,5 x 60 mm. skruer 200 stk.', 'Pakke', 169, 6, 1, 1, 'Skruer', 'Til montering af stern & vandbrædt'),\n" +
                 "    ('4,0 x 50 mm. beslagskruer', 'Pakke', 139, 5, 1, 1, 'Beslagskruer', 'Til montering af universalbeslag + hulbånd'),\n" +
-                "    ('bræddebolt 10 x 120 mm.', 'Stk', 409, 1, 1, 1, 'Bræddebolt', 'Til montering af rem på stolper'),\n" +
+                "    ('bræddebolt 10 x 120 mm.', 'Stk', 16, 1, 1, 1, 'Bræddebolt', 'Til montering af rem på stolper'),\n" +
                 "    ('firkantskiver 40x40x11mm', 'Stk', 9, 1, 1, 1, 'Firkantskiver','Til montering af rem på stolper'),\n" +
                 "    ('4,5 x 70 mm. Skruer 400 stk.', 'Pakke', 165, 7, 1, 1, 'Beklædningsskruer', 'Til montering af yderste beklædning'),\n" +
                 "    ('4,5 x 50 mm. Skruer 300 stk.', 'Pakke', 90, 5, 1, 1, 'Beklædningsskruer', 'Til montering af inderste beklædning'),\n" +
@@ -225,29 +234,36 @@ public class IntegrationTest
     public void testCreateQueryInOrders() throws DatabaseException
     {
         // Arrange
-        String carportID_expected = "CP01 DUR";
-        int salesPersonID_expected = 1;
-        String status_expected = "Under behandling";
-        Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
-        boolean orderPaid_expected = false;
-        int length_expected = 720;
-        int width_expected = 480;
-        boolean hasShed_expected = true;
-        String roofType_expected = "FLAT";
-        int accountID_expected = 1;
-
-        // Act
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
 
+        // Act
         int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(orderID, connectionPoolTest);
 
         int length_actual = lengthAndWidth[0];
         int width_actual = lengthAndWidth[1];
 
         // Assert
-
         Assert.assertEquals(length_expected, length_actual);
         Assert.assertEquals(width_expected, width_actual);
+    }
+
+    @Test
+    public void testGetPickListPriceByOrderID() throws DatabaseException
+    {
+        // Arrange
+        int expected = 14727;
+        int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+        Carport carport = new Carport(orderID, length_expected, width_expected);
+        List<Material> pickList = MaterialMapper.createPickList(carport, connectionPoolTest);
+        carport.setMaterialList(pickList);
+        MaterialMapper.insertPickListInDB(pickList, carport, connectionPoolTest);
+        OrderMapper.updatePickListPrice(carport, connectionPoolTest);
+
+        // Act
+        int actual = OrderMapper.getPickListPriceByOrderID(orderID, connectionPoolTest);
+
+        // Assert
+        Assert.assertEquals(expected, actual);
     }
 
 

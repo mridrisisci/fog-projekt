@@ -5,7 +5,6 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,7 @@ public class MaterialMapper
     public static void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool) throws DatabaseException
     {
 
-        String sql = "INSERT INTO public.materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO materials (name, unit, price, length, height, width, type, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -108,6 +107,47 @@ public class MaterialMapper
         //TODO: tjek om materialer faktisk fjernes
         pickList.removeIf(material -> material.getQuantity() == 0);
 
+        return pickList;
+    }
+
+    public static List<Material> getPickList(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        List<Material> pickList = new ArrayList<>();
+
+        String sql = "SELECT material.material_id, material.type, material.length, material.name, material.unit, material.price, material.description, orders_materials.order_id, orders_materials.quantity\n" +
+                "                FROM orders_materials\n" +
+                "                INNER JOIN materials material ON orders_materials.material_id = material.material_id\n" +
+                "                WHERE order_id = ?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery())
+        {
+            ps.setInt(1, orderID);
+            while (rs.next())
+            {
+                int materialID = rs.getInt("material_id");
+                String name = rs.getString("name");
+                String unit = rs.getString("unit");
+                int price = rs.getInt("price");
+                int length = rs.getInt("length");
+                String type = rs.getString("type");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+
+                Material material = new Material(materialID, name, description, price, unit, quantity, length, type);
+                pickList.add(material);
+
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Error fetching materials from the database", e.getMessage());
+        }
+        return pickList;
+    }
+
+    public static void insertPickListInDB(List<Material> pickList, Carport carport, ConnectionPool pool) throws DatabaseException
+    {
         for (Material material : pickList)
         {
             String sql = "INSERT INTO orders_materials(order_id, material_id, quantity) VALUES (?, ?, ?);";
@@ -127,14 +167,12 @@ public class MaterialMapper
                 {
                     throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
                 }
-            } catch (SQLException e)
+            } catch (SQLException | DatabaseException e)
             {
                 System.out.println(e.getMessage());
                 throw new DatabaseException(e.getMessage());
             }
         }
-
-        return pickList;
     }
 
 
@@ -152,7 +190,6 @@ public class MaterialMapper
         int price;
         String type = "Stolpe";
         Material material = null;
-
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -182,7 +219,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getBeams(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -225,7 +262,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getSideUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -236,7 +273,6 @@ public class MaterialMapper
         String type = "Understernbrædt";
         int materialID;
         Material underFasciaBoard = null;
-
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -267,7 +303,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getSideOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -309,7 +345,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -320,7 +356,6 @@ public class MaterialMapper
         String type = "Understernbrædt";
         int price;
         Material underFasciaBoard = null;
-
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -351,7 +386,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getFrontAndBackOverFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -393,7 +428,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getRafters(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?";
 
         String name;
         String unit;
@@ -434,7 +469,7 @@ public class MaterialMapper
 
     public static Material getStandardScrews(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ?;";
 
         String name;
         String unit;
@@ -471,7 +506,7 @@ public class MaterialMapper
 
     public static Material getScrewsForRoofing(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -508,7 +543,7 @@ public class MaterialMapper
 
     public static Material getRollForWindCross(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -545,7 +580,7 @@ public class MaterialMapper
 
     public static Material getSquareWasher(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -582,7 +617,7 @@ public class MaterialMapper
 
     public static Material getHardwareForRaftersLeft(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -619,7 +654,7 @@ public class MaterialMapper
 
     public static Material getHardwareForRaftersRight(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -656,7 +691,7 @@ public class MaterialMapper
 
     public static Material getHardwareScrews(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -694,7 +729,7 @@ public class MaterialMapper
 
     public static Material getBoardBolt(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, type FROM public.materials WHERE type = ? ;";
+        String sql = "SELECT material_id, name, unit, description, price, type FROM materials WHERE type = ? ;";
 
         String name;
         String unit;
@@ -732,7 +767,7 @@ public class MaterialMapper
 
     public static Material getRoofPlatesLong(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -772,7 +807,7 @@ public class MaterialMapper
 
     public static Material getRoofPlatesShort(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -829,8 +864,36 @@ public class MaterialMapper
     {
     }
 
-    public static void deleteMaterial()
+
+    public static void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "DELETE FROM materials WHERE material_id = ? AND name = ? AND length = ? AND height = ? AND width = ?; ";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+
+            ps.setInt(1, materialID);
+            ps.setString(2, name);
+            ps.setInt(3, length);
+            ps.setInt(4, height);
+            ps.setInt(5, width);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0)
+            {
+                System.out.println("Materiale med ID " + materialID + " blev slettet.");
+            } else
+            {
+                System.out.println("Ingen materiale fundet med ID " + materialID);
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
+        }
+
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
@@ -841,9 +904,11 @@ public class MaterialMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int id = rs.getInt("material_id");
                 String name = rs.getString("name");
@@ -859,7 +924,8 @@ public class MaterialMapper
                 materials.add(material);
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching materials from the database", e.getMessage());
         }
         return materials;

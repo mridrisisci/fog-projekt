@@ -12,25 +12,25 @@ import java.util.List;
 
 public class CalculatorTest
 {
-    Carport carport1 = new Carport(1, false, 360, 240);
-    Carport carport2 = new Carport(1, false, 600, 240);
-    Carport carport3 = new Carport(1, false, 780, 240);
-    Carport carport4 = new Carport(1, false, 360, 360);
-    Carport carport5 = new Carport(1, false, 600, 360);
-    Carport carport6 = new Carport(1, false, 0, 0);
-    Carport carport7 = new Carport(1, false, 600, 480);
-    Carport carport8 = new Carport(1, false, 600, 540);
-    Carport carport9 = new Carport(1, false, 600, 600);
-    Carport carport10 = new Carport(1, false, 420, 420);
+    Carport carport1 = new Carport(1, 360, 240);
+    Carport carport2 = new Carport(1, 600, 240);
+    Carport carport3 = new Carport(1, 780, 240);
+    Carport carport4 = new Carport(1, 360, 360);
+    Carport carport5 = new Carport(1, 600, 360);
+    Carport carport6 = new Carport(1, 0, 0);
+    Carport carport7 = new Carport(1, 600, 480);
+    Carport carport8 = new Carport(1, 600, 540);
+    Carport carport9 = new Carport(1, 600, 600);
+    Carport carport10 = new Carport(1, 420, 420);
 
-    Material material1 = new Material(1, "test_name1", "test_description1", 50, "Stk", 1, 20, 20, 20, false, 0);
-    Material material2 = new Material(2, "test_name2", "test_description2", 25, "Stk", 1, 20, 20, 20, false, 0);
-    Material material3 = new Material(3, "test_name3", "test_description3", 100, "Kg", 2, 15, 15, 15, true, 5);
-    Material material4 = new Material(4, "test_name4", "test_description4", 75, "L", 3, 30, 30, 30, false, 10);
-    Material material5 = new Material(5, "test_name5", "test_description5", 60, "Stk", 2, 10, 10, 10, true, 8);
-    Material material6 = new Material(6, "test_name6", "test_description6", 45, "m", 1, 25, 25, 25, false, 12);
-    Material material7 = new Material(7, "test_name7", "test_description7", 80, "Kg", 3, 35, 35, 35, true, 0);
-    Material material8 = new Material(8, "test_name8", "test_description8", 55, "L", 4, 40, 40, 40, false, 3);
+    Material material1 = new Material(1, "test_name1", "test_description1", 50, "Stk", 1, 20, 20, 20, false);
+    Material material2 = new Material(2, "test_name2", "test_description2", 25, "Stk", 1, 20, 20, 20, false);
+    Material material3 = new Material(3, "test_name3", "test_description3", 100, "Kg", 2, 15, 15, 15, true);
+    Material material4 = new Material(4, "test_name4", "test_description4", 75, "L", 3, 30, 30, 30, false);
+    Material material5 = new Material(5, "test_name5", "test_description5", 60, "Stk", 2, 10, 10, 10, true);
+    Material material6 = new Material(6, "test_name6", "test_description6", 45, "m", 1, 25, 25, 25, false);
+    Material material7 = new Material(7, "test_name7", "test_description7", 80, "Kg", 3, 35, 35, 35, true);
+    Material material8 = new Material(8, "test_name8", "test_description8", 55, "L", 4, 40, 40, 40, false);
     List<Material> materialList = new ArrayList<>();
 
     @Before
