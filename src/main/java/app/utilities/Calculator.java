@@ -122,7 +122,6 @@ public class Calculator
         int[] beams = new int[2];
         int quantity = 0;
         int length = 0;
-        int lenghtTest = carport.getLENGTH();
 
         //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (carport.getLENGTH() <= 300)
