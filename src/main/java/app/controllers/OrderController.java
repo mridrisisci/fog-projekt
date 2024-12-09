@@ -191,9 +191,10 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            String orderID = ctx.pathParam("id"); // to remove order from DB
+            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
-            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            // TODO : Opdater denne metode til : getOrderByID
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             String email = account.getEmail();
 
             if ("send".equals(action))
