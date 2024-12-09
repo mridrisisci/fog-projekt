@@ -193,7 +193,6 @@ public class OrderController
             String action = ctx.formParam("action");
             String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
-            // TODO : Opdater denne metode til : getOrderByID
             Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             String email = account.getEmail();
 
