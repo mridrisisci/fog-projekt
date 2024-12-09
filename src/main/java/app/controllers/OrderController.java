@@ -99,8 +99,8 @@ public class OrderController
     {
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportLengthString));
-        int carportLength = Integer.parseInt(Objects.requireNonNull(carportWidthString));
+        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportWidthString));
+        int carportLength = Integer.parseInt(Objects.requireNonNull(carportLengthString));
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
@@ -175,10 +175,10 @@ public class OrderController
 
             Carport carport = new Carport(orderID, LENGTH, WIDTH);
             List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+            MaterialMapper.insertPickListInDB(pickList, carport, pool);
             carport.setMaterialList(pickList);
             OrderMapper.updatePickListPrice(carport, pool);
-            OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
-
+            OrderMapper.setSalesPriceAndCoverageDefault(carport, pool);
 
         } catch (DatabaseException e)
         {

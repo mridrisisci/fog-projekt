@@ -14,12 +14,12 @@ public class Material
     private boolean hasShedAddons;
     private String type;
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.price = purchasePrice;
+        this.price = price;
         this.unit = unit;
         this.quantity = quantity;
         this.length = length;
@@ -28,12 +28,12 @@ public class Material
         this.hasShedAddons = hasShedAddons;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int length, int height, int width, String type)
+    public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.price = purchasePrice;
+        this.price = price;
         this.unit = unit;
         this.length = length;
         this.height = height;
@@ -42,35 +42,35 @@ public class Material
         }
 
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, String type)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
-        this.price = purchasePrice;
+        this.price = price;
         this.quantity = quantity;
         this.length = length;
         this.type = type;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
-        this.price = purchasePrice;
+        this.price = price;
         this.quantity = quantity;
         this.length = length;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, String type)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.price = purchasePrice;
+        this.price = price;
         this.unit = unit;
         this.quantity = quantity;
         this.type = type;
@@ -91,6 +91,7 @@ public class Material
         this.type = type;
         this.quantity = quantity;
     }
+
 
     public Material(String type)
     {
