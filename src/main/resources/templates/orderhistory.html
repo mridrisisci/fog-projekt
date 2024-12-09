@@ -45,7 +45,7 @@
                                 </td>
                                 <td><span class="badge text-bg-info" th:text="${order.status}">Ordrestatus</span></td>
                                 <td th:text="${order.orderPlaced}">Bestillingsdato</td>
-                                <td th:text="${order.orderPaid}">Betalingsstatus</td>
+                                <td th:text="${order.paymentStatus}">Betalingsstatus</td>
                                 <td>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="/order/details" th:href="@{/order/details/{id}(id=${order.ORDER_ID})}">Se ordre</a> </br>
                                 </td>

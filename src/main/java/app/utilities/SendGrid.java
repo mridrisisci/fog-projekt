@@ -31,20 +31,14 @@ public class SendGrid
         int priceInteger = order.getPrice();
         String price = String.valueOf(priceInteger);
         String roofType = order.getRoofType().toString();
-        boolean hasShed = order.getHasShed();
+        String shed = "Uden skur";
         Timestamp orderPlaced = order.getOrderPlaced();
         String hasShed2;
         String length2 = String.valueOf(length);
         length2 = length2 + " cm";
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
-        if (hasShed)
-        {
-            hasShed2 = "Med skur";
-        } else
-        {
-            hasShed2 = "Uden skur";
-        }
+
 
         // ngrok dynamic URL for testing redirects with dynamic mail
         String ngrokURL = "  https://e36b-193-29-107-174.ngrok-free.app ";
@@ -68,7 +62,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Total_pris", price);
         personalization.addDynamicTemplateData("Tagtype", roofType);
-        personalization.addDynamicTemplateData("Redskabsrum", hasShed2);
+        personalization.addDynamicTemplateData("Redskabsrum", shed);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         personalization.addDynamicTemplateData("ngrokURL", URL);
         //personalization.addDynamicTemplateData("AcceptUrl", acceptURL); // uncomment before deploying
@@ -107,21 +101,13 @@ public class SendGrid
         int length = order.getLength();
         int width = order.getWidth();
         String roofType = order.getRoofType().toString();
-        boolean hasShed = order.getHasShed();
+        String shed = "Uden skur";
         Timestamp orderPlaced = order.getOrderPlaced();
         String hasShed2;
         String length2 = String.valueOf(length);
         length2 = length2 + " cm";
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
-
-        if (hasShed)
-        {
-            hasShed2 = "Med skur";
-        } else
-        {
-            hasShed2 = "Uden skur";
-        }
 
 
         Mail mail = new Mail();
@@ -135,7 +121,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Carport_length", length2);
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Tagtype", roofType);
-        personalization.addDynamicTemplateData("Redskabsrum", hasShed2);
+        personalization.addDynamicTemplateData("Redskabsrum", shed);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         mail.addPersonalization(personalization);
 
@@ -173,7 +159,7 @@ public class SendGrid
         int width = order.getWidth();
         int price = 200;
         String roofType = order.getRoofType().toString();
-        boolean hasShed = order.getHasShed();
+        String shed = "Uden skur";
         Timestamp orderPlaced = order.getOrderPlaced();
         String hasShed2;
         String length2 = String.valueOf(length);
@@ -181,13 +167,6 @@ public class SendGrid
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
 
-        if (hasShed)
-        {
-            hasShed2 = "Med skur";
-        } else
-        {
-            hasShed2 = "Uden skur";
-        }
 
 
         Mail mail = new Mail();
@@ -203,7 +182,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Total_pris", price);
         personalization.addDynamicTemplateData("Tagtype", roofType);
-        personalization.addDynamicTemplateData("Redskabsrum", hasShed2);
+        personalization.addDynamicTemplateData("Redskabsrum", shed);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         mail.addPersonalization(personalization);
 

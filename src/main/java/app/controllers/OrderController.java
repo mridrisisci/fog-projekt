@@ -105,11 +105,6 @@ public class OrderController
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
 
-        String shedWidthString = ctx.formParam("chooseShedWidth");
-        Integer shedWidth = Integer.parseInt(Objects.requireNonNull(shedWidthString));
-        String shedLengthString = ctx.formParam("chooseShedLength");
-        Integer shedLength = Integer.parseInt(Objects.requireNonNull(shedLengthString));
-
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
@@ -127,11 +122,11 @@ public class OrderController
         //validatePostalCode(ctx, "choosePostalCode");
 
 
-        String carportId = "CFUS";
+        String carportId = "CFU";
         int salesPersonId = 0;
         boolean orderPaid = false;
         Order order;
-        boolean hasShed = true;
+        boolean hasShed = false;
 
         try
         {
