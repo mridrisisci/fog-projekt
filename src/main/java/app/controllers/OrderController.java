@@ -152,10 +152,10 @@ public class OrderController
 
             Carport carport = new Carport(orderID, LENGTH, WIDTH);
             List<Material> pickList = MaterialMapper.createPickList(carport, pool);
+            MaterialMapper.insertPickListInDB(pickList, carport, pool);
             carport.setMaterialList(pickList);
             OrderMapper.updatePickListPrice(carport, pool);
-            OrderMapper.setDefaultSalesPriceAndCoverageRatioByOrderID(carport.getOrderID(), pool);
-
+            OrderMapper.setSalesPriceAndCoverage(carport.getOrderID(), pool);
 
         } catch (DatabaseException e)
         {
