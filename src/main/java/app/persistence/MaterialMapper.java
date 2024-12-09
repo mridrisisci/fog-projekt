@@ -236,7 +236,6 @@ public class MaterialMapper
         int materialID;
         Material underFasciaBoard = null;
 
-
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -308,7 +307,7 @@ public class MaterialMapper
     //TODO: MANGLER TEST!
     public static Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT material_id, name, unit, description, price, length, type FROM public.materials WHERE type = ? AND length = ?;";
+        String sql = "SELECT material_id, name, unit, description, price, length, type FROM materials WHERE type = ? AND length = ?;";
 
         String name;
         String unit;
@@ -319,7 +318,6 @@ public class MaterialMapper
         String type = "Understernbrædt";
         int price;
         Material underFasciaBoard = null;
-
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
