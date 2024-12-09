@@ -240,7 +240,6 @@ public class IntegrationTest
         int width_actual = lengthAndWidth[1];
 
         // Assert
-
         Assert.assertEquals(length_expected, length_actual);
         Assert.assertEquals(width_expected, width_actual);
     }
