@@ -142,7 +142,6 @@ public class Calculator
     public static int[] calcFrontAndBackFasciaBoard(Carport carport)
     {
         int[] fascia = new int[2];
-        int width = carport.getWIDTH();
         int quantity = 0;
         int length = 0;
 
