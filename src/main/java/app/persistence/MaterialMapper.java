@@ -123,6 +123,7 @@ public class MaterialMapper
              PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery())
         {
+            ps.setInt(1, orderID);
             while (rs.next())
             {
                 int materialID = rs.getInt("material_id");
