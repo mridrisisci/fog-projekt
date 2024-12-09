@@ -3,7 +3,6 @@ package app.persistence;
 import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
-import java.math.BigDecimal;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -397,7 +396,7 @@ public class OrderMapper
         }
     }
 
-    public static int setDefaultSalesPriceAndCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static int setSalesPriceAndCoverage(int orderID, ConnectionPool pool) throws DatabaseException
     {
         int pickListPrice = getPickListPriceByOrderID(orderID, pool);
         double coverageRatio = 0.35;
