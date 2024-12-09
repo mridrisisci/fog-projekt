@@ -155,7 +155,7 @@ public class OrderController
             MaterialMapper.insertPickListInDB(pickList, carport, pool);
             carport.setMaterialList(pickList);
             OrderMapper.updatePickListPrice(carport, pool);
-            OrderMapper.setSalesPriceAndCoverage(carport.getOrderID(), pool);
+            OrderMapper.setSalesPriceAndCoverageDefault(carport, pool);
 
         } catch (DatabaseException e)
         {
