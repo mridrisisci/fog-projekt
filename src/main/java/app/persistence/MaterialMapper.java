@@ -5,7 +5,6 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.utilities.Calculator;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +107,46 @@ public class MaterialMapper
         //TODO: tjek om materialer faktisk fjernes
         pickList.removeIf(material -> material.getQuantity() == 0);
 
+        return pickList;
+    }
+
+    public static List<Material> getPickList(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        List<Material> pickList = new ArrayList<>();
+
+        String sql = "SELECT material.material_id, material.type, material.length, material.name, material.unit, material.price, material.description, orders_materials.order_id, orders_materials.quantity\n" +
+                "                FROM orders_materials\n" +
+                "                INNER JOIN materials material ON orders_materials.material_id = material.material_id\n" +
+                "                WHERE order_id = ?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery())
+        {
+            while (rs.next())
+            {
+                int materialID = rs.getInt("material_id");
+                String name = rs.getString("name");
+                String unit = rs.getString("unit");
+                int price = rs.getInt("price");
+                int length = rs.getInt("length");
+                String type = rs.getString("type");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+
+                Material material = new Material(materialID, name, description, price, unit, quantity, length, type);
+                pickList.add(material);
+
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Error fetching materials from the database", e.getMessage());
+        }
+        return pickList;
+    }
+
+    public static void insertPickListInDB(List<Material> pickList, Carport carport, ConnectionPool pool) throws DatabaseException
+    {
         for (Material material : pickList)
         {
             String sql = "INSERT INTO orders_materials(order_id, material_id, quantity) VALUES (?, ?, ?);";
@@ -127,14 +166,12 @@ public class MaterialMapper
                 {
                     throw new DatabaseException("Failed to update price for the material with ID: " + materialID);
                 }
-            } catch (SQLException e)
+            } catch (SQLException | DatabaseException e)
             {
                 System.out.println(e.getMessage());
                 throw new DatabaseException(e.getMessage());
             }
         }
-
-        return pickList;
     }
 
 
@@ -152,7 +189,7 @@ public class MaterialMapper
         int price;
         String type = "Stolpe";
         Material material = null;
-        
+
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -838,9 +875,11 @@ public class MaterialMapper
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery())
+        {
 
-            while (rs.next()) {
+            while (rs.next())
+            {
 
                 int id = rs.getInt("material_id");
                 String name = rs.getString("name");
@@ -856,7 +895,8 @@ public class MaterialMapper
                 materials.add(material);
 
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException("Error fetching materials from the database", e.getMessage());
         }
         return materials;
