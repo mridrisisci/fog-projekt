@@ -191,16 +191,16 @@ public class OrderController
         try
         {
             String action = ctx.formParam("action");
-            String orderID = ctx.pathParam("id"); // to remove order from DB
+            String orderID = ctx.formParam("sendOfferID"); // to remove order from DB
             String accountID = ctx.formParam("accountid"); // to retrieve account from accounts
-            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(accountID)), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             String email = account.getEmail();
 
             if ("send".equals(action))
             {
                 Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-                SendGrid.sendOffer(email, "Pristilbud", order);
                 OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_SENDT, pool);
+                SendGrid.sendOffer(email, "Pristilbud", order);
                 ctx.attribute("message", "Dit pristilbud er sendt til kunden");
                 showOrderHistory(ctx,pool);
             }
@@ -211,9 +211,9 @@ public class OrderController
                 showOrderHistory(ctx,pool);
             }
 
-        } catch (IOException | DatabaseException e )
+        } catch (DatabaseException | IOException e )
         {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " DB-exception");
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);
         }

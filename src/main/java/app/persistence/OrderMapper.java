@@ -230,7 +230,7 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_id, order_placed, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_id, order_placed, carport_id, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;
@@ -245,11 +245,12 @@ public class OrderMapper
                 orderPlaced = rs.getTimestamp("order_placed");
                 int length = rs.getInt("length");
                 int width = rs.getInt("width");
+                String carportID = rs.getString("carport_id");
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
                 int price = rs.getInt("price");
-                return new Order(orderId, orderPlaced, status, length, width, hasShed, price, RoofType.FLAT);
+                return new Order(orderId, orderPlaced, status, carportID, length, width, hasShed, price, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
@@ -265,6 +266,7 @@ public class OrderMapper
         String sql = "SELECT " +
             "o.order_id," +
             "o.status, " +
+            "o.carport_id, " +
             "o.order_placed," +
             "o.order_paid," +
             "o.length," +
@@ -285,6 +287,7 @@ public class OrderMapper
         int width;
         int length;
         int accountID;
+        String carportID = "";
 
         String name;
         String email;
@@ -304,12 +307,13 @@ public class OrderMapper
                 orderPaid = rs.getBoolean("order_paid");
                 width = rs.getInt("width");
                 length = rs.getInt("length");
+                carportID = rs.getString("carport_id");
                 name = rs.getString("username");
                 accountID = rs.getInt("account_id");
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orders.add(new Order(orderID, status, orderPlaced, orderPaid, width, length,
+                orders.add(new Order(orderID, status.toString(), carportID, orderPlaced, orderPaid, width, length,
                     new Account(accountID, name, email, telephone, role)));
             }
             return orders;
@@ -544,12 +548,14 @@ public class OrderMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderID);
-            ps.setString(2, status.toString());
+            ps.setString(1, status.toString());
+            ps.setInt(2, orderID);
+
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected != 1)
             {
+                System.out.println("fejl");
                 throw new DatabaseException("Kunne ikke slette ordren med ordre id: " + orderID);
             }
 
