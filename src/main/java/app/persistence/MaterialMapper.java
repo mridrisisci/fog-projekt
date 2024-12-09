@@ -864,8 +864,36 @@ public class MaterialMapper
     {
     }
 
-    public static void deleteMaterial()
+
+    public static void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool) throws DatabaseException
     {
+        String sql = "DELETE FROM materials WHERE material_id = ? AND name = ? AND length = ? AND height = ? AND width = ?; ";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+
+            ps.setInt(1, materialID);
+            ps.setString(2, name);
+            ps.setInt(3, length);
+            ps.setInt(4, height);
+            ps.setInt(5, width);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0)
+            {
+                System.out.println("Materiale med ID " + materialID + " blev slettet.");
+            } else
+            {
+                System.out.println("Ingen materiale fundet med ID " + materialID);
+            }
+
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
+        }
+
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
