@@ -893,7 +893,7 @@ public class MaterialMapper
         String sql = "SELECT material.material_id, material.type, material.length, material.width, material.height " +
                 "FROM public.orders_materials order_materials " +
                 "INNER JOIN public.materials material ON order_materials.material_id = material.material_id " +
-                "WHERE om.order_id = ?";
+                "WHERE order_materials.order_id = ?";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -917,6 +917,24 @@ public class MaterialMapper
         }
 
         return svgMaterials;
+    }
+
+    public static String getSVGFromDatabase(int orderID, ConnectionPool pool) throws DatabaseException {
+        String svgContent = "";
+        try (Connection connection = pool.getConnection()) {
+            String query = "SELECT svg_drawing FROM carport_orders WHERE order_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, orderID);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        svgContent = rs.getString("svg_drawing");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to retrieve SVG drawing from database", e);
+        }
+        return svgContent;
     }
 
 }
