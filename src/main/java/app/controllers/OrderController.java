@@ -75,8 +75,8 @@ public class OrderController
     {
         String carportLengthString = ctx.formParam("chooseLength");
         String carportWidthString = ctx.formParam("chooseWidth");
-        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportLengthString));
-        int carportLength = Integer.parseInt(Objects.requireNonNull(carportWidthString));
+        int carportWidth = Integer.parseInt(Objects.requireNonNull(carportWidthString));
+        int carportLength = Integer.parseInt(Objects.requireNonNull(carportLengthString));
 
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
