@@ -220,29 +220,25 @@ public class AccountMapper
 
     }
 
-    public static Account getAccountByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
+    public static Account getAccountByOrderID(int accountID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT a.account_id, a.username, a.email, a.telephone, a.role, o.order_id " +
-            "FROM accounts a " +
-            "INNER JOIN orders o ON a.account_id = o.account_id " +
-            "WHERE order_id = ?";
 
-        String sql2 = "SELECT * FROM accounts WHERE account_id = ?";
+        String sql = "SELECT * FROM accounts WHERE account_id = ?";
         String username;
         String email;
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql2))
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderID);
+            ps.setInt(1, accountID);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
-                int accountID = rs.getInt("account_id");
+                int id = rs.getInt("account_id");
                 username = rs.getString("username");
                 email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                return new Account(accountID, username, email, telephone, role);
+                return new Account(id, username, email, telephone, role);
             }
         } catch (SQLException e)
         {
