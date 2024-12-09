@@ -548,8 +548,9 @@ public class OrderMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setInt(1, orderID);
-            ps.setString(2, status.toString());
+            ps.setString(1, status.toString());
+            ps.setInt(2, orderID);
+
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected != 1)

@@ -211,9 +211,9 @@ public class OrderController
                 showOrderHistory(ctx,pool);
             }
 
-        } catch (IOException | DatabaseException e )
+        } catch (DatabaseException | IOException e )
         {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + " DB-exception");
             ctx.attribute("message", e.getMessage());
             showOrderHistory(ctx, pool);
         }

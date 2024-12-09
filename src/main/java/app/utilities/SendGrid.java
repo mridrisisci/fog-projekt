@@ -96,7 +96,6 @@ public class SendGrid
             System.out.println("Error sending mail");
             throw ex;
         }
-        System.out.println("mail er sendt");
     }
 
     public static void sendBOM(String email, String subject, Order order) throws IOException
