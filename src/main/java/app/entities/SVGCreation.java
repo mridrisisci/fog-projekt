@@ -6,80 +6,71 @@ import java.nio.file.Paths;
 
 public class SVGCreation
 {
-
-    public static String loadSVGFromFile(String filePath) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(filePath))); // Read SVG file content
+    public static String loadSVGFromFile(String filePath) throws IOException
+    {
+        return new String(Files.readAllBytes(Paths.get(filePath)));
     }
 
-    public static String generateCarportSVG(
-            int postLength,
-            int postWidth,
-            int beamLength,
-            int beamWidth,
-            int rafterLength,
-            int rafterWidth,
-            int fasciaBoardLength,
-            int fasciaBoardWidth,
-            int crossRafterLength,
-            int crossRafterWidth,
-            int spacing,
-            int quantityOfPosts,
-            int quantityOfBeams,
-            int quantityOfFaciaBoards) {
-
-        StringBuilder svg = new StringBuilder();
-        svg.append("<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"600\" height=\"600\">\n");
-
-        StringBuilder postBuilder = new StringBuilder();
-        for (int i = 1; i <= quantityOfPosts; i++) {
-            postBuilder.append(
-                    String.format(
-                            "<rect id=\"post%d\" x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"Red\" />\n",
-                            i, postWidth, postLength
-                    )
-            );
+    public static String generatePosts(int postLength, int postWidth, int quantityOfPosts)
+    {
+        StringBuilder postsBuilder = new StringBuilder();
+        for (int i = 1; i <= quantityOfPosts; i++)
+        {
+            postsBuilder.append(String.format(
+                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"red\" />\n",
+                    i, i * 100, 50, postWidth, postLength
+            ));
         }
-        svg.append(postBuilder.toString());
-
-        StringBuilder beamBuilder = new StringBuilder();
-        for (int i = 1; i <= quantityOfBeams; i++) {
-            beamBuilder.append(
-                    String.format(
-                            "<rect id=\"beam%d\" x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"gray\" />\n",
-                            i, beamWidth, beamLength
-                    )
-            );
+        return postsBuilder.toString();
+    }
+    public static String generateBeams(int beamLength, int beamWidth, int quantityOfBeams)
+    {
+        StringBuilder beamsBuilder = new StringBuilder();
+        for (int i = 1; i <= quantityOfBeams; i++)
+        {
+            beamsBuilder.append(String.format(
+                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"gray\" />\n",
+                    i, i * 100, 100, beamWidth, beamLength
+            ));
         }
-        svg.append(beamBuilder.toString());
-
-        // TODO få kigget på logik bag spær
-        StringBuilder raftBuilder = new StringBuilder();
-        for (int i = spacing; i < 500 - spacing; i += 50) {
-            raftBuilder.append(
-                    String.format(
-                            "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"darkgray\" />\n",
-                            i, 0, rafterWidth, rafterLength
-                    )
-            );
+        return beamsBuilder.toString();
+    }
+    public static String generateRafters(int rafterLength, int rafterWidth, int spacing)
+    {
+        StringBuilder raftersBuilder = new StringBuilder();
+        for (int i = spacing; i < 500 - spacing; i += 50)
+        {
+            raftersBuilder.append(String.format(
+                    "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"darkgray\" />\n",
+                    i, 0, rafterWidth, rafterLength
+            ));
         }
-        svg.append(raftBuilder.toString());
-
-        StringBuilder faciaBuilder = new StringBuilder();
-        for (int i = 1; i <= quantityOfFaciaBoards; i++) {
-            faciaBuilder.append(
-                    String.format(
-                            "<rect id=\"facia%d\" x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"black\" />\n",
-                            i, fasciaBoardWidth, fasciaBoardLength
-                    )
-            );
+        return raftersBuilder.toString();
+    }
+    public static String generateFasciaBoards(int fasciaBoardLength, int fasciaBoardWidth, int quantityOfFasciaBoards)
+    {
+        StringBuilder fasciaBoardsBuilder = new StringBuilder();
+        for (int i = 1; i <= quantityOfFasciaBoards; i++)
+        {
+            fasciaBoardsBuilder.append(String.format(
+                    "<rect id=\"facia%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"black\" />\n",
+                    i, i * 100, 150, fasciaBoardWidth, fasciaBoardLength
+            ));
         }
-        svg.append(faciaBuilder.toString());
-
-        svg.append("</svg>\n");
-        return svg.toString();
+        return fasciaBoardsBuilder.toString();
     }
 
-    public static void saveSVGToFile(String filePath, String svgContent) throws IOException {
-        Files.write(Paths.get(filePath), svgContent.getBytes());
+    public static String generateCarportSVGFromTemplate(
+            String template,
+            String posts,
+            String beams,
+            String rafters,
+            String fasciaBoards)
+    {
+        return template
+                .replace("{{posts}}", posts)
+                .replace("{{beams}}", beams)
+                .replace("{{rafters}}", rafters)
+                .replace("{{fasciaBoards}}", fasciaBoards);
     }
 }
