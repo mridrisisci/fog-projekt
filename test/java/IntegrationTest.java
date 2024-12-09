@@ -1,7 +1,9 @@
 
 import app.entities.Carport;
+import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,6 +12,7 @@ import org.junit.Test;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class IntegrationTest
 {
@@ -248,12 +251,13 @@ public class IntegrationTest
     public void testGetPickListPriceByOrderID() throws DatabaseException
     {
         // Arrange
-        int expected = 12705;
+        int expected = 14727;
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
         Carport carport = new Carport(orderID, length_expected, width_expected);
-//        MaterialMapper.createPickList(carport, connectionPoolTest);
+        List<Material> pickList = MaterialMapper.createPickList(carport, connectionPoolTest);
+        carport.setMaterialList(pickList);
+        MaterialMapper.insertPickListInDB(pickList, carport, connectionPoolTest);
         OrderMapper.updatePickListPrice(carport, connectionPoolTest);
-        OrderMapper.setSalesPriceAndCoverageDefault(carport, connectionPoolTest);
 
         // Act
         int actual = OrderMapper.getPickListPriceByOrderID(orderID, connectionPoolTest);
