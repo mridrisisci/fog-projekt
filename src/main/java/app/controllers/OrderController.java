@@ -117,7 +117,6 @@ public class OrderController
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
-
         String carportId = "CFU";
         int salesPersonId = 0;
         boolean orderPaid = false;
