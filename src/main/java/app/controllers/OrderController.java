@@ -53,22 +53,6 @@ public class OrderController
 
     }
 
-    private static void showSalesOffer(Context ctx, ConnectionPool pool)
-    {
-        String orderID = ctx.pathParam("id");
-        try
-        {
-            int price = OrderMapper.getSalesOffer(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            ctx.attribute("price", price);
-            ctx.render("/order/details/{id}");
-
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("/order/details/{id}");
-        }
-    }
-
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
     {
         try
