@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="850">
+    {{posts}}
+    {{beams}}
+    {{rafters}}
+    {{fasciaBoards}}
+</svg>
