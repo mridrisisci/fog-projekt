@@ -35,16 +35,22 @@ public class Calculator
     {
         //Antal stolper
         int quantity;
-        //Længder er omregnet til mm i stedet for cm, ved at gange med 100
+        //Længder er omregnet til mm i stedet for cm, ved at gange med 10
         // 9,7 cm er bredden på stolpen, og til at starte med har man minimum to stolper per længde
-        int overhangDefault = 1000; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        int overhangDefault; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        if((carport.getLENGTH() / 4) * 10 <= 1000){ //Maks overhang er hardcoded
+            overhangDefault = (carport.getLENGTH() / 4) * 10;
+        } else {
+            overhangDefault = 1000;
+        }
+
         int widthOfPost = 97; //widthOfPost skal modregnes i hvor langt der er mellem eventuelt er stolper
         int maxSpan = 3100; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
         int totalWidthWithinMaxSpan = 2 * overhangDefault + 2 * widthOfPost + maxSpan;
 
 
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
-        if ((carport.getLENGTH() * 100) <= totalWidthWithinMaxSpan)
+        if ((carport.getLENGTH() * 10) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
