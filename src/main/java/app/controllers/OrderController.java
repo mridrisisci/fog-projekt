@@ -10,18 +10,17 @@ import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.sql.SQLException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import static app.persistence.MaterialMapper.getSVGFromDatabase;
-
 public class OrderController
+
 {
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
@@ -210,7 +209,6 @@ public class OrderController
         String svg = getSVGFromDatabase(orderID, pool);
         ctx.result(svg).contentType("image/svg+xml");
     }
-
 
 
 //TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
