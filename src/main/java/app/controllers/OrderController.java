@@ -27,7 +27,7 @@ public class OrderController
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
         app.get("/order/acceptoffer/{id}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
-        app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
+        app.post("/acceptordecline", ctx -> acceptOrDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
         app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
@@ -53,7 +53,7 @@ public class OrderController
 
 
 
-    private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
+    private static void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
     {
         String action = ctx.formParam("action");
         String email = ctx.formParam("email");
@@ -117,11 +117,6 @@ public class OrderController
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
-
-        // TODO: Færdiggør valideringsmetoderne
-        //validatePhoneNumber(ctx, "choosePhoneNumber");
-        //validatePostalCode(ctx, "choosePostalCode");
-
 
         String carportId = "CFU";
         int salesPersonId = 0;
@@ -276,11 +271,6 @@ public class OrderController
 
     }
 
-
-//TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
-// det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
-// vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
-
     private static void billOfMaterials(Context ctx, ConnectionPool pool)
     {
         try
@@ -312,38 +302,6 @@ public class OrderController
             ctx.attribute("message", e.getMessage());
             return null;
         }
-    }
-
-    private static boolean validatePostalCode(Context ctx, String postalCode)
-    {
-        int p = Integer.parseInt(postalCode); // does it need to be parsed ?
-
-        if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
-        {
-            return false;
-        }
-        if (postalCode.length() == 4)
-        {
-            return true;
-        }
-        return false;
-    }
-
-
-    private static boolean validatePhoneNumber(Context ctx, String number)
-    {
-        String numbers = "1234567890";
-        boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
-
-        if (number.length() < 8)
-        {
-            ctx.attribute("message", "Dit telefonnummer er ugyldigt");
-            return false;
-        } else if (number.length() == 8 && hasNumber)
-        {
-            return true;
-        }
-        return false;
     }
 
 
