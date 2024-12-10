@@ -141,7 +141,7 @@ public class OrderController
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             SendGrid.notifySalesPersonOfNewOrder("sales.person.fog@gmail.com", "Ny bestilling af et pristilbud"); // INDSÆT SÆLGERMAIL KORREKT
             ctx.attribute("order", order);
-            ctx.render("kvittering.html");
+            ctx.render("receipt.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -151,7 +151,7 @@ public class OrderController
         } catch (IOException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("kvittering.html");
+            ctx.render("receipt.html");
         }
     }
 
