@@ -326,12 +326,55 @@ public class Calculator
     // metode til SVG tegning
     public static int[] calcFrontAndBackFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
     {
-        int[] posXY = new int[2];
+        // Initialize position array [startPosX, endPosX, startPosY, endPosY].
+        int[] posXY = new int[4];
 
         int width = carport.getWIDTH();
         int length = carport.getLENGTH();
 
+        // Default positions
+        int startPosX = 0;
+        int endPosX = 0;
+        int startPosY = 0;
+        int endPosY = width;
 
+        if (quantity == 4)
+        {
+            switch (matNum)
+            {
+                case 0: // First board
+                    endPosY = matLength;
+                    break;
+                case 1: // Second board
+                    startPosY = width;
+                    endPosY = width - matLength;
+                    break;
+                case 2: // Third board
+                    startPosX = length;
+                    endPosX = length;
+                    endPosY = matLength;
+                    break;
+                case 3: // Fourth board
+                    startPosX = length;
+                    endPosX = length;
+                    startPosY = width;
+                    endPosY = width - matLength;
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid matNum for quantity = 4: " + matNum);
+            }
+        } else if (quantity == 2 && matNum == 1)
+        {
+            // Special case for two boards, second board
+            startPosX = length;
+            endPosX = length;
+        }
+        // Populate the result array
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
 
         return posXY;
     }
