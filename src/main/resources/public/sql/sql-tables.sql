@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     height integer,
     width integer NOT NULL,
     length integer NOT NULL,
+    svg text,
     has_shed boolean NOT NULL,
     roof_type character varying(10) NOT NULL,
     account_id integer NOT NULL,
