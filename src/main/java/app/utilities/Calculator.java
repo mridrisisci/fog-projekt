@@ -337,7 +337,6 @@ public class Calculator
         int endPosX = 0;
         int startPosY = 0;
         int endPosY = width;
-
         if (quantity == 4)
         {
             switch (matNum)
