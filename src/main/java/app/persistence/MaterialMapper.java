@@ -840,13 +840,7 @@ public class MaterialMapper
         return materials;
     }
 
-    //TODO: kan de fjernes?
     public static Material getMaterial()
-    {
-        return null;
-    }
-
-    public static Material getMaterialByID()
     {
         return null;
     }
