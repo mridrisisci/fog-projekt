@@ -286,17 +286,13 @@ public class OrderController
         try
         {
             String orderID = ctx.pathParam("id");
-            List<Order> orderDetails;
-            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            List<Material> pickList;
+            Order orderDetails = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            pickList = MaterialMapper.getPickList(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
 
-            // get Account object from orderdetails
-            Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
-            Account account = accountIndex.getAccount();
-
-            Order order = orderDetails.removeLast(); // removes Account object
-            ctx.attribute("orderdetails", order);
-            ctx.attribute("account", account);
-            ctx.render("/orderdetails.html");
+            ctx.attribute("billOfMaterials", pickList);
+            ctx.attribute("orderDetails", orderDetails);
+            ctx.render("billOfMaterials.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -304,8 +300,6 @@ public class OrderController
         }
 
     }
-
-
 
     private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
