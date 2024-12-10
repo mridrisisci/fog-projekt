@@ -13,6 +13,9 @@ public class Material
     private int width;
     private boolean hasShedAddons;
     private String type;
+    private int svgPosX;
+    private int svgPosY;
+
 
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
@@ -39,7 +42,7 @@ public class Material
         this.height = height;
         this.width = width;
         this.type = type;
-        }
+    }
 
 
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, String type)
@@ -90,6 +93,23 @@ public class Material
         this.description = description;
         this.type = type;
         this.quantity = quantity;
+    }
+
+    public Material(int materialID, int length, int width, String type, int quantity)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+        this.quantity = quantity;
+    }
+
+    public Material(String type, int length, int width, int svgPosX, int svgPosY){
+        this.type = type;
+        this.length = length;
+        this.width = width;
+        this.svgPosX = svgPosX;
+        this.svgPosY = svgPosY;
     }
 
 
@@ -153,4 +173,23 @@ public class Material
         return hasShedAddons;
     }
 
+    public void setSvgPosX(int svgPosX)
+    {
+        this.svgPosX = svgPosX;
+    }
+
+    public void setSvgPosY(int svgPosY)
+    {
+        this.svgPosY = svgPosY;
+    }
+
+    public int getSvgPosX()
+    {
+        return svgPosX;
+    }
+
+    public int getSvgPosY()
+    {
+        return svgPosY;
+    }
 }
