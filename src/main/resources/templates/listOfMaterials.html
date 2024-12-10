@@ -60,66 +60,129 @@
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Navn" required>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Navn"
+                                           required>
                                     <label for="name">Navn</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="unit" name="unit" placeholder="Enhed" required>
+                                    <input type="text" class="form-control" id="unit" name="unit" placeholder="Enhed"
+                                           required>
                                     <label for="unit">Enhed</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="price" name="price" placeholder="Pris" step="1" required>
+                                    <input type="number" class="form-control" id="price" name="price" placeholder="Pris"
+                                           step="1" required>
                                     <label for="price">Pris</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="length" name="length" placeholder="Længde" step="1" required>
+                                    <input type="number" class="form-control" id="length" name="length"
+                                           placeholder="Længde" step="1" required>
                                     <label for="length">Længde</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="height" name="height" placeholder="Højde" step="1" required>
+                                    <input type="number" class="form-control" id="height" name="height"
+                                           placeholder="Højde" step="1" required>
                                     <label for="height">Højde</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="width" name="width" placeholder="Bredde" step="1" required>
+                                    <input type="number" class="form-control" id="width" name="width"
+                                           placeholder="Bredde" step="1" required>
                                     <label for="width">Bredde</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="type" name="type" placeholder="Type" required>
+                                    <input type="text" class="form-control" id="type" name="type" placeholder="Type"
+                                           required>
                                     <label for="type">Type</label>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="description" name="description" placeholder="Beskrivelse" style="height: 100px;"></textarea>
+                                    <textarea class="form-control" id="description" name="description"
+                                              placeholder="Beskrivelse" style="height: 100px;"></textarea>
                                     <label for="description">Beskrivelse</label>
                                 </div>
                             </div>
 
                             <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-dark btn-lg px-5 py-3 shadow-sm rounded-pill" formaction="addMaterial">
+                                <button type="submit" class="btn btn-dark btn-lg px-5 py-3 shadow-sm rounded-pill"
+                                        formaction="addMaterial">
                                     <i class="bi bi-plus-circle"></i> Tilføj materiale
                                 </button>
                             </div>
 
+                        </div>
+                    </form>
+
+
+                    </form>
+                    <br><br>
+                    <h2>Fjern et materiale</h2>
+                    <form method="post" class="container mt-4">
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" id="materialID" class="form-control" name="materialID"
+                                           required>
+                                    <label for="materialID">Materiale ID</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" name="name"
+                                           required>
+                                    <label for="name">Name</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" name="height"
+                                           required>
+                                    <label for="height">Højde</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" name="length"
+                                           required>
+                                    <label for="length">Længde</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" name="width"
+                                           required>
+                                    <label for="width">Bredde</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <input class="btn btn-dark btn-lg px-5 py-3 shadow-sm rounded-pill" type="submit" formaction="removeMaterial"
+                                        value="Fjern materialet"/>
+                            </div>
                         </div>
                     </form>
 
