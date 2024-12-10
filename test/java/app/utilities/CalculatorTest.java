@@ -138,7 +138,7 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcPosts(carport1); // Length = 360 cm
-        int expected1 = 6;
+        int expected1 = 4;
 
         int actual2 = Calculator.calcPosts(carport2); // Length = 600 cm
         int expected2 = 6;
@@ -147,7 +147,7 @@ public class CalculatorTest
         int expected3 = 6;
 
         int actual4 = Calculator.calcPosts(carport4); // Length = 360 cm
-        int expected4 = 6;
+        int expected4 = 4;
 
         int actual5 = Calculator.calcPosts(carport5); // Length = 600 cm
         int expected5 = 6;
@@ -582,6 +582,57 @@ public class CalculatorTest
         Assert.assertEquals(expected7, actual7);
         Assert.assertEquals(expected8, actual8);
         Assert.assertEquals(expected9, actual9);
+    }
+
+    @Test
+    public void testCalcPostsXYCarport1()
+    {
+        // Arrange
+        int quantity = Calculator.calcPosts(carport1);
+
+        // post 1
+        int expectedX1 = 90;
+        int expectedY1 = 15;
+
+        // post 2
+        int expectedX2 = 90;
+        int expectedY2 = 225;
+
+        // post 3
+        int expectedX3 = 270;
+        int expectedY3 = 15;
+
+        // post 4
+        int expectedX4 = 270;
+        int expectedY4 = 225;
+
+        // Act
+        int[] actual1 = Calculator.calcPostsXY(carport1, quantity, 0);
+        int actualX1 = actual1[0];
+        int actualY1 = actual1[1];
+
+        int[] actual2 = Calculator.calcPostsXY(carport1, quantity, 1);
+        int actualX2 = actual2[0];
+        int actualY2 = actual2[1];
+
+        int[] actual3 = Calculator.calcPostsXY(carport1, quantity, 2);
+        int actualX3 = actual3[0];
+        int actualY3 = actual3[1];
+
+        int[] actual4 = Calculator.calcPostsXY(carport1, quantity, 3);
+        int actualX4 = actual4[0];
+        int actualY4 = actual4[1];
+
+        // Assert
+        Assert.assertEquals(expectedX1, actualX1);
+        Assert.assertEquals(expectedY1, actualY1);
+        Assert.assertEquals(expectedX2, actualX2);
+        Assert.assertEquals(expectedY2, actualY2);
+        Assert.assertEquals(expectedX3, actualX3);
+        Assert.assertEquals(expectedY3, actualY3);
+        Assert.assertEquals(expectedX4, actualX4);
+        Assert.assertEquals(expectedY4, actualY4);
+
     }
 
 
