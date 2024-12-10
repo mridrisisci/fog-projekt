@@ -35,16 +35,22 @@ public class Calculator
     {
         //Antal stolper
         int quantity;
-        //Længder er omregnet til mm i stedet for cm, ved at gange med 100
+        //Længder er omregnet til mm i stedet for cm, ved at gange med 10
         // 9,7 cm er bredden på stolpen, og til at starte med har man minimum to stolper per længde
-        int overhangDefault = 1000; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        int overhangDefault; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
+        if((carport.getLENGTH() / 4) * 10 <= 1000){ //Maks overhang er hardcoded
+            overhangDefault = (carport.getLENGTH() / 4) * 10;
+        } else {
+            overhangDefault = 1000;
+        }
+
         int widthOfPost = 97; //widthOfPost skal modregnes i hvor langt der er mellem eventuelt er stolper
         int maxSpan = 3100; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
         int totalWidthWithinMaxSpan = 2 * overhangDefault + 2 * widthOfPost + maxSpan;
 
 
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
-        if ((carport.getLENGTH() * 100) <= totalWidthWithinMaxSpan)
+        if ((carport.getLENGTH() * 10) <= totalWidthWithinMaxSpan)
         {
             quantity = 4;
         } else
@@ -54,6 +60,69 @@ public class Calculator
         return quantity;
     }
 
+    //Method for drawing the SVG
+    public static int[] calcPostsXY(Carport carport, int quantity, int matNum)
+    {
+        int[] posXY = new int[2];
+
+        // width is the y-axis
+        int width = carport.getWIDTH();
+        // length is the x-axis
+        int length = carport.getLENGTH();
+
+        int overhang = 15;
+
+        int posX = 0;
+        int posY = overhang;
+
+        if (quantity == 4)
+        {
+            if (matNum == 0)
+            {
+                posX = length / 4;
+            } else if (matNum == 1)
+            {
+                posX = length / 4;
+                posY = width - overhang;
+            } else if (matNum == 2)
+            {
+                posX = (length / 4) * 3;
+            } else if (matNum == 3)
+            {
+                posX = (length / 4) * 3;
+                posY = width - overhang;
+            }
+        } else if (quantity == 6)
+        {
+            if (matNum == 0)
+            {
+                posX = (length / 8) * 2;
+            } else if (matNum == 1)
+            {
+                posX = (length / 8) * 2;
+                posY = width - overhang;
+            } else if (matNum == 2)
+            {
+                posX = (length / 8) * 4;
+            } else if (matNum == 3)
+            {
+                posX = (length / 8) * 4;
+                posY = width - overhang;
+            } else if (matNum == 4)
+            {
+                posX = (length / 8) * 7;
+            } else if (matNum == 5)
+            {
+                posX = (length / 8) * 7;
+                posY = width - overhang;
+            }
+        }
+        posXY[0] = posX;
+        posXY[1] = posY;
+
+        return posXY;
+    }
+
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Remme
     public static int[] calcBeams(Carport carport)
@@ -61,7 +130,6 @@ public class Calculator
         int[] beams = new int[2];
         int quantity = 0;
         int length = 0;
-        int lenghtTest = carport.getLENGTH();
 
         //TODO: Tallene i if-statement skal ændres så det ikke er hardcoded, men hentes fra køberens valgmuligheder
         if (carport.getLENGTH() <= 300)
@@ -93,11 +161,55 @@ public class Calculator
         return beams;
     }
 
+    // metode til SVG tegning
+    public static int[] calcBeamsXY(Carport carport, int quantity, int matNum, int matLength)
+    {
+        int[] posXY = new int[4];
+
+        int length = carport.getLENGTH();
+        int width = carport.getWIDTH();
+
+        //Udhænget kommer fra materialelisten
+        int overhang = 15;
+
+        int startPosX = 0;
+        int endPosX = matLength;
+        int startPosY = overhang;
+        int endPosY = overhang;
+
+        if (matNum == 1)
+        {
+            startPosY = width - overhang;
+            endPosY = width - overhang;
+        } else if (quantity == 4)
+        {
+            if (matNum == 2)
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = overhang;
+                endPosY = overhang;
+            } else
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = width - overhang;
+                endPosY = width - overhang;
+            }
+        }
+
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
+    }
+
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern på remme
     public static int[] calcSidesFasciaBoard(Carport carport)
     {
-
         int[] fascia = new int[2];
         int quantity = 0;
         int length = 0;
@@ -135,6 +247,48 @@ public class Calculator
         fascia[1] = length;
 
         return fascia;
+    }
+
+    // metode til SVG tegning
+    public static int[] calcSidesFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
+    {
+        int[] posXY = new int[4];
+
+        int length = carport.getLENGTH();
+        int width = carport.getWIDTH();
+
+        int startPosX = 0;
+        int endPosX = matLength;
+        int startPosY = 0;
+        int endPosY = 0;
+
+        if (matNum == 1)
+        {
+            startPosY = width;
+            endPosY = width;
+        } else if (quantity == 4)
+        {
+            if (matNum == 2)
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = 0;
+                endPosY = 0;
+            } else
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = width;
+                endPosY = width;
+            }
+        }
+
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
     }
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
@@ -175,6 +329,61 @@ public class Calculator
         return fascia;
     }
 
+    // metode til SVG tegning
+    public static int[] calcFrontAndBackFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
+    {
+        // Initialize position array [startPosX, endPosX, startPosY, endPosY].
+        int[] posXY = new int[4];
+
+        int width = carport.getWIDTH();
+        int length = carport.getLENGTH();
+
+        // Default positions
+        int startPosX = 0;
+        int endPosX = 0;
+        int startPosY = 0;
+        int endPosY = width;
+        if (quantity == 4)
+        {
+            switch (matNum)
+            {
+                case 0: // First board
+                    endPosY = matLength;
+                    break;
+                case 1: // Second board
+                    startPosY = width;
+                    endPosY = width - matLength;
+                    break;
+                case 2: // Third board
+                    startPosX = length;
+                    endPosX = length;
+                    endPosY = matLength;
+                    break;
+                case 3: // Fourth board
+                    startPosX = length;
+                    endPosX = length;
+                    startPosY = width;
+                    endPosY = width - matLength;
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid matNum for quantity = 4: " + matNum);
+            }
+        } else if (quantity == 2 && matNum == 1)
+        {
+            // Special case for two boards, second board
+            startPosX = length;
+            endPosX = length;
+        }
+        // Populate the result array
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
+    }
+
     //Spær
     public static int[] calcRafters(Carport carport)
     {
@@ -198,8 +407,8 @@ public class Calculator
             raftersQuantity.add(i);
             totalLength += distanceBetweenRafters;
         }
-        // Antallet af spær er størrelsen af listen
-        quantity = raftersQuantity.size();
+        // Antallet af spær er størrelsen af listen, plus 1 for enden
+        quantity = raftersQuantity.size() + 1;
         rafters[0] = quantity;
 
         //Beregning af længden på spær
@@ -218,6 +427,31 @@ public class Calculator
         return rafters;
 
     }
+
+    //Method for drawing the SVG
+    public static int[] calcRaftersXY(Carport carport, int quantity, int matNum)
+    {
+        int[] posXY = new int[4];
+        // width is the y-axis
+        int width = carport.getWIDTH();
+        // length is the x-axis
+        int length = carport.getLENGTH();
+
+        // afstanden mellem spærrene er taget fra materialelisten vi fik udleveret
+        int spacing = 60;
+
+        int posX = matNum * spacing;
+        int startPosY = 0;
+        int endPosY = width;
+
+        posXY[0] = posX;
+        posXY[1] = posX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
+    }
+
 
     public static int calcScrewsForRoofing(Carport carport)
     {
@@ -374,8 +608,7 @@ public class Calculator
             int remainingLength = carportLength - lengthCoveredByLongPlates;
 
             // Calculate how many short plates are needed to cover the remaining length
-            int shortPlatesUsed = (remainingLength > 0) ?
-                    (int) Math.ceil((double) remainingLength / SHORT_PLATE_LENGTH) : 0;
+            int shortPlatesUsed = (remainingLength > 0) ? (int) Math.ceil((double) remainingLength / SHORT_PLATE_LENGTH) : 0;
 
             // Calculate the total waste for this combination
             int totalWaste = Math.abs((longCount * LONG_PLATE_LENGTH - (longCount - 1) * OVERLAP) + (shortPlatesUsed * SHORT_PLATE_LENGTH) - carportLength);

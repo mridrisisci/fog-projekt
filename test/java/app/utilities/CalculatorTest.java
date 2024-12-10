@@ -138,7 +138,7 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcPosts(carport1); // Length = 360 cm
-        int expected1 = 6;
+        int expected1 = 4;
 
         int actual2 = Calculator.calcPosts(carport2); // Length = 600 cm
         int expected2 = 6;
@@ -147,7 +147,7 @@ public class CalculatorTest
         int expected3 = 6;
 
         int actual4 = Calculator.calcPosts(carport4); // Length = 360 cm
-        int expected4 = 6;
+        int expected4 = 4;
 
         int actual5 = Calculator.calcPosts(carport5); // Length = 600 cm
         int expected5 = 6;
@@ -278,31 +278,31 @@ public class CalculatorTest
     {
         // Arrange and Act
         int[] actual1 = Calculator.calcRafters(carport1); // Length = 360 cm, Width = 240 cm
-        int[] expected1 = {6, 480}; // Expected: Length is 480, Quantity is 6.
+        int[] expected1 = {7, 480}; // Expected: Length is 480, Quantity is 7.
 
         int[] actual2 = Calculator.calcRafters(carport2); // Length = 600 cm, Width = 240 cm
-        int[] expected2 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected2 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual3 = Calculator.calcRafters(carport3); // Length = 780 cm, Width = 240 cm
-        int[] expected3 = {13, 480}; // Expected: Length is 480, Quantity is 13.
+        int[] expected3 = {14, 480}; // Expected: Length is 480, Quantity is 14.
 
         int[] actual4 = Calculator.calcRafters(carport4); // Length = 360 cm, Width = 360 cm
-        int[] expected4 = {6, 480}; // Expected: Length is 480, Quantity is 6.
+        int[] expected4 = {7, 480}; // Expected: Length is 480, Quantity is 7.
 
         int[] actual5 = Calculator.calcRafters(carport5); // Length = 600 cm, Width = 360 cm
-        int[] expected5 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected5 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual6 = Calculator.calcRafters(carport6); // Length = 0 cm, Width = 0 cm
-        int[] expected6 = {0, 480}; // Expected: No rafters needed as length is 0.
+        int[] expected6 = {1, 480}; // Expected: No rafters needed as length is 1.
 
         int[] actual7 = Calculator.calcRafters(carport7); // Length = 600 cm, Width = 480 cm
-        int[] expected7 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected7 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual8 = Calculator.calcRafters(carport8); // Length = 600 cm, Width = 540 cm
-        int[] expected8 = {10, 600}; // Expected: Length is 600, Quantity is 10.
+        int[] expected8 = {11, 600}; // Expected: Length is 600, Quantity is 11.
 
         int[] actual9 = Calculator.calcRafters(carport9); // Length = 600 cm, Width = 600 cm
-        int[] expected9 = {10, 600}; // Expected: Length is 600, Quantity is 10.
+        int[] expected9 = {11, 600}; // Expected: Length is 600, Quantity is 11.
 
         // Assert
         Assert.assertArrayEquals(expected1, actual1);
@@ -582,6 +582,57 @@ public class CalculatorTest
         Assert.assertEquals(expected7, actual7);
         Assert.assertEquals(expected8, actual8);
         Assert.assertEquals(expected9, actual9);
+    }
+
+    @Test
+    public void testCalcPostsXYCarport1()
+    {
+        // Arrange
+        int quantity = Calculator.calcPosts(carport1);
+
+        // post 1
+        int expectedX1 = 90;
+        int expectedY1 = 15;
+
+        // post 2
+        int expectedX2 = 90;
+        int expectedY2 = 225;
+
+        // post 3
+        int expectedX3 = 270;
+        int expectedY3 = 15;
+
+        // post 4
+        int expectedX4 = 270;
+        int expectedY4 = 225;
+
+        // Act
+        int[] actual1 = Calculator.calcPostsXY(carport1, quantity, 0);
+        int actualX1 = actual1[0];
+        int actualY1 = actual1[1];
+
+        int[] actual2 = Calculator.calcPostsXY(carport1, quantity, 1);
+        int actualX2 = actual2[0];
+        int actualY2 = actual2[1];
+
+        int[] actual3 = Calculator.calcPostsXY(carport1, quantity, 2);
+        int actualX3 = actual3[0];
+        int actualY3 = actual3[1];
+
+        int[] actual4 = Calculator.calcPostsXY(carport1, quantity, 3);
+        int actualX4 = actual4[0];
+        int actualY4 = actual4[1];
+
+        // Assert
+        Assert.assertEquals(expectedX1, actualX1);
+        Assert.assertEquals(expectedY1, actualY1);
+        Assert.assertEquals(expectedX2, actualX2);
+        Assert.assertEquals(expectedY2, actualY2);
+        Assert.assertEquals(expectedX3, actualX3);
+        Assert.assertEquals(expectedY3, actualY3);
+        Assert.assertEquals(expectedX4, actualX4);
+        Assert.assertEquals(expectedY4, actualY4);
+
     }
 
 
