@@ -108,7 +108,7 @@ public class OrderController
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
-        String postalCodeString = ctx.formParam("choosePostalCode");
+        String postalCodeString = ctx.formParam("choosePostalCofcde");
         int postalCode = Integer.parseInt(Objects.requireNonNull(postalCodeString));
         String city = ctx.formParam("chooseCity");
         String telephoneString = ctx.formParam("choosePhoneNumber"); //
