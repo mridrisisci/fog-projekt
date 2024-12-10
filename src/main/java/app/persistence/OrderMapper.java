@@ -11,6 +11,45 @@ import java.util.List;
 public class OrderMapper
 {
 
+    public static int getSalesOffer(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        int price;
+        String sql = "SELECT price FROM orders WHERE order_id = ?";
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+            price = rs.getInt("price");
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return price;
+    }
+
+    public static void updateSalesOffer(int price, int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "UPDATE orders SET price = ? WHERE order_id = ?";
+
+        try (Connection connection = pool.getConnection();
+        PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, price);
+            ps.setInt(2, orderID);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1)
+            {
+                throw new DatabaseException("Kunne ikke opdatere prisen for den givne ordre");
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
+
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +

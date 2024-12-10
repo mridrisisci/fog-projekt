@@ -33,6 +33,16 @@ public class OrderController
         app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
     }
 
+    private static void updateSalesOffer(Context ctx, ConnectionPool pool)
+    {
+
+    }
+
+    private static void showSalesOffer(Context ctx, ConnectionPool pool)
+    {
+
+    }
+
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
     {
         try
