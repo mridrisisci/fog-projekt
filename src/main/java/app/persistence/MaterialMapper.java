@@ -116,10 +116,11 @@ public class MaterialMapper
                 "                WHERE order_id = ?";
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery())
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+
             while (rs.next())
             {
                 int materialID = rs.getInt("material_id");
