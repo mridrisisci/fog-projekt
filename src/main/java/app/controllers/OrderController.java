@@ -64,7 +64,7 @@ public class OrderController
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
                 OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILDBUD_GODKENDT, pool);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_GODKENDT, pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
                 ctx.redirect("/"); // opdater denne side ?½
             } else if ("reject".equals(action)) // if customer declines order, customer data is deleted
