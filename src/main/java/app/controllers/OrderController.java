@@ -6,16 +6,22 @@ import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
+import app.entities.SVGCreation;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static app.persistence.MaterialMapper.getSVGFromDatabase;
 
 public class OrderController
 {
@@ -335,8 +341,66 @@ public class OrderController
         return false;
     }
 
+    private static void generateSVG(int orderID, Context ctx, ConnectionPool pool) throws IOException, DatabaseException {
+        List<Material> svgMaterialList = MaterialMapper.getSVGMaterialList(orderID, pool);
 
+        int postLength = 0, postWidth = 0, beamLength = 0, beamWidth = 0;
+        int rafterLength = 0, rafterWidth = 0, fasciaBoardLength = 0, fasciaBoardWidth = 0;
+        int quantityOfPosts = 0, quantityOfBeams = 0, quantityOfFasciaBoards = 0;
 
+        for (Material mat : svgMaterialList) {
+            switch (mat.getType()) {
+                case "Stolpe":
+                    postLength = mat.getLength();
+                    postWidth = mat.getLength();
+                    quantityOfPosts++;
+                    break;
+                case "Rem":
+                    beamLength = mat.getLength();
+                    beamWidth = mat.getLength();
+                    quantityOfBeams++;
+                    break;
+                case "Spær":
+                    rafterLength = mat.getLength();
+                    rafterWidth = mat.getLength();
+                    break;
+                case "Stern":
+                    fasciaBoardLength = mat.getLength();
+                    fasciaBoardWidth = mat.getLength();
+                    quantityOfFasciaBoards++;
+                    break; //TODO Lav under og over sternbrædt
+            }
+        }
+        // Load SVG templaten
+        String svgTemplate = SVGCreation.loadSVGFromFile("SVG.xml");
 
+        // Vi laver de individuelle dele til SVG tegningen (stopler, spær ect)
+        String posts = SVGCreation.generatePosts(postLength, postWidth, quantityOfPosts);
+        String beams = SVGCreation.generateBeams(beamLength, beamWidth, quantityOfBeams);
+        String rafters = SVGCreation.generateRafters(rafterLength, rafterWidth, 100);
+
+        int carportLength = OrderMapper.getLengthAndWidthByOrderID(orderID, pool)[0];
+        int carportWidth = OrderMapper.getLengthAndWidthByOrderID(orderID, pool)[1];
+
+        String fasciaBoards = SVGCreation.generateFasciaBoards(carportLength, carportWidth);
+
+        // Merge parts ind i templaten
+        String svgContent = SVGCreation.generateCarportSVGFromTemplate(svgTemplate, posts, beams, rafters, fasciaBoards);
+
+        try (Connection connection = pool.getConnection()) {
+            String query = "UPDATE carport_orders SET svg_drawing = ? WHERE order_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setString(1, svgContent); // Her gemmer vi SVG som en string
+                stmt.setInt(2, orderID);       // Her gemmer vi den specifikke ordrer
+                stmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to save SVG drawing to database", e);
+        }
+
+        //Den første linje er for at hente SVG tegningen fra databasen du kan finde metoden for at hente den ind i materialmapper.
+        String svg = getSVGFromDatabase(orderID, pool);
+        ctx.result(svg).contentType("image/svg+xml");
+    }
 
 }
