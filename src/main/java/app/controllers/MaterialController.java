@@ -20,13 +20,7 @@ public class MaterialController
 
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/test.html", ctx -> ctx.render("test.html") );
-
-
-        app.get("listOfMaterials", ctx -> {
-            listOfMaterials(ctx, dBConnection);
-            ctx.render("listOfMaterials.html");
-        });
+        app.get("listOfMaterials", ctx -> listOfMaterials(ctx, dBConnection) );
         app.post("addMaterial", ctx -> insertNewMaterial(ctx, dBConnection));
         app.post("removeMaterial", ctx -> removeMaterial(ctx, dBConnection));
     }
