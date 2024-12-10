@@ -30,6 +30,7 @@ public class OrderController
         app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
+        app.get("billOfMaterials", ctx -> billOfMaterials(ctx, dBConnection) );
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -280,6 +281,29 @@ public class OrderController
 // det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
 // vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
 
+    private static void billOfMaterials(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            List<Order> orderDetails;
+            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+
+            // get Account object from orderdetails
+            Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
+            Account account = accountIndex.getAccount();
+
+            Order order = orderDetails.removeLast(); // removes Account object
+            ctx.attribute("orderdetails", order);
+            ctx.attribute("account", account);
+            ctx.render("/orderdetails.html");
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
+
+    }
 
 
 
