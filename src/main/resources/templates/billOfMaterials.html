@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Carport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+
+<body class="">
+<div class="container">
+    <header th:replace="~{fragments :: header}"></header>
+
+    <div class="content bg-light rounded-4 p-5">
+        <h2 class="display-1">Custom Carport - Fog</h2>
+        <br>
+        <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
+             role="alert">Fejlbeskeder vises her
+        </div>
+        <p class="h2 mb-5">Stykliste</p>
+
+        <p> <i>Alle priser er inkl. moms</i></p>
+        <div class="container my-5">
+            <div class="row g-4" th:each="orderDetail : ${orderDetails}">
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5 class="card-title"> Ordrenummer: <span th:text="${orderDetail.ORDER_ID}"></span> </h5>
+                        <p class="card-text"> Ordre oprettet: <span th:text="${orderDetail.orderPlaced}">  </span>  </p>
+                        <p class="card-text"> Carport længde: <span th:text="${orderDetail.length}">  </span>  </p>
+                        <p class="card-text"> Carport bredde: <span th:text="${orderDetail.width}">  </span>  </p>
+                        <p class="card-text"> Tagtype: <span th:text="${orderDetail.roofType}">  </span>  </p>
+                    </div>
+                </div>
+
+        <div class="container my-5">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <form th:action="@{billOfMaterials}" method="get">
+                        <table class="table table-striped" id="billOfMaterialsTable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Materiale ID</th>
+                                <th scope="col">Navn</th>
+                                <th scope="col">Enhed</th>
+                                <th scope="col">Længde</th>
+                                <th scope="col">Højde</th>
+                                <th scope="col">Bredde</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Beskrivelse</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="material : ${pickList}">
+                                <td th:text="${material.materialID}">Material ID</td>
+                                <td th:text="${material.materialName}">Name</td>
+                                <td th:text="${material.unit}">Unit</td>
+                                <td th:text="${material.length}">Length</td>
+                                <td th:text="${material.height}">Height</td>
+                                <td th:text="${material.width}">Width</td>
+                                <td th:text="${material.type}">Type</td>
+                                <td th:text="${material.description}">Description</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
