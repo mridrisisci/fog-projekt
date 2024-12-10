@@ -930,4 +930,68 @@ public class MaterialMapper
         }
         return materials;
     }
+
+    public static List<Material> getSVGMaterialList(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        List<Material> svgMaterials = new ArrayList<>();
+
+        String sql = "SELECT \n" +
+                "    material.material_id, material.type, material.length, material.width, \n" +
+                "    material.height, orders_materials.quantity FROM orders_materials AS orders_materials\n" +
+                "INNER JOIN materials AS material ON orders_materials.material_id = material.material_id\n" +
+                "WHERE material.type IN ('Stolpe', 'Spær', 'Rem');";
+        //bruger kun oversternbrædt da vi kun skal tegne i 2D
+        //Har ikke valgt at bruge sternbrædt da der mangler metoder til at bruge dem korrekt.
+//TODO mangler hulbånd
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+
+            ps.setInt(1, orderID);
+
+            try (ResultSet rs = ps.executeQuery())
+            {
+                while (rs.next())
+                {
+                    int materialID = rs.getInt("material_id");
+                    String materialType = rs.getString("type");
+                    int materialLength = rs.getInt("length");
+                    int materialWidth = rs.getInt("width");
+                    int materialQuantity = rs.getInt("quantity");
+                    Material material = new Material(materialID, materialLength, materialWidth, materialType, materialQuantity);
+                    svgMaterials.add(material);
+                }
+            }
+        } catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+            throw new DatabaseException(e.getMessage());
+        }
+
+        return svgMaterials;
+    }
+
+    public static String getSVGFromDatabase(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        String svgContent = "";
+        try (Connection connection = pool.getConnection())
+        {
+            String query = "SELECT svg_drawing FROM carport_orders WHERE order_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(query))
+            {
+                stmt.setInt(1, orderID);
+                try (ResultSet rs = stmt.executeQuery())
+                {
+                    if (rs.next())
+                    {
+                        svgContent = rs.getString("svg_drawing");
+                    }
+                }
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Failed to retrieve SVG drawing from database", e);
+        }
+        return svgContent;
+    }
 }
