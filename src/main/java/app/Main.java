@@ -5,14 +5,9 @@ import app.config.ThymeleafConfig;
 import app.controllers.AccountController;
 import app.controllers.MaterialController;
 import app.controllers.OrderController;
-import app.controllers.SendGridController;
 import app.persistence.ConnectionPool;
-import app.utilities.SendGrid;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.rendering.template.JavalinThymeleaf;
-
-import java.io.IOException;
 
 public class Main {
 
@@ -36,7 +31,6 @@ public class Main {
         OrderController.addRoutes(app, dBConnection);
         MaterialController.addRoutes(app, dBConnection);
         AccountController.addRoutes(app, dBConnection);
-        SendGridController.addRoutes(app);
 
 
     }
