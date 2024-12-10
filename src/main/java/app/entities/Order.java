@@ -90,13 +90,14 @@ public class Order
 
     }
 
-    public Order(int orderID, int width, int length, String shed, RoofType roofType, int price, Account account)
+    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
     { // used for orderdetails
         this.ORDER_ID = orderID;
         this.width = width;
         this.length = length;
         this.shed = shed;
         this.roofType = roofType;
+        this.salesPrice = salesPrice;
         this.price = price;
         this.account = account;
 

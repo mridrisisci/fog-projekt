@@ -31,16 +31,42 @@ public class OrderController
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
         app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
+        app.post("/updatesalesprice", ctx -> updateSalesOffer(ctx, dBConnection));
     }
 
     private static void updateSalesOffer(Context ctx, ConnectionPool pool)
     {
+        String orderIDString = ctx.pathParam("id");
+        int orderID = Integer.parseInt(Objects.requireNonNull(orderIDString));
+        String price = ctx.formParam("");
+        try
+        {
+            OrderMapper.updateSalesOffer(Integer.parseInt(Objects.requireNonNull(price)), orderID, pool);
+            ctx.attribute("message", "Prisen er opdateret for den givne ordre");
+            ctx.render("/order/details/{id}");
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/details/{id}");
+        }
 
     }
 
     private static void showSalesOffer(Context ctx, ConnectionPool pool)
     {
+        String orderID = ctx.pathParam("id");
+        try
+        {
+            int price = OrderMapper.getSalesOffer(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            ctx.attribute("price", price);
+            ctx.render("/order/details/{id}");
 
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.render("/order/details/{id}");
+        }
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)

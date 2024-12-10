@@ -227,6 +227,7 @@ public class OrderMapper
             "o.has_shed, " +
             "o.roof_type, " +
             "o.price, " +
+            "o.sales_price, " +
             "a.account_id, " +
             "a.username, " +
             "a.email, " +
@@ -252,12 +253,13 @@ public class OrderMapper
                 int width = rs.getInt("width");
                 int length = rs.getInt("length");
                 int price = rs.getInt("price");
+                int salesPrice = rs.getInt("sales_price");
                 int accountID = rs.getInt("account_id");
                 String name = rs.getString("username");
                 String email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orderDetails.add(new Order(orderID, width, length, shed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
+                orderDetails.add(new Order(orderID, width, length, shed, RoofType.FLAT, salesPrice, price, new Account(accountID, name, email, telephone, role)));
             }
             return orderDetails;
 
