@@ -156,18 +156,18 @@ public class Calculator
     }
 
     // metode til SVG tegning
-    public static int[] calcBeamsXY(Carport carport, int quantity, int matNum)
+    public static int[] calcBeamsXY(Carport carport, int quantity, int matNum, int matLength)
     {
         int[] posXY = new int[4];
 
         int length = carport.getLENGTH();
         int width = carport.getWIDTH();
-        
+
         //Udhænget kommer fra materialelisten
         int overhang = 15;
 
         int startPosX = 0;
-        int endPosX = length;
+        int endPosX = matLength;
         int startPosY = overhang;
         int endPosY = overhang;
 
@@ -180,13 +180,13 @@ public class Calculator
             if (matNum == 2)
             {
                 startPosX = length;
-                endPosX = 0;
+                endPosX = length - matLength;
                 startPosY = overhang;
                 endPosY = overhang;
             } else
             {
                 startPosX = length;
-                endPosX = 0;
+                endPosX = length - matLength;
                 startPosY = width - overhang;
                 endPosY = width - overhang;
             }
@@ -204,7 +204,6 @@ public class Calculator
     //Stern på remme
     public static int[] calcSidesFasciaBoard(Carport carport)
     {
-
         int[] fascia = new int[2];
         int quantity = 0;
         int length = 0;
@@ -244,6 +243,48 @@ public class Calculator
         return fascia;
     }
 
+    // metode til SVG tegning
+    public static int[] calcSidesFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
+    {
+        int[] posXY = new int[4];
+
+        int length = carport.getLENGTH();
+        int width = carport.getWIDTH();
+
+        int startPosX = 0;
+        int endPosX = matLength;
+        int startPosY = 0;
+        int endPosY = 0;
+
+        if (matNum == 1)
+        {
+            startPosY = width;
+            endPosY = width;
+        } else if (quantity == 4)
+        {
+            if (matNum == 2)
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = 0;
+                endPosY = 0;
+            } else
+            {
+                startPosX = length;
+                endPosX = length - matLength;
+                startPosY = width;
+                endPosY = width;
+            }
+        }
+
+        posXY[0] = startPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
+        posXY[3] = endPosY;
+
+        return posXY;
+    }
+
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern til for- og bagside
     public static int[] calcFrontAndBackFasciaBoard(Carport carport)
@@ -280,6 +321,19 @@ public class Calculator
         fascia[1] = length;
 
         return fascia;
+    }
+
+    // metode til SVG tegning
+    public static int[] calcFrontAndBackFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
+    {
+        int[] posXY = new int[2];
+
+        int width = carport.getWIDTH();
+        int length = carport.getLENGTH();
+
+
+
+        return posXY;
     }
 
     //Spær
