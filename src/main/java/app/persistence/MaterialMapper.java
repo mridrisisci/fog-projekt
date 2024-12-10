@@ -868,12 +868,9 @@ public class MaterialMapper
             ps.setInt(5, width);
             int rowsAffected = ps.executeUpdate();
 
-            if (rowsAffected > 0)
+            if (rowsAffected <= 0)
             {
-                System.out.println("Materiale med ID " + materialID + " blev slettet.");
-            } else
-            {
-                System.out.println("Ingen materiale fundet med ID " + materialID);
+                throw new DatabaseException("Ingen materiale fundet med de kriterier");
             }
 
         } catch (SQLException e)
@@ -881,7 +878,6 @@ public class MaterialMapper
             e.printStackTrace();
             System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
         }
-
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
