@@ -40,7 +40,8 @@
                         <p class="card-text"> Carport længde: <span th:text="${order.length}">  </span></p>
                         <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span></p>
                         <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span></p>
-                        <p class="card-text"> Pris: <span th:text="${order.price + (order.price * 0.25)}"></span></p>
+                        <p class="card-text"> Pris: <span th:text="${order.price}"></span></p>
+                        <p class="card-text"> Salgspris: <span th:text="${order.salesPrice}"></span></p>
                         <form method="POST" th:action="@{/order/sendoffer/{id}(id=${order.ORDER_ID})}">
                             <input type="hidden" name="accountid" th:value="${account.accountID}"> <!-- sends id to coontroller-->
                             <input type="hidden" name="sendOfferID" th:value="${order.ORDER_ID}"> <!-- SEND ID TO CONTROLLER not used -->
@@ -82,15 +83,15 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="salgspris">Salgspris uden moms</label>
-                            <div class="current-value">
-                                <small class="text-muted">Nuværende: <span id="current-salgspris" th:text="${order.price - (order.price * 0.25)}"></span> DKK</small>
+                            <div class="current-value" th:each="order : ${orderdetails}">
+                                <small class="text-muted">Nuværende: <span id="current-salgspris" th:text="${order.price}"></span> DKK</small>
                             </div>
                             <input type="text" class="form-control" id="salgspris" placeholder="Opdater salgspris">
                         </div>
                         <div class="form-group mb-3">
                             <label>Pris inkl. moms</label>
-                            <div class="current-value">
-                                <small class="text-muted">Nuværende: <span id="current-salgspris-moms" th:text="${order.price + (order.price * 0.25)}"></span> DKK</small>
+                            <div class="current-value" th:each="order : ${orderdetails}">
+                                <small class="text-muted">Nuværende: <span id="current-salgspris-moms" th:text="${order.salesPrice}"></span> DKK</small>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Opdater</button>
