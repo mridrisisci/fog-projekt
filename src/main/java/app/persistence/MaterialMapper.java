@@ -884,41 +884,6 @@ public class MaterialMapper
 
     }
 
-    public static List<Material> getBillOfMaterials(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-
-        String sql = "SELECT * FROM orders_materials WHERE order_id = ?;";
-        List<Material> materials = new ArrayList<>();
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery())
-        {
-
-            while (rs.next())
-            {
-
-                int id = rs.getInt("material_id");
-                String name = rs.getString("name");
-                String unit = rs.getString("unit");
-                int price = rs.getInt("price");
-                int length = rs.getInt("length");
-                int height = rs.getInt("height");
-                int width = rs.getInt("width");
-                String type = rs.getString("type");
-                String description = rs.getString("description");
-
-                Material material = new Material(id, name, description, price, unit, length, height, width, type);
-                materials.add(material);
-
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException("Error fetching materials from the database", e.getMessage());
-        }
-        return materials;
-    }
-
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
     {
 
