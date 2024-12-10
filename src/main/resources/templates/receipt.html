@@ -20,6 +20,7 @@
              role="alert">Fejlbeskeder vises her
         </div>
         <p class="h2 mb-5">Bestilling af dit pristilbud er modtaget.</p>
+        <p> <i>Alle priser er inkl. moms</i></p>
             <div class="container my-5">
                 <div class="row g-4">
                     <!-- Renderer kundens ordre på thymeleaf -->
@@ -29,7 +30,6 @@
                             <p class="card-text"> Ordre oprettet: <span th:text="${order.orderPlaced}">  </span>  </p>
                             <p class="card-text"> Carport længde: <span th:text="${order.length}">  </span>  </p>
                             <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span>  </p>
-                            <p class="card-text"> Redskabsrum: <span th:text="${order.hasShed}">  </span>  </p>
                             <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span>  </p>
                             <p class="card-text"> Status på din ordre: <span th:text="${order.status}">  </span>  </p>
                         </div>

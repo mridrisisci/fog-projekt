@@ -108,71 +108,6 @@
                     </div>
                 </div>
 
-                <!-- Redskabsrum -->
-                <div class="mt-4">
-                    <p><b>Redskabsrum</b></p>
-                    <p>NB! Der skal beregnes 15 cm tagudhæng på hver side af redskabsrummet.</p>
-                </div>
-
-                <!-- Redskabsrum bredde -->
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" name="chooseShedWidth" id="chooseShedWidth" required>
-                            <option selected>Uden redskabsrum</option>
-                            <option selected >Vælg bredde</option>
-                            <option value="210">210 cm</option>
-                            <option value="240">240 cm</option>
-                            <option value="270">270 cm</option>
-                            <option value="300">300 cm</option>
-                            <option value="330">330 cm</option>
-                            <option value="360">360 cm</option>
-                            <option value="390">390 cm</option>
-                            <option value="420">420 cm</option>
-                            <option value="450">450 cm</option>
-                            <option value="480">480 cm</option>
-                            <option value="510">510 cm</option>
-                            <option value="540">540 cm</option>
-                            <option value="570">570 cm</option>
-                            <option value="600">600 cm</option>
-                            <option value="630">630 cm</option>
-                            <option value="660">660 cm</option>
-                            <option value="690">690 cm</option>
-                            <option value="720">720 cm</option>
-                        </select>
-                        <label for="chooseShedWidth">Vælg bredde</label>
-                    </div>
-                </div>
-
-
-                <!-- Redskabsrum længde -->
-                <div class="col-md-4">
-                    <div class="form-floating">
-                        <select class="form-select" name="chooseShedLength" id="chooseShedLength" required>
-                            <option selected>Uden redskabsrum</option>
-                            <option selected >Vælg længde</option>
-                            <option value="150">150 cm</option>
-                            <option value="180">180 cm</option>
-                            <option value="210">210 cm</option>
-                            <option value="240">240 cm</option>
-                            <option value="270">270 cm</option>
-                            <option value="300">300 cm</option>
-                            <option value="330">330 cm</option>
-                            <option value="360">360 cm</option>
-                            <option value="390">390 cm</option>
-                            <option value="420">420 cm</option>
-                            <option value="450">450 cm</option>
-                            <option value="480">480 cm</option>
-                            <option value="510">510 cm</option>
-                            <option value="540">540 cm</option>
-                            <option value="570">570 cm</option>
-                            <option value="600">600 cm</option>
-                            <option value="630">630 cm</option>
-                            <option value="660">660 cm</option>
-                            <option value="690">690 cm</option>
-                        </select>
-                        <label for="chooseShedLength">Vælg længde</label>
-                    </div>
-                </div>
 
                 <!-- Særlige ønsker -->
                 <div class="col-md-4">
@@ -207,7 +142,7 @@
                     <div class="form-floating">
                         <label for="choosePostalCode">Postnummer</label>
                         <input type="text" placeholder="Indtast postnummer" id="choosePostalCode"
-                               name="choosePostalCode" class="form-control form-control-lg" required>
+                               name="choosePostalCode" class="form-control form-control-lg" pattern=".{4}" required>
                     </div>
                 </div>
 
@@ -224,7 +159,7 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <label for="choosePhoneNumber">Indtast telefonnnummer</label>
-                        <input type="text" id="choosePhoneNumber" name="choosePhoneNumber" class="form-control form-control-lg" required>
+                        <input type="text" id="choosePhoneNumber" name="choosePhoneNumber" class="form-control form-control-lg" pattern=".{8}" required>
                     </div>
                 </div>
 

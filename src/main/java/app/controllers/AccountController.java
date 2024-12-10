@@ -18,7 +18,7 @@ public class AccountController
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
         app.get("/createaccount", ctx -> ctx.render("createaccount.html") );
         app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection) );
-        app.post("/logout", ctx -> doLogout(ctx));
+        app.get("/logout", ctx -> doLogout(ctx));
 
     }
 

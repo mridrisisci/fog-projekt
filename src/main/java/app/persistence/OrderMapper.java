@@ -197,6 +197,8 @@ public class OrderMapper
             "INNER JOIN accounts a ON o.account_id = a.account_id " +
             "WHERE o.order_id = ?";
 
+        String shed = "";
+
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -216,7 +218,7 @@ public class OrderMapper
                 String email = rs.getString("email");
                 int telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orderDetails.add(new Order(orderID, width, length, hasShed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
+                orderDetails.add(new Order(orderID, width, length, shed, RoofType.FLAT, price, new Account(accountID, name, email, telephone, role)));
             }
             return orderDetails;
 
@@ -234,6 +236,7 @@ public class OrderMapper
 
         Timestamp orderPlaced;
         String status;
+        String shed = "Uden skur";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -250,7 +253,7 @@ public class OrderMapper
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
                 int price = rs.getInt("price");
-                return new Order(orderId, orderPlaced, status, carportID, length, width, hasShed, price, RoofType.FLAT);
+                return new Order(orderId, orderPlaced, status, carportID, length, width, shed, price, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);
@@ -292,6 +295,7 @@ public class OrderMapper
         String name;
         String email;
         int telephone;
+        String paymentStatus = "";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
@@ -313,7 +317,14 @@ public class OrderMapper
                 email = rs.getString("email");
                 telephone = rs.getInt("telephone");
                 String role = rs.getString("role");
-                orders.add(new Order(orderID, status.toString(), carportID, orderPlaced, orderPaid, width, length,
+                if (orderPaid)
+                {
+                    paymentStatus = "Ordren er betalt";
+                } else
+                {
+                    paymentStatus = "Ordren afventer betaling";
+                }
+                orders.add(new Order(orderID, status.toString(), carportID, orderPlaced, paymentStatus, width, length,
                     new Account(accountID, name, email, telephone, role)));
             }
             return orders;

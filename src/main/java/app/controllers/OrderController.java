@@ -27,9 +27,10 @@ public class OrderController
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
         app.get("/order/acceptoffer/{id}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
-        app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
+        app.post("/acceptordecline", ctx -> acceptOrDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
+        app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -52,7 +53,7 @@ public class OrderController
 
 
 
-    private static void acceptOrtDeclineOffer(Context ctx, ConnectionPool pool)
+    private static void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
     {
         String action = ctx.formParam("action");
         String email = ctx.formParam("email");
@@ -105,11 +106,6 @@ public class OrderController
         String trapeztag = ctx.formParam("chooseRoof");
         String specialWishes = ctx.formParam("specialWishes");
 
-        String shedWidthString = ctx.formParam("chooseShedWidth");
-        Integer shedWidth = Integer.parseInt(Objects.requireNonNull(shedWidthString));
-        String shedLengthString = ctx.formParam("chooseShedLength");
-        Integer shedLength = Integer.parseInt(Objects.requireNonNull(shedLengthString));
-
         // customer info
         String username = ctx.formParam("customerName");
         String address = ctx.formParam("chooseAdress");
@@ -121,17 +117,11 @@ public class OrderController
         String email = ctx.formParam("chooseEmail");
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
-
-        // TODO: Færdiggør valideringsmetoderne
-        //validatePhoneNumber(ctx, "choosePhoneNumber");
-        //validatePostalCode(ctx, "choosePostalCode");
-
-
-        String carportId = "CFUS";
+        String carportId = "CFU";
         int salesPersonId = 0;
         boolean orderPaid = false;
         Order order;
-        boolean hasShed = true;
+        boolean hasShed = false;
 
         try
         {
@@ -151,7 +141,7 @@ public class OrderController
             SendGrid.sendReceipt(email,"Ordrebekræftelse", Objects.requireNonNull(order));
             SendGrid.notifySalesPersonOfNewOrder("sales.person.fog@gmail.com", "Ny bestilling af et pristilbud"); // INDSÆT SÆLGERMAIL KORREKT
             ctx.attribute("order", order);
-            ctx.render("kvittering.html");
+            ctx.render("receipt.html");
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
@@ -161,7 +151,7 @@ public class OrderController
         } catch (IOException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("kvittering.html");
+            ctx.render("receipt.html");
         }
     }
 
@@ -280,13 +270,24 @@ public class OrderController
 
     }
 
+    private static void billOfMaterials(Context ctx, ConnectionPool pool)
+    {
+        try
+        {
+            String orderID = ctx.pathParam("id");
+            Order orderDetails = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            List<Material> pickList = MaterialMapper.getPickList(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
 
-//TODO: metode der skal lave et carport objekt, så vores calculator kan modtage længde og bredde
-// det skal bruges i vores mappers som så kan return et materiale object (som også har et antal på sig)
-// vores mappers laver så styklisten som vi så kan beregne en pris på hele carporten
+            ctx.attribute("pickList", pickList);
+            ctx.attribute("orderDetails", orderDetails);
+            ctx.render("billOfMaterials.html");
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            showOrderHistory(ctx, pool);
+        }
 
-
-
+    }
 
     private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
     {
@@ -300,38 +301,6 @@ public class OrderController
             ctx.attribute("message", e.getMessage());
             return null;
         }
-    }
-
-    private static boolean validatePostalCode(Context ctx, String postalCode)
-    {
-        int p = Integer.parseInt(postalCode); // does it need to be parsed ?
-
-        if (postalCode.length() != 4 || postalCode.length() < 4 || postalCode.length() > 4)
-        {
-            return false;
-        }
-        if (postalCode.length() == 4)
-        {
-            return true;
-        }
-        return false;
-    }
-
-
-    private static boolean validatePhoneNumber(Context ctx, String number)
-    {
-        String numbers = "1234567890";
-        boolean hasNumber = number.chars().anyMatch(ch -> numbers.indexOf(ch) >= 0);
-
-        if (number.length() < 8)
-        {
-            ctx.attribute("message", "Dit telefonnummer er ugyldigt");
-            return false;
-        } else if (number.length() == 8 && hasNumber)
-        {
-            return true;
-        }
-        return false;
     }
 
 
