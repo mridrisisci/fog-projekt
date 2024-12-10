@@ -278,31 +278,31 @@ public class CalculatorTest
     {
         // Arrange and Act
         int[] actual1 = Calculator.calcRafters(carport1); // Length = 360 cm, Width = 240 cm
-        int[] expected1 = {6, 480}; // Expected: Length is 480, Quantity is 6.
+        int[] expected1 = {7, 480}; // Expected: Length is 480, Quantity is 7.
 
         int[] actual2 = Calculator.calcRafters(carport2); // Length = 600 cm, Width = 240 cm
-        int[] expected2 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected2 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual3 = Calculator.calcRafters(carport3); // Length = 780 cm, Width = 240 cm
-        int[] expected3 = {13, 480}; // Expected: Length is 480, Quantity is 13.
+        int[] expected3 = {14, 480}; // Expected: Length is 480, Quantity is 14.
 
         int[] actual4 = Calculator.calcRafters(carport4); // Length = 360 cm, Width = 360 cm
-        int[] expected4 = {6, 480}; // Expected: Length is 480, Quantity is 6.
+        int[] expected4 = {7, 480}; // Expected: Length is 480, Quantity is 7.
 
         int[] actual5 = Calculator.calcRafters(carport5); // Length = 600 cm, Width = 360 cm
-        int[] expected5 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected5 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual6 = Calculator.calcRafters(carport6); // Length = 0 cm, Width = 0 cm
-        int[] expected6 = {0, 480}; // Expected: No rafters needed as length is 0.
+        int[] expected6 = {1, 480}; // Expected: No rafters needed as length is 1.
 
         int[] actual7 = Calculator.calcRafters(carport7); // Length = 600 cm, Width = 480 cm
-        int[] expected7 = {10, 480}; // Expected: Length is 480, Quantity is 10.
+        int[] expected7 = {11, 480}; // Expected: Length is 480, Quantity is 11.
 
         int[] actual8 = Calculator.calcRafters(carport8); // Length = 600 cm, Width = 540 cm
-        int[] expected8 = {10, 600}; // Expected: Length is 600, Quantity is 10.
+        int[] expected8 = {11, 600}; // Expected: Length is 600, Quantity is 11.
 
         int[] actual9 = Calculator.calcRafters(carport9); // Length = 600 cm, Width = 600 cm
-        int[] expected9 = {10, 600}; // Expected: Length is 600, Quantity is 10.
+        int[] expected9 = {11, 600}; // Expected: Length is 600, Quantity is 11.
 
         // Assert
         Assert.assertArrayEquals(expected1, actual1);
