@@ -15,7 +15,10 @@ public class Material
     private String type;
     private int svgPosX;
     private int svgPosY;
-
+    private int svgStartX;
+    private int svgStartY;
+    private int svgEndX;
+    private int svgEndY;
 
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
@@ -191,5 +194,45 @@ public class Material
     public int getSvgPosY()
     {
         return svgPosY;
+    }
+
+    public int getSvgStartX()
+    {
+        return svgStartX;
+    }
+
+    public int getSvgStartY()
+    {
+        return svgStartY;
+    }
+
+    public int getSvgEndX()
+    {
+        return svgEndX;
+    }
+
+    public int getSvgEndY()
+    {
+        return svgEndY;
+    }
+
+    public void setSvgStartX(int svgStartX)
+    {
+        this.svgStartX = svgStartX;
+    }
+
+    public void setSvgStartY(int svgStartY)
+    {
+        this.svgStartY = svgStartY;
+    }
+
+    public void setSvgEndX(int svgEndX)
+    {
+        this.svgEndX = svgEndX;
+    }
+
+    public void setSvgEndY(int svgEndY)
+    {
+        this.svgEndY = svgEndY;
     }
 }
