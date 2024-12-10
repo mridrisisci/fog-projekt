@@ -30,7 +30,7 @@ public class OrderController
         app.post("/acceptordecline", ctx -> acceptOrtDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
-        app.get("billOfMaterials", ctx -> billOfMaterials(ctx, dBConnection) );
+        app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -286,11 +286,10 @@ public class OrderController
         try
         {
             String orderID = ctx.pathParam("id");
-            List<Material> pickList;
             Order orderDetails = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            pickList = MaterialMapper.getPickList(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            List<Material> pickList = MaterialMapper.getPickList(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
 
-            ctx.attribute("billOfMaterials", pickList);
+            ctx.attribute("pickList", pickList);
             ctx.attribute("orderDetails", orderDetails);
             ctx.render("billOfMaterials.html");
         } catch (DatabaseException e)
