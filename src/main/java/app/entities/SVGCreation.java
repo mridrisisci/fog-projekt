@@ -19,14 +19,14 @@ public class SVGCreation
     public static String generatePosts(List<Material> postsList)
     {
         StringBuilder postsBuilder = new StringBuilder();
-        for (int i = 0; i <= postsList.size(); i++)
+        for (int i = 0; i < postsList.size(); i++)
         {
             int startPosX = postsList.get(i).getSvgPosX() - (postsList.get(i).getLength() / 2);
             int startPosY = postsList.get(i).getSvgPosY() - (postsList.get(i).getWidth() / 2);
             int endPosX = postsList.get(i).getSvgPosX() + (postsList.get(i).getLength() / 2);
             int endPosY = postsList.get(i).getSvgPosY() + (postsList.get(i).getWidth() / 2);
             postsBuilder.append(String.format(
-                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"red\" />\n",
+                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"red\" />\n",
                     i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
@@ -43,7 +43,7 @@ public class SVGCreation
             int endPosX = raftList.get(i).getSvgEndX();
             int endPosY = raftList.get(i).getSvgEndY();
             raftersBuilder.append(String.format(
-                    "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"darkgray\" />\n",
+                    "<rect id=\"rafter%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"darkgray\" />\n",
                     i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
@@ -60,7 +60,7 @@ public class SVGCreation
             int endPosX = remList.get(i).getSvgEndX();
             int endPosY = remList.get(i).getSvgEndY();
             beamsBuilder.append(String.format(
-                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"gray\" />\n",
+                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"gray\" />\n",
                     i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
@@ -92,18 +92,10 @@ public class SVGCreation
         return fasciaBoardsBuilder.toString();
     }*/
 
-    public static String generateCarportSVGFromTemplate(
-            String template,
-            String posts,
-            String beams,
-            String rafters,
-            String fasciaBoards)
+    public static String generateCarportSVGFromTemplate(String template, String svg)
     {
-        return template
-                .replace("{{posts}}", posts)
-                .replace("{{beams}}", beams)
-                .replace("{{rafters}}", rafters)
-                .replace("{{fasciaBoards}}", fasciaBoards);
+        template = getSVGTemplate();
+        return template.replace("{{svg}}", svg);
     }
 
     public static String generateSVGString(List<Material> svgMaterialList, Carport carport)
@@ -220,5 +212,13 @@ public class SVGCreation
             svgPosts.add(spær);
         }
         return svgPosts;
+    }
+
+    private static String getSVGTemplate(){
+        return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"850\" height=\"850\">\n" +
+                "    <g transform=\"translate(10,10)\">\n" +
+                "    {{svg}}\n" +
+                "    </g>\n" +
+                "</svg>";
     }
 }
