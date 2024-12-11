@@ -77,20 +77,6 @@ public class SVGCreation
 
     }
 
-    //Mangler metoder for sternbrædder derfor vælger vi ikke at bruge metoden.
-    /*public static String generateFasciaBoards(int fasciaBoardLength, int fasciaBoardWidth, int quantityOfFasciaBoards)
-    {
-        StringBuilder fasciaBoardsBuilder = new StringBuilder();
-        for (int i = 1; i <= quantityOfFasciaBoards; i++)
-        {
-            fasciaBoardsBuilder.append(String.format(
-                    "<rect id=\"facia%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"black\" />\n",
-                    i, i * 100, 150, fasciaBoardWidth, fasciaBoardLength
-            ));
-        }
-        return fasciaBoardsBuilder.toString();
-    }*/
-
     public static String generateCarportSVGFromTemplate(String template, String svg)
     {
         template = getSVGTemplate();
@@ -104,7 +90,6 @@ public class SVGCreation
         List<Material> remList = new ArrayList<>();
         List<Material> spærList = new ArrayList<>();
 
-        //TODO check at loop ikke giver problemer
         for (Material mat : svgMaterialList)
         {
             switch (mat.getType())
@@ -118,9 +103,6 @@ public class SVGCreation
                 case "Spær":
                     spærList.addAll(svgSetXYSpær(mat, carport));
                     break;
-                /*case "Oversternbrædt":
-                    svgMaterialListFinal.addAll(svgSetXY(mat,carport));
-                    break;*/
             }
         }
         int carportLength = carport.getLENGTH();
@@ -206,37 +188,6 @@ public class SVGCreation
         }
         return svgPosts;
     }
-
-    //Vi har valgt ikke at bruge sternbrædder til SVG tegningen
-
-    /*private List<Material> svgSetXYSternbrædtForOgBag(Material stern, Carport carport)
-    {
-        List<Material> svgPosts = new ArrayList<>();
-        int quantity = stern.getQuantity();
-        int sternLength = stern.getLength();
-        for(int i = 0; i <quantity; i++ ){
-            int[]posXY = Calculator.calcFrontAndBackFasciaBoardXY(carport, quantity, i, sternLength);
-            stern.setSvgPosX(posXY[0]);
-            stern.setSvgPosY(posXY[1]);
-            svgPosts.add(stern);
-        }
-        return svgPosts;
-    }
-
-    private List<Material> svgSetXYSternbrædtSider(Material stern, Carport carport)
-    {
-        List<Material> svgPosts = new ArrayList<>();
-        int quantity = stern.getQuantity();
-        int sternLength = stern.getLength();
-        for (int i = 0; i < quantity; i++)
-        {
-            int[] posXY = Calculator.calcSidesFasciaBoardXY(carport, quantity, i, sternLength);
-            stern.setSvgPosX(posXY[0]);
-            stern.setSvgPosY(posXY[1]);
-            svgPosts.add(stern);
-        }
-        return svgPosts;
-    }*/
 
     private static String getSVGTemplate()
     {
