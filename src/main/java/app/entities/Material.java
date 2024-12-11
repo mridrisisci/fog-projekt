@@ -15,15 +15,17 @@ public class Material
     private int width;
     private boolean hasShedAddons;
     private String type;
-    private int svgPosX;
+    private int svgStartPosX;
 
-    private int svgPosY;
+    private int svgStartPosY;
 
-    private int svgStartX;
+    private int svgEndPosX;
 
-    private int svgStartY;
-    private int svgEndX;
-    private int svgEndY;
+    private int svgEndPosY;
+    private int svgWidth;
+
+    private int svgHeight;
+    private boolean svgRafter;
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
@@ -37,6 +39,7 @@ public class Material
         this.width = width;
         this.hasShedAddons = hasShedAddons;
     }
+
     public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
     {
         this.materialID = materialID;
@@ -61,7 +64,6 @@ public class Material
         this.length = length;
         this.type = type;
     }
-
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length)
     {
         this.materialID = materialID;
@@ -109,27 +111,46 @@ public class Material
         this.quantity = quantity;
     }
 
-    public Material(String type, int length, int width, int svgPosX, int svgPosY){
+    public Material(String type, int length, int width, int svgStartPosX, int svgStartPosY){
         this.type = type;
         this.length = length;
         this.width = width;
-        this.svgPosX = svgPosX;
-        this.svgPosY = svgPosY;
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartPosY;
     }
 
-    public Material(int svgPosX, int svgPosY)
+    public Material(int svgStartPosX, int svgStartPosY)
     {
-        this.svgPosX = svgPosX;
-        this.svgPosY = svgPosY;
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartPosY;
     }
 
 
-    public Material(int svgStartX, int svgEndX, int svgStartY, int svgEndY)
+    public Material(int svgStartPosX, int svgStartY, int svgWidth, int svgHeight)
     {
-        this.svgStartX = svgStartX;
-        this.svgStartY = svgStartY;
-        this.svgEndX = svgEndX;
-        this.svgEndY = svgEndY;
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartY;
+        this.svgWidth = svgWidth;
+        this.svgHeight = svgHeight;
+    }
+
+    public Material(int svgStartPosX,  int svgEndPosX, int svgStartPosY, int svgEndPosY, boolean svgRafter)
+    {
+        this.svgStartPosX = svgStartPosX;
+        this.svgEndPosX = svgEndPosX;
+        this.svgStartPosY = svgStartPosY;
+        this.svgEndPosY = svgEndPosY;
+        this.svgRafter = svgRafter;
+    }
+
+    public int getSvgEndPosX()
+    {
+        return svgEndPosX;
+    }
+
+    public int getSvgEndPosY()
+    {
+        return svgEndPosY;
     }
 
     public Material(String type)
@@ -197,63 +218,44 @@ public class Material
         return hasShedAddons;
     }
 
-    public void setSvgPosX(int svgPosX)
+    public void setSvgStartPosX(int svgStartPosX)
     {
-        this.svgPosX = svgPosX;
+        this.svgStartPosX = svgStartPosX;
     }
 
-    public void setSvgPosY(int svgPosY)
+    public void setSvgStartPosY(int svgStartPosY)
     {
-        this.svgPosY = svgPosY;
+        this.svgStartPosY = svgStartPosY;
     }
 
-    public int getSvgPosX()
+    public int getSvgStartPosX()
     {
-        return svgPosX;
+        return svgStartPosX;
     }
 
-    public int getSvgPosY()
+    public int getSvgStartPosY()
     {
-        return svgPosY;
+        return svgStartPosY;
     }
 
-    public int getSvgStartX()
+
+    public int getSvgWidth()
     {
-        return svgStartX;
+        return svgWidth;
     }
 
-    public int getSvgStartY()
+    public int getSvgHeight()
     {
-        return svgStartY;
+        return svgHeight;
     }
 
-    public int getSvgEndX()
+    public void setSvgWidth(int svgWidth)
     {
-        return svgEndX;
+        this.svgWidth = svgWidth;
     }
 
-    public int getSvgEndY()
+    public void setSvgHeight(int svgHeight)
     {
-        return svgEndY;
-    }
-
-    public void setSvgStartX(int svgStartX)
-    {
-        this.svgStartX = svgStartX;
-    }
-
-    public void setSvgStartY(int svgStartY)
-    {
-        this.svgStartY = svgStartY;
-    }
-
-    public void setSvgEndX(int svgEndX)
-    {
-        this.svgEndX = svgEndX;
-    }
-
-    public void setSvgEndY(int svgEndY)
-    {
-        this.svgEndY = svgEndY;
+        this.svgHeight = svgHeight;
     }
 }
