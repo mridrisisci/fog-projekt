@@ -38,9 +38,11 @@ public class Calculator
         //Længder er omregnet til mm i stedet for cm, ved at gange med 10
         // 9,7 cm er bredden på stolpen, og til at starte med har man minimum to stolper per længde
         int overhangDefault; //overhangDefault er en buffer for start og slut, da man ikke placerer stolper for enden af carport
-        if((carport.getLENGTH() / 4) * 10 <= 1000){ //Maks overhang er hardcoded
+        if ((carport.getLENGTH() / 4) * 10 <= 1000)
+        { //Maks overhang er hardcoded
             overhangDefault = (carport.getLENGTH() / 4) * 10;
-        } else {
+        } else
+        {
             overhangDefault = 1000;
         }
 
@@ -83,14 +85,14 @@ public class Calculator
             } else if (matNum == 1)
             {
                 posX = length / 4;
-                posY = width - overhang;
+                posY = width - overhang - 10;
             } else if (matNum == 2)
             {
                 posX = (length / 4) * 3;
             } else if (matNum == 3)
             {
                 posX = (length / 4) * 3;
-                posY = width - overhang;
+                posY = width - overhang - 10;
             }
         } else if (quantity == 6)
         {
@@ -100,21 +102,21 @@ public class Calculator
             } else if (matNum == 1)
             {
                 posX = (length / 8) * 2;
-                posY = width - overhang;
+                posY = width - overhang - 10;
             } else if (matNum == 2)
             {
                 posX = (length / 8) * 4;
             } else if (matNum == 3)
             {
                 posX = (length / 8) * 4;
-                posY = width - overhang;
+                posY = width - overhang - 10;
             } else if (matNum == 4)
             {
                 posX = (length / 8) * 7;
             } else if (matNum == 5)
             {
                 posX = (length / 8) * 7;
-                posY = width - overhang;
+                posY = width - overhang - 10;
             }
         }
         posXY[0] = posX;
@@ -180,7 +182,7 @@ public class Calculator
         if (matNum == 1)
         {
             startPosY = width - overhang;
-            endPosY = width - overhang;
+            endPosY = width - overhang - 10;
         } else if (quantity == 4)
         {
             if (matNum == 2)
@@ -189,18 +191,18 @@ public class Calculator
                 endPosX = length - matLength;
                 startPosY = overhang;
                 endPosY = overhang;
-            } else
+            } else if (matNum > 2)
             {
                 startPosX = length;
                 endPosX = length - matLength;
                 startPosY = width - overhang;
-                endPosY = width - overhang;
+                endPosY = width - overhang - 10;
             }
         }
 
         posXY[0] = startPosX;
-        posXY[1] = endPosX;
-        posXY[2] = startPosY;
+        posXY[1] = endPosY;
+        posXY[2] = matLength;
         posXY[3] = endPosY;
 
         return posXY;
