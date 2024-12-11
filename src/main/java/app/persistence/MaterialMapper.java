@@ -970,28 +970,4 @@ public class MaterialMapper
 
         return svgMaterials;
     }
-
-    public static String getSVGFromDatabase(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        String svgContent = "";
-        try (Connection connection = pool.getConnection())
-        {
-            String query = "SELECT svg_drawing FROM carport_orders WHERE order_id = ?";
-            try (PreparedStatement stmt = connection.prepareStatement(query))
-            {
-                stmt.setInt(1, orderID);
-                try (ResultSet rs = stmt.executeQuery())
-                {
-                    if (rs.next())
-                    {
-                        svgContent = rs.getString("svg_drawing");
-                    }
-                }
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException("Failed to retrieve SVG drawing from database", e);
-        }
-        return svgContent;
-    }
 }
