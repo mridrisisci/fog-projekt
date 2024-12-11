@@ -58,13 +58,10 @@
                 </div>
 
                 <!-- Form til sælger for at opdatere salgstal--->
-                <div class="col-md-6">
-                    <form method="POST" action="/updatesalesprice">
+                <div class="col-md-6" th:each="order : ${orderdetails}">
                         <div class="form-group mb-3">
                             <label><h5>Pris inkl. moms</h5></label>
                             <div class="current-value" th:each="order : ${orderdetails}">
-                                <input type="hidden" name="orderid" th:value="${order.orderID}">
-
                                 <b><small class="text-muted">Nuværende: <span id="current-salgspris-moms"
                                                                            th:text="${order.salesPrice}"></span> DKK</small></b>
                             </div>
@@ -89,11 +86,14 @@
                                         DKK</small>
                                 </div>
                             </div>
-                                <input type="text" class="form-control" id="nysalgspris"
+                                <form method="POST" th:action="@{/updatesalesprice}" >
+                                    <input type="hidden" name="orderid" th:value="${order.orderID}">
+                                    <input type="text" class="form-control" id="nysalgspris"
                                        placeholder="Opdater salgsprisen" name="nysalgspris">
+                                    <button type="submit" name="action" value="retpristilbud" class="btn btn-primary">Ret prisitilbud</button>
+
+                                </form>
                             </div>
-                            <button type="submit" class="btn btn-primary">Ret prisitilbud</button>
-                    </form>
                 </div>
             </div>
         </div>

@@ -45,12 +45,12 @@ public class OrderController
         {
             OrderMapper.updateSalesPriceByOrderID(newSalesPrice, orderID, pool);
             ctx.attribute("message", "Prisen er opdateret for den givne ordre");
-            ctx.render("/orderdetails.html", Map.of("orderid", orderID));
+            ctx.redirect("/orderhistory");
 
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("/orderdetails.html", Map.of("orderid", orderID));
+            ctx.redirect("orderhistory");
         }
 
     }
@@ -235,9 +235,12 @@ public class OrderController
     {
         try
         {
-            String orderID = ctx.pathParam("id");
+            String action = ctx.formParam("action");
+            String orderIDString = ctx.pathParam("id");
+            int orderID = Integer.parseInt(Objects.requireNonNull(orderIDString));
+
             List<Order> orderDetails;
-            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            orderDetails = OrderMapper.getOrderDetails(orderID, pool);
 
             // get Account object from orderdetails
             Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
