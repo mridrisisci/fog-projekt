@@ -98,10 +98,10 @@ public class Calculator
         {
             if (matNum == 0)
             {
-                posX = (length / 8) * 2;
+                posX = (length / 8);
             } else if (matNum == 1)
             {
-                posX = (length / 8) * 2;
+                posX = (length / 8);
                 posY = width - overhang - 10;
             } else if (matNum == 2)
             {
@@ -443,6 +443,16 @@ public class Calculator
         int spacing = 60;
 
         int posX = matNum * spacing;
+
+        for (int i = 0; i <= matNum; i++)
+        {
+            posX = i * spacing;
+            if (posX > length)
+            {
+                posX = length;
+            }
+        }
+
         int startPosY = 0;
         int endPosY = width;
 
