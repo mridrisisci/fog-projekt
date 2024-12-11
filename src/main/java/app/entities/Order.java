@@ -77,7 +77,7 @@ public class Order
         this.account = account;
     }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
-    { // this is used for 'kvittering.html' && sendOffer
+    { // this is used for 'receipt.html' && sendOffer
         this.ORDER_ID = orderID;
         this.orderPlaced = orderPlaced;
         this.status = status;

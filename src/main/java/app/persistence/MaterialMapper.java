@@ -79,9 +79,6 @@ public class MaterialMapper
 
     }
 
-    //TODO: Lave pickList som kalder på alle de metoder der udregner materiale, længder og antal
-
-
     public static List<Material> createPickList(Carport carport, ConnectionPool pool) throws DatabaseException
     {
         List<Material> pickList = new ArrayList<>();
@@ -104,7 +101,6 @@ public class MaterialMapper
         pickList.add(getRoofPlatesLong(carport, pool));
         pickList.add(getRoofPlatesShort(carport, pool));
 
-        //TODO: tjek om materialer faktisk fjernes
         pickList.removeIf(material -> material.getQuantity() == 0);
 
         return pickList;
@@ -120,10 +116,11 @@ public class MaterialMapper
                 "                WHERE order_id = ?";
 
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery())
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
             ps.setInt(1, orderID);
+            ResultSet rs = ps.executeQuery();
+
             while (rs.next())
             {
                 int materialID = rs.getInt("material_id");
@@ -480,7 +477,6 @@ public class MaterialMapper
         String type = "Skruer";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -517,7 +513,6 @@ public class MaterialMapper
         String type = "Bundskruer";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -554,7 +549,6 @@ public class MaterialMapper
         String type = "Hulbånd";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -591,7 +585,6 @@ public class MaterialMapper
         String type = "Firkantskiver";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -628,7 +621,6 @@ public class MaterialMapper
         String type = "Beslag - Venstre";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -665,7 +657,6 @@ public class MaterialMapper
         String type = "Beslag - Højre";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -702,7 +693,6 @@ public class MaterialMapper
         String type = "Beslagskruer";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -740,7 +730,6 @@ public class MaterialMapper
         String type = "Bræddebolt";
         Material material = null;
 
-        //TODO: Skal lige fikses
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
@@ -880,12 +869,9 @@ public class MaterialMapper
             ps.setInt(5, width);
             int rowsAffected = ps.executeUpdate();
 
-            if (rowsAffected > 0)
+            if (rowsAffected <= 0)
             {
-                System.out.println("Materiale med ID " + materialID + " blev slettet.");
-            } else
-            {
-                System.out.println("Ingen materiale fundet med ID " + materialID);
+                throw new DatabaseException("Ingen materiale fundet med de kriterier");
             }
 
         } catch (SQLException e)
@@ -893,7 +879,6 @@ public class MaterialMapper
             e.printStackTrace();
             System.out.println("Fejl ved sletning af materiale: " + e.getMessage());
         }
-
     }
 
     public static List<Material> getAllMaterials(ConnectionPool pool) throws DatabaseException
