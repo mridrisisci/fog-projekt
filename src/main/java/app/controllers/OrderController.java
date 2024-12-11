@@ -51,10 +51,7 @@ public class OrderController
             ctx.redirect("orderhistory");
         }
 
-        app.post("/acceptordecline", ctx -> acceptOrDeclineOffer(ctx, dBConnection));
-        app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection));
-        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection));
-        app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection));
+
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)

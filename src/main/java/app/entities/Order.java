@@ -84,7 +84,7 @@ public class Order
 
 
 
-    public Order(int orderID, int width, int length, String shed, RoofType roofType, int price, Account account)
+    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
     {
         // used for orderdetails
         this.orderID = orderID;
