@@ -4,7 +4,6 @@ import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
-import app.persistence.OrderMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import java.util.List;

@@ -16,7 +16,7 @@ public class AccountController
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
         app.get("/createaccount", ctx -> ctx.render("createaccount.html"));
         app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection));
-        app.get("/logout", ctx -> doLogout(ctx));
+        app.get("/logout", AccountController::doLogout);
 
     }
 
@@ -52,11 +52,13 @@ public class AccountController
         String role = "salesperson";
         String email = ctx.formParam("chooseEmail");
         String telephoneString = ctx.formParam("choosePhoneNumber");
+        assert telephoneString != null;
         int telephone = Integer.parseInt(telephoneString);
         String password = ctx.formParam("choosePassword");
         String confirmPassword = ctx.formParam("confirmPassword");
 
         String zipString = ctx.formParam("choosePostalCode");
+        assert zipString != null;
         int zip = Integer.parseInt(zipString);
         String city = ctx.formParam("chooseCity");
         String address = ctx.formParam("chooseAddress");

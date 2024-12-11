@@ -318,15 +318,4 @@ public class OrderController
             return null;
         }
     }
-
-
-    private static boolean validateOrderIsPaid()
-    {
-        return false;
-    }
-
-
-
-
-
 }

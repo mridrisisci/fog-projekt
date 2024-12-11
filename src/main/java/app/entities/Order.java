@@ -11,7 +11,6 @@ public class Order
     private int salesPersonID;
     private int price;
     private Timestamp orderPlaced;
-    private  boolean IS_ASSIGNED;
     private String status;
     private Account account;
     private int width;
@@ -55,19 +54,6 @@ public class Order
         this.accountID = accountID;
     }
 
-
-    public Order(int orderID, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
-    {
-        // used for 'orderhistory.html'
-        this.orderID = orderID;
-        this.status = status;
-        this.carportID = carportID;
-        this.orderPlaced = orderPlaced;
-        this.paymentStatus = paymentStatus;
-        this.width = width;
-        this.length = length;
-        this.account = account;
-    }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
     {
         // this is used for 'receipt.html' && sendOffer
@@ -82,7 +68,18 @@ public class Order
         this.roofType = roofType;
     }
 
-
+    public Order(int orderID, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
+    {
+        // used for 'orderhistory.html'
+        this.orderID = orderID;
+        this.status = status;
+        this.carportID = carportID;
+        this.orderPlaced = orderPlaced;
+        this.paymentStatus = paymentStatus;
+        this.width = width;
+        this.length = length;
+        this.account = account;
+    }
 
     public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
     {
@@ -110,11 +107,6 @@ public class Order
     public Carport getCarport()
     {
         return carport;
-    }
-
-    public boolean isIS_ASSIGNED()
-    {
-        return IS_ASSIGNED;
     }
 
     public int getOrderID()
@@ -208,7 +200,6 @@ public class Order
                 ", price=" + price +
                 ", timePlaced=" + orderPlaced +
                 ", status=" + status +
-                ", isAssigned=" + IS_ASSIGNED +
                 "}";
     }
 
