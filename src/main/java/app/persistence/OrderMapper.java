@@ -642,5 +642,28 @@ public class OrderMapper
 
     }
 
+    public static String getSVGFromDatabase(int orderID, ConnectionPool pool) throws DatabaseException
+    {
+        String svg = "";
+        try (Connection connection = pool.getConnection())
+        {
+            String sql = "SELECT svg FROM orders WHERE order_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ps.setInt(1, orderID);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    svg = rs.getString("svg");
+                }
+
+            }
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Failed to retrieve SVG drawing from database", e);
+        }
+        return svg;
+    }
+
 
 }
