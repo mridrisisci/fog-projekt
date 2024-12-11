@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class OrderController
@@ -31,24 +32,25 @@ public class OrderController
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
         app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
-        app.post("/updatesalesprice", ctx -> updateSalesOffer(ctx, dBConnection));
+        app.post("/updatesalesprice", ctx -> updateSalesPriceByOrderID(ctx, dBConnection));
     }
 
-    private static void updateSalesOffer(Context ctx, ConnectionPool pool)
+    private static void updateSalesPriceByOrderID(Context ctx, ConnectionPool pool)
     {
-        String orderIDString = ctx.pathParam("id");
+        String orderIDString = ctx.formParam("orderid");
+        String newSalesPriceString = ctx.formParam("nysalgspris");
+        int newSalesPrice = Integer.parseInt(Objects.requireNonNull(newSalesPriceString));
         int orderID = Integer.parseInt(Objects.requireNonNull(orderIDString));
-        String price = ctx.formParam("");
         try
         {
-            OrderMapper.updateSalesOffer(Integer.parseInt(Objects.requireNonNull(price)), orderID, pool);
+            OrderMapper.updateSalesPriceByOrderID(newSalesPrice, orderID, pool);
             ctx.attribute("message", "Prisen er opdateret for den givne ordre");
-            ctx.render("/order/details/{id}");
+            ctx.render("/orderdetails.html", Map.of("orderid", orderID));
 
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("/order/details/{id}");
+            ctx.render("/orderdetails.html", Map.of("orderid", orderID));
         }
 
     }

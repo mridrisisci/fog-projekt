@@ -29,26 +29,6 @@ public class OrderMapper
         return price;
     }
 
-    public static void updateSalesOffer(int price, int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        String sql = "UPDATE orders SET price = ? WHERE order_id = ?";
-
-        try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, price);
-            ps.setInt(2, orderID);
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("Kunne ikke opdatere prisen for den givne ordre");
-            }
-
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-    }
 
     public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
@@ -545,7 +525,7 @@ public class OrderMapper
         int newCoverageRatio = ((newSalesPrice / (getPickListPriceByOrderID(orderID, pool))) - 1) * 100;
         //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
 
-        String sql = "UPDATE orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
+        String sql = "UPDATE orders SET sales_price = ?, coverage_ratio_percentage = ? WHERE order_id = ?;";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))

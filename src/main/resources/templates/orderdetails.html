@@ -36,15 +36,17 @@
                 <div class="col-md-6" th:each="order : ${orderdetails}">
                     <div class="card-body">
                         <h5 class="card-title"> Ordredetaljer</h5>
-                        <p class="card-title"> Ordrenummer: <span th:text="${order.ORDER_ID}"></span></p>
+                        <p class="card-title"> Ordrenummer: <span th:text="${order.orderID}"></span></p>
                         <p class="card-text"> Carport længde: <span th:text="${order.length}">  </span></p>
                         <p class="card-text"> Carport bredde: <span th:text="${order.width}">  </span></p>
                         <p class="card-text"> Tagtype: <span th:text="${order.roofType}">  </span></p>
                         <p class="card-text"> Pris: <span th:text="${order.price}"></span></p>
                         <p class="card-text"> Salgspris: <span th:text="${order.salesPrice}"></span></p>
-                        <form method="POST" th:action="@{/order/sendoffer/{id}(id=${order.ORDER_ID})}">
-                            <input type="hidden" name="accountid" th:value="${account.accountID}"> <!-- sends id to coontroller-->
-                            <input type="hidden" name="sendOfferID" th:value="${order.ORDER_ID}"> <!-- SEND ID TO CONTROLLER not used -->
+                        <form method="POST" th:action="@{/order/sendoffer/{id}(id=${order.orderID})}">
+                            <input type="hidden" name="accountid" th:value="${account.accountID}">
+                            <!-- sends id to coontroller-->
+                            <input type="hidden" name="sendOfferID" th:value="${order.orderID}">
+                            <!-- SEND ID TO CONTROLLER not used -->
                             <button class="btn btn-lg btn-primary" type="submit" name="action" value="send">Send
                                 pristilbud
                             </button>
@@ -58,50 +60,47 @@
                 <!-- Form til sælger for at opdatere salgstal--->
                 <div class="col-md-6">
                     <form method="POST" action="/updatesalesprice">
+                        <div class="form-group mb-3">
+                            <label><h5>Pris inkl. moms</h5></label>
+                            <div class="current-value" th:each="order : ${orderdetails}">
+                                <input type="hidden" name="orderid" th:value="${order.orderID}">
+
+                                <b><small class="text-muted">Nuværende: <span id="current-salgspris-moms"
+                                                                           th:text="${order.salesPrice}"></span> DKK</small></b>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="kostpris">Kostpris</label>
-                            <div class="current-value">
-                                <small class="text-muted">Nuværende: <span id="current-kostpris">1000</span> DKK</small>
-                            </div>
-                            <input type="text" class="form-control" id="kostpris" placeholder="Opdater kostpris">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="dækningsgrad">Dækningsgrad</label>
-                            <div class="current-value">
-                                <small class="text-muted">Nuværende: <span id="current-dækningsgrad">35</span> %</small>
-                            </div>
-                            <input type="text" class="form-control" id="dækningsgrad"
-                                   placeholder="Opdater dækningsgrad">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="dækningsbidrag">Dækningsbidrag</label>
-                            <div class="current-value">
-                                <small class="text-muted">Nuværende: <span id="current-dækningsbidrag">250</span> DKK</small>
-                            </div>
-                            <input type="text" class="form-control" id="dækningsbidrag"
-                                   placeholder="Opdater dækningsbidrag">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="salgspris">Salgspris uden moms</label>
                             <div class="current-value" th:each="order : ${orderdetails}">
-                                <small class="text-muted">Nuværende: <span id="current-salgspris" th:text="${order.price}"></span> DKK</small>
+                                <small class="text-muted">Nuværende: <span id="kostpris" th:text="${order.price}"></span> DKK</small>
                             </div>
-                            <input type="text" class="form-control" id="salgspris" placeholder="Opdater salgspris">
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Pris inkl. moms</label>
-                            <div class="current-value" th:each="order : ${orderdetails}">
-                                <small class="text-muted">Nuværende: <span id="current-salgspris-moms" th:text="${order.salesPrice}"></span> DKK</small>
                             </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Opdater</button>
+                            <div class="form-group mb-3">
+                                <label for="dækningsgrad">Dækningsgrad</label>
+                                <div class="current-value">
+                                    <small class="text-muted">Nuværende: <span id="dækningsgrad">35</span>
+                                        %</small>
+                                </div>
+                            <div class="form-group mb-3">
+                                <label for="salgspris">Salgspris uden moms</label>
+                                <div class="current-value" th:each="order : ${orderdetails}">
+                                    <small class="text-muted">Nuværende: <span id="salgspris"
+                                                                               th:text="${order.price - (order.price * 0.25)}"></span>
+                                        DKK</small>
+                                </div>
+                            </div>
+                                <input type="text" class="form-control" id="nysalgspris"
+                                       placeholder="Opdater salgsprisen" name="nysalgspris">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ret prisitilbud</button>
                     </form>
                 </div>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-                crossorigin="anonymous"></script>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</div>
 </body>
 </html>

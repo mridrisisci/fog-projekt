@@ -35,7 +35,7 @@
 
                     <div class="col-md-6" th:each="order : ${order}">
                         <div class="card-body">
-                            <h5 class="card-title"> Ordrenummer <span th:text="${order.ORDER_ID}"></span> </h5>
+                            <h5 class="card-title"> Ordrenummer <span th:text="${order.orderID}"></span> </h5>
                             <p class="card-text"> Pris: <span th:text="${order.price}"></span></p>
                             <p class="card-text"> DATO: <span th:text="${order.orderPlaced}">  </span>  </p>
                             <p class="card-text"> Carport længde: <span th:text="${order.width}"></span></p>
@@ -43,7 +43,7 @@
                             <p class="card-text"> Tagtype: <span th:text="${order.roofType}"></span></p>
                             <p class="card-text"> Status på din ordre: <span th:text="${order.status}">  </span>  </p>
                             <form method="POST" action="/acceptordecline">
-                                <input type="hidden" name="offerid" th:value="${order.ORDER_ID}">
+                                <input type="hidden" name="offerid" th:value="${order.orderID}">
                                 <input type="hidden" name="email" th:value="${account.email}">
                                 <button class="btn btn-lg btn-primary" type="submit" name="action" value="accept">Accepter pristilbud</button>
                                 <button class="btn btn-lg btn-secondary" type="submit" name="action" value="reject">Afvis pristilbud</button>

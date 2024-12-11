@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Order
 {
-    private int ORDER_ID;
+    private int orderID;
     private  String carportID;
     private int salesPersonID;
     private int price;
@@ -39,7 +39,7 @@ public class Order
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        ORDER_ID = orderId;
+        orderID = orderId;
         carportID = carportId;
         salesPersonID = salespersonId;
         this.price = price;
@@ -53,7 +53,7 @@ public class Order
 
     public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        ORDER_ID = orderId;
+        orderID = orderId;
         carportID = carportId;
         this.price = price;
         this.salesPrice = salesPrice;
@@ -67,7 +67,7 @@ public class Order
 
     public Order(int orderId, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
     { // used for 'orderhistory.html'
-        this.ORDER_ID = orderId;
+        this.orderID = orderId;
         this.status = status;
         this.carportID = carportID;
         this.orderPlaced = orderPlaced;
@@ -78,7 +78,7 @@ public class Order
     }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
     { // this is used for 'receipt.html' && sendOffer
-        this.ORDER_ID = orderID;
+        this.orderID = orderID;
         this.orderPlaced = orderPlaced;
         this.status = status;
         this.carportID = carportID;
@@ -92,7 +92,7 @@ public class Order
 
     public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
     { // used for orderdetails
-        this.ORDER_ID = orderID;
+        this.orderID = orderID;
         this.width = width;
         this.length = length;
         this.shed = shed;
@@ -126,9 +126,9 @@ public class Order
         return IS_ASSIGNED;
     }
 
-    public int getORDER_ID()
+    public int getOrderID()
     {
-        return ORDER_ID;
+        return orderID;
     }
 
     public String getStatus()
@@ -199,7 +199,7 @@ public class Order
     public String toString()
     {
         return "Order {" +
-            "orderId=" + ORDER_ID +
+            "orderId=" + orderID +
             ", carportId=" + carportID +
             ", salespersonId=" + salesPersonID +
             ", price=" + price +

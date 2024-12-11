@@ -1,6 +1,5 @@
 package app.utilities;
 
-import app.entities.Account;
 import app.entities.Order;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -42,10 +41,10 @@ public class SendGrid
 
         // ngrok dynamic URL for testing redirects with dynamic mail
         String ngrokURL = "  https://e36b-193-29-107-174.ngrok-free.app ";
-        String URL = ngrokURL + "/order/acceptoffer/" + order.getORDER_ID();
+        String URL = ngrokURL + "/order/acceptoffer/" + order.getOrderID();
 
         // Dynamisk URL til produktion // når app skal deployes
-        String acceptURL = "https://dataduck.dk/order/acceptoffer/" + order.getORDER_ID();
+        String acceptURL = "https://dataduck.dk/order/acceptoffer/" + order.getOrderID();
 
 
 
