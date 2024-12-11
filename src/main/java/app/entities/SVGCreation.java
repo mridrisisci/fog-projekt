@@ -21,13 +21,13 @@ public class SVGCreation
         StringBuilder postsBuilder = new StringBuilder();
         for (int i = 0; i <= postsList.size(); i++)
         {
-            int startPosX = postsList.get(i).getSvgPosX() - (postsList.get(i).getLength()/2);
-            int startPosY = postsList.get(i).getSvgPosY() - (postsList.get(i).getWidth()/2);
-            int endPosX = postsList.get(i).getSvgPosX() + (postsList.get(i).getLength()/2);
-            int endPosY = postsList.get(i).getSvgPosY() + (postsList.get(i).getWidth()/2);
+            int startPosX = postsList.get(i).getSvgPosX() - (postsList.get(i).getLength() / 2);
+            int startPosY = postsList.get(i).getSvgPosY() - (postsList.get(i).getWidth() / 2);
+            int endPosX = postsList.get(i).getSvgPosX() + (postsList.get(i).getLength() / 2);
+            int endPosY = postsList.get(i).getSvgPosY() + (postsList.get(i).getWidth() / 2);
             postsBuilder.append(String.format(
                     "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"red\" />\n",
-                    i+1, startPosX, startPosY, endPosX, endPosY
+                    i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
         return postsBuilder.toString();
@@ -44,7 +44,7 @@ public class SVGCreation
             int endPosY = raftList.get(i).getSvgEndY();
             raftersBuilder.append(String.format(
                     "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"darkgray\" />\n",
-                    i+1, startPosX, startPosY, endPosX, endPosY
+                    i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
         return raftersBuilder.toString();
@@ -61,18 +61,19 @@ public class SVGCreation
             int endPosY = remList.get(i).getSvgEndY();
             beamsBuilder.append(String.format(
                     "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"gray\" />\n",
-                    i+1, startPosX, startPosY, endPosX, endPosY
+                    i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
         return beamsBuilder.toString();
     }
 
     //Vi har valgt at hardcode kanten af carporten da vi får størrelsen sammen med forsprøgslen
-    public static String generateFasciaBoards(int carportLength, int carportWidth){
+    public static String generateFasciaBoards(int carportLength, int carportWidth)
+    {
         StringBuilder fasciaBoardsBuilder = new StringBuilder();
-        fasciaBoardsBuilder.append(String.format( "<rect id=\"facia%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"black\" />\n",
-                1,0,0,carportLength,carportWidth
-                ));
+        fasciaBoardsBuilder.append(String.format("<rect id=\"facia%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"black\" />\n",
+                1, 0, 0, carportLength, carportWidth
+        ));
         return fasciaBoardsBuilder.toString();
 
     }
@@ -105,7 +106,7 @@ public class SVGCreation
                 .replace("{{fasciaBoards}}", fasciaBoards);
     }
 
-    public void svgXYGenerate(List<Material> svgMaterialList, Carport carport)
+    public String generateSVGString(List<Material> svgMaterialList, Carport carport)
     {
 
         List<Material> stolpeList = new ArrayList<>();
@@ -118,40 +119,47 @@ public class SVGCreation
             {
                 case "Stolpe":
                     stolpeList.addAll(svgSetXYStople(mat, carport));
-                    generatePosts()
                     break;
                 case "Rem":
-                    remList.addAll(svgSetXYRem(mat,carport));
+                    remList.addAll(svgSetXYRem(mat, carport));
                     break;
                 case "Spær":
-                    spærList.addAll(svgSetXYSpær(mat,carport));
+                    spærList.addAll(svgSetXYSpær(mat, carport));
                     break;
                 /*case "Oversternbrædt":
                     svgMaterialListFinal.addAll(svgSetXY(mat,carport));
                     break;*/
             }
         }
+        String postsXML = generatePosts(stolpeList);
+        String beamsXML = generateBeams(remList);
+        String raftersXML = generateRafters(spærList);
+
+        return postsXML + beamsXML + raftersXML;
     }
 
     private List<Material> svgSetXYStople(Material stolpe, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
         int quantity = stolpe.getQuantity();
-        for(int i = 0; i <quantity; i++ ){
-            int[]posXY = Calculator.calcPostsXY(carport, quantity, i);
+        for (int i = 0; i < quantity; i++)
+        {
+            int[] posXY = Calculator.calcPostsXY(carport, quantity, i);
             stolpe.setSvgPosX(posXY[0]);
             stolpe.setSvgPosY(posXY[1]);
             svgPosts.add(stolpe);
         }
         return svgPosts;
     }
+
     private List<Material> svgSetXYRem(Material rem, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
         int quantity = rem.getQuantity();
         int remLength = rem.getLength();
-        for(int i = 0; i <quantity; i++ ){
-            int[]posXY = Calculator.calcBeamsXY(carport, quantity, i, remLength);
+        for (int i = 0; i < quantity; i++)
+        {
+            int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, remLength);
             rem.setSvgStartX(posXY[0]);
             rem.setSvgEndX(posXY[1]);
             rem.setSvgStartY(posXY[2]);
