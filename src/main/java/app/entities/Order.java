@@ -81,7 +81,7 @@ public class Order
         this.account = account;
     }
 
-    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
+    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int coverageRatioPercentage, int price, Account account)
     {
         // used for orderdetails
         this.orderID = orderID;
@@ -92,6 +92,7 @@ public class Order
         this.salesPrice = salesPrice;
         this.price = price;
         this.account = account;
+        this.coverageRatioPercentage = coverageRatioPercentage;
     }
 
     public List<String> getOrderDetails()
