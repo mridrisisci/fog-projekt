@@ -106,7 +106,7 @@ public class SVGCreation
                 .replace("{{fasciaBoards}}", fasciaBoards);
     }
 
-    public String generateSVGString(List<Material> svgMaterialList, Carport carport)
+    public static String generateSVGString(List<Material> svgMaterialList, Carport carport)
     {
 
         List<Material> stolpeList = new ArrayList<>();
@@ -145,7 +145,7 @@ public class SVGCreation
         return res;
     }
 
-    private List<Material> svgSetXYStople(Material stolpe, Carport carport)
+    private static List<Material> svgSetXYStople(Material stolpe, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
         int quantity = stolpe.getQuantity();
@@ -159,7 +159,7 @@ public class SVGCreation
         return svgPosts;
     }
 
-    private List<Material> svgSetXYRem(Material rem, Carport carport)
+    private static List<Material> svgSetXYRem(Material rem, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
         int quantity = rem.getQuantity();
@@ -206,7 +206,7 @@ public class SVGCreation
         return svgPosts;
     }*/
 
-    private List<Material> svgSetXYSpær(Material spær, Carport carport)
+    private static List<Material> svgSetXYSpær(Material spær, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
         int quantity = spær.getQuantity();
