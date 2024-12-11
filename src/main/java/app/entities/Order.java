@@ -7,11 +7,11 @@ import java.util.List;
 public class Order
 {
     private int ORDER_ID;
-    private  String carportID;
+    private String carportID;
     private int salesPersonID;
     private int price;
     private Timestamp orderPlaced;
-    private  boolean IS_ASSIGNED;
+    private boolean IS_ASSIGNED;
     private String status;
     private Account account;
     private int width;
@@ -26,16 +26,7 @@ public class Order
     private boolean hasShed;
     private List<String> orderDetails;
     private String paymentStatus;
-
-    public String getShed()
-    {
-        return shed;
-    }
-    public String getPaymentStatus()
-    {
-        return paymentStatus;
-    }
-
+    private String svg;
 
     public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
@@ -76,6 +67,7 @@ public class Order
         this.length = length;
         this.account = account;
     }
+
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
     { // this is used for 'receipt.html' && sendOffer
         this.ORDER_ID = orderID;
@@ -100,6 +92,27 @@ public class Order
         this.price = price;
         this.account = account;
 
+    }
+
+    public void setSvg(String svg)
+    {
+        this.svg = svg;
+    }
+
+    public String getSvg()
+    {
+        return svg;
+    }
+
+    public String getShed()
+    {
+        return shed;
+
+    }
+
+    public String getPaymentStatus()
+    {
+        return paymentStatus;
     }
 
 
@@ -134,6 +147,7 @@ public class Order
     {
         return status;
     }
+
     public boolean getOrderPaid()
     {
         return orderPaid;
@@ -159,6 +173,7 @@ public class Order
     {
         return carportID;
     }
+
     public int getSalesPersonID()
     {
         return salesPersonID;
@@ -198,14 +213,14 @@ public class Order
     public String toString()
     {
         return "Order {" +
-            "orderId=" + ORDER_ID +
-            ", carportId=" + carportID +
-            ", salespersonId=" + salesPersonID +
-            ", price=" + price +
-            ", timePlaced=" + orderPlaced +
-            ", status=" + status +
-            ", isAssigned=" + IS_ASSIGNED +
-            "}";
+                "orderId=" + ORDER_ID +
+                ", carportId=" + carportID +
+                ", salespersonId=" + salesPersonID +
+                ", price=" + price +
+                ", timePlaced=" + orderPlaced +
+                ", status=" + status +
+                ", isAssigned=" + IS_ASSIGNED +
+                "}";
     }
 
 
