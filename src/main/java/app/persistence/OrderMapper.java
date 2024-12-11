@@ -156,7 +156,7 @@ public class OrderMapper
         }
     }
 
-    public static List<Order> getOrderHistory(String sortby, ConnectionPool pool) throws DatabaseException
+    public static List<Order> getOrderHistory(String sortBy, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
             "o.order_id," +
