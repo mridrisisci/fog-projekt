@@ -7,19 +7,23 @@ public class Material
     private String description;
     private int price;
     private String unit;
+
     private int quantity;
+
     private int length;
     private int height;
     private int width;
     private boolean hasShedAddons;
     private String type;
     private int svgPosX;
+
     private int svgPosY;
+
     private int svgStartX;
+
     private int svgStartY;
     private int svgEndX;
     private int svgEndY;
-
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
@@ -33,7 +37,6 @@ public class Material
         this.width = width;
         this.hasShedAddons = hasShedAddons;
     }
-
     public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
     {
         this.materialID = materialID;
@@ -46,7 +49,6 @@ public class Material
         this.width = width;
         this.type = type;
     }
-
 
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, String type)
     {
@@ -115,6 +117,20 @@ public class Material
         this.svgPosY = svgPosY;
     }
 
+    public Material(int svgPosX, int svgPosY)
+    {
+        this.svgPosX = svgPosX;
+        this.svgPosY = svgPosY;
+    }
+
+
+    public Material(int svgStartX, int svgEndX, int svgStartY, int svgEndY)
+    {
+        this.svgStartX = svgStartX;
+        this.svgStartY = svgStartY;
+        this.svgEndX = svgEndX;
+        this.svgEndY = svgEndY;
+    }
 
     public Material(String type)
     {
@@ -129,6 +145,11 @@ public class Material
     public int getMaterialID()
     {
         return materialID;
+    }
+
+    public void setQuantity(int quantity)
+    {
+        this.quantity = quantity;
     }
 
     public String getMaterialName()
