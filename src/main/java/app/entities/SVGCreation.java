@@ -25,7 +25,7 @@ public class SVGCreation
             int width = postsList.get(i).getSvgWidth();
             int height = postsList.get(i).getSvgHeight();
             postsBuilder.append(String.format(
-                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"red\" />\n",
+                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" fill-opacity=\"0.0\" />\n",
                     i + 1, startPosX, startPosY, width, height
             ));
         }
@@ -59,7 +59,7 @@ public class SVGCreation
             int width = remList.get(i).getSvgWidth();
             int height = remList.get(i).getSvgHeight();
             beamsBuilder.append(String.format(
-                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"gray\" />\n",
+                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" fill-opacity=\"0.0\" />\n",
                     i + 1, posX, posY, width, height
             ));
         }
@@ -166,6 +166,9 @@ public class SVGCreation
         if (quantity == 1)
         {
             quantity += 1;
+            remLength = carportLength;
+        }
+        if(remLength > carportLength && quantity == 2){
             remLength = carportLength;
         }
 
