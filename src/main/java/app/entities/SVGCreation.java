@@ -113,6 +113,7 @@ public class SVGCreation
         List<Material> remList = new ArrayList<>();
         List<Material> spærList = new ArrayList<>();
 
+        //TODO check at loop ikke giver problemer
         for (Material mat : svgMaterialList)
         {
             switch (mat.getType())
@@ -131,11 +132,17 @@ public class SVGCreation
                     break;*/
             }
         }
+        int carportLength = carport.getLENGTH();
+        int carportWidth = carport.getWIDTH();
+
+        String fasciaboardXML = generateFasciaBoards(carportLength, carportWidth);
         String postsXML = generatePosts(stolpeList);
         String beamsXML = generateBeams(remList);
         String raftersXML = generateRafters(spærList);
 
-        return postsXML + beamsXML + raftersXML;
+        String res = fasciaboardXML + postsXML + beamsXML + raftersXML;
+
+        return res;
     }
 
     private List<Material> svgSetXYStople(Material stolpe, Carport carport)
