@@ -9,13 +9,11 @@ import app.persistence.OrderMapper;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class OrderController
@@ -53,6 +51,10 @@ public class OrderController
             ctx.redirect("orderhistory");
         }
 
+        app.post("/acceptordecline", ctx -> acceptOrDeclineOffer(ctx, dBConnection));
+        app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection));
+        app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection));
+        app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection));
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -61,7 +63,7 @@ public class OrderController
         {
             String orderID = ctx.pathParam("id");
             Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)),pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             ctx.attribute("order", order);
             ctx.attribute("account", account);
             ctx.render("acceptoffer.html");
@@ -72,8 +74,6 @@ public class OrderController
             ctx.render("/order/{id}/acceptoffer");
         }
     }
-
-
 
     private static void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
     {
@@ -89,11 +89,10 @@ public class OrderController
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
                 OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILDBUD_GODKENDT, pool);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_GODKENDT, pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
                 ctx.redirect("/"); // opdater denne side ?½
-            }
-            else if ("reject".equals(action)) // if customer declines order, customer data is deleted
+            } else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
                 OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Din ordre er slettet. ");
@@ -109,14 +108,12 @@ public class OrderController
             ctx.render("/order/{id}/acceptoffer");
         }
         ctx.render("acceptoffer.html");
-
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
     {
         ctx.render("index.html");
     }
-
 
     private static void createQuery(Context ctx, ConnectionPool pool)
     {
@@ -235,12 +232,9 @@ public class OrderController
     {
         try
         {
-            String action = ctx.formParam("action");
-            String orderIDString = ctx.pathParam("id");
-            int orderID = Integer.parseInt(Objects.requireNonNull(orderIDString));
-
+            String orderID = ctx.pathParam("id");
             List<Order> orderDetails;
-            orderDetails = OrderMapper.getOrderDetails(orderID, pool);
+            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
 
             // get Account object from orderdetails
             Order accountIndex = Objects.requireNonNull(orderDetails).getLast();

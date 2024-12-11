@@ -76,13 +76,6 @@ public class Material
         this.type = type;
     }
 
-    public Material(String materialName, String unit, String description)
-    {
-        this.materialName = materialName;
-        this.unit = unit;
-        this.description = description;
-    }
-
     public Material(String name, String unit, String description, String type, int quantity)
     {
         this.materialName = name;
@@ -90,6 +83,13 @@ public class Material
         this.description = description;
         this.type = type;
         this.quantity = quantity;
+    }
+
+    public Material(String materialName, String unit, String description)
+    {
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
     }
 
 

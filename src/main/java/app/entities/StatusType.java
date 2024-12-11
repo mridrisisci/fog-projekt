@@ -4,5 +4,5 @@ public enum StatusType
 {
     AFVENTER_BEHANDLING,
     TILBUD_SENDT,
-    TILDBUD_GODKENDT;
+    TILBUD_GODKENDT;
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public class Order
 {
     private int orderID;
-    private  String carportID;
+    private String carportID;
     private int salesPersonID;
     private int price;
     private Timestamp orderPlaced;
@@ -27,21 +27,12 @@ public class Order
     private List<String> orderDetails;
     private String paymentStatus;
 
-    public String getShed()
-    {
-        return shed;
-    }
-    public String getPaymentStatus()
-    {
-        return paymentStatus;
-    }
 
-
-    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
+    public Order(int orderID, String carportID, int salespersonID, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        orderID = orderId;
-        carportID = carportId;
-        salesPersonID = salespersonId;
+        this.orderID = orderID;
+        this.carportID = carportID;
+        this.salesPersonID = salespersonID;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
@@ -51,10 +42,10 @@ public class Order
         this.accountID = accountID;
     }
 
-    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
+    public Order(int orderID, String carportID, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        orderID = orderId;
-        carportID = carportId;
+        this.orderID = orderID;
+        this.carportID = carportID;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
@@ -65,9 +56,10 @@ public class Order
     }
 
 
-    public Order(int orderId, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
-    { // used for 'orderhistory.html'
-        this.orderID = orderId;
+    public Order(int orderID, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
+    {
+        // used for 'orderhistory.html'
+        this.orderID = orderID;
         this.status = status;
         this.carportID = carportID;
         this.orderPlaced = orderPlaced;
@@ -77,7 +69,8 @@ public class Order
         this.account = account;
     }
     public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
-    { // this is used for 'receipt.html' && sendOffer
+    {
+        // this is used for 'receipt.html' && sendOffer
         this.orderID = orderID;
         this.orderPlaced = orderPlaced;
         this.status = status;
@@ -87,11 +80,13 @@ public class Order
         this.shed = shed;
         this.price = price;
         this.roofType = roofType;
-
     }
 
-    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int price, Account account)
-    { // used for orderdetails
+
+
+    public Order(int orderID, int width, int length, String shed, RoofType roofType, int price, Account account)
+    {
+        // used for orderdetails
         this.orderID = orderID;
         this.width = width;
         this.length = length;
@@ -100,15 +95,12 @@ public class Order
         this.salesPrice = salesPrice;
         this.price = price;
         this.account = account;
-
     }
-
 
     public List<String> getOrderDetails()
     {
         return orderDetails;
     }
-
 
     public boolean getHasShed()
     {
@@ -119,7 +111,6 @@ public class Order
     {
         return carport;
     }
-
 
     public boolean isIS_ASSIGNED()
     {
@@ -135,6 +126,7 @@ public class Order
     {
         return status;
     }
+
     public boolean getOrderPaid()
     {
         return orderPaid;
@@ -155,11 +147,11 @@ public class Order
         return length;
     }
 
-
     public String getCarportID()
     {
         return carportID;
     }
+
     public int getSalesPersonID()
     {
         return salesPersonID;
@@ -195,18 +187,29 @@ public class Order
         return accountID;
     }
 
+    public String getShed()
+    {
+        return shed;
+    }
+
+    public String getPaymentStatus()
+    {
+        return paymentStatus;
+    }
+
     @Override
     public String toString()
     {
         return "Order {" +
-            "orderId=" + orderID +
-            ", carportId=" + carportID +
-            ", salespersonId=" + salesPersonID +
-            ", price=" + price +
-            ", timePlaced=" + orderPlaced +
-            ", status=" + status +
-            ", isAssigned=" + IS_ASSIGNED +
-            "}";
+                "orderId=" + orderID +
+                ", carportId=" + carportID +
+                ", salespersonId=" + salesPersonID +
+                ", paymant status: " + paymentStatus +
+                ", price=" + price +
+                ", timePlaced=" + orderPlaced +
+                ", status=" + status +
+                ", isAssigned=" + IS_ASSIGNED +
+                "}";
     }
 
 
