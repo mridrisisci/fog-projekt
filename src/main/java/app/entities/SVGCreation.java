@@ -26,7 +26,7 @@ public class SVGCreation
             int endPosX = postsList.get(i).getSvgPosX() + (postsList.get(i).getLength() / 2);
             int endPosY = postsList.get(i).getSvgPosY() + (postsList.get(i).getWidth() / 2);
             postsBuilder.append(String.format(
-                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"red\" />\n",
+                    "<rect id=\"post%d\" x=\"%d\" y=\"%d\" x2=\"%d\" y2=\"%d\" fill=\"red\" />\n",
                     i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
@@ -60,7 +60,7 @@ public class SVGCreation
             int endPosX = remList.get(i).getSvgEndX();
             int endPosY = remList.get(i).getSvgEndY();
             beamsBuilder.append(String.format(
-                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" length=\"%d\" width=\"%d\" fill=\"gray\" />\n",
+                    "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" x2=\"%d\" y2=\"%d\" fill=\"gray\" />\n",
                     i + 1, startPosX, startPosY, endPosX, endPosY
             ));
         }
@@ -170,8 +170,8 @@ public class SVGCreation
         {
             int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, remLength);
             int startXPos = posXY[0];
-            int startYPos = posXY[1];
-            int endXPos = posXY[2];
+            int endXPos = posXY[1];
+            int startYPos = posXY[2];
             int endYPos = posXY[3];
             Material newBeam = new Material(startXPos, endXPos, startYPos, endYPos);
             svgPosts.add(newBeam);
@@ -195,7 +195,7 @@ public class SVGCreation
         }
         return svgPosts;
     }
-    
+
     //Vi har valgt ikke at bruge sternbrædder til SVG tegningen
 
     /*private List<Material> svgSetXYSternbrædtForOgBag(Material stern, Carport carport)
