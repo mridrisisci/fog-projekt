@@ -199,8 +199,8 @@ public class Calculator
         }
 
         posXY[0] = startPosX;
-        posXY[1] = startPosY;
-        posXY[2] = endPosX;
+        posXY[1] = endPosX;
+        posXY[2] = startPosY;
         posXY[3] = endPosY;
 
         return posXY;
