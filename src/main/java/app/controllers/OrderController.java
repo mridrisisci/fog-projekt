@@ -176,7 +176,8 @@ public class OrderController
             OrderMapper.setSalesPriceAndCoverageDefault(carport, pool);
 
             // SVG
-            String svg = SVGCreation.generateSVGString(pickList, carport);
+            String svgStart = SVGCreation.generateSVGString(pickList, carport);
+            String svg = SVGCreation.generateCarportSVGFromTemplate("", svgStart);
             OrderMapper.updateSVG(orderID, svg, pool);
 
 
@@ -318,9 +319,5 @@ public class OrderController
     {
         return false;
     }
-
-
-
-
 
 }
