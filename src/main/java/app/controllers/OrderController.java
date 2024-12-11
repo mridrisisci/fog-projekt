@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static app.persistence.MaterialMapper.getSVGFromDatabase;
-
 public class OrderController
 {
 
@@ -173,11 +171,20 @@ public class OrderController
             final int WIDTH = LENGTH_AND_WIDTH[1];
 
             Carport carport = new Carport(orderID, LENGTH, WIDTH);
+
+            // Picklist
             List<Material> pickList = MaterialMapper.createPickList(carport, pool);
             MaterialMapper.insertPickListInDB(pickList, carport, pool);
             carport.setMaterialList(pickList);
+
+            // Price
             OrderMapper.updatePickListPrice(carport, pool);
             OrderMapper.setSalesPriceAndCoverageDefault(carport, pool);
+
+            // SVG
+            String svg = SVGCreation.generateSVGString(pickList, carport);
+            OrderMapper.updateSVG(orderID, svg, pool);
+
 
         } catch (DatabaseException e)
         {
