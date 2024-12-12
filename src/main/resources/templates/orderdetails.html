@@ -57,8 +57,6 @@
                     </div>
                 </div>
 
-                <p>Tegning din Carport:</p>
-                <p class="card-text"><span th:utext="${order.svg}"></span></p>
 
             </div>
         </div>
@@ -67,44 +65,50 @@
                 crossorigin="anonymous"></script>
     </div>
 
-                <!-- Form til sælger for at opdatere salgstal--->
-                <div class="col-md-6" th:each="order : ${orderdetails}">
-                        <div class="form-group mb-3">
-                            <label><h5>Pris inkl. moms</h5></label>
-                            <div class="current-value" th:each="order : ${orderdetails}">
-                                <b><small class="text-muted">Nuværende: <span id="current-salgspris-moms"
-                                                                           th:text="${order.salesPrice}"></span> DKK</small></b>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="kostpris">Kostpris</label>
-                            <div class="current-value" th:each="order : ${orderdetails}">
-                                <small class="text-muted">Nuværende: <span id="kostpris" th:text="${order.price}"></span> DKK</small>
-                            </div>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="dækningsgrad">Dækningsgrad</label>
-                                <div class="current-value">
-                                    <small class="text-muted">Nuværende: <span id="dækningsgrad" th:text="${order.coverageRatioPercentage}"></span>
-                                        %</small>
-                                </div>
-
-                            </div>
-                                <form method="POST" th:action="@{/updatesalesprice}" >
-                                    <input type="hidden" name="orderid" th:value="${order.orderID}">
-                                    <input type="text" class="form-control" id="nysalgspris"
-                                       placeholder="Opdater salgsprisen" name="nysalgspris">
-                                    <button type="submit" name="action" value="retpristilbud" class="btn btn-primary">Ret pris</button>
-                                </form>
-                            </div>
-                </form>
-                </div>
+    <!-- Form til sælger for at opdatere salgstal--->
+    <div class="col-md-6" th:each="order : ${orderdetails}">
+        <div class="form-group mb-3">
+            <label><h5>Pris inkl. moms</h5></label>
+            <div class="current-value" th:each="order : ${orderdetails}">
+                <b><small class="text-muted">Nuværende: <span id="current-salgspris-moms"
+                                                              th:text="${order.salesPrice}"></span> DKK</small></b>
             </div>
         </div>
+        <div class="form-group">
+            <label for="kostpris">Kostpris</label>
+            <div class="current-value" th:each="order : ${orderdetails}">
+                <small class="text-muted">Nuværende: <span id="kostpris" th:text="${order.price}"></span> DKK</small>
+            </div>
+        </div>
+        <div class="form-group mb-3">
+            <label for="dækningsgrad">Dækningsgrad</label>
+            <div class="current-value">
+                <small class="text-muted">Nuværende: <span id="dækningsgrad"
+                                                           th:text="${order.coverageRatioPercentage}"></span>
+                    %</small>
+            </div>
+
+        </div>
+        <form method="POST" th:action="@{/updatesalesprice}">
+            <input type="hidden" name="orderid" th:value="${order.orderID}">
+            <input type="text" class="form-control" id="nysalgspris"
+                   placeholder="Opdater salgsprisen" name="nysalgspris">
+            <button type="submit" name="action" value="retpristilbud" class="btn btn-primary">Ret pris</button>
+        </form>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+    </form>
+    <div class="form-group mb-3" th:each="order : ${orderdetails}">
+        <p>Tegning din Carport:</p>
+        <p class="card-text"><span th:utext="${order.svg}"></span></p>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </div>
 </body>
 </html>

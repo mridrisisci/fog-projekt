@@ -8,7 +8,6 @@ public class Order
 {
     private int orderID;
     private String carportID;
-    private int salesPersonID;
     private int price;
     private Timestamp orderPlaced;
     private String status;
@@ -53,7 +52,7 @@ public class Order
         this.accountID = accountID;
     }
 
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int price, RoofType roofType)
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int salesPrice, RoofType roofType)
     {
         // this is used for 'receipt.html' && sendOffer
         this.orderID = orderID;
@@ -63,7 +62,7 @@ public class Order
         this.length = length;
         this.width = width;
         this.shed = shed;
-        this.price = price;
+        this.salesPrice = salesPrice;
         this.roofType = roofType;
     }
 
@@ -189,7 +188,6 @@ public class Order
         return "Order {" +
                 "orderId=" + orderID +
                 ", carportId=" + carportID +
-                ", salespersonId=" + salesPersonID +
                 ", paymant status: " + paymentStatus +
                 ", price=" + price +
                 ", timePlaced=" + orderPlaced +

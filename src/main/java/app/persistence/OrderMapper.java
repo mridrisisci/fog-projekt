@@ -30,25 +30,24 @@ public class OrderMapper
     }
 
 
-    public static int createQueryInOrders(String carportID, int salesPersonID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
+    public static int createQueryInOrders(String carportID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "INSERT INTO orders (carport_id, salesperson_id, status, " +
+        String sql = "INSERT INTO orders (carport_id, status, " +
                 "order_placed, order_paid, length, width, has_shed, roof_type, account_id) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?);";
+                "VALUES (?,?,?,?,?,?,?,?,?);";
 
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
             ps.setString(1, carportID);
-            ps.setInt(2, salesPersonID);
-            ps.setString(3, status);
-            ps.setTimestamp(4, orderPlaced);
-            ps.setBoolean(5, orderPaid);
-            ps.setInt(6, length);
-            ps.setInt(7, width);
-            ps.setBoolean(8, hasShed);
-            ps.setString(9, roofType);
-            ps.setInt(10, accountID);
+            ps.setString(2, status);
+            ps.setTimestamp(3, orderPlaced);
+            ps.setBoolean(4, orderPaid);
+            ps.setInt(5, length);
+            ps.setInt(6, width);
+            ps.setBoolean(7, hasShed);
+            ps.setString(8, roofType);
+            ps.setInt(9, accountID);
 
             // Execute the query and retrieve the generated key
             int rowsAffected = ps.executeUpdate();
@@ -147,8 +146,8 @@ public class OrderMapper
                 boolean hasShed = rs.getBoolean("has_shed");
                 String roofType = rs.getString("roof_type");
                 status = rs.getString("status");
-                int price = rs.getInt("price");
-                return new Order(orderId, orderPlaced, status, carportID, length, width, shed, price, RoofType.FLAT);
+                int salesPrice = rs.getInt("sales_price");
+                return new Order(orderId, orderPlaced, status, carportID, length, width, shed, salesPrice, RoofType.FLAT);
             } else
             {
                 throw new DatabaseException("Der findes ingen ordre med ID: " + orderID);

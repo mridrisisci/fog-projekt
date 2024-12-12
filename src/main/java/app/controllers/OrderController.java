@@ -136,7 +136,6 @@ public class OrderController
         String consent = ctx.formParam("chooseConsent");
         String role = "customer";
         String carportId = "CFU";
-        int salesPersonId = 0;
         boolean orderPaid = false;
         Order order;
         boolean hasShed = false;
@@ -151,7 +150,7 @@ public class OrderController
 
             LocalDateTime localDateTime = LocalDateTime.now();
             Timestamp orderPlaced = Timestamp.valueOf(localDateTime);
-            int orderID = OrderMapper.createQueryInOrders(carportId, salesPersonId, StatusType.AFVENTER_BEHANDLING.toString(), orderPlaced,
+            int orderID = OrderMapper.createQueryInOrders(carportId, StatusType.AFVENTER_BEHANDLING.toString(), orderPlaced,
                 orderPaid, carportLength, carportWidth, hasShed, RoofType.FLAT.toString(), accountID, pool);
 
             createCarport(orderID, ctx, pool);
@@ -199,6 +198,7 @@ public class OrderController
             // SVG
             String svgStart = SVGCreation.generateSVGString(pickList, carport);
             String svg = SVGCreation.generateCarportSVGFromTemplate("", svgStart);
+            // creates SVG in orders
             OrderMapper.updateSVG(orderID, svg, pool);
 
 
