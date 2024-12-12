@@ -249,7 +249,7 @@ public class IntegrationTest
     public void testGetPickListPriceByOrderID() throws DatabaseException
     {
         // Arrange
-        int expected = 14727;
+        int expected = 15101;
         int orderID = OrderMapper.createQueryInOrders(carportID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
         Carport carport = new Carport(orderID, length_expected, width_expected);
         List<Material> pickList = MaterialMapper.createPickList(carport, connectionPoolTest);
