@@ -229,14 +229,17 @@ public class OrderController
         try
         {
             String orderID = ctx.pathParam("id");
+            int orderIDInt = Integer.parseInt(Objects.requireNonNull(orderID));
             List<Order> orderDetails;
-            orderDetails = OrderMapper.getOrderDetails(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            orderDetails = OrderMapper.getOrderDetails(orderIDInt, pool);
 
             // get Account object from orderdetails
             Order accountIndex = Objects.requireNonNull(orderDetails).getLast();
             Account account = accountIndex.getAccount();
 
             Order order = orderDetails.removeLast(); // removes Account object
+            String orderSVG = OrderMapper.getSVGFromDatabase(orderIDInt, pool);
+            order.setSvg(orderSVG);
             ctx.attribute("orderdetails", order);
             ctx.attribute("account", account);
             ctx.render("/orderdetails.html");
