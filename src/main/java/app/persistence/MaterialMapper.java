@@ -943,7 +943,7 @@ public class MaterialMapper
                     int materialLength = rs.getInt("length");
                     int materialWidth = rs.getInt("width");
                     int materialQuantity = rs.getInt("quantity");
-                    Material material = new Material(materialID, materialLength, materialWidth, materialType, materialQuantity);
+                    Material material = new Material(materialID, materialLength, materialWidth, materialQuantity, materialType);
                     svgMaterials.add(material);
                 }
             }
