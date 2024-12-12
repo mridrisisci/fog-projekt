@@ -40,6 +40,15 @@ public class Material
         this.hasShedAddons = hasShedAddons;
     }
 
+    public Material(int materialID, int length, int width, int quantity, String type)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+        this.quantity = quantity;
+    }
+
     public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
     {
         this.materialID = materialID;
