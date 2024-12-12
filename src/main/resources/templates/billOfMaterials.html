@@ -27,7 +27,7 @@
             <div class="row g-4" th:each="orderDetail : ${orderDetails}">
                 <div class="col-md-6">
                     <div class="card-body">
-                        <h5 class="card-title"> Ordrenummer: <span th:text="${orderDetail.ORDER_ID}"></span> </h5>
+                        <h5 class="card-title"> Ordrenummer: <span th:text="${orderDetail.orderID}"></span> </h5>
                         <p class="card-text"> Ordre oprettet: <span th:text="${orderDetail.orderPlaced}">  </span>  </p>
                         <p class="card-text"> Carport længde: <span th:text="${orderDetail.length}">  </span>  </p>
                         <p class="card-text"> Carport bredde: <span th:text="${orderDetail.width}">  </span>  </p>
