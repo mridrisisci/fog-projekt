@@ -261,6 +261,8 @@ public class Calculator
     }
 
     // metode til SVG tegning
+    //Udkommenteret da den ikke bruges, da fasciaboard i svg er hardcoded.
+    /*
     public static int[] calcSidesFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
     {
         int[] posXY = new int[4];
@@ -301,6 +303,7 @@ public class Calculator
 
         return posXY;
     }
+    */
 
     //TODO: Der skal tilføjes mere beregning, hvis der skal tilføjes skur
     //Stern til for- og bagside
@@ -341,6 +344,8 @@ public class Calculator
     }
 
     // metode til SVG tegning
+    //Udkommenteret da den ikke bruges, da fasciaboard i svg er hardcoded.
+    /*
     public static int[] calcFrontAndBackFasciaBoardXY(Carport carport, int quantity, int matNum, int matLength)
     {
         // Initialize position array [startPosX, endPosX, startPosY, endPosY].
@@ -394,6 +399,7 @@ public class Calculator
 
         return posXY;
     }
+    */
 
     //Spær
     public static int[] calcRafters(Carport carport)
