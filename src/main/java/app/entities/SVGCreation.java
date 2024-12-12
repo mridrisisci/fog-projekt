@@ -150,9 +150,6 @@ public class SVGCreation
             quantity += 1;
             remLength = carportLength;
         }
-        if(remLength > carportLength && quantity == 2){
-            remLength = carportLength;
-        }
 
         for (int i = 0; i < quantity; i++)
         {
@@ -160,10 +157,6 @@ public class SVGCreation
             int xPos = posXY[0];
             int yPos = posXY[1];
             int width = posXY[2];
-            if (i > 1)
-            {
-                xPos = carportLength - remLength;
-            }
             // hardcoded til at have samme højde som vores stolper
             int height = 10;
             Material newBeam = new Material(xPos, yPos, width, height);

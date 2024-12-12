@@ -21,6 +21,7 @@ public class CalculatorTest
     Carport carport8 = new Carport(1, 600, 540);
     Carport carport9 = new Carport(1, 600, 600);
     Carport carport10 = new Carport(1, 420, 420);
+    Carport carport11 = new Carport(1, 330, 360);
 
     Material material1 = new Material(1, "test_name1", "test_description1", 50, "Stk", 1, 20, 20, 20, false);
     Material material2 = new Material(2, "test_name2", "test_description2", 25, "Stk", 1, 20, 20, 20, false);
@@ -385,7 +386,7 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcSquareWasher(carport1); // Length = 360 cm
-        int expected1 = 8;
+        int expected1 = 6;
 
         int actual2 = Calculator.calcSquareWasher(carport2); // Length = 600 cm
         int expected2 = 8;
@@ -394,7 +395,7 @@ public class CalculatorTest
         int expected3 = 8;
 
         int actual4 = Calculator.calcSquareWasher(carport4); // Length = 360 cm
-        int expected4 = 8;
+        int expected4 = 6;
 
         int actual5 = Calculator.calcSquareWasher(carport5); // Length = 600 cm
         int expected5 = 8;
@@ -416,31 +417,31 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcHardwareForRaftersRight(carport1); // Length = 360 cm, Width = 240 cm
-        int expected1 = 6; // Expected: Length is 480, Quantity is 6.
+        int expected1 = 7; // Expected: Length is 480, Quantity is 7.
 
         int actual2 = Calculator.calcHardwareForRaftersRight(carport2); // Length = 600 cm, Width = 240 cm
-        int expected2 = 10; // Expected: Length is 480, Quantity is 10.
+        int expected2 = 11; // Expected: Length is 480, Quantity is 11.
 
         int actual3 = Calculator.calcHardwareForRaftersRight(carport3); // Length = 780 cm, Width = 240 cm
-        int expected3 = 13; // Expected: Length is 480, Quantity is 13.
+        int expected3 = 14; // Expected: Length is 480, Quantity is 14.
 
         int actual4 = Calculator.calcHardwareForRaftersRight(carport4); // Length = 360 cm, Width = 360 cm
-        int expected4 = 6; // Expected: Length is 480, Quantity is 6.
+        int expected4 = 7; // Expected: Length is 480, Quantity is 7.
 
         int actual5 = Calculator.calcHardwareForRaftersRight(carport5); // Length = 600 cm, Width = 360 cm
-        int expected5 = 10; // Expected: Length is 480, Quantity is 10.
+        int expected5 = 11; // Expected: Length is 480, Quantity is 11.
 
         int actual6 = Calculator.calcHardwareForRaftersRight(carport6); // Length = 0 cm, Width = 0 cm
-        int expected6 = 0; // Expected: No rafters needed as length is 0.
+        int expected6 = 1; // Expected: No rafters needed as length is 1.
 
         int actual7 = Calculator.calcHardwareForRaftersRight(carport7); // Length = 600 cm, Width = 480 cm
-        int expected7 = 10; // Expected: Length is 480, Quantity is 10.
+        int expected7 = 11; // Expected: Length is 480, Quantity is 11.
 
         int actual8 = Calculator.calcHardwareForRaftersRight(carport8); // Length = 600 cm, Width = 540 cm
-        int expected8 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected8 = 11; // Expected: Length is 600, Quantity is 11.
 
         int actual9 = Calculator.calcHardwareForRaftersRight(carport9); // Length = 600 cm, Width = 600 cm
-        int expected9 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected9 = 11; // Expected: Length is 600, Quantity is 11.
 
         // Assert
         Assert.assertEquals(expected1, actual1);
@@ -459,31 +460,31 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcHardwareForRaftersLeft(carport1); // Length = 360 cm, Width = 240 cm
-        int expected1 = 6; // Expected: Length is 360, Quantity is 6.
+        int expected1 = 7; // Expected: Length is 360, Quantity is 7.
 
         int actual2 = Calculator.calcHardwareForRaftersLeft(carport2); // Length = 600 cm, Width = 240 cm
-        int expected2 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected2 = 11; // Expected: Length is 600, Quantity is 11.
 
         int actual3 = Calculator.calcHardwareForRaftersLeft(carport3); // Length = 780 cm, Width = 240 cm
-        int expected3 = 13; // Expected: Length is 780, Quantity is 13.
+        int expected3 = 14; // Expected: Length is 780, Quantity is 14.
 
         int actual4 = Calculator.calcHardwareForRaftersLeft(carport4); // Length = 360 cm, Width = 360 cm
-        int expected4 = 6; // Expected: Length is 360, Quantity is 6.
+        int expected4 = 7; // Expected: Length is 360, Quantity is 7.
 
         int actual5 = Calculator.calcHardwareForRaftersLeft(carport5); // Length = 600 cm, Width = 360 cm
-        int expected5 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected5 = 11; // Expected: Length is 600, Quantity is 11.
 
         int actual6 = Calculator.calcHardwareForRaftersLeft(carport6); // Length = 0 cm, Width = 0 cm
-        int expected6 = 0; // Expected: No rafters needed as length is 0.
+        int expected6 = 1; // Expected: No rafters needed as length is 1.
 
         int actual7 = Calculator.calcHardwareForRaftersLeft(carport7); // Length = 600 cm, Width = 480 cm
-        int expected7 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected7 = 11; // Expected: Length is 600, Quantity is 11.
 
         int actual8 = Calculator.calcHardwareForRaftersLeft(carport8); // Length = 600 cm, Width = 540 cm
-        int expected8 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected8 = 11; // Expected: Length is 600, Quantity is 11.
 
         int actual9 = Calculator.calcHardwareForRaftersLeft(carport9); // Length = 600 cm, Width = 600 cm
-        int expected9 = 10; // Expected: Length is 600, Quantity is 10.
+        int expected9 = 11; // Expected: Length is 600, Quantity is 11.
 
         // Assert
         Assert.assertEquals(expected1, actual1);
@@ -545,31 +546,31 @@ public class CalculatorTest
     {
         // Arrange and Act
         int actual1 = Calculator.calcBoardBolt(carport1); // Length = 360 cm, Width = 240 cm
-        int expected1 = 16;
+        int expected1 = 8;
 
         int actual2 = Calculator.calcBoardBolt(carport2); // Length = 600 cm, Width = 240 cm
-        int expected2 = 16;
+        int expected2 = 12;
 
         int actual3 = Calculator.calcBoardBolt(carport3); // Length = 780 cm, Width = 240 cm
         int expected3 = 16;
 
         int actual4 = Calculator.calcBoardBolt(carport4); // Length = 360 cm, Width = 360 cm
-        int expected4 = 16;
+        int expected4 = 8;
 
         int actual5 = Calculator.calcBoardBolt(carport5); // Length = 600 cm, Width = 360 cm
-        int expected5 = 16;
+        int expected5 = 12;
 
         int actual6 = Calculator.calcBoardBolt(carport6); // Length = 0 cm, Width = 0 cm
         int expected6 = 8;
 
         int actual7 = Calculator.calcBoardBolt(carport7); // Length = 600 cm, Width = 480 cm
-        int expected7 = 16;
+        int expected7 = 12;
 
         int actual8 = Calculator.calcBoardBolt(carport8); // Length = 600 cm, Width = 540 cm
-        int expected8 = 16;
+        int expected8 = 12;
 
         int actual9 = Calculator.calcBoardBolt(carport9); // Length = 600 cm, Width = 600 cm
-        int expected9 = 16;
+        int expected9 = 12;
 
         // Assert
         Assert.assertEquals(expected1, actual1);
@@ -583,6 +584,7 @@ public class CalculatorTest
         Assert.assertEquals(expected9, actual9);
     }
 
+    // carport med 4 stolper
     @Test
     public void testCalcPostsXYCarport1()
     {
@@ -595,7 +597,7 @@ public class CalculatorTest
 
         // post 2
         int expectedX2 = 90;
-        int expectedY2 = 225;
+        int expectedY2 = 215;
 
         // post 3
         int expectedX3 = 270;
@@ -603,7 +605,7 @@ public class CalculatorTest
 
         // post 4
         int expectedX4 = 270;
-        int expectedY4 = 225;
+        int expectedY4 = 215;
 
         // Act
         int[] actual1 = Calculator.calcPostsXY(carport1, quantity, 0);
@@ -634,5 +636,359 @@ public class CalculatorTest
 
     }
 
+    // carport med 6 stolper
+    @Test
+    public void testCalcPostsXYCarport2()
+    {
+        // Arrange
+        int quantity = Calculator.calcPosts(carport2);
+
+        // post 1
+        int expectedX1 = 75;
+        int expectedY1 = 15;
+
+        // post 2
+        int expectedX2 = 75;
+        int expectedY2 = 215;
+
+        // post 3
+        int expectedX3 = 300;
+        int expectedY3 = 15;
+
+        // post 4
+        int expectedX4 = 300;
+        int expectedY4 = 215;
+
+        // post 5
+        int expectedX5 = 525;
+        int expectedY5 = 15;
+
+        // post 6
+        int expectedX6 = 525;
+        int expectedY6 = 215;
+
+        // Act
+        int[] actual1 = Calculator.calcPostsXY(carport2, quantity, 0);
+        int actualX1 = actual1[0];
+        int actualY1 = actual1[1];
+
+        int[] actual2 = Calculator.calcPostsXY(carport2, quantity, 1);
+        int actualX2 = actual2[0];
+        int actualY2 = actual2[1];
+
+        int[] actual3 = Calculator.calcPostsXY(carport2, quantity, 2);
+        int actualX3 = actual3[0];
+        int actualY3 = actual3[1];
+
+        int[] actual4 = Calculator.calcPostsXY(carport2, quantity, 3);
+        int actualX4 = actual4[0];
+        int actualY4 = actual4[1];
+
+        int[] actual5 = Calculator.calcPostsXY(carport2, quantity, 4);
+        int actualX5 = actual5[0];
+        int actualY5 = actual5[1];
+
+        int[] actual6 = Calculator.calcPostsXY(carport2, quantity, 5);
+        int actualX6 = actual6[0];
+        int actualY6 = actual6[1];
+
+        // Assert
+        Assert.assertEquals(expectedX1, actualX1);
+        Assert.assertEquals(expectedY1, actualY1);
+        Assert.assertEquals(expectedX2, actualX2);
+        Assert.assertEquals(expectedY2, actualY2);
+        Assert.assertEquals(expectedX3, actualX3);
+        Assert.assertEquals(expectedY3, actualY3);
+        Assert.assertEquals(expectedX4, actualX4);
+        Assert.assertEquals(expectedY4, actualY4);
+        Assert.assertEquals(expectedX5, actualX5);
+        Assert.assertEquals(expectedY5, actualY5);
+        Assert.assertEquals(expectedX6, actualX6);
+        Assert.assertEquals(expectedY6, actualY6);
+
+    }
+
+    // Carport som ikke rykker sidste spær ind
+    @Test
+    public void testCalcRaftersXY1()
+    {
+        //Arrange
+        int expectedR1X1 = 0;
+        int expectedR1X2 = 0;
+        int expectedR2X1 = 60;
+        int expectedR2X2 = 60;
+        int expectedR3X1 = 120;
+        int expectedR3X2 = 120;
+        int expectedR4X1 = 180;
+        int expectedR4X2 = 180;
+        int expectedR5X1 = 240;
+        int expectedR5X2 = 240;
+
+
+        int expectedR1Y1 = 0;
+        int expectedR1Y2 = 240;
+        int expectedR2Y1 = 0;
+        int expectedR2Y2 = 240;
+        int expectedR3Y1 = 0;
+        int expectedR3Y2 = 240;
+        int expectedR4Y1 = 0;
+        int expectedR4Y2 = 240;
+        int expectedR5Y1 = 0;
+        int expectedR5Y2 = 240;
+
+        // Act
+
+        ArrayList<Integer> actual = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            int[] actualRafters = Calculator.calcRaftersXY(carport1, 5, i);
+            for (int j : actualRafters)
+            {
+                actual.add(j);
+            }
+        }
+
+        // Assert
+        int[] actualArray = actual.stream().mapToInt(Integer::intValue).toArray();
+
+        Assert.assertEquals(expectedR1X1, actualArray[0]);
+        Assert.assertEquals(expectedR1X2, actualArray[1]);
+        Assert.assertEquals(expectedR1Y1, actualArray[2]);
+        Assert.assertEquals(expectedR1Y2, actualArray[3]);
+
+        Assert.assertEquals(expectedR2X1, actualArray[4]);
+        Assert.assertEquals(expectedR2X2, actualArray[5]);
+        Assert.assertEquals(expectedR2Y1, actualArray[6]);
+        Assert.assertEquals(expectedR2Y2, actualArray[7]);
+
+        Assert.assertEquals(expectedR3X1, actualArray[8]);
+        Assert.assertEquals(expectedR3X2, actualArray[9]);
+        Assert.assertEquals(expectedR3Y1, actualArray[10]);
+        Assert.assertEquals(expectedR3Y2, actualArray[11]);
+
+        Assert.assertEquals(expectedR4X1, actualArray[12]);
+        Assert.assertEquals(expectedR4X2, actualArray[13]);
+        Assert.assertEquals(expectedR4Y1, actualArray[14]);
+        Assert.assertEquals(expectedR4Y2, actualArray[15]);
+
+        Assert.assertEquals(expectedR5X1, actualArray[16]);
+        Assert.assertEquals(expectedR5X2, actualArray[17]);
+        Assert.assertEquals(expectedR5Y1, actualArray[18]);
+        Assert.assertEquals(expectedR5Y2, actualArray[19]);
+    }
+
+    //Test for at det sidste spær bliver rykket
+    @Test
+    public void testCalcRaftersXY2()
+    {
+        //Arrange
+        int expectedR1X1 = 0;
+        int expectedR1X2 = 0;
+        int expectedR2X1 = 60;
+        int expectedR2X2 = 60;
+        int expectedR3X1 = 120;
+        int expectedR3X2 = 120;
+        int expectedR4X1 = 180;
+        int expectedR4X2 = 180;
+        int expectedR5X1 = 240;
+        int expectedR5X2 = 240;
+        int expectedR6X1 = 300;
+        int expectedR6X2 = 300;
+        int expectedR7X1 = 330;
+        int expectedR7X2 = 330;
+
+        int expectedR1Y1 = 0;
+        int expectedR1Y2 = 360;
+        int expectedR2Y1 = 0;
+        int expectedR2Y2 = 360;
+        int expectedR3Y1 = 0;
+        int expectedR3Y2 = 360;
+        int expectedR4Y1 = 0;
+        int expectedR4Y2 = 360;
+        int expectedR5Y1 = 0;
+        int expectedR5Y2 = 360;
+        int expectedR6Y1 = 0;
+        int expectedR6Y2 = 360;
+        int expectedR7Y1 = 0;
+        int expectedR7Y2 = 360;
+
+        // Act
+
+        ArrayList<Integer> actual = new ArrayList<>();
+
+        for (int i = 0; i < 7; i++)
+        {
+            int[] actualRafters = Calculator.calcRaftersXY(carport11, 7, i);
+            for (int j : actualRafters)
+            {
+                actual.add(j);
+            }
+        }
+
+        // Assert
+        int[] actualArray = actual.stream().mapToInt(Integer::intValue).toArray();
+
+        Assert.assertEquals(expectedR1X1, actualArray[0]);
+        Assert.assertEquals(expectedR1X2, actualArray[1]);
+        Assert.assertEquals(expectedR1Y1, actualArray[2]);
+        Assert.assertEquals(expectedR1Y2, actualArray[3]);
+
+        Assert.assertEquals(expectedR2X1, actualArray[4]);
+        Assert.assertEquals(expectedR2X2, actualArray[5]);
+        Assert.assertEquals(expectedR2Y1, actualArray[6]);
+        Assert.assertEquals(expectedR2Y2, actualArray[7]);
+
+        Assert.assertEquals(expectedR3X1, actualArray[8]);
+        Assert.assertEquals(expectedR3X2, actualArray[9]);
+        Assert.assertEquals(expectedR3Y1, actualArray[10]);
+        Assert.assertEquals(expectedR3Y2, actualArray[11]);
+
+        Assert.assertEquals(expectedR4X1, actualArray[12]);
+        Assert.assertEquals(expectedR4X2, actualArray[13]);
+        Assert.assertEquals(expectedR4Y1, actualArray[14]);
+        Assert.assertEquals(expectedR4Y2, actualArray[15]);
+
+        Assert.assertEquals(expectedR5X1, actualArray[16]);
+        Assert.assertEquals(expectedR5X2, actualArray[17]);
+        Assert.assertEquals(expectedR5Y1, actualArray[18]);
+        Assert.assertEquals(expectedR5Y2, actualArray[19]);
+
+        Assert.assertEquals(expectedR6X1, actualArray[20]);
+        Assert.assertEquals(expectedR6X2, actualArray[21]);
+        Assert.assertEquals(expectedR6Y1, actualArray[22]);
+        Assert.assertEquals(expectedR6Y2, actualArray[23]);
+
+        Assert.assertEquals(expectedR7X1, actualArray[24]);
+        Assert.assertEquals(expectedR7X2, actualArray[25]);
+        Assert.assertEquals(expectedR7Y1, actualArray[26]);
+        Assert.assertEquals(expectedR7Y2, actualArray[27]);
+    }
+
+    //To remme
+    @Test
+    public void testCalcBeamsXY1()
+    {
+        //Arrange
+
+        int quantity = Calculator.calcBeams(carport11)[0];
+        int beamLength = Calculator.calcBeams(carport11)[1];
+        int matLength = Calculator.calcBeamsXY(carport11, quantity,0, beamLength)[2];
+
+        int expectedB1X1 = 0;
+        int expectedB1Y1 = 15;
+        int expectedB1X2 = 330;
+        int expectedB1Y2 = 15;
+
+        int expectedB2X1 = 0;
+        int expectedB2Y1 = 335;
+        int expectedB2X2 = 330;
+        int expectedB2Y2 = 335;
+
+        //Act
+        int[] actualB1 = Calculator.calcBeamsXY(carport11, quantity, 0, matLength);
+        int actualB1X1 = actualB1[0];
+        int actualB1Y1 = actualB1[1];
+        int actualB1X2 = actualB1[2];
+        int actualB1Y2 = actualB1[3];
+
+        int[] actualB2 = Calculator.calcBeamsXY(carport11, quantity, 1, matLength);
+        int actualB2X1 = actualB2[0];
+        int actualB2Y1 = actualB2[1];
+        int actualB2X2 = actualB2[2];
+        int actualB2Y2 = actualB2[3];
+
+        //Assert
+
+        Assert.assertEquals(expectedB1X1, actualB1X1);
+        Assert.assertEquals(expectedB1X2, actualB1X2);
+        Assert.assertEquals(expectedB1Y1, actualB1Y1);
+        Assert.assertEquals(expectedB1Y2, actualB1Y2);
+
+        Assert.assertEquals(expectedB2X1, actualB2X1);
+        Assert.assertEquals(expectedB2X2, actualB2X2);
+        Assert.assertEquals(expectedB2Y1, actualB2Y1);
+        Assert.assertEquals(expectedB2Y2, actualB2Y2);
+
+    }
+
+    // Stor carport, hvor 4 lange rem bliver skåret over
+    @Test
+    public void testCalcBeamsXY2()
+    {
+
+        //Arrange
+        int quantity = Calculator.calcBeams(carport3)[0];
+        int beamLength = Calculator.calcBeams(carport3)[1];
+        int matLength = Calculator.calcBeamsXY(carport3, quantity,0, beamLength)[2];
+
+        int expectedB1X1 = 0;
+        int expectedB1Y1 = 15; //Y aksen er hvor på bredden den ligger
+        int expectedB1X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB1Y2 = 15;
+
+        int expectedB2X1 = 0;
+        int expectedB2Y1 = 215; //Y aksen er hvor på bredden den ligger
+        int expectedB2X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB2Y2 = 215; //Bredde=240 - udhæng - størrelse på træet
+
+        int expectedB3X1 = 300;
+        int expectedB3Y1 = 15; //Y aksen er hvor på bredden den ligger
+        int expectedB3X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB3Y2 = 15;
+
+        int expectedB4X1 = 300; //Carportens længden - Materialets længde
+        int expectedB4Y1 = 215; //Y aksen er hvor på bredden den ligger
+        int expectedB4X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB4Y2 = 215;
+
+        //Act
+        int[] actualB1 = Calculator.calcBeamsXY(carport3, quantity, 0, matLength);
+        int actualB1X1 = actualB1[0];
+        int actualB1Y1 = actualB1[1];
+        int actualB1X2 = actualB1[2];
+        int actualB1Y2 = actualB1[3];
+
+        int[] actualB2 = Calculator.calcBeamsXY(carport3, quantity, 1, matLength);
+        int actualB2X1 = actualB2[0];
+        int actualB2Y1 = actualB2[1];
+        int actualB2X2 = actualB2[2];
+        int actualB2Y2 = actualB2[3];
+
+        int[] actualB3 = Calculator.calcBeamsXY(carport3, quantity, 2, matLength);
+        int actualB3X1 = actualB3[0];
+        int actualB3Y1 = actualB3[1];
+        int actualB3X2 = actualB3[2];
+        int actualB3Y2 = actualB3[3];
+
+        int[] actualB4 = Calculator.calcBeamsXY(carport3, quantity, 3, matLength);
+        int actualB4X1 = actualB4[0];
+        int actualB4Y1 = actualB4[1];
+        int actualB4X2 = actualB4[2];
+        int actualB4Y2 = actualB4[3];
+
+        //Assert
+
+        Assert.assertEquals(expectedB1X1, actualB1X1);
+        Assert.assertEquals(expectedB1X2, actualB1X2);
+        Assert.assertEquals(expectedB1Y1, actualB1Y1);
+        Assert.assertEquals(expectedB1Y2, actualB1Y2);
+
+        Assert.assertEquals(expectedB2X1, actualB2X1);
+        Assert.assertEquals(expectedB2X2, actualB2X2);
+        Assert.assertEquals(expectedB2Y1, actualB2Y1);
+        Assert.assertEquals(expectedB2Y2, actualB2Y2);
+
+        Assert.assertEquals(expectedB3X1, actualB3X1);
+        Assert.assertEquals(expectedB3X2, actualB3X2);
+        Assert.assertEquals(expectedB3Y1, actualB3Y1);
+        Assert.assertEquals(expectedB3Y2, actualB3Y2);
+
+        Assert.assertEquals(expectedB4X1, actualB4X1);
+        Assert.assertEquals(expectedB4X2, actualB4X2);
+        Assert.assertEquals(expectedB4Y1, actualB4Y1);
+        Assert.assertEquals(expectedB4Y2, actualB4Y2);
+
+    }
 
 }
