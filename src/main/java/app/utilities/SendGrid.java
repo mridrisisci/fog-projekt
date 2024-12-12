@@ -39,7 +39,7 @@ public class SendGrid
         width2 = width2 + " cm";
 
         // Dynamisk URL til produktion // når app skal deployes
-        String baseURL = "https://carport.dataduck.dk";
+        String baseURL = "http://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/acceptoffer/" + orderID;
 
 
@@ -104,7 +104,7 @@ public class SendGrid
         width2 = width2 + " cm";
 
         // Dynamisk URL til produktion // når app skal deployes
-        String baseURL = "https://carport.dataduck.dk";
+        String baseURL = "http://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/billOfMaterials/" + orderID;
 
 
