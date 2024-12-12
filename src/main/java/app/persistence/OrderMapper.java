@@ -126,7 +126,7 @@ public class OrderMapper
 
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "SELECT order_id, order_placed, carport_id, length, width, has_shed, roof_type, status, price FROM orders WHERE order_id = ?";
+        String sql = "SELECT order_id, order_placed, carport_id, length, width, has_shed, roof_type, status, sales_price FROM orders WHERE order_id = ?";
 
         Timestamp orderPlaced;
         String status;

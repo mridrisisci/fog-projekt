@@ -25,7 +25,7 @@ public class OrderController
         app.post("/createquery", ctx -> createQuery(ctx, dBConnection));
         app.get("/", ctx -> showFrontpage(ctx, dBConnection));
         app.get("/orderhistory", ctx -> showOrderHistory(ctx, dBConnection));
-        app.get("/order/acceptoffer/{id}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
+        app.get("/order/acceptoffer/{orderID}", ctx -> showOrderOnOfferPage(ctx, dBConnection));
         app.post("/acceptordecline", ctx -> acceptOrDeclineOffer(ctx, dBConnection) );
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
@@ -56,11 +56,13 @@ public class OrderController
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
     {
+        String orderIDString = ctx.pathParam("orderID");
+        int orderID = Integer.parseInt(orderIDString);
+
         try
         {
-            String orderID = ctx.pathParam("id");
-            Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
+            Order order = OrderMapper.getOrderByID(Objects.requireNonNull(orderID), pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderIDString)), pool);
             ctx.attribute("order", order);
             ctx.attribute("account", account);
             ctx.render("acceptoffer.html");
@@ -68,7 +70,7 @@ public class OrderController
         } catch (DatabaseException e)
         {
             ctx.attribute("message", e.getMessage());
-            ctx.render("/order/{id}/acceptoffer");
+            ctx.render("acceptoffer.html");
         }
     }
 
