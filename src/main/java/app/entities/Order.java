@@ -104,11 +104,7 @@ public class Order
         return svg;
     }
 
-    public String getShed()
-    {
-        return shed;
-
-    }
+    public String getShed() { return shed; }
 
     public String getPaymentStatus()
     {
@@ -119,12 +115,6 @@ public class Order
     public List<String> getOrderDetails()
     {
         return orderDetails;
-    }
-
-
-    public boolean getHasShed()
-    {
-        return hasShed;
     }
 
     public Carport getCarport()
@@ -140,11 +130,6 @@ public class Order
     public String getStatus()
     {
         return status;
-    }
-
-    public boolean getOrderPaid()
-    {
-        return orderPaid;
     }
 
     public Timestamp getOrderPlaced()
@@ -166,11 +151,6 @@ public class Order
     public String getCarportID()
     {
         return carportID;
-    }
-
-    public int getSalesPersonID()
-    {
-        return salesPersonID;
     }
 
     public int getPrice()
@@ -201,16 +181,6 @@ public class Order
     public int getAccountID()
     {
         return accountID;
-    }
-
-    public String getShed()
-    {
-        return shed;
-    }
-
-    public String getPaymentStatus()
-    {
-        return paymentStatus;
     }
 
     @Override
