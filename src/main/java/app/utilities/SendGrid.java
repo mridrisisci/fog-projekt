@@ -25,6 +25,8 @@ public class SendGrid
         from.setName("Johannes Fog Byggemarked");
 
         // Ordredetaljer
+        int orderIDInteger = order.getOrderID();
+        String orderID = String.valueOf(orderIDInteger);
         int length = order.getLength();
         int width = order.getWidth();
         int priceInteger = order.getSalesPrice();
@@ -36,13 +38,9 @@ public class SendGrid
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
 
-
-        // ngrok dynamic URL for testing redirects with dynamic mail
-        String ngrokURL = "  https://e36b-193-29-107-174.ngrok-free.app ";
-        String URL = ngrokURL + "/order/acceptoffer/" + order.getOrderID();
-
         // Dynamisk URL til produktion // når app skal deployes
-        String acceptURL = "https://dataduck.dk/order/acceptoffer/" + order.getOrderID();
+        String baseURL = "https://carport.dataduck.dk";
+        String dynamicURL = baseURL + "/order/acceptoffer/" + orderID;
 
 
 
@@ -60,7 +58,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Total_pris", price);
         personalization.addDynamicTemplateData("Tagtype", roofType);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
-        personalization.addDynamicTemplateData("ngrokURL", URL);
+        personalization.addDynamicTemplateData("dynamicURL", dynamicURL);
         //personalization.addDynamicTemplateData("AcceptUrl", acceptURL); // uncomment before deploying
         mail.addPersonalization(personalization);
 
@@ -94,6 +92,8 @@ public class SendGrid
         from.setName("Johannes Fog Byggemarked");
 
         // Ordredetaljer
+        int orderIDInteger = order.getOrderID();
+        String orderID = String.valueOf(orderIDInteger);
         int length = order.getLength();
         int width = order.getWidth();
         String roofType = order.getRoofType().toString();
@@ -102,6 +102,11 @@ public class SendGrid
         length2 = length2 + " cm";
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
+
+        // Dynamisk URL til produktion // når app skal deployes
+        String baseURL = "https://carport.dataduck.dk";
+        String dynamicURL = baseURL + "/order/billOfMaterials/" + orderID;
+
 
 
         Mail mail = new Mail();
@@ -116,6 +121,7 @@ public class SendGrid
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Tagtype", roofType);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
+        personalization.addDynamicTemplateData("dynamicURL", dynamicURL);
         mail.addPersonalization(personalization);
 
         // Add category and template ID
