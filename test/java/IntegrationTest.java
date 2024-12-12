@@ -8,6 +8,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import app.entities.Carport;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ import java.util.List;
 public class IntegrationTest
 {
     String carportID_expected = "CP01 DUR";
-    int salesPersonID_expected = 1;
     String status_expected = "Under behandling";
     Timestamp timestamp_expected = Timestamp.valueOf(LocalDateTime.now());
     boolean orderPaid_expected = false;
@@ -122,7 +122,6 @@ public class IntegrationTest
                 "(\n" +
                 "    order_id serial NOT NULL,\n" +
                 "    carport_id character varying(8) NOT NULL,\n" +
-                "    salesperson_id integer NOT NULL,\n" +
                 "    status character varying(20) NOT NULL,\n" +
                 "    price integer,\n" +
                 "    sales_price integer,\n" +
@@ -233,7 +232,7 @@ public class IntegrationTest
     public void testCreateQueryInOrders() throws DatabaseException
     {
         // Arrange
-        int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+        int orderID = OrderMapper.createQueryInOrders(carportID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
 
         // Act
         int[] lengthAndWidth = OrderMapper.getLengthAndWidthByOrderID(orderID, connectionPoolTest);
@@ -251,7 +250,7 @@ public class IntegrationTest
     {
         // Arrange
         int expected = 14727;
-        int orderID = OrderMapper.createQueryInOrders(carportID_expected, salesPersonID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
+        int orderID = OrderMapper.createQueryInOrders(carportID_expected, status_expected, timestamp_expected, orderPaid_expected, length_expected, width_expected, hasShed_expected, roofType_expected, accountID_expected, connectionPoolTest);
         Carport carport = new Carport(orderID, length_expected, width_expected);
         List<Material> pickList = MaterialMapper.createPickList(carport, connectionPoolTest);
         carport.setMaterialList(pickList);
