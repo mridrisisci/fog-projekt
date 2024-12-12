@@ -7,9 +7,7 @@ public class Material
     private String description;
     private int price;
     private String unit;
-
     private int quantity;
-
     private int length;
     private int height;
     private int width;
@@ -95,13 +93,6 @@ public class Material
         this.type = type;
     }
 
-    public Material(String materialName, String unit, String description)
-    {
-        this.materialName = materialName;
-        this.unit = unit;
-        this.description = description;
-    }
-
     public Material(String name, String unit, String description, String type, int quantity)
     {
         this.materialName = name;
@@ -161,6 +152,13 @@ public class Material
     {
         return svgEndPosY;
     }
+    public Material(String materialName, String unit, String description)
+    {
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+    }
+
 
     public Material(String type)
     {

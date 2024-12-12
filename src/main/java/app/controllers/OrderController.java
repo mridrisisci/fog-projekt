@@ -10,7 +10,6 @@ import app.entities.SVGCreation;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -32,6 +31,28 @@ public class OrderController
         app.post("/order/sendoffer/{id}", ctx -> sendOffer(ctx, dBConnection) );
         app.get("/order/details/{id}", ctx -> showOrderDetails(ctx, dBConnection) );
         app.get("/order/billOfMaterials/{id}", ctx -> billOfMaterials(ctx, dBConnection) );
+        app.post("/updatesalesprice", ctx -> updateSalesPriceByOrderID(ctx, dBConnection));
+    }
+
+    private static void updateSalesPriceByOrderID(Context ctx, ConnectionPool pool)
+    {
+        String orderIDString = ctx.formParam("orderid");
+        String newSalesPriceString = ctx.formParam("nysalgspris");
+        int newSalesPrice = Integer.parseInt(Objects.requireNonNull(newSalesPriceString));
+        int orderID = Integer.parseInt(Objects.requireNonNull(orderIDString));
+        try
+        {
+            OrderMapper.updateSalesPriceByOrderID(newSalesPrice, orderID, pool);
+            ctx.attribute("message", "Prisen er opdateret for den givne ordre");
+            ctx.redirect("/orderhistory");
+
+        } catch (DatabaseException e)
+        {
+            ctx.attribute("message", e.getMessage());
+            ctx.redirect("orderhistory");
+        }
+
+
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -40,7 +61,7 @@ public class OrderController
         {
             String orderID = ctx.pathParam("id");
             Order order = OrderMapper.getOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)),pool);
+            Account account = AccountMapper.getAccountByOrderID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
             ctx.attribute("order", order);
             ctx.attribute("account", account);
             ctx.render("acceptoffer.html");
@@ -68,11 +89,10 @@ public class OrderController
             {
                 SendGrid.sendBOM(email, "Stykliste", order);
                 OrderMapper.setPaymentStatusToPaid(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
-                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILDBUD_GODKENDT, pool);
+                OrderMapper.updateOrderStatusAfterPayment(Integer.parseInt(Objects.requireNonNull(orderID)), StatusType.TILBUD_GODKENDT, pool);
                 ctx.attribute("message", "Tak for at have handlet hos Fog - byggemarked.");
                 ctx.redirect("/"); // opdater denne side ?½
-            }
-            else if ("reject".equals(action)) // if customer declines order, customer data is deleted
+            } else if ("reject".equals(action)) // if customer declines order, customer data is deleted
             {
                 OrderMapper.deleteOrderByID(Integer.parseInt(Objects.requireNonNull(orderID)), pool);
                 ctx.attribute("message", "Din ordre er slettet. ");
@@ -88,14 +108,12 @@ public class OrderController
             ctx.render("/order/{id}/acceptoffer");
         }
         ctx.render("acceptoffer.html");
-
     }
 
     public static void showFrontpage(Context ctx, ConnectionPool pool)
     {
         ctx.render("index.html");
     }
-
 
     private static void createQuery(Context ctx, ConnectionPool pool)
     {
@@ -320,11 +338,4 @@ public class OrderController
             return null;
         }
     }
-
-
-    private static boolean validateOrderIsPaid()
-    {
-        return false;
-    }
-
 }

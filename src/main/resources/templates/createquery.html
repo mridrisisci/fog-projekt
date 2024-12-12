@@ -18,7 +18,8 @@
 <div class="container my-5">
     <div class="content bg-light-subtle rounded-5 p-3 shadow">
         <h2 class="display-4 text-center">Bestil Quick-Byg tilbud - carport med fladt tag</h2>
-        <p class="text-center mb-4">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive en skitsetegning på en carport indenfor vores standardprogram.
+        <p class="text-center mb-4">Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen og udskrive
+            en skitsetegning på en carport indenfor vores standardprogram.
             Tilbud og skitsetegning fremsendes med post hurtigst muligt.
             Ved bestilling medfølger standardbyggevejledning.
 
@@ -49,7 +50,7 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" name="chooseWidth" id="chooseWidth" required>
-                            <option selected >Vælg bredde</option>
+                            <option selected>Vælg bredde</option>
                             <option value="240">240 cm</option>
                             <option value="270">270 cm</option>
                             <option value="300">300 cm</option>
@@ -72,7 +73,7 @@
                 <div class="col-md-4">
                     <div class="form-floating">
                         <select class="form-select" name="chooseLength" id="chooseLength" required>
-                            <option selected >Vælg længde</option>
+                            <option selected>Vælg længde</option>
                             <option value="240">240 cm</option>
                             <option value="270">270 cm</option>
                             <option value="300">300 cm</option>
@@ -112,68 +113,70 @@
                 <!-- Særlige ønsker -->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <p><b>Særlige ønsker</b></p>
-                        <textarea></textarea>
+                        <textarea class="form-control" placeholder="Særlige ønsker" id="floatingTextarea"></textarea>
+                        <label for="floatingTextarea">Særlige ønsker</label>
                     </div>
                 </div>
-                <!-- KUNDEINFO-->
 
+                <!-- KUNDEINFO-->
 
                 <!-- Navn-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <label for="customerName">Navn</label>
                         <input type="text" placeholder="For-, og efternavn" id="customerName" name="customerName"
-                               class="form-control form-control-lg" required>
+                        class="form-control form-control-lg" required>
+                        <label for="customerName">Navn</label>
                     </div>
                 </div>
 
                 <!-- adresse-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <label for="chooseAdress">Adresse</label>
                         <input type="text" placeholder="Indtast adresse" id="chooseAdress" name="chooseAdress"
                                class="form-control form-control-lg" required>
+                        <label for="chooseAdress">Adresse</label>
                     </div>
                 </div>
 
                 <!-- Postnummer-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <label for="choosePostalCode">Postnummer</label>
                         <input type="text" placeholder="Indtast postnummer" id="choosePostalCode"
                                name="choosePostalCode" class="form-control form-control-lg" pattern=".{4}" required>
+                        <label for="choosePostalCode">Postnummer</label>
                     </div>
                 </div>
 
                 <!-- By-->
                 <div class="col-md-4">
                     <div class="form-floating">
-                        <label for="chooseCity">By</label>
                         <input type="text" placeholder="Indtast din by" id="chooseCity" name="chooseCity"
                                class="form-control form-control-lg" required>
+                        <label for="chooseCity">By</label>
                     </div>
                 </div>
 
                 <!-- Telefon-->
                 <div class="col-md-4">
                     <div class="form-floating">
+                        <input type="text" id="choosePhoneNumber" name="choosePhoneNumber"
+                               class="form-control form-control-lg" pattern=".{8}" required>
                         <label for="choosePhoneNumber">Indtast telefonnnummer</label>
-                        <input type="text" id="choosePhoneNumber" name="choosePhoneNumber" class="form-control form-control-lg" pattern=".{8}" required>
                     </div>
                 </div>
 
                 <!-- Email-->
                 <div class="col-md-4">
                     <div class="form-floating">
+                        <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail"
+                               class="form-control form-control-lg" required>
                         <label for="chooseEmail">Email</label>
-                        <input type="text" placeholder="Indtast email" id="chooseEmail" name="chooseEmail" class="form-control form-control-lg" required>
                     </div>
                 </div>
 
                 <!-- Samtykke-->
                 <div class="col-12 d-flex align-items-center mt-3">
-                    <input class="form-check-input me-2" type="checkbox" id="chooseConsent" name="chooseConsent">
+                    <input class="form-check-input me-2" type="checkbox" id="chooseConsent" required name="chooseConsent">
                     <label class="form-check-label" for="chooseConsent">
                         Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg
                         carport.
