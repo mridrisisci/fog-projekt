@@ -913,25 +913,35 @@ public class CalculatorTest
 
     }
 
-    // Stor carport, hvor 4 lang rem bliver skåret over
+    // Stor carport, hvor 4 lange rem bliver skåret over
     @Test
     public void testCalcBeamsXY2()
     {
-        //Arrange
 
+        //Arrange
         int quantity = Calculator.calcBeams(carport3)[0];
         int beamLength = Calculator.calcBeams(carport3)[1];
         int matLength = Calculator.calcBeamsXY(carport3, quantity,0, beamLength)[2];
 
         int expectedB1X1 = 0;
         int expectedB1Y1 = 15; //Y aksen er hvor på bredden den ligger
-        int expectedB1X2 = 330;
+        int expectedB1X2 = 480; //Længden på materialet, hen ad x-aksen
         int expectedB1Y2 = 15;
 
         int expectedB2X1 = 0;
-        int expectedB2X2 = 330;
-        int expectedB2Y1 = 335; //Y aksen er hvor på bredden den ligger
-        int expectedB2Y2 = 335;
+        int expectedB2Y1 = 215; //Y aksen er hvor på bredden den ligger
+        int expectedB2X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB2Y2 = 215; //Bredde=240 - udhæng - størrelse på træet
+
+        int expectedB3X1 = 300;
+        int expectedB3Y1 = 15; //Y aksen er hvor på bredden den ligger
+        int expectedB3X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB3Y2 = 15;
+
+        int expectedB4X1 = 300; //Carportens længden - Materialets længde
+        int expectedB4Y1 = 215; //Y aksen er hvor på bredden den ligger
+        int expectedB4X2 = 480; //Længden på materialet, hen ad x-aksen
+        int expectedB4Y2 = 215;
 
         //Act
         int[] actualB1 = Calculator.calcBeamsXY(carport3, quantity, 0, matLength);
@@ -946,6 +956,18 @@ public class CalculatorTest
         int actualB2X2 = actualB2[2];
         int actualB2Y2 = actualB2[3];
 
+        int[] actualB3 = Calculator.calcBeamsXY(carport3, quantity, 2, matLength);
+        int actualB3X1 = actualB3[0];
+        int actualB3Y1 = actualB3[1];
+        int actualB3X2 = actualB3[2];
+        int actualB3Y2 = actualB3[3];
+
+        int[] actualB4 = Calculator.calcBeamsXY(carport3, quantity, 3, matLength);
+        int actualB4X1 = actualB4[0];
+        int actualB4Y1 = actualB4[1];
+        int actualB4X2 = actualB4[2];
+        int actualB4Y2 = actualB4[3];
+
         //Assert
 
         Assert.assertEquals(expectedB1X1, actualB1X1);
@@ -957,6 +979,16 @@ public class CalculatorTest
         Assert.assertEquals(expectedB2X2, actualB2X2);
         Assert.assertEquals(expectedB2Y1, actualB2Y1);
         Assert.assertEquals(expectedB2Y2, actualB2Y2);
+
+        Assert.assertEquals(expectedB3X1, actualB3X1);
+        Assert.assertEquals(expectedB3X2, actualB3X2);
+        Assert.assertEquals(expectedB3Y1, actualB3Y1);
+        Assert.assertEquals(expectedB3Y2, actualB3Y2);
+
+        Assert.assertEquals(expectedB4X1, actualB4X1);
+        Assert.assertEquals(expectedB4X2, actualB4X2);
+        Assert.assertEquals(expectedB4Y1, actualB4Y1);
+        Assert.assertEquals(expectedB4Y2, actualB4Y2);
 
     }
 
