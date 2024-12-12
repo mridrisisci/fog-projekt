@@ -1,6 +1,5 @@
 package app.utilities;
 
-import app.entities.Carport;
 import app.entities.Material;
 
 import java.util.ArrayList;

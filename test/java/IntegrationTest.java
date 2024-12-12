@@ -1,5 +1,4 @@
 
-import app.entities.Carport;
 import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;

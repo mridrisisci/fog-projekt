@@ -6,7 +6,6 @@ import app.persistence.AccountMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.MaterialMapper;
 import app.persistence.OrderMapper;
-import app.entities.SVGCreation;
 import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
