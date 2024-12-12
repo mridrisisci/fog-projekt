@@ -12,14 +12,13 @@ DROP TABLE IF EXISTS public.materials CASCADE;
 DROP TABLE IF EXISTS public.orders_materials CASCADE;
 
 
--- Create tables
 CREATE TABLE IF NOT EXISTS public.accounts
 (
     account_id serial NOT NULL,
-    role character varying(11) NOT NULL,
-    username character varying(64) NOT NULL,
-    email character varying(100),
-    password character varying(100),
+    role character varying(11) COLLATE pg_catalog."default" NOT NULL,
+    username character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default",
+    password character varying(100) COLLATE pg_catalog."default",
     telephone integer,
     addresses_id integer NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
@@ -28,7 +27,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
 CREATE TABLE IF NOT EXISTS public.addresses
 (
     addresses_id serial NOT NULL,
-    address character varying(64) NOT NULL,
+    address character varying(64) COLLATE pg_catalog."default" NOT NULL,
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
@@ -37,30 +36,29 @@ CREATE TABLE IF NOT EXISTS public.addresses
 CREATE TABLE IF NOT EXISTS public.cities
 (
     city_id serial NOT NULL,
-    city character varying(50) NOT NULL,
+    city character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.materials
 (
     material_id serial NOT NULL,
-    name character varying(100) NOT NULL,
-    unit character varying(10) NOT NULL,
+    name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    unit character varying(10) COLLATE pg_catalog."default" NOT NULL,
     price integer NOT NULL,
     length integer,
     height integer,
     width integer,
-    type character varying(50),
-    description character varying(100),
+    type character varying(50) COLLATE pg_catalog."default",
+    description character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT material_pk PRIMARY KEY (material_id)
 );
 
 CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
-    carport_id character varying(8) NOT NULL,
-    salesperson_id integer NOT NULL,
-    status character varying(20) NOT NULL,
+    carport_id character varying(8) COLLATE pg_catalog."default" NOT NULL,
+    status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
     sales_price integer,
     coverage_ratio_percentage integer,
@@ -70,8 +68,9 @@ CREATE TABLE IF NOT EXISTS public.orders
     width integer NOT NULL,
     length integer NOT NULL,
     has_shed boolean NOT NULL,
-    roof_type character varying(10) NOT NULL,
+    roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
+    svg text,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
 
@@ -132,7 +131,6 @@ ALTER TABLE IF EXISTS public.orders_materials
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-
 -- Insert data into materials
 INSERT INTO public.materials (name, unit, price, length, height, width, type, description)
 VALUES
@@ -167,5 +165,5 @@ VALUES
     ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Hængsel', 'Til skurdør'),
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
 
--- End transaction
+
 END;
