@@ -14,15 +14,12 @@ public class Order
     private Account account;
     private int width;
     private int length;
-    private boolean orderPaid;
     private int salesPrice;
     private RoofType roofType;
     private int coverageRatioPercentage;
     private int accountID;
     private Carport carport;
     private String shed;
-    private boolean hasShed;
-    private List<String> orderDetails;
     private String paymentStatus;
     private String svg;
 
@@ -98,24 +95,6 @@ public class Order
         this.svg = svg;
     }
 
-    public String getSvg()
-    {
-        return svg;
-    }
-
-    public String getShed() { return shed; }
-
-    public String getPaymentStatus()
-    {
-        return paymentStatus;
-    }
-
-
-    public List<String> getOrderDetails()
-    {
-        return orderDetails;
-    }
-
     public Carport getCarport()
     {
         return carport;
@@ -146,12 +125,6 @@ public class Order
         return length;
     }
 
-
-    public String getCarportID()
-    {
-        return carportID;
-    }
-
     public int getPrice()
     {
         return price;
@@ -172,16 +145,6 @@ public class Order
         return roofType;
     }
 
-    public int getCoverageRatioPercentage()
-    {
-        return coverageRatioPercentage;
-    }
-
-    public int getAccountID()
-    {
-        return accountID;
-    }
-
     @Override
     public String toString()
     {
@@ -194,6 +157,5 @@ public class Order
                 ", status=" + status +
                 "}";
     }
-
 
 }
