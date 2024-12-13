@@ -38,7 +38,8 @@ class Calculator {
     - String subject
     + void sendOffer(String email, String subject, Order order)
     + void sendBOM(String email, String subject, Order order)
-    
+    + void sendReceipt(String email, String subject, Order order)
+    + void notifySalesPersonOfNewOrder(String email, String subject)
     }
 }
 
