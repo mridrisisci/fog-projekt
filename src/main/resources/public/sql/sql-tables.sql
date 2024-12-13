@@ -2,14 +2,6 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
--- Indsæt en konto med rollen "salesperson"
-INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
-VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', '19203948', Salesperson1!, 1);
-
--- Indsæt en konto med rollen "admin"
-INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
-VALUES ('admin', 'admin', 'admin@cph.dk', 'Admin123!', 87654321, 1);
-
 
 -- Drop tables if they exist
 DROP TABLE IF EXISTS public.addresses CASCADE;
@@ -173,6 +165,22 @@ VALUES
     ('stalddørsgreb 50x75', 'Sæt', 269, 3, 1, 1, 'Stalddørsgreb', 'Til lås på dør i skur'),
     ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Hængsel', 'Til skurdør'),
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
+
+-- Indsæt en konto med rollen "salesperson"
+INSERT INTO public.cities (city_id, city) VALUES (1, 'frederiksberg');
+INSERT INTO public.postal_code (postal_code_id, postal_code) VALUES (1, 2000);
+INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES (1, 1, 1);
+INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
+VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', 'Salesperson1!', '9191919191', 1);
+
+
+-- Indsæt en konto med rollen "admin"
+INSERT INTO public.cities (city_id, city) VALUES (2, 'Kælderen');
+INSERT INTO public.postal_code (postal_code_id, postal_code) VALUES (2, 0000);
+INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES (2, 2, 2);
+INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
+VALUES ('admin', 'admin', 'admin@cph.dk', 'Admin123!', '87654321', 2);
+
 
 
 END;
