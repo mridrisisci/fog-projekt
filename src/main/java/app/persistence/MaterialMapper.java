@@ -840,9 +840,4 @@ public class MaterialMapper
         return materials;
     }
 
-    public static Material getMaterial()
-    {
-        return null;
-    }
-
 }
