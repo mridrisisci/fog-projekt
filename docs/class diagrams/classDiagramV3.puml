@@ -235,9 +235,6 @@ package persistence {
     }
 }
 
-package Test {
-}
-
 Main -- controllers
 
 persistence -- controllers
