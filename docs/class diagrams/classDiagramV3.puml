@@ -235,14 +235,20 @@ package persistence {
     }
 }
 
-Main -- controllers
+Main *-- controllers
 
-persistence -- controllers
+controllers -- persistence
 
+Account *-- Order
 Order o-- Carport
+Order *-- StatusType
 Carport *-- Material
 Carport *-- RoofType
+SVGCreation *-- Material
 
+SVGCreation *-- Calculator
+
+persistence *-- entities
 persistence *-- Calculator
 persistence *-- exceptions
 
