@@ -181,22 +181,21 @@ class DatabaseException{
 
 package persistence {
     class OrderMapper {
-    + int createQueryInOrders()
-    + void createCarportInOrdersMaterials()
-    + List<Order> getAllOrders()
-    + List<Order> getAllWithoutSalesperson()
-    + void updateSalespersonByOrderID()
-    + List<Order> getAllPaidOrders()
-    + Order getOrderOnReceipt()
-    + List<Order> seeAllQueries()
-    + int[] getLengthAndWidthByOrderID()
-    + int getPickListPriceByOrderID()
-    + int getCoverageRatioByOrderID()
-    + int setDefaultSalesPriceByOrderID()
-    + void updateSalesPriceByOrderID()
-    + void updateCoverageRatioPercentageByOrderID()
-    + void deleteOrderByID()
-    + void updateOrderByUserID()
+    + int createQueryInOrders(String carportID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool)
+    + List<Order> getOrderDetails(int orderID, ConnectionPool pool)
+    + Order getOrderByID(int orderID, ConnectionPool pool)
+    + List<Order> getOrderHistory(String sortBy, ConnectionPool pool)
+    + int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool
+    + int getPickListPriceByOrderID(int orderID, ConnectionPool pool)
+    + int setSalesPriceAndCoverageDefault(Carport carport, ConnectionPool pool)
+    + int updatePickListPrice(Carport carport, ConnectionPool pool)
+    + void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool)
+    + void updateOrderStatusAfterPayment(int orderID, StatusType status, ConnectionPool pool)
+    + void setPaymentStatusToPaid(int orderID, ConnectionPool pool)
+    + void deleteOrderByID(int orderID, ConnectionPool pool)
+    + void updateSVG(int orderID, String svg, ConnectionPool pool)
+    + String getSVGFromDatabase(int orderID, ConnectionPool pool)
+
     }
 
     class MaterialMapper {
@@ -231,17 +230,13 @@ package persistence {
     }
 
     class AccountMapper {
-    + int createRecordInAddresses()
-    + void createSalesAccount()
-    + Account login()
-    + int createRecordInPostalCode()
-    + int createRecordInCities()
-    + int createCustomerAccount()
-    + void addAccount())
-    + void deleteAccount(Account account))
-    + void updateAccount(Account account)
-    + Account getAccountByID(Account account)
-    + List<Account> getAllCustomerQueries()
+     + int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool)
+     + void createSalesAccount(String role, String username, String email, String password, int telephone, int adressesID, ConnectionPool pool)
+     + Account login(String email, String password, ConnectionPool pool)
+     + int createRecordInPostalCode(int postalCode, ConnectionPool pool)
+     + int createRecordInCities(String city, ConnectionPool pool)
+     + int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool)
+     + Account getAccountByOrderID(int orderID, ConnectionPool pool)
     }
 }
 
