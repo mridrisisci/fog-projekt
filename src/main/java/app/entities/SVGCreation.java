@@ -79,22 +79,22 @@ public class SVGCreation
     public static String generateSVGString(List<Material> svgMaterialList, Carport carport)
     {
 
-        List<Material> stolpeList = new ArrayList<>();
-        List<Material> remList = new ArrayList<>();
-        List<Material> spærList = new ArrayList<>();
+        List<Material> postList = new ArrayList<>();
+        List<Material> beamList = new ArrayList<>();
+        List<Material> rafterList = new ArrayList<>();
 
         for (Material mat : svgMaterialList)
         {
             switch (mat.getType())
             {
                 case "Stolpe":
-                    stolpeList.addAll(svgSetXYPosts(mat, carport));
+                    postList.addAll(svgSetXYPosts(mat, carport));
                     break;
                 case "Rem":
-                    remList.addAll(svgSetXYBeam(mat, carport));
+                    beamList.addAll(svgSetXYBeam(mat, carport));
                     break;
                 case "Spær":
-                    spærList.addAll(svgSetXYRafters(mat, carport));
+                    rafterList.addAll(svgSetXYRafters(mat, carport));
                     break;
             }
         }
@@ -102,9 +102,9 @@ public class SVGCreation
         int carportWidth = carport.getWIDTH();
 
         String fasciaboardXML = generateFasciaBoards(carportLength, carportWidth);
-        String postsXML = generatePosts(stolpeList);
-        String beamsXML = generateBeams(remList);
-        String raftersXML = generateRafters(spærList);
+        String postsXML = generatePosts(postList);
+        String beamsXML = generateBeams(beamList);
+        String raftersXML = generateRafters(rafterList);
 
         String res = fasciaboardXML + beamsXML + postsXML + raftersXML;
 
@@ -150,19 +150,19 @@ public class SVGCreation
         List<Material> svgBeams = new ArrayList<>();
 
         int quantity = beam.getQuantity();
-        int remLength = beam.getLength();
+        int beamLength = beam.getLength();
         int carportLength = carport.getLENGTH();
 
         // hvis man kun har 1 beam i styklisten skal den saves over i 2
         if (quantity == 1)
         {
             quantity += 1;
-            remLength = carportLength;
+            beamLength = carportLength;
         }
 
         for (int i = 0; i < quantity; i++)
         {
-            int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, remLength);
+            int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, beamLength);
             int xPos = posXY[0];
             int yPos = posXY[1];
             int width = posXY[2];
