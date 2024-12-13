@@ -2,6 +2,15 @@
 -- Please log an issue at https://github.com/pgadmin-org/pgadmin4/issues/new/choose if you find any bugs, including reproduction steps.
 BEGIN;
 
+-- Indsæt en konto med rollen "salesperson"
+INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
+VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', '19203948', Salesperson1!, 1);
+
+-- Indsæt en konto med rollen "admin"
+INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
+VALUES ('admin', 'admin', 'admin@cph.dk', 'Admin123!', 87654321, 1);
+
+
 -- Drop tables if they exist
 DROP TABLE IF EXISTS public.addresses CASCADE;
 DROP TABLE IF EXISTS public.accounts CASCADE;
