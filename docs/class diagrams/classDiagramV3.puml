@@ -236,19 +236,9 @@ package persistence {
 }
 
 package Test {
-    class OrderMapperTest {
-    }
-    class MaterialMapperTest {
-    }
-    class AccountMapperTest {
-    }
 }
 
 Main -- controllers
-
-OrderController -- OrderMapper
-MaterialController -- MaterialMapper
-AccountController -- AccountMapper
 
 persistence -- controllers
 
