@@ -171,7 +171,7 @@ INSERT INTO public.cities (city_id, city) VALUES (1, 'frederiksberg');
 INSERT INTO public.postal_code (postal_code_id, postal_code) VALUES (1, 2000);
 INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES (1, 1, 1);
 INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
-VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', 'Salesperson1!', '9191919191', 1);
+VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', '$2a$10$d4at6bZlDljL1ZOEfx1zR.AkFTiWoaoW4X6np3YoNEH/O23SEKSay', '9191919191', 1);
 
 
 -- Indsæt en konto med rollen "admin"
@@ -179,7 +179,7 @@ INSERT INTO public.cities (city_id, city) VALUES (2, 'Kælderen');
 INSERT INTO public.postal_code (postal_code_id, postal_code) VALUES (2, 0000);
 INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES (2, 2, 2);
 INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
-VALUES ('admin', 'admin', 'admin@cph.dk', 'Admin123!', '87654321', 2);
+VALUES ('admin', 'admin', 'admin@cph.dk', '$2a$10$d4at6bZlDljL1ZOEfx1zR.AkFTiWoaoW4X6np3YoNEH/O23SEKSay', '87654321', 2);
 
 
 
