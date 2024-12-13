@@ -53,48 +53,49 @@ class Calculator {
 
 package controllers {
     class OrderController {
-    + addRoutes()
-    - boolean validateOrderIsPaid()
-    - void requestPaymentByID()
-    - void confirmPaymentByID()
-    - void sendBOM()
-    - void sendPickList()
-    - void sendInvoice()
+    + addRoutes(Javalin app, ConnectionPool pool)
+    - void updateSalesPriceByOrderID(Context ctx, ConnectionPool pool)
+    - void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
+    - void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
+    + void showFrontPage(Context ctx, ConnectionPool pool)
+    - void createQuery(Context ctx, ConnectionPool pool)
+    - void createCarport(int orderID, Context ctx, ConnectionPool pool)
+    - void sendOffer(Context ctx, ConnectionPool pool)
+    - void showOrderDetails(Context ctx, ConnectionPool pool)
+    - void showOrderHistory(Context ctx, ConnectionPool pool)
+    - void billOfMaterials(Context ctx, ConnectionPool pool)
     }
 
     class AccountController {
-    + addRoutes()
-    - User login()
-    - void logout()
-
+    + addRoutes(Javalin app, ConnectionPool pool)
+    - boolean passwordCheck(Context ctx, String password, String confirmPassword)
+    - void createSalesAccount(Context ctx, ConnectionPool pool)
+    + void doLogin(Context ctx, ConnectionPool pool)
+    + void doLogout(Context ctx)
     }
+
     class MaterialController {
-    + addRoutes()
+    + addRoutes(Javalin app, ConnectionPool pool)
+    + void insertNewMaterial(Context ctx, ConnectionPool pool)
+    + void removeMaterial(Context ctx, ConnectionPool pool)
+    + void showListOfMaterials(Context ctx, ConnectionPool pool)
     }
 }
 
 package entities {
     class Carport {
-    - final int height
-    - final int width
-    - final int length
+    - final int WIDTH
+    - final int LENGTH
+    - int orderID
     - boolean hasShed
-    '- boolean hasShedAddons
     - RoofType roofType
-    + Carport()
-    + List<Material> materialsList
-    'metoden skal eksekvere alle beregningerne heri
-    'samlet
-    + int calcCarportMaterial()
-    'Pris som kunden skal betale
-    + calcCarportPrice()
-    + Material calcPosts(Material material)
-    + Material calcBeams(Material material)
-    + Material calcRafters(Material material)
-    + int getRafters()
-    + int getBeams()
-    + int getPosts()
+    - int price
+    - List<Material> materialsList
+    + Constructors()
+    + getters()
+    + setters()
     }
+
     class Account {
     - int accountID
     - String role
@@ -103,35 +104,36 @@ package entities {
     - int telephone
     - String email
     - String address
-    + int getAccountID()
-    + String getRole()
-    + String getAccountName()
-    + String getPassword()
-    + int getTelephone()
-    + String getAddress()
+    + Constructors()
+    + getters()
     }
 
     class Order {
-    - final int orderID
-    - final int customerID
-    - final int carportID
-    - int salesPersonID
-    'public enum orderStatus { PAID,NOT_PAID,ORDER_COMPLETED}
-    - enum status
+    - int orderID
+    - String carportID
     - int price
-    - final TimeStamp orderPlaced
-    - boolean orderPaid
-    - boolean isAssigned
-    + boolean IsAssigned()
-    + boolean getOrderPaid()
+    - Timestamp orderPlaced
+    - String status
+    - Account account
+    - int width
+    - int length
+    - int salesPrice
+    - RoofType roofType
+    - int coverageRatioPercentage
+    - int accountID
+    - Carport carport
+    - String shed
+    - String paymentStatus
+    - String svg
+    + Constructors()
     + getters()
+    + setters()
     }
 
     class Material {
     - int materialID
     - String materialName
     - String description
-    'prisen for Fog at købe materialerne
     - int price
     - String unit
     - int quantity
@@ -140,16 +142,28 @@ package entities {
     - int width
     - boolean hasShedAddons
     - String type
+    - int svgStartPosX
+    - int svgStartPosY
+    - int svgEndPosX
+    - int svgEndPosY
+    - int svgWidth
+    - int svgHeight
+    - boolean svgRafter
+    + Constructors()
+    + getters()
     }
     enum RoofType {
-    FLAT,
+    FLAT
     PITCHED
     }
-    class Roof
-    {
-    - int roofLength
-    - int roofWidth
-    - final RoofType type
+    enum StatusType{
+    AFVENTER_BEHANDLING
+    TILBUD_SENDT
+    TILBUD_GODKENDT
+    }
+
+    class SVGCreation{
+    
     }
 
 }
@@ -247,8 +261,7 @@ AccountController -- AccountMapper
 
 Order o-- Carport
 Carport *-- Material
-Carport *-- Roof
-Roof *-- RoofType
+Carport *-- RoofType
 
 persistence *-- Calculator
 persistence *-- exceptions
