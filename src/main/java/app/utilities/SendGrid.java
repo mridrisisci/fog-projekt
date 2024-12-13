@@ -15,13 +15,12 @@ public class SendGrid
 {
 
     private static final String API_KEY = System.getenv("API_SEND_GRID");
-    private static final String salespersonEmail = "sales.person.fog@gmail.com";
-    private static final String customerEmail = "customer.fog.test@gmail.com";
-    private static String subject;
+    private static final String SALESPERSON_EMAIL = "sales.person.fog@gmail.com";
+    private static final String CUSTOMER_EMAIL = "customer.fog.test@gmail.com";
 
     public static void sendOffer(String email, String subject, Order order) throws IOException
     {
-        Email from = new Email(salespersonEmail); // kode: fog12345
+        Email from = new Email(SALESPERSON_EMAIL);
         from.setName("Johannes Fog Byggemarked");
 
         // Ordredetaljer
@@ -38,11 +37,9 @@ public class SendGrid
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
 
-        // Dynamisk URL til produktion // når app skal deployes
-        String baseURL = "https://carport.dataduck.dk";
+        // Dynamisk URL til produktion
+        String baseURL = "https://carport.wrubberduck.dk";
         String dynamicURL = baseURL + "/order/acceptoffer/" + orderID;
-
-
 
 
         Mail mail = new Mail();
@@ -52,14 +49,13 @@ public class SendGrid
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
-        personalization.addDynamicTemplateData("email", salespersonEmail);
+        personalization.addDynamicTemplateData("email", SALESPERSON_EMAIL);
         personalization.addDynamicTemplateData("Carport_length", length2);
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Total_pris", price);
         personalization.addDynamicTemplateData("Tagtype", roofType);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         personalization.addDynamicTemplateData("dynamicURL", dynamicURL);
-        //personalization.addDynamicTemplateData("AcceptUrl", acceptURL); // uncomment before deploying
         mail.addPersonalization(personalization);
 
         // Add category and template ID
@@ -88,7 +84,7 @@ public class SendGrid
 
     public static void sendBOM(String email, String subject, Order order) throws IOException
     {
-        Email from = new Email(salespersonEmail); // kode: fog12345
+        Email from = new Email(SALESPERSON_EMAIL);
         from.setName("Johannes Fog Byggemarked");
 
         // Ordredetaljer
@@ -103,8 +99,8 @@ public class SendGrid
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
 
-        // Dynamisk URL til produktion // når app skal deployes
-        String baseURL = "https://carport.dataduck.dk";
+        // Dynamisk URL til produktion
+        String baseURL = "https://carport.wrubberduck.dk";
         String dynamicURL = baseURL + "/order/billOfMaterials/" + orderID;
 
 
@@ -114,9 +110,9 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email(email)); // kode: fog12345
+        personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
-        personalization.addDynamicTemplateData("email", salespersonEmail);
+        personalization.addDynamicTemplateData("email", SALESPERSON_EMAIL);
         personalization.addDynamicTemplateData("Carport_length", length2);
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Tagtype", roofType);
@@ -150,7 +146,7 @@ public class SendGrid
 
     public static void sendReceipt(String email, String subject, Order order) throws IOException
     {
-        Email from = new Email(salespersonEmail); // kode: fog12345
+        Email from = new Email(SALESPERSON_EMAIL);
         from.setName("Johannes Fog Byggemarked");
 
         // Ordredetaljer
@@ -172,9 +168,9 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email(email)); // kode: fog12345
+        personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
-        personalization.addDynamicTemplateData("email", salespersonEmail);
+        personalization.addDynamicTemplateData("email", SALESPERSON_EMAIL);
         personalization.addDynamicTemplateData("Carport_length", length2);
         personalization.addDynamicTemplateData("Carport_bredde", width2);
         personalization.addDynamicTemplateData("Total_pris", price);
@@ -208,7 +204,7 @@ public class SendGrid
 
     public static void notifySalesPersonOfNewOrder(String email, String subject) throws IOException
     {
-        Email from = new Email(salespersonEmail); // kode: fog12345
+        Email from = new Email(SALESPERSON_EMAIL);
         from.setName("Johannes Fog Byggemarked");
 
         Mail mail = new Mail();
@@ -217,9 +213,9 @@ public class SendGrid
 
         Personalization personalization = new Personalization();
 
-        personalization.addTo(new Email(email)); // kode: fog12345
+        personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
-        personalization.addDynamicTemplateData("email", salespersonEmail);
+        personalization.addDynamicTemplateData("email", SALESPERSON_EMAIL);
         mail.addPersonalization(personalization);
 
         // Add category and template ID
@@ -245,28 +241,5 @@ public class SendGrid
             throw ex;
         }
     }
-
-
-    public String getAPI_KEY()
-    {
-        return API_KEY;
-    }
-
-    public String getSalespersonEmail()
-    {
-        return salespersonEmail;
-    }
-
-    public String getCustomerEmail()
-    {
-        return customerEmail;
-    }
-    public String getSubject()
-    {
-        return subject;
-    }
-
-
-
 
 }
