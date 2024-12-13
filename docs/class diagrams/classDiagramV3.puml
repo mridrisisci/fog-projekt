@@ -9,45 +9,36 @@ class Main {
 package utilities {
 
 class Calculator {
-+ int calcPickListPrice()
-+ int calcSalesPrice()
-+ int calcPosts()
-+ int[] calcBeams()
-+ int[] calcSideFasciaBoard()
-+ int[] calcFrontAndBackFasciaBoard()
-+ int[] calcRafters()
-+ int calcScrewsForRoofing()
++ int calcPickListPrice(List<Material> pickList)
++ int calcSalesPrice(int pickListPrice, double coverageRatio)
++ int calcPosts(Carport carport)
++ int[] calcPostsXY(Carport carport, int quantity, int matNum)
++ int[] calcBeams(Carport carport)
++ int[] calcBeamsXY(Carport carport, int quantity, int matNum, int matLength)
++ int[] calcSidesFasciaBoard(Carport carport)
++ int[] calcFrontAndBackFasciaBoard(Carport carport)
++ int[] calcRafters(Carport carport)
++ int[] calcRaftersXY(Carport carport, int quantity, int matNum)
++ int calcScrewsForRoofing(Carport carport)
 + int calcStandardScrews()
 + int calcRollForWindCross()
-+ int calcSquareWasher()
-+ int calcHardwareForRaftersLeft()
-+ int calcHardwareForRaftersRight()
-+ int calcHardwareScrews()
-+ int calcBoardBolt()
-+ int[] calcRoofPlates()
-
++ int calcSquareWasher(Carport carport)
++ int calcHardwareForRaftersLeft(Carport carport)
++ int calcHardwareForRaftersRight(Carport carport)
++ int calcHardwareScrews(Carport carport)
++ int calcBoardBolt(Carport carport)
++ int[] calcRoofPlates(Carport carport)
 
 }
-    class SVG {
-    - StringBuilder svg
-    + SVG()
-    + addRectangle()
-    + addLine()
-    + addArrow()
-    + addText()
-    + addSvg()
-    'Override
-    + toString()
-    }
     class SendGrid
     {
     - String API_KEY
-    - String salespersonEmail
-    - String customerEmail
-    - String adminEmail
-    - String subjectLine
-    - String body
-    + SendGrid(String to, String name, String from)
+    - String SALESPERSON_EMAIL
+    - String CUSTOMER_EMAIL
+    - String subject
+    + void sendOffer(String email, String subject, Order order)
+    + void sendBOM(String email, String subject, Order order)
+    
     }
 }
 
@@ -163,7 +154,17 @@ package entities {
     }
 
     class SVGCreation{
-    
+    + String generatePosts(List<Material> postList)
+    + String generateRafters(List<Material> raftersList)
+    + String generateBeams(List<Material> beamList)
+    + String generateFasciaBoards(int carportLength, int carportWidth)
+    + String generateCarportSVGFromTemplate(String template, String SVG)
+    + String generateSVGString(List<Material> svgMaterialList, Carport carport)
+    - List<Material> svgSetXYPosts(Material post, Carport carport)
+    - List<Material> svgSetXYRafters(Material rafter, Carport carport)
+    - List<Material> svgSetXYBeams(Material beam, Carport carport)
+    - String getSVGTemplate()
+
     }
 
 }
@@ -255,9 +256,10 @@ package Test {
 Main -- controllers
 
 OrderController -- OrderMapper
-
 MaterialController -- MaterialMapper
 AccountController -- AccountMapper
+
+persistence -- controllers
 
 Order o-- Carport
 Carport *-- Material
