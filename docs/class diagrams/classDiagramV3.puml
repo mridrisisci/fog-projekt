@@ -237,36 +237,29 @@ package entities {
 
 }
 
-Main -down..> controllers : creates
 
-OrderController ..> SendGrid : uses
+Main -down..> controllers : creates
 
 controllers -down--> persistence : association
 
-persistence -right..> Calculator : uses
+entities -up--o persistence : Aggregation
 
-'Main -down..> controllers : creates
-'
-'controllers -down--> persistence : association
-'
-'entities -up--o persistence : Aggregation
-'
-'Order -right--o Account : Aggregation
-'
-'Order o-- Carport : Aggregation
-'Order *-- StatusType : Composition
-'
-'Carport o-- Material : Aggregation
-'Carport *-- RoofType : Composition
-'
-'SVGCreation o-- Material : Aggregation
-'
-'SVGCreation ..> Calculator : uses
-'
-'OrderController ..> SendGrid : uses
-'
-'persistence ..> Calculator : uses
-'persistence -left..> exceptions : uses
+Order -right--o Account : Aggregation
+
+Order o-- Carport : Aggregation
+Order *-- StatusType : Composition
+
+Carport o-- Material : Aggregation
+Carport *-- RoofType : Composition
+
+SVGCreation o-- Material : Aggregation
+
+SVGCreation ..> Calculator : uses
+
+OrderController ..> SendGrid : uses
+
+persistence ..> Calculator : uses
+persistence -left..> exceptions : uses
 
 
 
