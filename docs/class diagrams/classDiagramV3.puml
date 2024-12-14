@@ -235,21 +235,23 @@ package persistence {
     }
 }
 
-Main *-- controllers
+Main ..> controllers : creates
 
-controllers -- persistence
+controllers --> persistence : uses
 
-Account *-- Order
-Order o-- Carport
-Order *-- StatusType
-Carport *-- Material
-Carport *-- RoofType
-SVGCreation *-- Material
+persistence o-- entities : Aggregation
 
-SVGCreation *-- Calculator
+Account *-- Order : Composition
+Order o-- Carport : Aggregation
+Order *-- StatusType : Composition
+Carport o-- Material : Aggregation
+Carport *-- RoofType : Composition
+SVGCreation o-- Material : Aggregation
 
-persistence *-- entities
-persistence *-- Calculator
-persistence *-- exceptions
+SVGCreation ..> Calculator : uses
+persistence ..> Calculator : uses
+
+persistence ..> exceptions : uses
+
 
 @enduml
