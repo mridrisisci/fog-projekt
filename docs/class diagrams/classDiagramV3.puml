@@ -6,6 +6,37 @@ class Main {
 +main(String[] args)
 }
 
+package controllers {
+    class OrderController {
+    + addRoutes(Javalin app, ConnectionPool pool)
+    - void updateSalesPriceByOrderID(Context ctx, ConnectionPool pool)
+    - void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
+    - void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
+    + void showFrontPage(Context ctx, ConnectionPool pool)
+    - void createQuery(Context ctx, ConnectionPool pool)
+    - void createCarport(int orderID, Context ctx, ConnectionPool pool)
+    - void sendOffer(Context ctx, ConnectionPool pool)
+    - void showOrderDetails(Context ctx, ConnectionPool pool)
+    - void showOrderHistory(Context ctx, ConnectionPool pool)
+    - void billOfMaterials(Context ctx, ConnectionPool pool)
+    }
+
+    class AccountController {
+    + addRoutes(Javalin app, ConnectionPool pool)
+    - boolean passwordCheck(Context ctx, String password, String confirmPassword)
+    - void createSalesAccount(Context ctx, ConnectionPool pool)
+    + void doLogin(Context ctx, ConnectionPool pool)
+    + void doLogout(Context ctx)
+    }
+
+    class MaterialController {
+    + addRoutes(Javalin app, ConnectionPool pool)
+    + void insertNewMaterial(Context ctx, ConnectionPool pool)
+    + void removeMaterial(Context ctx, ConnectionPool pool)
+    + void showListOfMaterials(Context ctx, ConnectionPool pool)
+    }
+}
+
 package utilities {
 
 class Calculator {
@@ -43,35 +74,69 @@ class Calculator {
     }
 }
 
-package controllers {
-    class OrderController {
-    + addRoutes(Javalin app, ConnectionPool pool)
-    - void updateSalesPriceByOrderID(Context ctx, ConnectionPool pool)
-    - void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
-    - void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
-    + void showFrontPage(Context ctx, ConnectionPool pool)
-    - void createQuery(Context ctx, ConnectionPool pool)
-    - void createCarport(int orderID, Context ctx, ConnectionPool pool)
-    - void sendOffer(Context ctx, ConnectionPool pool)
-    - void showOrderDetails(Context ctx, ConnectionPool pool)
-    - void showOrderHistory(Context ctx, ConnectionPool pool)
-    - void billOfMaterials(Context ctx, ConnectionPool pool)
+package persistence {
+    class OrderMapper {
+    + int createQueryInOrders(String carportID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool)
+    + List<Order> getOrderDetails(int orderID, ConnectionPool pool)
+    + Order getOrderByID(int orderID, ConnectionPool pool)
+    + List<Order> getOrderHistory(String sortBy, ConnectionPool pool)
+    + int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool
+    + int getPickListPriceByOrderID(int orderID, ConnectionPool pool)
+    + int setSalesPriceAndCoverageDefault(Carport carport, ConnectionPool pool)
+    + int updatePickListPrice(Carport carport, ConnectionPool pool)
+    + void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool)
+    + void updateOrderStatusAfterPayment(int orderID, StatusType status, ConnectionPool pool)
+    + void setPaymentStatusToPaid(int orderID, ConnectionPool pool)
+    + void deleteOrderByID(int orderID, ConnectionPool pool)
+    + void updateSVG(int orderID, String svg, ConnectionPool pool)
+    + String getSVGFromDatabase(int orderID, ConnectionPool pool)
+
     }
 
-    class AccountController {
-    + addRoutes(Javalin app, ConnectionPool pool)
-    - boolean passwordCheck(Context ctx, String password, String confirmPassword)
-    - void createSalesAccount(Context ctx, ConnectionPool pool)
-    + void doLogin(Context ctx, ConnectionPool pool)
-    + void doLogout(Context ctx)
+    class MaterialMapper {
+    + void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool)
+    + List<Material> createPickList(Carport carport, ConnectionPool pool)
+    + List<Material> getPickList(int orderID, ConnectionPool pool)
+    + void insertPickListInDB(List<Material> pickList, Carport carport, ConnectionPool pool)
+    + Material getPosts(Carport carport, ConnectionPool pool)
+    + Material getBeams(Carport carport, ConnectionPool pool)
+    + Material getSideUnderFasciaBoard(Carport carport, ConnectionPool pool)
+    + Material getSideOverFasciaBoard(Carport carport, ConnectionPool pool)
+    + Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool)
+    + Material getFrontAndBackOverFasciaBoard(Carport carport, ConnectionPool pool)
+    + Material getRafters(Carport carport, ConnectionPool pool)
+    + Material getStandardScrews(Carport carport, ConnectionPool pool)
+    + Material getScrewsForRoofing(Carport carport, ConnectionPool pool)
+    + Material getRollForWindCross(Carport carport, ConnectionPool pool)
+    + Material getSquareWasher(Carport carport, ConnectionPool pool)
+    + Material getHardwareForRaftersLeft(Carport carport, ConnectionPool pool)
+    + Material getHardwareForRaftersRight(Carport carport, ConnectionPool pool)
+    + Material getHardwareScrews(Carport carport, ConnectionPool pool)
+    + Material getBoardBolt(Carport carport, ConnectionPool pool)
+    + Material getRoofPlatesLong(Carport carport, ConnectionPool pool)
+    + Material getRoofPlatesShort(Carport carport, ConnectionPool pool)
+    + void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool)
+    + List<Material> getAllMaterials(ConnectionPool pool)
     }
 
-    class MaterialController {
-    + addRoutes(Javalin app, ConnectionPool pool)
-    + void insertNewMaterial(Context ctx, ConnectionPool pool)
-    + void removeMaterial(Context ctx, ConnectionPool pool)
-    + void showListOfMaterials(Context ctx, ConnectionPool pool)
+    class AccountMapper {
+     + int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool)
+     + void createSalesAccount(String role, String username, String email, String password, int telephone, int adressesID, ConnectionPool pool)
+     + Account login(String email, String password, ConnectionPool pool)
+     + int createRecordInPostalCode(int postalCode, ConnectionPool pool)
+     + int createRecordInCities(String city, ConnectionPool pool)
+     + int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool)
+     + Account getAccountByOrderID(int orderID, ConnectionPool pool)
     }
+}
+
+package exceptions {
+
+class DatabaseException{
++ DatabaseException(String errorMessage)
++ DatabaseException(String userMessage, String systemMessage)
+}
+
 }
 
 package entities {
@@ -172,93 +237,36 @@ package entities {
 
 }
 
-package exceptions {
-
-class DatabaseException{
-+ DatabaseException(String errorMessage)
-+ DatabaseException(String userMessage, String systemMessage)
-}
-
-}
-
-package persistence {
-    class OrderMapper {
-    + int createQueryInOrders(String carportID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool)
-    + List<Order> getOrderDetails(int orderID, ConnectionPool pool)
-    + Order getOrderByID(int orderID, ConnectionPool pool)
-    + List<Order> getOrderHistory(String sortBy, ConnectionPool pool)
-    + int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool
-    + int getPickListPriceByOrderID(int orderID, ConnectionPool pool)
-    + int setSalesPriceAndCoverageDefault(Carport carport, ConnectionPool pool)
-    + int updatePickListPrice(Carport carport, ConnectionPool pool)
-    + void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool)
-    + void updateOrderStatusAfterPayment(int orderID, StatusType status, ConnectionPool pool)
-    + void setPaymentStatusToPaid(int orderID, ConnectionPool pool)
-    + void deleteOrderByID(int orderID, ConnectionPool pool)
-    + void updateSVG(int orderID, String svg, ConnectionPool pool)
-    + String getSVGFromDatabase(int orderID, ConnectionPool pool)
-
-    }
-
-    class MaterialMapper {
-    + void insertNewMaterial(String name, String unit, int price, int length, int height, int width, String type, String description, ConnectionPool pool)
-    + List<Material> createPickList(Carport carport, ConnectionPool pool)
-    + List<Material> getPickList(int orderID, ConnectionPool pool)
-    + void insertPickListInDB(List<Material> pickList, Carport carport, ConnectionPool pool)
-    + Material getPosts(Carport carport, ConnectionPool pool)
-    + Material getBeams(Carport carport, ConnectionPool pool)
-    + Material getSideUnderFasciaBoard(Carport carport, ConnectionPool pool)
-    + Material getSideOverFasciaBoard(Carport carport, ConnectionPool pool)
-    + Material getFrontAndBackUnderFasciaBoard(Carport carport, ConnectionPool pool)
-    + Material getFrontAndBackOverFasciaBoard(Carport carport, ConnectionPool pool)
-    + Material getRafters(Carport carport, ConnectionPool pool)
-    + Material getStandardScrews(Carport carport, ConnectionPool pool)
-    + Material getScrewsForRoofing(Carport carport, ConnectionPool pool)
-    + Material getRollForWindCross(Carport carport, ConnectionPool pool)
-    + Material getSquareWasher(Carport carport, ConnectionPool pool)
-    + Material getHardwareForRaftersLeft(Carport carport, ConnectionPool pool)
-    + Material getHardwareForRaftersRight(Carport carport, ConnectionPool pool)
-    + Material getHardwareScrews(Carport carport, ConnectionPool pool)
-    + Material getBoardBolt(Carport carport, ConnectionPool pool)
-    + Material getRoofPlatesLong(Carport carport, ConnectionPool pool)
-    + Material getRoofPlatesShort(Carport carport, ConnectionPool pool)
-    + void removeMaterial(int materialID, String name, int length, int height, int width, ConnectionPool pool)
-    + List<Material> getAllMaterials(ConnectionPool pool)
-    }
-
-    class AccountMapper {
-     + int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool)
-     + void createSalesAccount(String role, String username, String email, String password, int telephone, int adressesID, ConnectionPool pool)
-     + Account login(String email, String password, ConnectionPool pool)
-     + int createRecordInPostalCode(int postalCode, ConnectionPool pool)
-     + int createRecordInCities(String city, ConnectionPool pool)
-     + int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool)
-     + Account getAccountByOrderID(int orderID, ConnectionPool pool)
-    }
-}
-
 Main -down..> controllers : creates
-
-controllers -down--> persistence : association
-
-entities -up--o persistence : Aggregation
-
-Order -right--* Account : Composition
-
-Order o-- Carport : Aggregation
-Order *-- StatusType : Composition
-
-Carport o-- Material : Aggregation
-Carport *-- RoofType : Composition
-
-SVGCreation o-- Material : Aggregation
-
-SVGCreation ..> Calculator : uses
 
 OrderController ..> SendGrid : uses
 
-persistence ..> Calculator : uses
-persistence -left..> exceptions : uses
+controllers -down--> persistence : association
+
+persistence -right..> Calculator : uses
+
+'Main -down..> controllers : creates
+'
+'controllers -down--> persistence : association
+'
+'entities -up--o persistence : Aggregation
+'
+'Order -right--o Account : Aggregation
+'
+'Order o-- Carport : Aggregation
+'Order *-- StatusType : Composition
+'
+'Carport o-- Material : Aggregation
+'Carport *-- RoofType : Composition
+'
+'SVGCreation o-- Material : Aggregation
+'
+'SVGCreation ..> Calculator : uses
+'
+'OrderController ..> SendGrid : uses
+'
+'persistence ..> Calculator : uses
+'persistence -left..> exceptions : uses
 
 
 
