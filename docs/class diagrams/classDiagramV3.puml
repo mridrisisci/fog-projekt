@@ -75,6 +75,13 @@ package controllers {
 }
 
 package entities {
+
+    enum StatusType{
+    AFVENTER_BEHANDLING
+    TILBUD_SENDT
+    TILBUD_GODKENDT
+    }
+
     class Carport {
     - final int WIDTH
     - final int LENGTH
@@ -89,16 +96,16 @@ package entities {
     }
 
     class Account {
-    - int accountID
-    - String role
-    - String username
-    - String password
-    - int telephone
-    - String email
-    - String address
-    + Constructors()
-    + getters()
-    }
+        - int accountID
+        - String role
+        - String username
+        - String password
+        - int telephone
+        - String email
+        - String address
+        + Constructors()
+        + getters()
+        }
 
     class Order {
     - int orderID
@@ -147,11 +154,6 @@ package entities {
     enum RoofType {
     FLAT
     PITCHED
-    }
-    enum StatusType{
-    AFVENTER_BEHANDLING
-    TILBUD_SENDT
-    TILBUD_GODKENDT
     }
 
     class SVGCreation{
@@ -235,23 +237,29 @@ package persistence {
     }
 }
 
-Main ..> controllers : creates
+Main -down..> controllers : creates
 
-controllers --> persistence : uses
+controllers -down--> persistence : association
 
-persistence o-- entities : Aggregation
+entities -up--o persistence : Aggregation
 
-Account *-- Order : Composition
+Order -right--* Account : Composition
+
 Order o-- Carport : Aggregation
 Order *-- StatusType : Composition
+
 Carport o-- Material : Aggregation
 Carport *-- RoofType : Composition
+
 SVGCreation o-- Material : Aggregation
 
 SVGCreation ..> Calculator : uses
-persistence ..> Calculator : uses
 
-persistence ..> exceptions : uses
+OrderController ..> SendGrid : uses
+
+persistence ..> Calculator : uses
+persistence -left..> exceptions : uses
+
 
 
 @enduml
