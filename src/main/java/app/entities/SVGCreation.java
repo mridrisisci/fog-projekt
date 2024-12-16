@@ -2,28 +2,21 @@ package app.entities;
 
 import app.utilities.Calculator;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SVGCreation
 {
-    public static String loadSVGFromFile(String filePath) throws IOException
-    {
-        return new String(Files.readAllBytes(Paths.get(filePath)));
-    }
 
-    public static String generatePosts(List<Material> postsList)
+    public static String generatePosts(List<Material> postList)
     {
         StringBuilder postsBuilder = new StringBuilder();
-        for (int i = 0; i < postsList.size(); i++)
+        for (int i = 0; i < postList.size(); i++)
         {
-            int startPosX = postsList.get(i).getSvgStartPosX() - (postsList.get(i).getLength() / 2);
-            int startPosY = postsList.get(i).getSvgStartPosY() - (postsList.get(i).getWidth() / 2);
-            int width = postsList.get(i).getSvgWidth();
-            int height = postsList.get(i).getSvgHeight();
+            int startPosX = postList.get(i).getSvgStartPosX() - (postList.get(i).getLength() / 2);
+            int startPosY = postList.get(i).getSvgStartPosY() - (postList.get(i).getWidth() / 2);
+            int width = postList.get(i).getSvgWidth();
+            int height = postList.get(i).getSvgHeight();
             postsBuilder.append(String.format(
                     "<rect id=\"post%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" fill-opacity=\"0.0\" />\n",
                     i + 1, startPosX, startPosY, width, height
@@ -32,15 +25,15 @@ public class SVGCreation
         return postsBuilder.toString();
     }
 
-    public static String generateRafters(List<Material> raftList)
+    public static String generateRafters(List<Material> raftersList)
     {
         StringBuilder raftersBuilder = new StringBuilder();
-        for (int i = 0; i < raftList.size(); i++)
+        for (int i = 0; i < raftersList.size(); i++)
         {
-            int startPosX = raftList.get(i).getSvgStartPosX();
-            int endPosX = raftList.get(i).getSvgEndPosX();
-            int startPosY = raftList.get(i).getSvgStartPosY();
-            int endPosY = raftList.get(i).getSvgEndPosY();
+            int startPosX = raftersList.get(i).getSvgStartPosX();
+            int endPosX = raftersList.get(i).getSvgEndPosX();
+            int startPosY = raftersList.get(i).getSvgStartPosY();
+            int endPosY = raftersList.get(i).getSvgEndPosY();
             raftersBuilder.append(String.format(
                     "<line id=\"rafter%d\" x1=\"%d\" x2=\"%d\" y1=\"%d\" y2=\"%d\" stroke=\"darkgray\" stroke-width=\"5\" />\n",
                     i + 1, startPosX, endPosX, startPosY, endPosY
@@ -49,15 +42,15 @@ public class SVGCreation
         return raftersBuilder.toString();
     }
 
-    public static String generateBeams(List<Material> remList)
+    public static String generateBeams(List<Material> beamList)
     {
         StringBuilder beamsBuilder = new StringBuilder();
-        for (int i = 0; i < remList.size(); i++)
+        for (int i = 0; i < beamList.size(); i++)
         {
-            int posX = remList.get(i).getSvgStartPosX();
-            int posY = remList.get(i).getSvgStartPosY();
-            int width = remList.get(i).getSvgWidth();
-            int height = remList.get(i).getSvgHeight();
+            int posX = beamList.get(i).getSvgStartPosX();
+            int posY = beamList.get(i).getSvgStartPosY();
+            int width = beamList.get(i).getSvgWidth();
+            int height = beamList.get(i).getSvgHeight();
             beamsBuilder.append(String.format(
                     "<rect id=\"beam%d\" x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"black\" fill-opacity=\"0.0\" />\n",
                     i + 1, posX, posY, width, height
@@ -66,7 +59,7 @@ public class SVGCreation
         return beamsBuilder.toString();
     }
 
-    //Vi har valgt at hardcode kanten af carporten da vi får størrelsen sammen med forsprøgslen
+    //Vi har valgt at hardcode kanten af carporten da vi får størrelsen sammen med foresprøgslen
     public static String generateFasciaBoards(int carportLength, int carportWidth)
     {
         StringBuilder fasciaBoardsBuilder = new StringBuilder();
@@ -86,22 +79,22 @@ public class SVGCreation
     public static String generateSVGString(List<Material> svgMaterialList, Carport carport)
     {
 
-        List<Material> stolpeList = new ArrayList<>();
-        List<Material> remList = new ArrayList<>();
-        List<Material> spærList = new ArrayList<>();
+        List<Material> postList = new ArrayList<>();
+        List<Material> beamList = new ArrayList<>();
+        List<Material> rafterList = new ArrayList<>();
 
         for (Material mat : svgMaterialList)
         {
             switch (mat.getType())
             {
                 case "Stolpe":
-                    stolpeList.addAll(svgSetXYStople(mat, carport));
+                    postList.addAll(svgSetXYPosts(mat, carport));
                     break;
                 case "Rem":
-                    remList.addAll(svgSetXYRem(mat, carport));
+                    beamList.addAll(svgSetXYBeam(mat, carport));
                     break;
                 case "Spær":
-                    spærList.addAll(svgSetXYSpær(mat, carport));
+                    rafterList.addAll(svgSetXYRafters(mat, carport));
                     break;
             }
         }
@@ -109,19 +102,19 @@ public class SVGCreation
         int carportWidth = carport.getWIDTH();
 
         String fasciaboardXML = generateFasciaBoards(carportLength, carportWidth);
-        String postsXML = generatePosts(stolpeList);
-        String beamsXML = generateBeams(remList);
-        String raftersXML = generateRafters(spærList);
+        String postsXML = generatePosts(postList);
+        String beamsXML = generateBeams(beamList);
+        String raftersXML = generateRafters(rafterList);
 
         String res = fasciaboardXML + beamsXML + postsXML + raftersXML;
 
         return res;
     }
 
-    private static List<Material> svgSetXYStople(Material stolpe, Carport carport)
+    private static List<Material> svgSetXYPosts(Material post, Carport carport)
     {
         List<Material> svgPosts = new ArrayList<>();
-        int quantity = stolpe.getQuantity();
+        int quantity = post.getQuantity();
         for (int i = 0; i < quantity; i++)
         {
             int[] posXY = Calculator.calcPostsXY(carport, quantity, i);
@@ -135,40 +128,10 @@ public class SVGCreation
         return svgPosts;
     }
 
-    //TODO lav tykkelse på remmene så det ikke bliver en streg
-    private static List<Material> svgSetXYRem(Material rem, Carport carport)
+    private static List<Material> svgSetXYRafters(Material rafter, Carport carport)
     {
-        List<Material> svgPosts = new ArrayList<>();
-
-        int quantity = rem.getQuantity();
-        int remLength = rem.getLength();
-        int carportLength = carport.getLENGTH();
-
-        // hvis man kun har 1 rem i styklisten skal den saves over i 2
-        if (quantity == 1)
-        {
-            quantity += 1;
-            remLength = carportLength;
-        }
-
-        for (int i = 0; i < quantity; i++)
-        {
-            int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, remLength);
-            int xPos = posXY[0];
-            int yPos = posXY[1];
-            int width = posXY[2];
-            // hardcoded til at have samme højde som vores stolper
-            int height = 10;
-            Material newBeam = new Material(xPos, yPos, width, height);
-            svgPosts.add(newBeam);
-        }
-        return svgPosts;
-    }
-
-    private static List<Material> svgSetXYSpær(Material spær, Carport carport)
-    {
-        List<Material> svgPosts = new ArrayList<>();
-        int quantity = spær.getQuantity();
+        List<Material> svgRafters = new ArrayList<>();
+        int quantity = rafter.getQuantity();
         for (int i = 0; i < quantity; i++)
         {
             int[] posXY = Calculator.calcRaftersXY(carport, quantity, i);
@@ -177,9 +140,38 @@ public class SVGCreation
             int startYPos = posXY[2];
             int endYPos = posXY[3];
             Material newRafter = new Material(startXPos, endXPos, startYPos, endYPos, true);
-            svgPosts.add(newRafter);
+            svgRafters.add(newRafter);
         }
-        return svgPosts;
+        return svgRafters;
+    }
+
+    private static List<Material> svgSetXYBeam(Material beam, Carport carport)
+    {
+        List<Material> svgBeams = new ArrayList<>();
+
+        int quantity = beam.getQuantity();
+        int beamLength = beam.getLength();
+        int carportLength = carport.getLENGTH();
+
+        // hvis man kun har 1 beam i styklisten skal den saves over i 2
+        if (quantity == 1)
+        {
+            quantity += 1;
+            beamLength = carportLength;
+        }
+
+        for (int i = 0; i < quantity; i++)
+        {
+            int[] posXY = Calculator.calcBeamsXY(carport, quantity, i, beamLength);
+            int xPos = posXY[0];
+            int yPos = posXY[1];
+            int width = posXY[2];
+            // hardcoded til at have samme højde som vores stolper
+            int height = 10;
+            Material newBeam = new Material(xPos, yPos, width, height);
+            svgBeams.add(newBeam);
+        }
+        return svgBeams;
     }
 
     private static String getSVGTemplate()

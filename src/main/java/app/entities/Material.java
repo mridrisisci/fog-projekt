@@ -14,16 +14,13 @@ public class Material
     private boolean hasShedAddons;
     private String type;
     private int svgStartPosX;
-
     private int svgStartPosY;
-
     private int svgEndPosX;
-
     private int svgEndPosY;
     private int svgWidth;
-
     private int svgHeight;
     private boolean svgRafter;
+
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
@@ -36,15 +33,6 @@ public class Material
         this.height = height;
         this.width = width;
         this.hasShedAddons = hasShedAddons;
-    }
-
-    public Material(int materialID, int length, int width, int quantity, String type)
-    {
-        this.materialID = materialID;
-        this.length = length;
-        this.width = width;
-        this.type = type;
-        this.quantity = quantity;
     }
 
     public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
@@ -71,6 +59,7 @@ public class Material
         this.length = length;
         this.type = type;
     }
+
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length)
     {
         this.materialID = materialID;
@@ -81,7 +70,6 @@ public class Material
         this.quantity = quantity;
         this.length = length;
     }
-
     public Material(int materialID, String materialName, String description, int price, String unit, int quantity, String type)
     {
         this.materialID = materialID;
@@ -91,6 +79,15 @@ public class Material
         this.unit = unit;
         this.quantity = quantity;
         this.type = type;
+    }
+
+    public Material(int materialID, int length, int width, int quantity, String type)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+        this.quantity = quantity;
     }
 
     public Material(String name, String unit, String description, String type, int quantity)
@@ -119,12 +116,14 @@ public class Material
         this.svgStartPosY = svgStartPosY;
     }
 
-    public Material(int svgStartPosX, int svgStartPosY)
+    public Material(int svgStartPosX,  int svgEndPosX, int svgStartPosY, int svgEndPosY, boolean svgRafter)
     {
         this.svgStartPosX = svgStartPosX;
+        this.svgEndPosX = svgEndPosX;
         this.svgStartPosY = svgStartPosY;
+        this.svgEndPosY = svgEndPosY;
+        this.svgRafter = svgRafter;
     }
-
 
     public Material(int svgStartPosX, int svgStartY, int svgWidth, int svgHeight)
     {
@@ -134,13 +133,17 @@ public class Material
         this.svgHeight = svgHeight;
     }
 
-    public Material(int svgStartPosX,  int svgEndPosX, int svgStartPosY, int svgEndPosY, boolean svgRafter)
+    public Material(String materialName, String unit, String description)
+    {
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+    }
+
+    public Material(int svgStartPosX, int svgStartPosY)
     {
         this.svgStartPosX = svgStartPosX;
-        this.svgEndPosX = svgEndPosX;
         this.svgStartPosY = svgStartPosY;
-        this.svgEndPosY = svgEndPosY;
-        this.svgRafter = svgRafter;
     }
 
     public int getSvgEndPosX()
@@ -152,13 +155,6 @@ public class Material
     {
         return svgEndPosY;
     }
-    public Material(String materialName, String unit, String description)
-    {
-        this.materialName = materialName;
-        this.unit = unit;
-        this.description = description;
-    }
-
 
     public Material(String type)
     {
@@ -175,29 +171,9 @@ public class Material
         return materialID;
     }
 
-    public void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
-    }
-
-    public String getMaterialName()
-    {
-        return materialName;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
     public int getPrice()
     {
         return price;
-    }
-
-    public String getUnit()
-    {
-        return unit;
     }
 
     public int getQuantity()
@@ -220,21 +196,6 @@ public class Material
         return width;
     }
 
-    public boolean isHasShedAddons()
-    {
-        return hasShedAddons;
-    }
-
-    public void setSvgStartPosX(int svgStartPosX)
-    {
-        this.svgStartPosX = svgStartPosX;
-    }
-
-    public void setSvgStartPosY(int svgStartPosY)
-    {
-        this.svgStartPosY = svgStartPosY;
-    }
-
     public int getSvgStartPosX()
     {
         return svgStartPosX;
@@ -244,7 +205,6 @@ public class Material
     {
         return svgStartPosY;
     }
-
 
     public int getSvgWidth()
     {
@@ -256,13 +216,4 @@ public class Material
         return svgHeight;
     }
 
-    public void setSvgWidth(int svgWidth)
-    {
-        this.svgWidth = svgWidth;
-    }
-
-    public void setSvgHeight(int svgHeight)
-    {
-        this.svgHeight = svgHeight;
-    }
 }

@@ -11,25 +11,6 @@ import java.util.List;
 public class OrderMapper
 {
 
-    public static int getSalesOffer(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        int price;
-        String sql = "SELECT price FROM orders WHERE order_id = ?";
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, orderID);
-            ResultSet rs = ps.executeQuery();
-            price = rs.getInt("price");
-        } catch (SQLException e)
-        {
-            throw new DatabaseException(e.getMessage());
-        }
-
-        return price;
-    }
-
-
     public static int createQueryInOrders(String carportID, String status, Timestamp orderPlaced, boolean orderPaid, int length, int width, boolean hasShed, String roofType, int accountID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "INSERT INTO orders (carport_id, status, " +
@@ -123,7 +104,6 @@ public class OrderMapper
         }
     }
 
-
     public static Order getOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT order_id, order_placed, carport_id, length, width, has_shed, roof_type, status, sales_price FROM orders WHERE order_id = ?";
@@ -158,7 +138,7 @@ public class OrderMapper
         }
     }
 
-    public static List<Order> getOrderHistory(String sortby, ConnectionPool pool) throws DatabaseException
+    public static List<Order> getOrderHistory(String sortBy, ConnectionPool pool) throws DatabaseException
     {
         String sql = "SELECT " +
                 "o.order_id," +
@@ -185,7 +165,6 @@ public class OrderMapper
         int length;
         int accountID;
         String carportID = "";
-
         String name;
         String email;
         int telephone;
@@ -194,7 +173,6 @@ public class OrderMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            //ps.setString(1, sortby);
             ResultSet rs = ps.executeQuery();
             List<Order> orders = new ArrayList<>();
             while (rs.next())
@@ -227,7 +205,6 @@ public class OrderMapper
             throw new DatabaseException(e.getMessage());
         }
     }
-
 
     public static int[] getLengthAndWidthByOrderID(int order_ID, ConnectionPool pool) throws DatabaseException
     {
@@ -276,29 +253,6 @@ public class OrderMapper
                 pickListPrice = rs.getInt("price");
             }
             return pickListPrice;
-        } catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    public static int getCoverageRatioByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        int coverageRatio = 0;
-
-        String sql = "SELECT coverage_ratio_percentage FROM orders WHERE order_id = ?;";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, orderID);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next())
-            {
-                coverageRatio = rs.getInt("coverage_ratio_percentage");
-            }
-            return coverageRatio;
         } catch (SQLException e)
         {
             System.out.println(e.getMessage());
@@ -369,31 +323,6 @@ public class OrderMapper
         return pickListPrice;
     }
 
-    //TODO: Vent med at slette før Caspers er kommet med
-    public static int setDefaultSalesPriceByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        int pickListPrice = getPickListPriceByOrderID(orderID, pool);
-        double coverageRatio = getCoverageRatioByOrderID(orderID, pool) / 100;
-        int salesPrice = Calculator.calcSalesPrice(pickListPrice, coverageRatio);
-
-        //Dækningsgrad = Salgspris/Kostpris - 1 * 100 for at få procent
-
-        String sql = "UPDATE orders SET sales_price = ? WHERE order_id = ?;";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, salesPrice);
-            ps.setInt(3, orderID);
-            return salesPrice;
-        } catch (SQLException e)
-        {
-            System.out.println(e.getMessage());
-            throw new DatabaseException(e.getMessage());
-        }
-    }
-
-    //TODO: TEST om dækningsgraden også bliver ændret
     public static void updateSalesPriceByOrderID(int newSalesPrice, int orderID, ConnectionPool pool) throws DatabaseException
     {
         double newCoverageRatio = ((double)newSalesPrice / (double)(getPickListPriceByOrderID(orderID, pool)))-1;
@@ -414,33 +343,6 @@ public class OrderMapper
             if (rowsAffected != 1)
             {
                 throw new DatabaseException("Failed to update salesprice for order with ID: " + orderID);
-            }
-        } catch (SQLException e)
-        {
-            throw new DatabaseException("Database error while updating balance", e.getMessage());
-        }
-
-    }
-
-    //TODO: Vent med at slette før Caspers er kommet med
-    public static void updateCoverageRatioPercentageByOrderID(int newCoverageRatio, int orderID, ConnectionPool pool) throws DatabaseException
-    {
-        int newSalesPrice = ((newCoverageRatio / 100) * getPickListPriceByOrderID(orderID, pool)) + getPickListPriceByOrderID(orderID, pool);
-        //Salgspris = ((dækningsgrad/100) * kostpris) + kostpris
-
-        String sql = "UPDATE orders SET sales_price = ? AND coverage_ratio_percentage = ? WHERE order_id = ?;";
-
-        try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql))
-        {
-            ps.setInt(1, newSalesPrice);
-            ps.setInt(2, newCoverageRatio);
-            ps.setInt(3, orderID);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1)
-            {
-                throw new DatabaseException("Failed to update coverage ratio for order with ID: " + orderID);
             }
         } catch (SQLException e)
         {
@@ -493,7 +395,6 @@ public class OrderMapper
         }
 
     }
-
 
     public static void deleteOrderByID(int orderID, ConnectionPool pool) throws DatabaseException
     {
@@ -562,6 +463,5 @@ public class OrderMapper
         }
         return svg;
     }
-
 
 }

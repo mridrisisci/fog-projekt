@@ -51,7 +51,6 @@ public class OrderController
             ctx.redirect("orderhistory");
         }
 
-
     }
 
     private static void showOrderOnOfferPage(Context ctx, ConnectionPool pool)
@@ -73,8 +72,6 @@ public class OrderController
             ctx.render("acceptoffer.html");
         }
     }
-
-
 
     private static void acceptOrDeclineOffer(Context ctx, ConnectionPool pool)
     {
@@ -270,7 +267,6 @@ public class OrderController
 
     }
 
-
     private static void showOrderHistory(Context ctx, ConnectionPool pool)
     {
         if (ctx.sessionAttribute("currentUser") == null)
@@ -286,14 +282,14 @@ public class OrderController
         if ("salesperson".equals(role))
         {
             List<Order> orders = new ArrayList<>();
-            String sortby = ctx.formParam("query");
+            String sortBy = ctx.formParam("query");
             try
             {
-                if (!(sortby == null || sortby.equals("username") || sortby.equals("status") || sortby.equals("date_placed") || sortby.equals("order_paid")))
+                if (!(sortBy == null || sortBy.equals("username") || sortBy.equals("status") || sortBy.equals("date_placed") || sortBy.equals("order_paid")))
                 {
-                    sortby = "order_id";
+                    sortBy = "order_id";
                 }
-                orders = OrderMapper.getOrderHistory(sortby, pool);
+                orders = OrderMapper.getOrderHistory(sortBy, pool);
             } catch (DatabaseException e)
             {
                 ctx.attribute("message", e.getMessage());
@@ -302,8 +298,6 @@ public class OrderController
             ctx.attribute("orders", orders);
             ctx.render("/orderhistory.html");
         }
-
-
 
     }
 
@@ -324,19 +318,5 @@ public class OrderController
             showOrderHistory(ctx, pool);
         }
 
-    }
-
-    private static Order getOrderByID(int orderID, Context ctx, ConnectionPool pool)
-    {
-        Order order;
-        try
-        {
-            order = OrderMapper.getOrderByID(orderID, pool);
-            return order;
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", e.getMessage());
-            return null;
-        }
     }
 }
