@@ -167,7 +167,7 @@ VALUES
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
 
 -- Indsæt en konto med rollen "salesperson"
-INSERT INTO public.cities (city_id, city) VALUES ('frederiksberg');
+INSERT INTO public.cities (city) VALUES ('frederiksberg');
 INSERT INTO public.postal_code (postal_code) VALUES (2000);
 INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES ('Second street', 1, 1);
 INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)

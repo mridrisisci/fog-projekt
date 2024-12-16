@@ -9,16 +9,15 @@ public class Carport
     private final int LENGTH;
     private int orderID;
     private boolean hasShed;
-    private RoofType Rooftype;
+    private RoofType roofType;
     private int price;
-    private int salesPrice;
 
     private List<Material> materialList = new ArrayList<>();
 
-    public Carport(List<Material> materialList, RoofType rooftype, boolean hasShed, int LENGTH, int WIDTH, int price)
+    public Carport(List<Material> materialList, RoofType roofType, boolean hasShed, int LENGTH, int WIDTH, int price)
     {
         this.materialList = materialList;
-        Rooftype = rooftype;
+        this.roofType = roofType;
         this.hasShed = hasShed;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
@@ -30,11 +29,6 @@ public class Carport
         this.orderID = orderID;
         this.LENGTH = LENGTH;
         this.WIDTH = WIDTH;
-    }
-
-    public void setMaterialList(List<Material> materialList)
-    {
-        this.materialList = materialList;
     }
 
     public int getOrderID()
@@ -52,11 +46,6 @@ public class Carport
         return LENGTH;
     }
 
-    public int getSalesPrice()
-    {
-        return salesPrice;
-    }
-
     public int getPrice()
     {
         return price;
@@ -67,24 +56,9 @@ public class Carport
         this.price = price;
     }
 
-    public void setSalesPrice(int salesPrice)
+    public void setMaterialList(List<Material> materialList)
     {
-        this.salesPrice = salesPrice;
-    }
-
-    public boolean isHasShed()
-    {
-        return hasShed;
-    }
-
-    public RoofType getRooftype()
-    {
-        return Rooftype;
-    }
-
-    public boolean hasShed()
-    {
-        return hasShed;
+        this.materialList = materialList;
     }
 
     public List<Material> getMaterialList()

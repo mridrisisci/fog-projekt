@@ -1,0 +1,242 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Main {
++main(String[] args)
+}
+
+package utilities {
+    class SendGrid
+    {
+    - String salespersonEmail
+    - String customerEmail
+    - String adminEmail
+    - String subjectLine
+    - Offer offer
+    - String body
+    }
+    class Calculator
+    {
+    + Calculator(int length, int width)
+    + int calcCarport(OrderLine orderLine)
+    + Product calcPosts(OrderLine orderLine)
+    + Product calcBeams(OrderLine orderLine)
+    + Product calcRafters(OrderLine orderLine)
+    + List<Product> calcBOM(User user, OrderLine orderLine)
+    + List<Product> calculateProductList(int posts, int beams, int rafters)
+    }
+}
+
+package controllers {
+    class OrderController {
+    + addRoutes()
+    - void requestPaymentByID()
+    - void confirmPaymentByID()
+    }
+
+    class UserController {
+    + addRoutes()
+    - User login()
+    - void logout()
+
+    }
+    class ProductController {
+    - Calculator calculator
+    + addRoutes()
+    - List<Product> getProductListByOrderLineID()
+    }
+}
+
+package entities {
+    class User{
+    - int userID
+    - String role
+    - String username
+    - String password
+    - int telephone
+    - String address
+
+    + int getUserID()
+    + String getRole()
+    + String getUsername()
+    + String getPassword()
+    + int getTelephoneNum()
+    + String getAddress()
+    }
+
+    class Order {
+    -int orderID
+    -String name
+    -String status
+    -TimeStamp orderPlaced
+    -TimeStamp orderPaid
+    -TimeStamp orderComplete
+    }
+
+    class OrderLine {
+    - int orderLineID
+    - int carportWidth
+    - int carportLength
+    - Roof roof
+    - Shed shed
+    - BigDecimal price
+    - int Quantity
+    }
+
+    class Offer
+    {
+    - int salesPrice
+    - User recipient
+    - User sender
+    - int tax
+    }
+
+    class Product {
+    - int productID
+    - String productName
+    - String description
+    - BigDecimal price
+    - String unit
+    - int quantity
+    - int length
+    }
+
+    class ProductVariant {
+    -Integer productVariantID
+    }
+
+package carport {
+    class Shed
+    {
+    int width
+    int length
+    }
+
+    abstract class Roof
+    {
+    -String roofType
+    }
+    class Flat
+    {
+    - String roofType
+    + String getRoofType()
+    }
+    class Pitched{
+    - int roofInclination
+    - String roofType
+    + int getroofInclination()
+    + String getRoofType()
+    }
+    }
+
+package productList {
+abstract class ProductList
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
+class BillOfMaterial
+{
+- List<Product> productList
++ List<Product> getProductList()
+}
+class PickList
+{
+- List<Product> productList
++ List<Product> getProductList()
++ void addToProductList()
++ void removeFromProductList()
+
+}
+class Invoice
+{
+- List<Product> productList
+- String message
++ List<Product> getProductList()
++ String generateInvoiceText(OrderLine orderLine)
+}
+}
+}
+
+package exceptions {
+    class DatabaseException
+    {
+    + DatabaseException(String userMessage)
+    + DatabaseException((String userMessage, String systemMessage)
+    }
+}
+
+package persistence {
+    class ConnectionPool {
+    +ConnectionPool instance
+    +HikariDataSource ds
+    'Ved ikke om de skal være static eller ej^
+    +getInstance()
+    +getConnection()
+    +close()
+    -createHikariConnectionPool
+    }
+
+    class OrderMapper {
+    + Order getOrder()
+    + List<Order> getOrderByUserID(int userID)
+    + List<Order> getAllOrders()
+    + OrderLine getOrderLineByOrderID()
+    + void deleteOrderByID(int userID, int orderID)
+    + void updateOrderByUserID(OrderLine orderLine)
+    + void addOrderToDB(Order order, OrderLine orderLine)
+    }
+
+    class ProductMapper {
+    + product getProduct()
+    + product getProductByID(int productID)
+    + void updateProduct(Product product)
+    + void addProductToDB(Product product)
+    + void deleteProductByID(int productID)
+    + List<Product> getAllProducts()
+    }
+
+    class UserMapper {
+    + void addUser()
+    + void deleteUser()
+    + void updateUser()
+    + User getUserByOrderID()
+    + List<User> getAllUsers()
+    + void login()
+    }
+}
+
+package config {
+class ThymeLeafConfig {
++ templateEngine()
+}
+}
+
+Main o-- controllers
+
+OrderController -- OrderMapper
+ProductController -- ProductMapper
+UserController -- UserMapper
+
+Order *-- OrderLine
+Order o-- User
+OrderLine *-- Product
+
+Product o-- ProductVariant
+
+SendGrid o-- Offer
+Calculator o-- ProductMapper
+
+
+ProductList <|-- BillOfMaterial
+ProductList <|-- PickList
+ProductList <|-- Invoice
+
+Roof <|-- Flat
+Roof <|-- Pitched
+
+persistence o-- DatabaseException
+Main o-- config
+
+@enduml
