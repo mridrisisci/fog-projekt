@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS public.accounts
     telephone integer,
     addresses_id integer NOT NULL,
     CONSTRAINT account_pk PRIMARY KEY (account_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.addresses
 (
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS public.addresses
     postal_code_id integer NOT NULL,
     city_id integer NOT NULL,
     CONSTRAINT addresses_pkey PRIMARY KEY (addresses_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.cities
 (
     city_id serial NOT NULL,
     city character varying(50) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT cities_pkey PRIMARY KEY (city_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.materials
 (
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS public.materials
     type character varying(50) COLLATE pg_catalog."default",
     description character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT material_pk PRIMARY KEY (material_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.orders
 (
@@ -64,16 +64,16 @@ CREATE TABLE IF NOT EXISTS public.orders
     sales_price integer,
     coverage_ratio_percentage integer,
     order_placed timestamp with time zone,
-    order_paid boolean NOT NULL,
-    height integer,
-    width integer NOT NULL,
-    length integer NOT NULL,
-    has_shed boolean NOT NULL,
-    roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
+                               order_paid boolean NOT NULL,
+                               height integer,
+                               width integer NOT NULL,
+                               length integer NOT NULL,
+                               has_shed boolean NOT NULL,
+                               roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
     svg text,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.orders_materials
 (
@@ -82,55 +82,55 @@ CREATE TABLE IF NOT EXISTS public.orders_materials
     material_id integer NOT NULL,
     quantity integer NOT NULL,
     CONSTRAINT orders_materials_pk PRIMARY KEY (orders_materials_id)
-);
+    );
 
 CREATE TABLE IF NOT EXISTS public.postal_code
 (
     postal_code_id serial NOT NULL,
     postal_code integer NOT NULL,
     CONSTRAINT postal_code_pkey PRIMARY KEY (postal_code_id)
-);
+    );
 
 ALTER TABLE IF EXISTS public.accounts
     ADD CONSTRAINT accounts_addresses_fk FOREIGN KEY (addresses_id)
-        REFERENCES public.addresses (addresses_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.addresses (addresses_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT addresses_cities_fk FOREIGN KEY (city_id)
-        REFERENCES public.cities (city_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.cities (city_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.addresses
     ADD CONSTRAINT addresses_postal_code_fk FOREIGN KEY (postal_code_id)
-        REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.postal_code (postal_code_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.orders
     ADD CONSTRAINT orders_account_fk FOREIGN KEY (account_id)
-        REFERENCES public.accounts (account_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.accounts (account_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.orders_materials
     ADD CONSTRAINT orders_materials_material_fk FOREIGN KEY (material_id)
-        REFERENCES public.materials (material_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.materials (material_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 
 ALTER TABLE IF EXISTS public.orders_materials
     ADD CONSTRAINT orders_materials_order_fk FOREIGN KEY (order_id)
-        REFERENCES public.orders (order_id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+    REFERENCES public.orders (order_id) MATCH SIMPLE
+    ON UPDATE CASCADE
+       ON DELETE CASCADE;
 
 -- Insert data into materials
 INSERT INTO public.materials (name, unit, price, length, height, width, type, description)
@@ -167,11 +167,11 @@ VALUES
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
 
 -- Indsæt en konto med rollen "salesperson"
-INSERT INTO public.cities (city_id, city) VALUES ('frederiksberg');
+INSERT INTO public.cities (city) VALUES ('frederiksberg');
 INSERT INTO public.postal_code (postal_code) VALUES (2000);
 INSERT INTO public.addresses (address, postal_code_id, city_id) VALUES ('Second street', 1, 1);
 INSERT INTO public.accounts (role, username, email, password, telephone, addresses_id)
-VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.dk', '$2a$10$d4at6bZlDljL1ZOEfx1zR.AkFTiWoaoW4X6np3YoNEH/O23SEKSay', '91919191', 1);
+VALUES ('salesperson', 'Martin', 'sales.person.fog@gmail.com', '$2a$10$d4at6bZlDljL1ZOEfx1zR.AkFTiWoaoW4X6np3YoNEH/O23SEKSay', '91919191', 1);
 
 
 -- Indsæt en konto med rollen "admin"

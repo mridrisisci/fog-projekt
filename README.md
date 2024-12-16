@@ -11,7 +11,7 @@ Der ligger et sql script i /src/main/resources/sql som skal køres for at oprett
 Scriptet opretter to konti:
 
 ####  1. Sælgerkonto
-Brugernavn: Martin, mail: sales.person.fog@gmail.dk med koden: 1234
+Brugernavn: Martin, mail: sales.person.fog@gmail.com med koden: 1234
 ####  2. Admin konto
 Brugernavn: admin, mail: admin@cph.dk med koden: 1234
 
