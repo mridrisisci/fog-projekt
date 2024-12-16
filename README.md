@@ -12,7 +12,7 @@ Scriptet opretter to konti:
 
 ####  1. Sælgerkonto
 Brugernavn: Martin, mail: sales.person.fog@gmail.dk med koden: 1234
-####  2. admin konto
+####  2. Admin konto
 Brugernavn: admin, mail: admin@cph.dk med koden: 1234
 
 ## Techstak
@@ -24,3 +24,9 @@ Brugernavn: admin, mail: admin@cph.dk med koden: 1234
 * HTML5 og CSS3: Bruges til at designe og strukturere webapplikationens brugergrænseflade.
 * Bootstrap (version 5.3.3): Responsivt CSS (og JavaScript) framework, som giver en grundlæggende styling og funktionalitet der kan forventes af et moderne website.
 * IntelliJ IDEA 2024.2.4 (Ultimate): IDE til udvikling og debugging af projektet.
+* SendGrid Version 4.10.1
+* SVG 
+* JDK Amazon Corretto 22 (version 22.0.2)
+* Build tool Maven (compiler version 3.13.0)
+
+
