@@ -4,7 +4,19 @@ public class Roof
 {
     private int roofLength;
     private int roofWidth;
-    private final RoofType type;
+    private  RoofType roofType;
+
+    public Roof(RoofType roofType, int roofWidth, int roofLength)
+    {
+        this.roofType = roofType;
+        this.roofWidth = roofWidth;
+        this.roofLength = roofLength;
+    }
+
+    public Roof(RoofType roofType)
+    {
+        this.roofType = roofType;
+    }
 
     public int getRoofLength()
     {
@@ -16,15 +28,8 @@ public class Roof
         return roofWidth;
     }
 
-    public RoofType getType()
+    public RoofType getRoofType()
     {
-        return type;
-    }
-
-    public Roof(RoofType type, int roofWidth, int roofLength)
-    {
-        this.type = type;
-        this.roofWidth = roofWidth;
-        this.roofLength = roofLength;
+        return roofType;
     }
 }

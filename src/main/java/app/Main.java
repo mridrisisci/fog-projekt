@@ -6,12 +6,8 @@ import app.controllers.AccountController;
 import app.controllers.MaterialController;
 import app.controllers.OrderController;
 import app.persistence.ConnectionPool;
-import app.utilities.SendGrid;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.rendering.template.JavalinThymeleaf;
-
-import java.io.IOException;
 
 public class Main {
 
@@ -21,15 +17,6 @@ public class Main {
     private static final String DB = "carport";
 
     private static final ConnectionPool dBConnection = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
-    public boolean sendGrid(String to, String name, String email, String zip, String body) {
-        try {
-            SendGrid.sendEmail(to, name, email, zip, body);
-            return true; // Email sent successfully
-        } catch (IOException e) {
-            System.err.println("Failed to send email: " + e.getMessage());
-            return false; // Email sending failed
-        }
-    }
 
     public static void main(String[] args) {
 
@@ -45,16 +32,6 @@ public class Main {
         MaterialController.addRoutes(app, dBConnection);
         AccountController.addRoutes(app, dBConnection);
 
-        app.get("/send-email", ctx -> ctx.render("send_email.html"));
 
-        app.post("/send-email", ctx ->
-        {
-            boolean result = SendGrid.sendMailFromMain(ctx);
-            if (result) {
-                ctx.result("Email sent successfully!");
-            } else {
-                ctx.result("Failed to send email. Please try again.");
-            }
-        });
     }
 }

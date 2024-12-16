@@ -7,18 +7,16 @@ import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
-import java.util.List;
-
 public class AccountController
 {
     public static void addRoutes(Javalin app, ConnectionPool dBConnection)
     {
-        app.get("/seequeries", ctx -> ctx.render("requestedqueries.html") );
-        app.get("/login", ctx -> ctx.render("login.html") );
+        app.get("/seequeries", ctx -> ctx.render("orderhistory.html"));
+        app.get("/login", ctx -> ctx.render("login.html"));
         app.post("/login", ctx -> doLogin(ctx, dBConnection));
-        app.get("/createaccount", ctx -> ctx.render("createaccount.html") );
-        app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection) );
-        app.post("/logout", ctx -> doLogout(ctx));
+        app.get("/createaccount", ctx -> ctx.render("createaccount.html"));
+        app.post("/createaccount", ctx -> createSalesAccount(ctx, dBConnection));
+        app.get("/logout", AccountController::doLogout);
 
     }
 
@@ -38,13 +36,12 @@ public class AccountController
         if (password.length() >= 8 && hasNumber && hasSpecialChar)
         {
             return true; // Password meets all criteria
-        }
-        else
+        } else
         {
             ctx.attribute("message", "Kodeordet følger ikke op til krav. Check venligst: <br>" +
-                "Minimumslængde på 8 tegn, " +
-                "Inkluder et tal i dit kodeord, " +
-                "Inkluder et special tegn ");
+                    "Minimumslængde på 8 tegn, " +
+                    "Inkluder et tal i dit kodeord, " +
+                    "Inkluder et special tegn ");
         }
         return false;
     }
@@ -55,14 +52,16 @@ public class AccountController
         String role = "salesperson";
         String email = ctx.formParam("chooseEmail");
         String telephoneString = ctx.formParam("choosePhoneNumber");
+        assert telephoneString != null;
         int telephone = Integer.parseInt(telephoneString);
         String password = ctx.formParam("choosePassword");
         String confirmPassword = ctx.formParam("confirmPassword");
 
         String zipString = ctx.formParam("choosePostalCode");
+        assert zipString != null;
         int zip = Integer.parseInt(zipString);
         String city = ctx.formParam("chooseCity");
-        String address = ctx.formParam("chooseAddress"); // chooseAdress
+        String address = ctx.formParam("chooseAddress");
 
         // Simple email check
         if (email == null || !email.contains("@") || !email.contains("."))
@@ -89,8 +88,7 @@ public class AccountController
                 if (e.getMessage().contains("duplicate key value violates unique constraint"))
                 {
                     ctx.attribute("message", "Brugernavnet er allerede i brug. Prøv et andet.");
-                }
-                else
+                } else
                 {
                     ctx.attribute("message", e.getMessage());
                 }
@@ -109,7 +107,7 @@ public class AccountController
     {
         String email = ctx.formParam("email");
         String password = ctx.formParam("password");
-        if (email !=null )
+        if (email != null)
         {
             email = email.toLowerCase(); // Avoiding potential nullPointerExceptions
         }
@@ -131,20 +129,5 @@ public class AccountController
         ctx.req().getSession().invalidate();
         ctx.redirect("/");
     }
-
-    private static void getAllAccounts(Context ctx, ConnectionPool pool)
-    {
-        try
-        {
-            List<Account> allCustomers = AccountMapper.getAllCustomerQueries(pool);
-            ctx.attribute("allcustomers", allCustomers);
-            ctx.render("requestedqueries.html");
-        } catch (DatabaseException e)
-        {
-            ctx.attribute("message", e.getMessage());
-            ctx.render("requestedqueries.html");
-        }
-    }
-
 
 }

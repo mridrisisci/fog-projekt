@@ -15,7 +15,6 @@
     <header th:replace="~{fragments :: header}"></header>
 
     <div class="content bg-light rounded-4 p-5">
-        <h2 class="display-1">Custom Carport - Fog</h2>
         <div th:if="${#ctx.message!=null}" th:text="${#ctx.message}" class="alert alert-warning bg-gradient"
              role="alert">Fejlbeskeder vises her
         </div>
@@ -28,30 +27,27 @@
                             <thead>
                             <tr>
                                 <th class="text-center"><i class="bi bi-trash3"></i></th>
-                                <th><a th:href="@{/seequeries(query=orderid)}">Order #</a></th>
-                                <th><a th:href="@{/seequeries(query=CARPORT_ID)}">Carport ID</a></th>
-                                <th><a th:href="@{/seequeries(query=username)}">Navn</a></th>
-                                <th><a th:href="@{/seequeries(query=status)}">Status</a></th>
-                                <th><a th:href="@{/seequeries(query=DATE_PLACED)}">Oprettet</a></th>
-                                <th><a th:href="@{/seequeries(query=order_paid)}">Betalt</a></th>
-                                <th><a th:href="@{/seequeries(query=HEIGHT)}">Højde</a></th>
-                                <th><a th:href="@{/seequeries(query=LENGTH)}">Længde</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderid)}">Order #</a></th>
+                                <th><a th:href="@{/orderhistory(query=carportID)}">Carport ID</a></th>
+                                <th><a th:href="@{/orderhistory(query=username)}">Kundenavn</a></th>
+                                <th><a th:href="@{/orderhistory(query=status)}">Status på behandling</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderPlaced)}">Ordre oprettet</a></th>
+                                <th><a th:href="@{/orderhistory(query=orderPaid)}">Betalingsstatus</a></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr class="" th:each="order : ${orders}">
-                                <td class="text-center"><a th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" class="link-danger link-opacity-50-hover" href="/order/delete" th:href="@{/order/delete(order_id=${order.ORDER_ID})}" ><i class="bi bi-trash3"></i></a></td>
-                                <td><a class="" href="order/details" th:href="@{/order/details/{id}(id=${order.ORDER_ID})}" th:text="${order.ORDER_ID}">order id</a></td>
-                                <td th:text="${order.status}">Navn</td>
+                                <td class="text-center"><a th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" class="link-danger link-opacity-50-hover" href="/order/delete" th:href="@{/order/delete(orderID=${order.orderID})}" ><i class="bi bi-trash3"></i></a></td>
+                                <td><a class="" href="order/details" th:href="@{/order/details/{id}(id=${order.orderID})}" th:text="${order.orderID}">order id</a></td>
+                                <td th:text="${order.carportID}">Navn</td>
                                 <td>
-                                    <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.status}">Konto</a>
+                                    <a th:if="${order.account != null}" href="/customer" th:href="@{/customer/{id}(id=${order.account.accountID})}" th:text="${order.account.username}">Konto</a>
                                 </td>
-                                <td><span class="badge text-bg-info" th:text="${order.status}">Status</span></td>
-                                <td th:text="${order.ORDER_PLACED}">Dato</td>
-                                <td th:text="${order.orderPaid}">Dato</td>
+                                <td><span class="badge text-bg-info" th:text="${order.status}">Ordrestatus</span></td>
+                                <td th:text="${order.orderPlaced}">Bestillingsdato</td>
+                                <td th:text="${order.paymentStatus}">Betalingsstatus</td>
                                 <td>
-                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="order/finish" th:href="@{/order/finish/{id}(id=${order.ORDER_ID})}">Afslut ordre</a>
-                                    <span th:text="${order.status}">Status</span>
+                                    <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="/order/details" th:href="@{/order/details/{id}(id=${order.orderID})}">Se ordre</a> </br>
                                 </td>
                             </tr>
                             </tbody>

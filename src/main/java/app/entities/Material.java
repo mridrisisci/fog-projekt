@@ -5,68 +5,92 @@ public class Material
     private int materialID;
     private String materialName;
     private String description;
-    private int purchasePrice;
+    private int price;
     private String unit;
     private int quantity;
     private int length;
     private int height;
     private int width;
     private boolean hasShedAddons;
-    public int getNumbersOfShedAddons;
     private String type;
+    private int svgStartPosX;
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, int height, int width, boolean hasShedAddons, int getNumbersOfShedAddons)
+    private int svgStartPosY;
+
+    private int svgEndPosX;
+
+    private int svgEndPosY;
+    private int svgWidth;
+
+    private int svgHeight;
+    private boolean svgRafter;
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, boolean hasShedAddons)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = price;
         this.unit = unit;
         this.quantity = quantity;
         this.length = length;
         this.height = height;
         this.width = width;
         this.hasShedAddons = hasShedAddons;
-        this.getNumbersOfShedAddons = getNumbersOfShedAddons;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length, String type)
+    public Material(int materialID, int length, int width, int quantity, String type)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+        this.quantity = quantity;
+    }
+
+    public Material(int materialID, String materialName, String description, int price, String unit, int length, int height, int width, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
-        this.unit = unit;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = price;
+        this.unit = unit;
         this.length = length;
+        this.height = height;
+        this.width = width;
         this.type = type;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, int length)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.unit = unit;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = price;
+        this.quantity = quantity;
+        this.length = length;
+        this.type = type;
+    }
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
         this.length = length;
     }
 
-    public Material(int materialID, String materialName, String description, int purchasePrice, String unit, int quantity, String type)
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, String type)
     {
         this.materialID = materialID;
         this.materialName = materialName;
         this.description = description;
-        this.purchasePrice = purchasePrice;
+        this.price = price;
         this.unit = unit;
         this.quantity = quantity;
         this.type = type;
-    }
-
-    public Material(String materialName, String unit, String description)
-    {
-        this.materialName = materialName;
-        this.unit = unit;
-        this.description = description;
     }
 
     public Material(String name, String unit, String description, String type, int quantity)
@@ -77,6 +101,64 @@ public class Material
         this.type = type;
         this.quantity = quantity;
     }
+
+    public Material(int materialID, int length, int width, String type, int quantity)
+    {
+        this.materialID = materialID;
+        this.length = length;
+        this.width = width;
+        this.type = type;
+        this.quantity = quantity;
+    }
+
+    public Material(String type, int length, int width, int svgStartPosX, int svgStartPosY){
+        this.type = type;
+        this.length = length;
+        this.width = width;
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartPosY;
+    }
+
+    public Material(int svgStartPosX, int svgStartPosY)
+    {
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartPosY;
+    }
+
+
+    public Material(int svgStartPosX, int svgStartY, int svgWidth, int svgHeight)
+    {
+        this.svgStartPosX = svgStartPosX;
+        this.svgStartPosY = svgStartY;
+        this.svgWidth = svgWidth;
+        this.svgHeight = svgHeight;
+    }
+
+    public Material(int svgStartPosX,  int svgEndPosX, int svgStartPosY, int svgEndPosY, boolean svgRafter)
+    {
+        this.svgStartPosX = svgStartPosX;
+        this.svgEndPosX = svgEndPosX;
+        this.svgStartPosY = svgStartPosY;
+        this.svgEndPosY = svgEndPosY;
+        this.svgRafter = svgRafter;
+    }
+
+    public int getSvgEndPosX()
+    {
+        return svgEndPosX;
+    }
+
+    public int getSvgEndPosY()
+    {
+        return svgEndPosY;
+    }
+    public Material(String materialName, String unit, String description)
+    {
+        this.materialName = materialName;
+        this.unit = unit;
+        this.description = description;
+    }
+
 
     public Material(String type)
     {
@@ -93,6 +175,11 @@ public class Material
         return materialID;
     }
 
+    public void setQuantity(int quantity)
+    {
+        this.quantity = quantity;
+    }
+
     public String getMaterialName()
     {
         return materialName;
@@ -103,9 +190,9 @@ public class Material
         return description;
     }
 
-    public int getPurchasePrice()
+    public int getPrice()
     {
-        return purchasePrice;
+        return price;
     }
 
     public String getUnit()
@@ -138,8 +225,44 @@ public class Material
         return hasShedAddons;
     }
 
-    public int getGetNumbersOfShedAddons()
+    public void setSvgStartPosX(int svgStartPosX)
     {
-        return getNumbersOfShedAddons;
+        this.svgStartPosX = svgStartPosX;
+    }
+
+    public void setSvgStartPosY(int svgStartPosY)
+    {
+        this.svgStartPosY = svgStartPosY;
+    }
+
+    public int getSvgStartPosX()
+    {
+        return svgStartPosX;
+    }
+
+    public int getSvgStartPosY()
+    {
+        return svgStartPosY;
+    }
+
+
+    public int getSvgWidth()
+    {
+        return svgWidth;
+    }
+
+    public int getSvgHeight()
+    {
+        return svgHeight;
+    }
+
+    public void setSvgWidth(int svgWidth)
+    {
+        this.svgWidth = svgWidth;
+    }
+
+    public void setSvgHeight(int svgHeight)
+    {
+        this.svgHeight = svgHeight;
     }
 }

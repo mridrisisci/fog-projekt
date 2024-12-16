@@ -10,26 +10,36 @@ public class Account
     private String email;
     private String address;
 
-    public Account(String username, String email, int telephone)
+    public Account(int accountID, String username, String email, int telephone, String role)
     {
-        this.username = username;
-        this.username = email;
-        this.telephone = telephone;
-    }
-
-    public Account(int accountID, String email, String role)
-    {
-        this.accountID = accountID;
-        this.username = email;
-        this.role = role;
-    }
-
-    public Account(int accountID, String username, String email, int telephone)
-    { // this constructor is used for 'seeallqueries' mapper method
+        // this constructor is used for 'orderhistory' mapper method
         this.accountID = accountID;
         this.username = username;
         this.email = email;
         this.telephone = telephone;
+        this.role = role;
+    }
+
+    public Account(String username, String email, int telephone)
+    {
+        this.username = username;
+        this.email = email;
+        this.telephone = telephone;
+    }
+
+    public Account(int accountID, String email, int telephone)
+    {
+        // used to log in
+        this.accountID = accountID;
+        this.username = email;
+        this.telephone = telephone;
+    }
+
+    public Account(String username, String email)
+    {
+        // used for send tilbud-route
+        this.username = username;
+        this.email = email;
     }
 
     public int getAccountID()
@@ -47,10 +57,7 @@ public class Account
         return username;
     }
 
-    public String getPassword()
-    {
-        return password;
-    }
+    public String getPassword() { return password; }
 
     public int getTelephone()
     {

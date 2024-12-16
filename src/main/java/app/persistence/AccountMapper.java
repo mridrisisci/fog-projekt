@@ -3,7 +3,6 @@ package app.persistence;
 import app.entities.Account;
 import app.exceptions.DatabaseException;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,15 +41,15 @@ public class AccountMapper
         {
             throw new DatabaseException(e.getMessage());
         }
-
     }
 
-    public static void createSalesAccount(String role, String username, String email, String password, int telephone,  int adressesID, ConnectionPool pool) throws DatabaseException
-    { // TODO: Mangler at blive opdateret, så den kan eksekveres fra Controlleren.
+    public static void createSalesAccount(String role, String username, String email, String password, int telephone, int adressesID, ConnectionPool pool) throws DatabaseException
+    {
         String sql = "insert into accounts (role, username, email, password, telephone, addresses_id) VALUES (?,?,?,?,?,?);";
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        try (Connection connection = pool.getConnection()) {
+        try (Connection connection = pool.getConnection())
+        {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, role);
             ps.setString(2, username);
@@ -60,16 +59,15 @@ public class AccountMapper
             ps.setInt(6, adressesID);
 
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
+            if (rowsAffected != 1)
+            {
                 throw new DatabaseException("Fejl ved oprettelse af konto");
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             throw new DatabaseException(e.getMessage());
         }
     }
-
-
-
 
     public static Account login(String email, String password, ConnectionPool pool) throws DatabaseException
     {
@@ -87,16 +85,16 @@ public class AccountMapper
                 if (BCrypt.checkpw(password, storedHashedPassword))
                 {
                     int id = rs.getInt("account_id");
+                    String username = rs.getString("username");
+                    int telephone = rs.getInt("telephone");
                     String role = rs.getString("role");
-                    return new Account(id, email, role);
-                }
-                else
+                    return new Account(id, username, email, telephone, role);
+                } else
                 {
                     // Catching wrong passwords.
                     throw new DatabaseException("Kodeord matcher ikke. Prøv igen");
                 }
-            }
-            else
+            } else
             {
                 // Catching wrong usernames.
                 throw new DatabaseException("Brugernavn matcher ikke. Prøv igen");
@@ -110,7 +108,6 @@ public class AccountMapper
 
     public static int createRecordInPostalCode(int postalCode, ConnectionPool pool) throws DatabaseException
     {
-
         String sql = "INSERT INTO postal_code (postal_code) VALUES (?)";
 
         try (Connection connection = pool.getConnection();
@@ -136,16 +133,14 @@ public class AccountMapper
         {
             throw new DatabaseException(e.getMessage());
         }
-
     }
 
     public static int createRecordInCities(String city, ConnectionPool pool) throws DatabaseException
     {
-
         String sql = "INSERT INTO cities (city) VALUES (?)";
 
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
         {
             ps.setString(1, city);
 
@@ -161,13 +156,12 @@ public class AccountMapper
                 return rs.getInt(1);
             } else
             {
-                throw new DatabaseException("Kunne ikke hente autogenerert id");
+                throw new DatabaseException("Kunne ikke hente autogenerert ID");
             }
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
         }
-
     }
 
     public static int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
@@ -195,9 +189,8 @@ public class AccountMapper
                 return rs.getInt(1);
             } else
             {
-                throw new DatabaseException("kunne ikke hente autogenereret ID");
+                throw new DatabaseException("Kunne ikke hente autogenereret ID");
             }
-
 
         } catch (SQLException e)
         {
@@ -205,51 +198,33 @@ public class AccountMapper
         }
     }
 
-    public static void addAccount()
+    public static Account getAccountByOrderID(int orderID, ConnectionPool pool) throws DatabaseException
     {
-
-    }
-    public static void deleteAccount(Account account)
-    {
-
-    }
-    public static void updateAccount(Account account)
-    {
-
-    }
-    public static Account getAccountByID(Account account)
-    {
-        return null;
-    }
-    public static List<Account> getAllCustomerQueries(ConnectionPool pool) throws DatabaseException
-    {
-
-        String sql = "SELECT username, email, telephone FROM accounts WHERE role = 'customer'";
+        String sql = "SELECT o.order_id, a.account_id, a.username, a.telephone, a.role, a.email, a.password, o.account_id " +
+                "FROM orders o " +
+                "INNER JOIN accounts a ON o.account_id = a.account_id " +
+                "WHERE o.order_id = ?";
         String username;
         String email;
-        int telephone;
-
         try (Connection connection = pool.getConnection();
-        PreparedStatement ps = connection.prepareStatement(sql))
+             PreparedStatement ps = connection.prepareStatement(sql))
         {
-            List<Account> accounts = new ArrayList<>();
+            ps.setInt(1, orderID);
             ResultSet rs = ps.executeQuery();
             while (rs.next())
             {
+                int id = rs.getInt("account_id");
                 username = rs.getString("username");
                 email = rs.getString("email");
-                telephone = rs.getInt("telephone");
-                accounts.add(new Account(username, email, telephone) );
-                return accounts;
+                int telephone = rs.getInt("telephone");
+                String role = rs.getString("role");
+                return new Account(id, username, email, telephone, role);
             }
-        return null;
         } catch (SQLException e)
         {
+            System.out.println(e.getMessage());
             throw new DatabaseException(e.getMessage());
         }
-    }
-    public static void login()
-    {
-
+        return null;
     }
 }

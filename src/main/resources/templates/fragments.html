@@ -19,34 +19,33 @@
                      alt="Fog logo">
             </a>
         </div>
-        <nav class="navbar navbar-expand-sm mb-3 bg-body-tertiary">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-            </div>
-        </nav>
         <nav class="navbar navbar-expand-sm mb-3 bg-body-tertiary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav nav-underline mb-2 mb-lg-0">
-                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
-                            <a class="nav-link" href="/seeallqueries" th:href="@{/seeallqueries}">Se alle forespørgsler</a>
+                    <ul class="navbar-nav nav-underline ms-auto mb-2 me-1 mb-lg-0">
+                        <li class="nav-item" th:if="${session.currentUser != null}">
+                            <span class="nav-link" th:text="'Hej, ' + ${session.currentUser.username}">Velkommen, </span>
                         </li>
-                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
+                        <!--<li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">-->
                             <a href="/createaccount" th:href="@{/createaccount}" class="nav-link">Opret bruger</a>
                         </li>
-                        <li>
+                        <li th:if="${session.currentUser == null}">
                             <a class="nav-link" href="/login" th:href="@{/login}">Log ind</a>
                         </li>
-                        <li>
+                        <li th:if="${session.currentUser != null}">
                             <a class="nav-link" href="/logout" th:href="@{/logout}">Log ud</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav nav-underline ms-auto mb-2 me-1 mb-lg-0">
+                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
+                            <a class="nav-link" href="listOfMaterials" th:href="@{listOfMaterials}">Materialeliste</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}">
+                            <a class="nav-link" href="/orderhistory" th:href="@{/orderhistory}">Se alle forespørgsler</a>
                         </li>
                     </ul>
                 </div>

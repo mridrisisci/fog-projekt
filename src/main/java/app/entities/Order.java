@@ -2,117 +2,154 @@ package app.entities;
 
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Order
 {
-    private final int ORDER_ID;
-    private final String CARPORT_ID;
-    private int SALESPERSON_ID;
+    private int orderID;
+    private String carportID;
     private int price;
-    private final Timestamp ORDER_PLACED;
-    private  boolean IS_ASSIGNED;
+    private Timestamp orderPlaced;
     private String status;
     private Account account;
-    private int HEIGHT;
-    private int LENGTH;
+    private int width;
+    private int length;
     private boolean orderPaid;
     private int salesPrice;
-    private String roofType;
+    private RoofType roofType;
     private int coverageRatioPercentage;
     private int accountID;
+    private Carport carport;
+    private String shed;
+    private boolean hasShed;
+    private List<String> orderDetails;
+    private String paymentStatus;
+    private String svg;
 
-    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    public Order(int orderId, String carportId, int salespersonId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        ORDER_ID = orderId;
-        CARPORT_ID = carportId;
-        SALESPERSON_ID = salespersonId;
+        this.orderID = orderID;
+        this.carportID = carportID;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
     }
 
-    public Order(int orderId, String carportId, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, String roofType, int accountID)
+    public Order(int orderID, String carportID, int price, int salesPrice, int coverageRatioPercentage, String status, Timestamp orderPlaced, RoofType roofType, int accountID)
     {
-        ORDER_ID = orderId;
-        CARPORT_ID = carportId;
+        this.orderID = orderID;
+        this.carportID = carportID;
         this.price = price;
         this.salesPrice = salesPrice;
         this.coverageRatioPercentage = coverageRatioPercentage;
-        ORDER_PLACED = orderPlaced;
+        this.orderPlaced = orderPlaced;
         this.status = status;
         this.roofType = roofType;
         this.accountID = accountID;
     }
 
-
-    public Order(int orderId, String carportId, String status, Timestamp orderPlaced, boolean orderPaid, int HEIGHT, int LENGTH, Account account)
-    { // used for 'seequeries.html'
-        this.ORDER_ID = orderId;
-        this.CARPORT_ID = carportId;
+    public Order(int orderID, Timestamp orderPlaced, String status, String carportID, int length, int width, String shed, int salesPrice, RoofType roofType)
+    {
+        // this is used for 'receipt.html' && sendOffer
+        this.orderID = orderID;
+        this.orderPlaced = orderPlaced;
         this.status = status;
-        this.ORDER_PLACED = orderPlaced;
-        this.orderPaid = orderPaid;
-        this.HEIGHT = HEIGHT;
-        this.LENGTH = LENGTH;
+        this.carportID = carportID;
+        this.length = length;
+        this.width = width;
+        this.shed = shed;
+        this.salesPrice = salesPrice;
+        this.roofType = roofType;
+    }
+
+    public Order(int orderID, String status, String carportID, Timestamp orderPlaced, String paymentStatus, int width, int length, Account account)
+    {
+        // used for 'orderhistory.html'
+        this.orderID = orderID;
+        this.status = status;
+        this.carportID = carportID;
+        this.orderPlaced = orderPlaced;
+        this.paymentStatus = paymentStatus;
+        this.width = width;
+        this.length = length;
         this.account = account;
     }
-    public Order(int orderID, Timestamp orderPlaced, String status, String carportID)
-    {
-        this.ORDER_ID = orderID;
-        ORDER_PLACED = orderPlaced;
-        this.status = status;
-        this.CARPORT_ID = carportID;
 
+    public Order(int orderID, int width, int length, String shed, RoofType roofType, int salesPrice, int coverageRatioPercentage, int price, Account account)
+    {
+        // used for orderdetails
+        this.orderID = orderID;
+        this.width = width;
+        this.length = length;
+        this.shed = shed;
+        this.roofType = roofType;
+        this.salesPrice = salesPrice;
+        this.price = price;
+        this.account = account;
+        this.coverageRatioPercentage = coverageRatioPercentage;
+    }
+
+    public void setSvg(String svg)
+    {
+        this.svg = svg;
+    }
+
+    public String getSvg()
+    {
+        return svg;
+    }
+
+    public String getShed() { return shed; }
+
+    public String getPaymentStatus()
+    {
+        return paymentStatus;
     }
 
 
-
-    public boolean isIS_ASSIGNED()
+    public List<String> getOrderDetails()
     {
-        return IS_ASSIGNED;
+        return orderDetails;
     }
 
-    public int getORDER_ID()
+    public Carport getCarport()
     {
-        return ORDER_ID;
+        return carport;
+    }
+
+    public int getOrderID()
+    {
+        return orderID;
     }
 
     public String getStatus()
     {
         return status;
     }
-    public boolean getOrderPaid()
+
+    public Timestamp getOrderPlaced()
     {
-        return orderPaid;
+        return orderPlaced;
     }
 
-    public Timestamp getORDER_PLACED()
+    public int getWidth()
     {
-        return ORDER_PLACED;
+        return width;
     }
 
-    public int getHEIGHT()
+    public int getLength()
     {
-        return HEIGHT;
-    }
-
-    public int getLENGTH()
-    {
-        return LENGTH;
+        return length;
     }
 
 
-    public String getCARPORT_ID()
+    public String getCarportID()
     {
-        return CARPORT_ID;
-    }
-    public int getSALESPERSON_ID()
-    {
-        return SALESPERSON_ID;
+        return carportID;
     }
 
     public int getPrice()
@@ -130,7 +167,7 @@ public class Order
         return salesPrice;
     }
 
-    public String getRoofType()
+    public RoofType getRoofType()
     {
         return roofType;
     }
@@ -149,14 +186,13 @@ public class Order
     public String toString()
     {
         return "Order {" +
-            "orderId=" + ORDER_ID +
-            ", carportId=" + CARPORT_ID +
-            ", salespersonId=" + SALESPERSON_ID +
-            ", price=" + price +
-            ", timePlaced=" + ORDER_PLACED +
-            ", status=" + status +
-            ", isAssigned=" + IS_ASSIGNED +
-            "}";
+                "orderId=" + orderID +
+                ", carportId=" + carportID +
+                ", paymant status: " + paymentStatus +
+                ", price=" + price +
+                ", timePlaced=" + orderPlaced +
+                ", status=" + status +
+                "}";
     }
 
 

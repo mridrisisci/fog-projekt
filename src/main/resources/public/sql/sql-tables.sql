@@ -58,19 +58,19 @@ CREATE TABLE IF NOT EXISTS public.orders
 (
     order_id serial NOT NULL,
     carport_id character varying(8) COLLATE pg_catalog."default" NOT NULL,
-    salesperson_id integer NOT NULL,
     status character varying(20) COLLATE pg_catalog."default" NOT NULL,
     price integer,
     sales_price integer,
     coverage_ratio_percentage integer,
     order_placed timestamp with time zone,
     order_paid boolean NOT NULL,
-    height integer NOT NULL,
+    height integer,
     width integer NOT NULL,
-    length integer,
+    length integer NOT NULL,
     has_shed boolean NOT NULL,
     roof_type character varying(10) COLLATE pg_catalog."default" NOT NULL,
     account_id integer NOT NULL,
+    svg text,
     CONSTRAINT orders_pk PRIMARY KEY (order_id)
 );
 
@@ -131,7 +131,6 @@ ALTER TABLE IF EXISTS public.orders_materials
         ON UPDATE CASCADE
         ON DELETE CASCADE;
 
-
 -- Insert data into materials
 INSERT INTO public.materials (name, unit, price, length, height, width, type, description)
 VALUES
@@ -165,7 +164,6 @@ VALUES
     ('stalddørsgreb 50x75', 'Sæt', 269, 3, 1, 1, 'Stalddørsgreb', 'Til lås på dør i skur'),
     ('t hængsel 390 mm', 'Stk', 139, 4, 1, 1, 'Hængsel', 'Til skurdør'),
     ('vinkelbeslag 35', 'Stk', 1, 5, 5, 4, 'Vinkelbeslag', 'Til montering af løsholter i skur');
-
 
 
 END;
