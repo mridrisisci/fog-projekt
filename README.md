@@ -5,6 +5,8 @@ Video af systemet i aktion:
 
 Vi er hold Dat2F24 gruppe E.
 
+Du kan se projektet og prøve det af via hjemmesiden: https://carport.nordaire.dk
+
 ## Installation
 For at køre dette projekt skal du have en Postgres Database, og du skal angive url, port og brugerinformationer i Main klassen.
 Der ligger et sql script i /src/main/resources/sql som skal køres for at oprette de nødvendige tabeller og konti. 
