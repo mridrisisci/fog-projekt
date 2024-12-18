@@ -1,7 +1,7 @@
 Dette er et semesterprojekt for 2. semester datamatiker på Copenhagen Business Academy Lyngby.
 
 Du finder rapporten for projektet i /report/report.pdf
-Video af systemet i aktion: 
+Video af systemet i aktion: https://youtu.be/U24B_mwYgeE
 
 Vi er hold Dat2F24 gruppe E.
 
