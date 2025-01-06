@@ -27,7 +27,7 @@ public class AccountMapper
             ps.setInt(1, cityID);
             ps.setInt(2, postalCodeID);
             ps.setString(3, address);
-            
+
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
@@ -284,6 +284,31 @@ public class AccountMapper
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    private static int checkRecordInAccounts(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT role, username, telephone, email, addresses_id FROM accounts " +
+                "WHERE role=? AND username=? AND telephone=? AND email=? AND addresses_id=?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, );
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt("account_id");
+            } else
+            {
+                throw new DatabaseException("Kunne ikke hente konto fra databasen");
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Kunne ikke hente konto fra databasen");
         }
     }
 
