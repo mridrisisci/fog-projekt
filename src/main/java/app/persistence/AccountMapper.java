@@ -3,6 +3,7 @@ package app.persistence;
 import app.entities.Account;
 import app.exceptions.DatabaseException;
 import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,11 @@ public class AccountMapper
 
     public static int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool) throws DatabaseException
     {
+        int addressID = checkRecordInAddresses(address, pool);
+        if(addressID != 0)
+        {
+            return addressID;
+        }
 
         String sql = "INSERT INTO addresses (city_id, postal_code_id, address) VALUES (?,?,?)";
 
@@ -21,8 +27,7 @@ public class AccountMapper
             ps.setInt(1, cityID);
             ps.setInt(2, postalCodeID);
             ps.setString(3, address);
-
-
+            
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1)
             {
@@ -43,9 +48,33 @@ public class AccountMapper
         }
     }
 
+    private static int checkRecordInAddresses(String address, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM addresses WHERE address=?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, address);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt("address_id");
+            } else
+            {
+                throw new DatabaseException("Kunne ikke hente adresse fra databasen");
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Kunne ikke hente adresse fra databasen");
+        }
+    }
+
     public static void createSalesAccount(String role, String username, String email, String password, int telephone, int adressesID, ConnectionPool pool) throws DatabaseException
     {
-        String sql = "insert into accounts (role, username, email, password, telephone, addresses_id) VALUES (?,?,?,?,?,?);";
+        String sql = "INSERT INTO accounts (role, username, email, password, telephone, addresses_id) VALUES (?,?,?,?,?,?);";
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         try (Connection connection = pool.getConnection())
@@ -108,6 +137,12 @@ public class AccountMapper
 
     public static int createRecordInPostalCode(int postalCode, ConnectionPool pool) throws DatabaseException
     {
+        int postalCodeID = checkRecordInPostalCode(postalCode, pool);
+        if(postalCodeID != 0)
+        {
+            return postalCodeID;
+        }
+
         String sql = "INSERT INTO postal_code (postal_code) VALUES (?)";
 
         try (Connection connection = pool.getConnection();
@@ -135,8 +170,38 @@ public class AccountMapper
         }
     }
 
+    private static int checkRecordInPostalCode(int postalCode, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM postal_code WHERE postal_code=?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setInt(1, postalCode);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt("postal_code_id");
+            } else
+            {
+                throw new DatabaseException("Kunne ikke hente postkode fra databasen");
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Kunne ikke hente postkode fra databasen");
+        }
+    }
+
     public static int createRecordInCities(String city, ConnectionPool pool) throws DatabaseException
     {
+        int cityID = checkRecordInCities(city, pool);
+        if(cityID != 0)
+        {
+            return cityID;
+        }
+
         String sql = "INSERT INTO cities (city) VALUES (?)";
 
         try (Connection connection = pool.getConnection();
@@ -161,6 +226,30 @@ public class AccountMapper
         } catch (SQLException e)
         {
             throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    private static int checkRecordInCities(String city, ConnectionPool pool) throws DatabaseException
+    {
+        String sql = "SELECT * FROM cities WHERE city=?";
+
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql))
+        {
+            ps.setString(1, city);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+            {
+                return rs.getInt("city_id");
+            } else
+            {
+                throw new DatabaseException("Kunne ikke hente bynavn fra databasen");
+            }
+
+        } catch (SQLException e)
+        {
+            throw new DatabaseException("Kunne ikke hente bynavn fra databasen");
         }
     }
 

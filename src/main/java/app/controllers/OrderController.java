@@ -144,7 +144,6 @@ public class OrderController
 
         try
         {
-
             int cityID = AccountMapper.createRecordInCities(city, pool);
             int postalCodeID = AccountMapper.createRecordInPostalCode(postalCode, pool);
             int addressID = AccountMapper.createRecordInAddresses(cityID, postalCodeID, address, pool);
