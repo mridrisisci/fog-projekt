@@ -14,7 +14,7 @@ public class AccountMapper
     public static int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool) throws DatabaseException
     {
         int addressID = checkRecordInAddresses(address, pool);
-        if(addressID != 0)
+        if (addressID != 0)
         {
             return addressID;
         }
@@ -138,7 +138,7 @@ public class AccountMapper
     public static int createRecordInPostalCode(int postalCode, ConnectionPool pool) throws DatabaseException
     {
         int postalCodeID = checkRecordInPostalCode(postalCode, pool);
-        if(postalCodeID != 0)
+        if (postalCodeID != 0)
         {
             return postalCodeID;
         }
@@ -197,7 +197,7 @@ public class AccountMapper
     public static int createRecordInCities(String city, ConnectionPool pool) throws DatabaseException
     {
         int cityID = checkRecordInCities(city, pool);
-        if(cityID != 0)
+        if (cityID != 0)
         {
             return cityID;
         }
@@ -255,6 +255,12 @@ public class AccountMapper
 
     public static int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
     {
+        int accountID = checkRecordInAccounts(role, username, telephone, email, addressID, pool);
+        if(accountID != 0)
+        {
+            return accountID;
+        }
+
         String sql = "INSERT INTO accounts (role, username, telephone, email, addresses_id) VALUES (?,?,?,?,?)";
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
@@ -295,7 +301,11 @@ public class AccountMapper
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql))
         {
-            ps.setString(1, );
+            ps.setString(1, role);
+            ps.setString(2, username);
+            ps.setInt(3, telephone);
+            ps.setString(4, email);
+            ps.setInt(5, addressID);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())
