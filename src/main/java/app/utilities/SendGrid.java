@@ -55,7 +55,6 @@ public class SendGrid
         personalization.addDynamicTemplateData("Tagtype", roofType);
         personalization.addDynamicTemplateData("Bestillingsdato", orderPlaced);
         personalization.addDynamicTemplateData("dynamicURL", dynamicURL);
-        //personalization.addDynamicTemplateData("AcceptUrl", acceptURL); // uncomment before deploying
         mail.addPersonalization(personalization);
 
         // Add category and template ID
