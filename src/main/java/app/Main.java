@@ -32,7 +32,9 @@ public class Main {
         MaterialController.addRoutes(app, dBConnection);
         AccountController.addRoutes(app, dBConnection);
 
-        System.out.println(SendGrid.getAPI_KEY());
+//        String API_KEY = System.getenv("SENDGRID_API_KEY");
+//        System.out.println(API_KEY);
+
 
     }
 }
