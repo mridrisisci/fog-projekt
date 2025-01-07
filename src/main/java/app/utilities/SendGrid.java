@@ -42,13 +42,9 @@ public class SendGrid
         String baseURL = "https://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/acceptoffer/" + orderID;
 
-
-
-
         Mail mail = new Mail();
         mail.setFrom(from);
-
-
+        
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
