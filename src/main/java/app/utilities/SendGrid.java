@@ -102,7 +102,7 @@ public class SendGrid
         // Dynamisk URL til produktion // når app skal deployes
         String baseURL = "https://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/billOfMaterials/" + orderID;
-        
+
         Mail mail = new Mail();
         mail.setFrom(from);
 
@@ -157,8 +157,6 @@ public class SendGrid
         length2 = length2 + " cm";
         String width2 = String.valueOf(width);
         width2 = width2 + " cm";
-
-
 
         Mail mail = new Mail();
         mail.setFrom(from);
@@ -240,7 +238,6 @@ public class SendGrid
         }
     }
 
-
     public String getAPI_KEY()
     {
         return API_KEY;
@@ -259,8 +256,5 @@ public class SendGrid
     {
         return subject;
     }
-
-
-
 
 }
