@@ -13,11 +13,11 @@ public class AccountMapper
 
     public static int createRecordInAddresses(int cityID, int postalCodeID, String address, ConnectionPool pool) throws DatabaseException
     {
-        int addressID = checkRecordInAddresses(address, pool);
-        if (addressID != 0)
-        {
-            return addressID;
-        }
+//        int addressID = checkRecordInAddresses(address, pool);
+//        if (addressID != 0)
+//        {
+//            return addressID;
+//        }
 
         String sql = "INSERT INTO addresses (city_id, postal_code_id, address) VALUES (?,?,?)";
 
@@ -255,11 +255,11 @@ public class AccountMapper
 
     public static int createCustomerAccount(String role, String username, int telephone, String email, int addressID, ConnectionPool pool) throws DatabaseException
     {
-        int accountID = checkRecordInAccounts(role, username, telephone, email, addressID, pool);
-        if(accountID != 0)
-        {
-            return accountID;
-        }
+//        int accountID = checkRecordInAccounts(role, username, telephone, email, addressID, pool);
+//        if(accountID != 0)
+//        {
+//            return accountID;
+//        }
 
         String sql = "INSERT INTO accounts (role, username, telephone, email, addresses_id) VALUES (?,?,?,?,?)";
         try (Connection connection = pool.getConnection();
