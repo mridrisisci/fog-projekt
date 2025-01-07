@@ -44,7 +44,7 @@ public class SendGrid
 
         Mail mail = new Mail();
         mail.setFrom(from);
-        
+
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(email));
         personalization.addDynamicTemplateData("Emne:", subject);
@@ -102,9 +102,7 @@ public class SendGrid
         // Dynamisk URL til produktion // når app skal deployes
         String baseURL = "https://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/billOfMaterials/" + orderID;
-
-
-
+        
         Mail mail = new Mail();
         mail.setFrom(from);
 
