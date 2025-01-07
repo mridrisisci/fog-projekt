@@ -22,15 +22,15 @@ public class Main {
     public static void main(String[] args) {
 
         // Initialize Javalin and configure the web server
-//        Javalin app = Javalin.create(config -> {
-//            config.staticFiles.add("/public");
-//            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(SessionConfig.sessionConfig()));
-//            config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-//        }).start(7072);
-//
-//        OrderController.addRoutes(app, dBConnection);
-//        MaterialController.addRoutes(app, dBConnection);
-//        AccountController.addRoutes(app, dBConnection);
+        Javalin app = Javalin.create(config -> {
+            config.staticFiles.add("/public");
+            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(SessionConfig.sessionConfig()));
+            config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
+        }).start(7072);
+
+        OrderController.addRoutes(app, dBConnection);
+        MaterialController.addRoutes(app, dBConnection);
+        AccountController.addRoutes(app, dBConnection);
 
         System.out.println(SendGrid.getAPI_KEY());
 
