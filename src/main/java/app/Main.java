@@ -6,6 +6,7 @@ import app.controllers.AccountController;
 import app.controllers.MaterialController;
 import app.controllers.OrderController;
 import app.persistence.ConnectionPool;
+import app.utilities.SendGrid;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 
@@ -21,17 +22,17 @@ public class Main {
     public static void main(String[] args) {
 
         // Initialize Javalin and configure the web server
-        Javalin app = Javalin.create(config -> {
-            config.staticFiles.add("/public");
-            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(SessionConfig.sessionConfig()));
-            config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
-        }).start(7072);
+//        Javalin app = Javalin.create(config -> {
+//            config.staticFiles.add("/public");
+//            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(SessionConfig.sessionConfig()));
+//            config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
+//        }).start(7072);
+//
+//        OrderController.addRoutes(app, dBConnection);
+//        MaterialController.addRoutes(app, dBConnection);
+//        AccountController.addRoutes(app, dBConnection);
 
-
-        OrderController.addRoutes(app, dBConnection);
-        MaterialController.addRoutes(app, dBConnection);
-        AccountController.addRoutes(app, dBConnection);
-
+        System.out.println(SendGrid.getAPI_KEY());
 
     }
 }

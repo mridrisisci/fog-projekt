@@ -60,7 +60,7 @@ public class SendGrid
 
         // Add category and template ID
         mail.addCategory("carportapp");
-        mail.setTemplateId("d-6ac3727740a24341b323aef7805519ae");
+        mail.setTemplateId("d-13710153c275487ca6ba870f31dc0d9f");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
@@ -216,7 +216,7 @@ public class SendGrid
 
         // Add category and template ID
         mail.addCategory("carportapp");
-        mail.setTemplateId("d-cd10b548b86849aea9d1785fce4952b7");
+        mail.setTemplateId("d-13710153c275487ca6ba870f31dc0d9f");
 
         com.sendgrid.SendGrid sg = new com.sendgrid.SendGrid(API_KEY);
         Request request = new Request();
@@ -238,7 +238,7 @@ public class SendGrid
         }
     }
 
-    public String getAPI_KEY()
+    public static String getAPI_KEY()
     {
         return API_KEY;
     }
