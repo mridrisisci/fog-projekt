@@ -49,6 +49,7 @@
                                 <td>
                                     <a class="" th:if="${session.currentUser != null and session.currentUser.role == 'salesperson'}" href="/order/details" th:href="@{/order/details/{id}(id=${order.orderID})}">Se ordre</a> </br>
                                 </td>
+
                             </tr>
                             </tbody>
                         </table>
