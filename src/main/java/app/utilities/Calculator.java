@@ -50,7 +50,6 @@ public class Calculator
         int maxSpan = 3100; //maxSpan er spændet der maks. må være melle stolper jf. materialelisten givet
         int totalWidthWithinMaxSpan = 2 * overhangDefault + 2 * widthOfPost + maxSpan;
 
-
         //getLength()*100 for at få mm i stedet for cm, så det kan omregnes i int.
         if ((carport.getLENGTH() * 10) <= totalWidthWithinMaxSpan)
         {
