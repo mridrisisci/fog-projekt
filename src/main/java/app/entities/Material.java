@@ -143,6 +143,20 @@ public class Material
         this.svgRafter = svgRafter;
     }
 
+    public Material(int materialID, String materialName, String description, int price, String unit, int quantity, int length, int height, int width, String type)
+    {
+        this.materialID = materialID;
+        this.materialName = materialName;
+        this.description = description;
+        this.price = price;
+        this.unit = unit;
+        this.quantity = quantity;
+        this.length = length;
+        this.height = height;
+        this.width = width;
+        this.type = type;
+    }
+
     public int getSvgEndPosX()
     {
         return svgEndPosX;

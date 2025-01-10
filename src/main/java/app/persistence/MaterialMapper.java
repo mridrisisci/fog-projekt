@@ -73,7 +73,7 @@ public class MaterialMapper
     {
         List<Material> pickList = new ArrayList<>();
 
-        String sql = "SELECT material.material_id, material.type, material.length, material.name, material.unit, material.price, material.description, orders_materials.order_id, orders_materials.quantity\n" +
+        String sql = "SELECT material.material_id, material.type, material.length, material.length,width, material.height, material.name, material.unit, material.price, material.description, orders_materials.order_id, orders_materials.quantity\n" +
                 "                FROM orders_materials\n" +
                 "                INNER JOIN materials material ON orders_materials.material_id = material.material_id\n" +
                 "                WHERE order_id = ?";
@@ -91,11 +91,13 @@ public class MaterialMapper
                 String unit = rs.getString("unit");
                 int price = rs.getInt("price");
                 int length = rs.getInt("length");
+                int width = rs.getInt("width");
+                int height = rs.getInt("height");
                 String type = rs.getString("type");
                 String description = rs.getString("description");
                 int quantity = rs.getInt("quantity");
 
-                Material material = new Material(materialID, name, description, price, unit, quantity, length, type);
+                Material material = new Material(materialID, name, description, price, unit, quantity, length, height, width, type);
                 pickList.add(material);
 
             }
