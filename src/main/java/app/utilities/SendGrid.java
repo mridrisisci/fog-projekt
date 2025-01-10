@@ -16,7 +16,6 @@ public class SendGrid
 
     private static final String API_KEY = System.getenv("API_SEND_GRID");
     private static final String SALESPERSON_EMAIL = "sales.person.fog@gmail.com";
-    private static final String CUSTOMER_EMAIL = "customer.fog.test@gmail.com";
 
     public static void sendOffer(String email, String subject, Order order) throws IOException
     {
@@ -41,10 +40,8 @@ public class SendGrid
         String baseURL = "https://carport.dataduck.dk";
         String dynamicURL = baseURL + "/order/acceptoffer/" + orderID;
 
-
         Mail mail = new Mail();
         mail.setFrom(from);
-
 
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(email));
